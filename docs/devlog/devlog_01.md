@@ -1,11 +1,9 @@
 # DevOps - DevLog 01
-
-## Week 01
 2025-05-05 - 2025-05-11
 
 ---
 
-## Meeting (2025-05-06)
+## 🗨️ - Meeting (2025-05-06)
 First online meeting with the tutor
 
 ### Content
@@ -26,7 +24,7 @@ First online meeting with the tutor
 
 ---
 
-## Project Ideas
+## 💭 - Project Ideas
 Meeting on 2025-05-06 to discuss some project ideas. We settled on 3 candidates, and will take some time to think them over tonight. We'll then do a ranked choice vote to decide on the direction we want to take this.
 
 ### Mensa-Match
@@ -49,30 +47,30 @@ Studierende können Ihr fixes Kalender importieren, und bekommen Vorschläge um 
 
 ---
 
-## Project Selection
+## 🗳️ - Project Selection
 
 We voted on our favorites by ranked choice:
 
 ### @James
-- 1. Mensa-Match
-- 2. TUM-do
-- 3. C(lass|lub) finder
+1. Mensa-Match
+2. TUM-do
+3. C(lass|lub) finder
 
 ### @Enrico
-- 1. Mensa-Match
-- 2. C(lass|lub) finder
-- 3. TUM-do
+1. Mensa-Match
+2. C(lass|lub) finder
+3. TUM-do
 
 ### @Anastasiia
-- 1. Mensa-Match
-- 2. ???
-- 3. ???
+1. Mensa-Match
+2. ???
+3. ???
 
-Mensa-Match emerges as a clear winner.
+**Mensa-Match** emerges as a clear winner.
 
 ---
 
-## Problem Statement
+## 📋 - Problem Statement
 
 We next worked on the problem statement, with @James creating a basic skeleton that was later expanded upon by @Ananstasiia and @Enrico
 
