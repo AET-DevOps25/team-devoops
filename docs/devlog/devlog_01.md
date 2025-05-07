@@ -19,7 +19,7 @@ First online meeting with the tutor
 #### Project Parameters
 - 5 Containers
 - 3 Mircoservices
-- 1 databank
+- 1 Database
 - 1 GenAI
 
 ---
@@ -63,8 +63,8 @@ We voted on our favorites by ranked choice:
 
 ### @Anastasiia
 1. Mensa-Match
-2. ???
-3. ???
+2. C(lass|lub) finder
+3. TUM-do
 
 **Mensa-Match** emerges as a clear winner.
 
@@ -72,7 +72,7 @@ We voted on our favorites by ranked choice:
 
 ## 📋 - Problem Statement
 
-We next worked on the problem statement, with @James creating a basic skeleton that was later expanded upon by @Ananstasiia and @Enrico
+We next worked on the problem statement, with @James creating a basic skeleton that was later expanded upon by @Ananstasiia and @Enrico.
 
 ---
 
