@@ -1,13 +1,13 @@
 # 🍲 - Problem Statement
 
-Many students at TUM, particularly in the larger study programs, report feeling lonely and isolated despite having countless peers. One of the places where this is especially noticeable is the Mensa during lunchtime. It's common for students that don't have a strong network of friends at university to eat alone or avoid eating at the Mensa entirely to avoid feeling socially awkward.
+Many students at TUM, particularly in the larger study programs, report feeling lonely and isolated despite having countless peers. One of the places where this is especially noticeable is the Mensa during lunchtime. It's common for students that don't have a strong network of friends at university to eat alone or avoid eating at the Mensa entirely to not feel socially awkward.
 
 ## ⚙️ - Functionality
 
 Our tool will focus on transforming the potentially uncomfortable situation of eating alone at the Mensa into an opportunity to meet fellow students and make new friends. In order to enable this, our tool should offer the following features:
 
 ### Signing Up
-In order to match students, our tool needs to gather some basic information about them first. In order to do this, users can specify what times they plan to have lunch and at which Mensa, as well as some personal data, such as their name, age, gender, study program, current semester, courses they are taking, and hobbies they enjoy. All personal data fields are optional. For the first version of our tool, we won't require users to sign up with their TUM account but might consider it in the development process.
+In order to match students, our tool needs to gather some basic information about them first. In order to do this, users can specify what times they plan to have lunch and at which Mensa, as well as some personal data, such as their name, age, language, gender, study program, current semester, courses they are taking, and hobbies they enjoy. All personal data fields are optional. For the first version of our tool, we won't require users to sign up with their TUM account but might consider it in the development process.
 
 ### Matching
 Our system will match students into groups 1 hour before their common lunchtime, and invite them to share a table. Users may also be able to limit their search by specified characteristics, e.g. if they are only willing to meet up with people from the same degree or with the same hobby.
@@ -46,7 +46,7 @@ She fills out the information about her studies and hobbies, and specifies she w
 
 Anastasiia loves diversity and meeting people from different backgrounds, so she happily accepts the invitation. After the other student confirms, they both receive a calendar invite via email. In the chat, they agree to meet at the entrance to the mensa. Unfortunately, at the very last moment, Anastasiia receives a message that the other student's train was cancelled and she can't make it to the Mensa that day. They agree to postpone their meetup for the next day, which they reconfirm and receive an updated calendar invite.
 
-The following day, they finally meet up at the arranged time. The system automatically skips the matching process for Anastasiia on that day, since she already has a lunch partner. The meeting goes really well, and both students instantly click. They agree to meet up for lunch again next week, so Anastasiia deactivates her search, at least for the time being. Mensa-Match fulfilled its purpose.
+The following day, they finally meet up at the arranged time. The system automatically skips the matching process for Anastasiia on that day, since she already has a lunch partner. The meeting goes really well, and both students instantly click. They agree to meet up for lunch again next week, so Anastasiia deactivates her search on Mensa-Match, at least for the time being. The system has brilliantly fulfilled its purpose.
 
 ### Scenario 3
 Enrico is a second-semester M.Sc. student in Informatics, and he's currently looking for group members for his Interdisciplinary Project. While most of his classmates are in Computer Science, he’s interested in meeting students from other departments to bring diverse perspectives to the project.
