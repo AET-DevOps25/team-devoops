@@ -72,7 +72,15 @@ We voted on our favorites by ranked choice:
 
 ## 📋 - Problem Statement
 
-We next worked on the problem statement, with @James creating a basic skeleton that was later expanded upon by @Ananstasiia and @Enrico.
+We next worked on the problem statement, with @James creating a first draft that was later expanded upon by @Ananstasiia and @Enrico.
+
+---
+
+## ⚗️ - Filtering (#todo)
+
+A potential topic for future discussion is the idea of including an option for users to filter their matches based on diferent characteristics. This would enable users to have greater influence in the students they are matched with, but may also introduce potential problems and pathways for abuse.
+
+We will continue this conversation in a future meeting.
 
 ---
 
