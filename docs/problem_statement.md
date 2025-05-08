@@ -7,7 +7,7 @@ Many students at TUM, particularly in the larger study programs, report feeling 
 Our tool will focus on transforming the potentially uncomfortable situation of eating alone at the Mensa into an opportunity to meet fellow students and make new friends. In order to enable this, our tool should offer the following features:
 
 ### Signing Up
-In order to match students, our tool needs to gather some basic information about them first. In order to do this, users can specify what times they plan to have lunch and at which Mensa, as well as some personal data, such as their name, age, gender, study program, current semester, courses they are taking, and hobbies they enjoy. It is important to note, however, that all personal data fields are optional. For the first version of our app, we won't require users to sign up with their TUM account but might consider it in the development process.
+In order to match students, our tool needs to gather some basic information about them first. In order to do this, users can specify what times they plan to have lunch and at which Mensa, as well as some personal data, such as their name, age, gender, study program, current semester, courses they are taking, and hobbies they enjoy. It is important to note, however, that all personal data fields are optional. For the first version of our tool, we won't require users to sign up with their TUM account but might consider it in the development process.
 
 ### Matching
 Our system will match students randomly 1 hour before their common lunchtime, and invite them to share a table. Users will also be able to limit their search by specified characteristics, e.g. if they are only willing to meet up with people from the same degree or with the same hobby. The system will also make it possible to create lunch groups with more than 2 people. 
@@ -20,7 +20,7 @@ The Mensa is a big place, and it can be hard to find someone you haven't seen ye
 
 ## 🤸 - Intended Users
 
-Our tool is targeted at TUM students in general, especially those with a smaller network of friends. Often, these are students who are new to university, or who may struggle to socialize for any reason. However, all TUM members are welcome to use the app.
+Our tool is targeted at TUM students in general, especially those with a smaller network of friends. Often, these are students who are new to university, or who may struggle to socialize for any reason. However, all TUM members are welcome to use the tool.
 
 ## ✨ - GenAI Integration
 
