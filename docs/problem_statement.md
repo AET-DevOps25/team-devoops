@@ -48,4 +48,12 @@ After an hour of pleasent conversation, James has now met several new people, an
 TODO: Anastasiia limits the search to women in CS only and receives an invite
 
 ### Scenario 3
-TODO: Enrico wants to meet people outside of Computer Science that are doing the Interdisciplinary Project this semester, as he's looking for group members. He sends out several invitations. 
+Enrico is a second-semester M.Sc. student in Informatics, and he's currently looking for group members for his Interdisciplinary Project. While most of his classmates are in Computer Science, he’s interested in meeting students from other departments to bring diverse perspectives to the project.
+
+He signs into Mensa-Match and indicates that he’s particularly looking for people involved in the Interdisciplinary Project this semester. He selects lunchtime on Thursday and fills out his profile with relevant classes and hobbies, including his passion for design and urban mobility.
+
+Since he’s proactively looking to meet new collaborators, Enrico manually browses through potential matches and sends out several invitations to students from different programs like Electrical Engineering, Chemistry, and Management.
+
+Two students accept his invitation, and Enrico receives an email with a calendar event for the meetup. They agree on a spot via the built-in chat feature and meet at the Mensa as planned.
+
+During lunch, one of the AI-generated conversation starters suggests discussing project ideas around sustainability, a topic all three are passionate about. The group ends up brainstorming potential concepts, and by the end of the meal, Enrico has found two highly motivated partners for his project—and a reason to look forward to more team lunches.
