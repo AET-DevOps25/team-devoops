@@ -10,7 +10,7 @@ Our tool will focus on transforming the potentially uncomfortable situation of e
 In order to match students, our tool needs to gather some basic information about them first. In order to do this, users can specify what times they plan to have lunch and at which Mensa, as well as some personal data, such as their name, age, language, gender, study program, current semester, courses they are taking, and hobbies they enjoy. All personal data fields are optional. For the first version of our tool, we won't require users to sign up with their TUM account but might consider it in the development process.
 
 ### Matching
-Our system will match students into groups 1 hour before their common lunchtime, and invite them to share a table. Users can choose how large they'd like their group to be - depending on whether they want to get to know one person at a time or an entire bunch. They will also be able to limit their search by specified characteristics, e.g. if they are only willing to meet up with people from the same degree or with the same hobby.
+Our system will match students into groups 1 hour before their common lunchtime, and invite them to share a table. Users will be able to limit their search by specified characteristics, e.g. if they are only willing to meet up with people from the same degree.
 
 ### RSVP-ing
 Nothing is worse than waiting for someone who won't show up, thus our tool will ask users to RSVP to any invites they may receive (with ```yes``` / ```no``` options, no tentatives). Once an invite is accepted, all users will receive a confirmation email with a corresponding ```ics.``` file in the attachment. It will also be possible to cancel the meetup.
