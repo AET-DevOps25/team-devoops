@@ -24,7 +24,7 @@ Our tool is targeted at TUM students in general, especially those with a smaller
 
 ## ✨ - GenAI Integration
 
-Meeting strangers can be awkward, especially at the start. In order to counteract this awkwardness, we will use Generative AI to act as a mediator to help break the ice by suggesting potential topics of conversation based on student's shared interests.
+Starting a conversation with a stranger can be difficult. Given the nature of the problem we're tackling, we can assume most of our users will start out as strangers. In order to reduce this initial awkwardness, we will use Generative AI to help break the ice by acting as a mediator suggesting potential topics of conversation based on student's shared interests.
 
 ## 🎭 - Use Case Scenarios
 
