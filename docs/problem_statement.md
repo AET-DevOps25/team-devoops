@@ -47,8 +47,6 @@ Enrico is a second-semester M.Sc. student in Informatics, and he's currently loo
 
 He signs into Mensa-Match and indicates that he’s particularly looking for people involved in the Interdisciplinary Project this semester. He selects lunchtime on Thursday and fills out his profile with relevant classes and hobbies, including his passion for design and urban mobility.
 
-Since he’s proactively looking to meet new collaborators, Enrico manually browses through potential matches and sends out several invitations to students from different programs like Electrical Engineering, Chemistry, and Management.
-
-Two students accept his invitation, and Enrico receives an email with a calendar event for the meetup. They agree on a spot via the built-in chat feature and meet at the Mensa as planned.
+Enrico recieves an email with a calendar event to a table that includes three students from different study programs: Electrical Engineering, Chemistry, and Management. They agree on a spot via the built-in chat feature and meet at the Mensa as planned.
 
 During lunch, one of the AI-generated conversation starters suggests discussing project ideas around sustainability, a topic all three are passionate about. The group ends up brainstorming potential concepts, and by the end of the meal, Enrico has found two highly motivated partners for his project—and a reason to look forward to more team lunches.
