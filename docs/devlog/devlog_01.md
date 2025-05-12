@@ -72,27 +72,19 @@ We voted on our favorites by ranked choice:
 
 ## 📋 - Problem Statement
 
-We next worked on the problem statement, with @James creating a first draft that was later expanded upon by @Ananstasiia and @Enrico.
+We next worked on the problem statement, with @James creating a first draft that was later reviewed and expanded upon by @Ananstasiia and @Enrico.
 
-A pull request was submitted on 2025-05-08.
+A pull request with was submitted and approved by all team members on 2025-05-08.
 
 ---
 
 ## Discussion Topics for next Meeting
 
-### Filtering
-A potential topic for future discussion is the idea of including an option for users to filter their matches based on diferent characteristics. This would enable users to have greater influence in the students they are matched with, but may also introduce potential problems and pathways for abuse.
-
 ### Group Sizes
 Should our tool focus on pairing up students, or on selecting larger groups? If we settle on larger groups, what is the ideal group size?
 
 ### Tool Name
-What should our Tool be called?
+What should our tool be called?
 - Mensa-Meet
 - Mensa-Match
-- Others...
-
-
----
-
-{To be Continued}
+- others...
