@@ -74,12 +74,12 @@ We voted on our favorites by ranked choice:
 
 We next worked on the problem statement, with @James creating a first draft that was later reviewed and expanded upon by @Ananstasiia and @Enrico.
 
-A pull request with was submitted and approved by all team members on 2025-05-08.
+A pull request with everyone's contributions was submitted and approved by all team members on 2025-05-08.
 
 ---
 
 ## Discussion Topics for next Meeting
-
+In the group chat, we had some disagreements and decided to postpone the discussion of the following topics:
 
 ### Filtering
 A potential topic for future discussion is the idea of including an option for users to filter their matches based on diferent characteristics. This would enable users to have greater influence in the students they are matched with, but may also introduce potential problems and pathways for abuse.
