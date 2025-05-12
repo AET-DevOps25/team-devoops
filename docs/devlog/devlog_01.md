@@ -72,7 +72,7 @@ We voted on our favorites by ranked choice:
 
 ## 📋 - Problem Statement
 
-We next worked on the problem statement, with @James creating a first draft that was later reviewed and expanded upon by @Ananstasiia and @Enrico.
+We next worked on the problem statement, with @James creating a first draft that was later refined and expanded upon by @Ananstasiia and @Enrico.
 
 A pull request with everyone's contributions was submitted and approved by all team members on 2025-05-08.
 
