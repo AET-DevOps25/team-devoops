@@ -8,6 +8,6 @@
 - We scheduled a short meeting on 2025-05-14 to discuss the initial backlog items as well as the unresolved questions from Week 1: search filtering, user group sizes and the final tool name.
 
 ## 🚀 - Product Backlog (2025-05-13)
-- Our tutor created and invited us to our team's GitHub Project, where @Anastasiia created the first 3 issues for this week's iteration in the format of Scrum stories.
+- Our tutor created and invited us to our team's GitHub Project, where @Anastasiia created the first 4 issues for this and last week's iterations in the format of Scrum stories.
 
 ## 🗨️ - Meeting (2025-05-14)
