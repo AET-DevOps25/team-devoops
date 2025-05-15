@@ -32,7 +32,7 @@ TODO: @James
 
 ### Component Diagram (top-level architecture)
 
-TODO: @Anastasiia
+![Component Diagram](docs/Component_Diagram.svg "Meet@Mensa Component Diagram")
 
 ## 🎭 Use Case Scenarios
 
