@@ -28,7 +28,7 @@ TODO: @Enrico
 
 ### Use Case Diagram
 
-TODO: @James
+![Use-Case Diagram](docs/Meet@Mensa_UML_use_case.png "Meet@Mensa Use-Case Diagram")
 
 ### Component Diagram (top-level architecture)
 
