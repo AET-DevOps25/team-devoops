@@ -24,7 +24,7 @@ The Mensa is a big place, and it can be hard to find someone you haven't seen ye
 
 ### Class Diagram (analysis object model)
 
-TODO: @Enrico
+![Class Diagram](docs/Meet@Mensa_UML_Class.png "Meet@Mensa Class Diagram")
 
 ### Use Case Diagram
 
@@ -59,9 +59,9 @@ The following day, they finally meet up at the arranged time. Anastasiia deactiv
 
 ---
 ### Scenario 3
-Enrico is a second-semester M.Sc. student in Informatics, and he's currently looking for group members for his Interdisciplinary Project. While most of his classmates are in Computer Science, he’s interested in meeting students from other departments to bring diverse perspectives to the project.
+Enrico is a second-semester M.Sc. student in Informatics, and he's currently looking for group members for his Interdisciplinary Project. While most of his classmates are in Computer Science, he's interested in meeting students from other departments to bring diverse perspectives to the project.
 
-He signs into Meet@Mensa and indicates that he’s particularly looking for people involved in the Interdisciplinary Project this semester. He selects lunchtime on Thursday and fills out his profile with relevant classes and hobbies, including his passion for design and urban mobility.
+He signs into Meet@Mensa and indicates that he's particularly looking for people involved in the Interdisciplinary Project this semester. He selects lunchtime on Thursday and fills out his profile with relevant classes and hobbies, including his passion for design and urban mobility.
 
 Enrico is matched with 2 other students, all of them accept the invitation, so Enrico receives an email with a calendar event for the meetup. They agree on a spot via the built-in chat feature and meet at the Mensa as planned.
 
