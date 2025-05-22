@@ -1,0 +1,8 @@
+services:
+  chat-service:
+    image: meet_at_mensa/chat
+    build:
+      context: ./server/chat-service
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
