@@ -22,9 +22,7 @@ reviewers: "@team-devoops/developers"
 
 ## Changes
 
-<!-- List the main changes you've made -->
-
--
+## <!-- List the main changes you've made -->
 
 ## Checklist
 
