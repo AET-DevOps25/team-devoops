@@ -22,4 +22,4 @@ docker stop matching-service
 docker remove matching-service
 ```
 
-The application will be available at `http://localhost:8082`.
+The application will be available at `http://localhost:8082` and `http://localhost:8082/matching`.

@@ -22,4 +22,4 @@ docker stop chat-service
 docker remove chat-service
 ```
 
-The application will be available at `http://localhost:8081`.
+The application will be available at `http://localhost:8081` and `http://localhost:8081/chat`.

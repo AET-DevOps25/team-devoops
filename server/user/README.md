@@ -22,4 +22,4 @@ docker stop user-service
 docker remove user-service
 ```
 
-The application will be available at `http://localhost:8083`.
+The application will be available at `http://localhost:8083` and `http://localhost:8083/user`.

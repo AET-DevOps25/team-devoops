@@ -19,7 +19,7 @@ public class ChatApplication {
     // HelloController is a REST controller that handles HTTP GET requests
     // It returns a greeting message in plain text
     class HelloController {
-        @GetMapping("/chat")
+        @GetMapping({"/", "/chat"})
         public String hello() {
             return "Hello World! Welcome to the Chat Service!";
         }
