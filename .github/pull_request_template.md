@@ -1,12 +1,3 @@
----
-name: Pull Request
-about: Create a pull request to improve our project
-title: "$BRANCH_NAME"
-labels: ""
-assignees: ""
-reviewers: "@team-devoops/developers"
----
-
 ## Type of Change
 
 <!-- Mark the appropriate option with an "x" -->
