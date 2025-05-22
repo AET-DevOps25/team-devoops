@@ -38,6 +38,14 @@ services:
     networks:
       - backend
 
+  genai-service:
+    build: ../genai
+    container_name: genai-service
+    expose:
+      - "80"
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
