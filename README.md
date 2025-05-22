@@ -24,15 +24,15 @@ The Mensa is a big place, and it can be hard to find someone you haven't seen ye
 
 ### Class Diagram (analysis object model)
 
-![Class Diagram](docs/meetatmensa_uml_class.svg "Meet@Mensa Class Diagram")
+![Class Diagram](docs/meetatmensa_uml_class.png "Meet@Mensa Class Diagram")
 
 ### Use Case Diagram
 
-![Use-Case Diagram](docs/meetatmensa_uml_use_case.svg "Meet@Mensa Use-Case Diagram")
+![Use-Case Diagram](docs/meetatmensa_uml_use_case.png "Meet@Mensa Use-Case Diagram")
 
 ### Component Diagram (top-level architecture)
 
-![Component Diagram](docs/meetatmensa_uml_component.svg "Meet@Mensa Component Diagram")
+![Component Diagram](docs/meetatmensa_uml_component.png "Meet@Mensa Component Diagram")
 
 ## 🎭 Use Case Scenarios
 
