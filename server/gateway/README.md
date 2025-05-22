@@ -7,13 +7,13 @@ Implementation details to follow.
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/gateway .   
+docker build -t meet_at_mensa/gateway .
 
 # Run the Docker container on port 8080
-docker run --name gateway-service -p 8080:8080 meet_at_mensa/gateway   
+docker run --name gateway-service -p 8080:8080 meet_at_mensa/gateway
 
 # List running containers (if needed) 
-docker ps                             
+docker ps
 
 # Stop the container
 docker stop gateway-service

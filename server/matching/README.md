@@ -7,13 +7,13 @@ Implementation details to follow.
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/matching .   
+docker build -t meet_at_mensa/matching .
 
 # Run the Docker container on port 8082
-docker run --name matching-service -p 8082:80 meet_at_mensa/matching   
+docker run --name matching-service -p 8082:80 meet_at_mensa/matching
 
 # List running containers (if needed) 
-docker ps                             
+docker ps
 
 # Stop the container     
 docker stop matching-service

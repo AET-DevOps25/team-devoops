@@ -7,13 +7,13 @@ Implementation details to follow.
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/chat .   
+docker build -t meet_at_mensa/chat .
 
 # Run the Docker container on port 8081
-docker run --name chat-service -p 8081:80 meet_at_mensa/chat   
+docker run --name chat-service -p 8081:80 meet_at_mensa/chat
 
 # List running containers (if needed) 
-docker ps                             
+docker ps
 
 # Stop the container     
 docker stop chat-service

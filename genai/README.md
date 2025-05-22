@@ -17,6 +17,9 @@ docker ps
 
 # Stop the container     
 docker stop genai-service
+
+# Remove the container
+docker remove genai-service
 ```
 
-The application will be available at `http://localhost:<desired_port>`.
+The application will be available at `http://localhost:<desired_port>`, followed by any path.

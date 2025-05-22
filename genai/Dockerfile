@@ -1,30 +1,30 @@
 # ------------ Build Stage ------------
-    FROM python:3.10-slim AS build
-    WORKDIR /app
-    
-    # Copy necessary files
-    COPY pyproject.toml ./
-    COPY src ./src
-    
-    # install build tools
-    RUN pip install build
+FROM python:3.10-slim AS build
+WORKDIR /app
 
-    # build python wheel to be installed later
-    RUN python3 -m build
-    
-    
-    # ------------ Runtime Stage ------------
-    FROM python:3.10-slim
-    WORKDIR /app
+# Copy necessary files
+COPY pyproject.toml ./
+COPY src ./src
 
-    # copy wheel from build
-    COPY --from=build /app/dist/*.whl .
+# install build tools
+RUN pip install build
 
-    # Install python wheel
-    RUN pip install *.whl
+# build python wheel to be installed later
+RUN python3 -m build
 
-    # Expose default HTTP port
-    EXPOSE 80
 
-    # Run the conversation_starter.main:start_genai() via the project script
-    CMD ["meetatmensa-start-genai"]
+# ------------ Runtime Stage ------------
+FROM python:3.10-slim
+WORKDIR /app
+
+# copy wheel from build
+COPY --from=build /app/dist/*.whl .
+
+# Install python wheel
+RUN pip install *.whl
+
+# Expose default HTTP port
+EXPOSE 80
+
+# Run the conversation_starter.main:start_genai() via the project script
+CMD ["meetatmensa-start-genai"]
