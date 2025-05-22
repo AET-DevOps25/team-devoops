@@ -1,0 +1,23 @@
+# This configuration file defines the routing rules for the Spring Cloud Gateway
+# and specifies the backend services to which requests should be forwarded.
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: chat_route
+          uri: http://chat-service:80
+          predicates:
+            - Path=/chat/**
+
+        - id: matching_route
+          uri: http://matching-service:80
+          predicates:
+            - Path=/matching/**
+
+        - id: user_route
+          uri: http://user-service:80
+          predicates:
+            - Path=/user/**

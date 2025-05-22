@@ -9,14 +9,17 @@ Implementation details to follow.
 # Build and tag the Docker image
 docker build -t meet_at_mensa/chat .   
 
-# Run the Docker container on port 8080
-docker run --name chat-service -p 8080:80 meet_at_mensa/chat   
+# Run the Docker container on port 8081
+docker run --name chat-service -p 8081:80 meet_at_mensa/chat   
 
 # List running containers (if needed) 
 docker ps                             
 
 # Stop the container     
 docker stop chat-service
+
+# Remove the container
+docker remove chat-service
 ```
 
-The application will be available at `http://localhost:8080`.
+The application will be available at `http://localhost:8081`.

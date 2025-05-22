@@ -9,14 +9,17 @@ Implementation details to follow.
 # Build and tag the Docker image
 docker build -t meet_at_mensa/user .   
 
-# Run the Docker container on port 8082
-docker run --name user-service -p 8082:80 meet_at_mensa/user   
+# Run the Docker container on port 8083
+docker run --name user-service -p 8083:80 meet_at_mensa/user   
 
 # List running containers (if needed) 
 docker ps                             
 
 # Stop the container     
 docker stop user-service
+
+# Remove the container     
+docker remove user-service
 ```
 
-The application will be available at `http://localhost:8082`.
+The application will be available at `http://localhost:8083`.
