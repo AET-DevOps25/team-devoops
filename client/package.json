@@ -13,9 +13,7 @@
     "preview": "vite preview",
     "test": "jest --config jest.config.cjs",
     "test:watch": "jest --config jest.config.cjs --watch",
-    "test:coverage": "jest --config jest.config.cjs --coverage",
-    "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "test:coverage": "jest --config jest.config.cjs --coverage"
   },
   "dependencies": {
     "react": "^19.1.0",
@@ -32,7 +30,6 @@
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "@vitejs/plugin-react": "^4.4.1",
-    "cypress": "^14.3.3",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
