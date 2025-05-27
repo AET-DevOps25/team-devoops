@@ -7,13 +7,13 @@ Implementation details to follow.
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/user .   
+docker build -t meet_at_mensa/user .
 
 # Run the Docker container on port 8083
-docker run --name user-service -p 8083:80 meet_at_mensa/user   
+docker run --name user-service -p 8083:80 meet_at_mensa/user
 
 # List running containers (if needed) 
-docker ps                             
+docker ps
 
 # Stop the container     
 docker stop user-service
@@ -22,4 +22,4 @@ docker stop user-service
 docker remove user-service
 ```
 
-The application will be available at `http://localhost:8083`.
+The application will be available at `http://localhost:8083` and `http://localhost:8083/user`.

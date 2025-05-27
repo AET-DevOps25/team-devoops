@@ -21,3 +21,8 @@ spring:
           uri: http://user-service:80
           predicates:
             - Path=/user/**
+
+        - id: genai_route
+          uri: http://genai-service:80
+          predicates:
+            - Path=/genai/**

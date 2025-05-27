@@ -19,7 +19,7 @@ public class UserApplication {
     // HelloController is a REST controller that handles HTTP GET requests
     // It returns a greeting message in plain text
     class HelloController {
-        @GetMapping("/user")
+        @GetMapping({"/", "/user"})
         public String hello() {
             return "Hello World! Welcome to the User Service!";
         }
