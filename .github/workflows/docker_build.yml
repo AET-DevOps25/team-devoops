@@ -40,7 +40,7 @@ jobs:
             type=ref,event=pr
 
       # Use a pre-existing action to build docker image
-      - name: Build Gateway
+      - name: Build Image
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
