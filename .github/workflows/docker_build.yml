@@ -27,6 +27,18 @@ jobs:
       - name: Setup Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Get tags and lables for publishing image
+      - name: Get labels and tags for publishing
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/AET-DevOps25/team-devoops/server/gateway
+          
+          # Tags pushes to main with :latest, pushes to branches with ex :feature-github-actions-workflow, and PRs with ex :pr-42
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=pr
+
       # Use a pre-existing action to build docker image
       - name: Build Gateway
         uses: docker/build-push-action@v6
