@@ -1,0 +1,22 @@
+# This workflow should build docker images every time something is pushed to the repository
+name: Build Docker Images
+
+  # Run when code is pushed to the repository
+  on:
+    push:
+
+  # List of jobs to be run
+  jobs:
+
+    build:
+      name: Build Docker Images
+      runs-on: ubuntu-latest
+      steps:
+        - name: Setup Buildx # We use a pre-existing action to setup Docker Buildkit
+          uses: docker/setup-buildx-action@v3
+
+        - name: Build Gateway # Build docker image
+          uses: docker/build-push-action@v6 # Use pre-existing action to build
+          with:
+            platforms: linux/amd64
+            context: "{{defaultContext}}:server/gateway"
