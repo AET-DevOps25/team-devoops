@@ -30,6 +30,7 @@ jobs:
 
       # Get tags and lables for publishing image
       - name: Get labels and tags for publishing
+        id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/AET-DevOps25/team-devoops/server/gateway
