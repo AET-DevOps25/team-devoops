@@ -3,7 +3,7 @@ name: Deploy Meet@Mensa
 
 on:
   push:
-  # TODO: Only run when pushed to main
+  # TODO: Set to only run when pushed to main before PR is merged
 
 jobs:
 

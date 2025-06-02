@@ -1,7 +1,7 @@
 # This workflow should deploy meet@mensa to the chair's Rancher Kubernetes cluster every time code is pushed into main branch
 name: Deploy to Kubernetes Cluster
 
-# Currently, this workflow can only be triggered manually.
+# This workflow is triggered only when called by another workflow
 on:
   workflow_call:
 
