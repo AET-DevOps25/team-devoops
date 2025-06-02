@@ -1,13 +1,12 @@
-# This workflow builds and publishes the images, then deploys them to the Kubernetes cluster.
-# It runs only when code is pushed to the main branch, and is thus considered ready for production.
-name: Deploy Meet@Mensa
+# This workflow runs tests, builds, and publishes the images. It performs no deployment.
+# It runs on all branches when code is pushed to ensure tests pass and images are available for testing purposes.
+name: 
 
+# Run on all branches except main
 on:
   push:
-    branches:
+    branches-ignore:
       - main
-      # TODO: Set to only run when pushed to main before PR is merged
-      - feature/github-actions-helm
 
 jobs:
 
@@ -24,5 +23,5 @@ jobs:
   # Call the kubernetes_deploy workflow to deploy to Rancher
   deploy:
     name: Deploy to Kubernetes Cluster
-    needs: build
+    needs: build # wait for build to complete before running
     uses: ./.github/workflows/kubernetes_deploy.yml
