@@ -22,7 +22,13 @@ jobs:
     uses: ./.github/workflows/docker_build.yml
 
   # Call the kubernetes_deploy workflow to deploy to Rancher
-  deploy:
+  deploy_kubernetes:
     name: Deploy to Kubernetes Cluster
-    needs: build
+    needs: build # wait for build to complete before running
     uses: ./.github/workflows/kubernetes_deploy.yml
+
+  # Call the aws_deploy workflow to deploy to AWS
+  # deploy_aws:
+  #  name: Deploy to AWS
+  #  needs: build
+  #  uses: ./.github/workflows/aws_deploy.yml
