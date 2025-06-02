@@ -12,6 +12,8 @@ jobs:
     name: Build & Publish Images
     uses: ./.github/workflows/docker_build.yml
 
+  # Call the kubernetes_deploy workflow to deploy to Rancher
   deploy:
     name: Deploy to Kubernetes Cluster
+    needs: build
     uses: ./.github/workflows/kubernetes_deploy.yml
