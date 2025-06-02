@@ -1,7 +1,5 @@
-# For deployment, service images must be pushed to GHCR
-# under the repository `meet_at_mensa/<service_name>`.
 apiVersion: v2
-name: meet_at_mensa
+name: meetatmensa
 description: Helm umbrella chart for Meet@Mensa application
 type: application
 version: 1.0.0
