@@ -1,6 +1,6 @@
-name: Build Docker Images # This workflow should build docker images every time something is pushed to the repository
+# This workflow should build docker images every time code is pushed to the repository
+name: Build Docker Images
 
-# Run when code is pushed to the repository
 on:
   push:
 
@@ -33,7 +33,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/AET-DevOps25/team-devoops/server/gateway
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/aet-devops25/team-devoops/server/gateway
           
           # Tags pushes to main with :latest, pushes to branches with ex :feature-github-actions-workflow, and PRs with ex :pr-42
           tags: |

@@ -22,12 +22,15 @@ The application will be available at `http://localhost:5173`
 
 Build and run the application using Docker:
 
-```bash
+```
 # Build the image
-docker build -t meet_at_mensa/client .
+docker build -t ghcr.io/aet-devops25/team-devoops/client .
+
+# Push the image to GHCR (latest tag by default, access needed)
+docker push ghcr.io/aet-devops25/team-devoops/client
 
 # Run the container
-docker run -p 80:80 meet_at_mensa/client
+docker run -p 80:80 ghcr.io/aet-devops25/team-devoops/client
 ```
 
 The application will be available at `http://localhost:80`

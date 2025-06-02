@@ -7,10 +7,13 @@ Currently unimplemented, save for a placeholder webserver
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/genai .   
+docker build -t ghcr.io/aet-devops25/team-devoops/genai .   
+
+# Push the image to GHCR (latest tag by default, access needed)
+docker push ghcr.io/aet-devops25/team-devoops/genai
 
 # Run the Docker container and map port 80 to the desired port
-docker run --name genai-service -p <desired_port>:80 meet_at_mensa/genai
+docker run --name genai-service -p <desired_port>:80 ghcr.io/aet-devops25/team-devoops/genai
 
 # List running containers (if needed)
 docker ps 

@@ -7,10 +7,13 @@ Implementation details to follow.
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/chat .
+docker build -t ghcr.io/aet-devops25/team-devoops/server/chat .
+
+# Push the image to GHCR (latest tag by default, access needed)
+docker push ghcr.io/aet-devops25/team-devoops/server/chat
 
 # Run the Docker container on port 8081
-docker run --name chat-service -p 8081:80 meet_at_mensa/chat
+docker run --name chat-service -p 8081:80 ghcr.io/aet-devops25/team-devoops/server/chat
 
 # List running containers (if needed) 
 docker ps
