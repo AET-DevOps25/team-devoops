@@ -25,3 +25,4 @@ helm install meetatmensa ./k8s -n devoops   # Installs the Helm chart and deploy
 kubectl get all -n devoops                  # Shows all Kubernetes resources deployed in devoops namespace
 helm uninstall meetatmensa -n devoops       # Deletes all resources deployed with the Helm chart
 ```
+If you want to access cluster-internal services, you can utilize port-forwarding: `kubectl port-forward svc/meetatmensa-<service> <port>:80 -n devoops`. Do not use ports 8080, 8081 or 8082 - they are reserved as entry points to the application (client service).
