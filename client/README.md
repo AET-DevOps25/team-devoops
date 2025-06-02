@@ -24,10 +24,10 @@ Build and run the application using Docker:
 
 ```bash
 # Build the image
-docker build -t client-app .
+docker build -t meet_at_mensa/client .
 
 # Run the container
-docker run -p 80:80 client-app
+docker run -p 80:80 meet_at_mensa/client
 ```
 
 The application will be available at `http://localhost:80`
