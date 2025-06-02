@@ -4,7 +4,6 @@ name: Deploy to Kubernetes Cluster
 # Currently, this workflow can only be triggered manually.
 on:
   workflow_dispatch:
-  push:
 
 jobs:
 
