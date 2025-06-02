@@ -1,0 +1,17 @@
+# This workflow builds and publishes the images, then deploys them to the Kubernetes cluster.
+name: Deploy Meet@Mensa
+
+on:
+  push:
+  # TODO: Only run when pushed to main
+
+jobs:
+
+  # Call the docker_build workflow to build and publish images
+  build:
+    name: Build & Publish Images
+    uses: ./.github/workflows/docker_build.yml
+
+  deploy:
+    name: Deploy to Kubernetes Cluster
+    uses: ./.github/workflows/kubernetes_deploy.yml

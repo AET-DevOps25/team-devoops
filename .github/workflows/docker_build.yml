@@ -2,7 +2,7 @@
 name: Build Docker Images
 
 on:
-  push:
+  workflow_call:
 
 # List of jobs to be run
 jobs:
