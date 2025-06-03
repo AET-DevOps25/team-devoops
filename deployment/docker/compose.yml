@@ -3,48 +3,55 @@
 
 services:
   gateway-service:
-    build: ../server/gateway
-    container_name: gateway-service
+    build: ../../server/gateway
+    container_name: meetatmensa-gateway
     ports:
-      - "8080:8080"
+      - "8080:80"
     depends_on:
       - chat-service
       - matching-service
       - user-service
+      - genai-service
     networks:
       - backend
 
   chat-service:
-    build: ../server/chat
-    container_name: chat-service
+    build: ../../server/chat
+    container_name: meetatmensa-chat
     expose:
       - "80"
     networks:
       - backend
 
   matching-service:
-    build: ../server/matching
-    container_name: matching-service
+    build: ../../server/matching
+    container_name: meetatmensa-matching
     expose:
       - "80"
     networks:
       - backend
 
   user-service:
-    build: ../server/user
-    container_name: user-service
+    build: ../../server/user
+    container_name: meetatmensa-user
     expose:
       - "80"
     networks:
       - backend
 
   genai-service:
-    build: ../genai
-    container_name: genai-service
+    build: ../../genai
+    container_name: meetatmensa-genai
     expose:
       - "80"
     networks:
       - backend
+
+  client-service:
+    build: ../../client
+    container_name: meetatmensa-client
+    ports:
+      - "80:80"
 
 networks:
   backend:
