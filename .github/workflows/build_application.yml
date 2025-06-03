@@ -1,6 +1,6 @@
 # This workflow runs tests, builds, and publishes the images. It performs no deployment.
 # It runs on all branches when code is pushed to ensure tests pass and images are available for testing purposes.
-name: 
+name: Build & Test Meet@Mensa
 
 # Run on all branches except main
 on:
@@ -19,9 +19,3 @@ jobs:
   build:
     name: Build & Publish Images
     uses: ./.github/workflows/docker_build.yml
-
-  # Call the kubernetes_deploy workflow to deploy to Rancher
-  deploy:
-    name: Deploy to Kubernetes Cluster
-    needs: build # wait for build to complete before running
-    uses: ./.github/workflows/kubernetes_deploy.yml
