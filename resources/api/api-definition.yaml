@@ -1,0 +1,716 @@
+openapi: 3.0.0
+info:
+  title: Meet@Mensa API
+  version: 1.0.0
+  description: |
+    This OpenAPI specification defines the endpoints, schemas, and security mechanisms
+    for the Meet@Mensa full-stack application. Authentication is handled via OAuth2
+    (University as the login provider).  
+    Schema definitions are based on the UML class diagrams provided .
+servers:
+  - url: https://api.meetatmensa.example.com/v1
+security:
+  - oauth2: []
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://university.example.com/oauth/authorize
+          tokenUrl: https://university.example.com/oauth/token
+          scopes: {}
+  schemas:
+    User:
+      type: object
+      description: |
+        Represents a student in the Meet@Mensa system.  
+        Attributes: userID (UUID), name (String), profileAttributes (ProfileAttributes), 
+        preferences ([]MeetingPreference), lunchEvents ([]LunchEvent), invitations ([]Invitation) 
+      properties:
+        userID:
+          type: string
+          format: uuid
+        name:
+          type: string
+        profileAttributes:
+          $ref: '#/components/schemas/ProfileAttributes'
+        preferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/MeetingPreference'
+        lunchEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/LunchEvent'
+        invitations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invitation'
+      required:
+        - userID
+        - name
+        - profileAttributes
+    ProfileAttributes:
+      type: object
+      description: |
+        Contains personal profile details for a user: name (String), studyProgram (String), 
+        semester (integer), age (integer), plus optional fields (e.g., faculty). :contentReference[oaicite:2]{index=2}
+      properties:
+        name:
+          type: string
+        studyProgram:
+          type: string
+        semester:
+          type: integer
+        age:
+          type: integer
+      required:
+        - name
+        - studyProgram
+        - semester
+        - age
+    PreferenceFilters:
+      type: object
+      description: |
+        Filtering options for meeting preferences: sameFaculty (boolean), sameStudyProgram (boolean), 
+        otherFilters (object). :contentReference[oaicite:3]{index=3}
+      properties:
+        sameFaculty:
+          type: boolean
+        sameStudyProgram:
+          type: boolean
+        otherFilters:
+          type: object
+      required:
+        - sameFaculty
+        - sameStudyProgram
+    DateTimeRange:
+      type: object
+      description: |
+        Represents a time range with start and end DateTime. :contentReference[oaicite:4]{index=4}
+      properties:
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+      required:
+        - start
+        - end
+    Mensa:
+      type: object
+      description: |
+        Represents a Mensa (cafeteria) entity: mensaID (UUID), name (String), location (String). :contentReference[oaicite:5]{index=5}
+      properties:
+        mensaID:
+          type: string
+          format: uuid
+        name:
+          type: string
+        location:
+          type: string
+      required:
+        - mensaID
+        - name
+        - location
+    MeetingPreference:
+      type: object
+      description: |
+        Specifies a user's meeting preference: preferenceID (UUID), owner (User), timeSlot (DateTimeRange),
+        filters (PreferenceFilters), mensa (Mensa), status (PreferenceStatus). :contentReference[oaicite:6]{index=6}
+      properties:
+        preferenceID:
+          type: string
+          format: uuid
+        owner:
+          $ref: '#/components/schemas/User'
+        timeSlot:
+          $ref: '#/components/schemas/DateTimeRange'
+        filters:
+          $ref: '#/components/schemas/PreferenceFilters'
+        mensa:
+          $ref: '#/components/schemas/Mensa'
+        status:
+          $ref: '#/components/schemas/PreferenceStatus'
+      required:
+        - preferenceID
+        - owner
+        - timeSlot
+        - filters
+        - mensa
+        - status
+    PreferenceStatus:
+      type: string
+      description: Enumeration of preference status
+      enum:
+        - OPEN
+        - MATCHED
+        - CANCELLED
+    Match:
+      type: object
+      description: |
+        Represents a match between users: matchID (UUID), participants ([]User), matchedTimeSlot (DateTimeRange),
+        matchedMensa (Mensa), matchStatus (MatchStatus), invitations ([]Invitation). :contentReference[oaicite:8]{index=8}
+      properties:
+        matchID:
+          type: string
+          format: uuid
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        matchedTimeSlot:
+          $ref: '#/components/schemas/DateTimeRange'
+        matchedMensa:
+          $ref: '#/components/schemas/Mensa'
+        matchStatus:
+          $ref: '#/components/schemas/MatchStatus'
+        invitations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invitation'
+      required:
+        - matchID
+        - participants
+        - matchedTimeSlot
+        - matchedMensa
+        - matchStatus
+    MatchStatus:
+      type: string
+      description: Enumeration of match status
+      enum:
+        - PENDING
+        - INVITED
+        - CONFIRMED
+        - CANCELLED
+    Invitation:
+      type: object
+      description: |
+        Represents an invitation to a matched event: invID (UUID), status (RSVPStatus), match (Match). :contentReference[oaicite:10]{index=10}
+      properties:
+        invID:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/RSVPStatus'
+        match:
+          $ref: '#/components/schemas/Match'
+      required:
+        - invID
+        - status
+        - match
+    RSVPStatus:
+      type: string
+      description: Enumeration of RSVP status
+      enum:
+        - PENDING
+        - YES
+        - NO
+    LunchEvent:
+      type: object
+      description: |
+        Represents a confirmed lunch event: eventID (UUID), match (Match), conversationStarter (String). :contentReference[oaicite:12]{index=12}
+      properties:
+        eventID:
+          type: string
+          format: uuid
+        match:
+          $ref: '#/components/schemas/Match'
+        conversationStarter:
+          type: string
+      required:
+        - eventID
+        - match
+        - conversationStarter
+    ChatRoom:
+      type: object
+      description: |
+        Represents a chat room tied to a LunchEvent: id (UUID), participants ([]User), messages ([]ChatMessage), lunchEvent (LunchEvent). :contentReference[oaicite:13]{index=13}
+      properties:
+        id:
+          type: string
+          format: uuid
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+        lunchEvent:
+          $ref: '#/components/schemas/LunchEvent'
+      required:
+        - id
+        - participants
+        - messages
+        - lunchEvent
+    ChatMessage:
+      type: object
+      description: |
+        Represents a single chat message: id (UUID), sender (User), timestamp (DateTime), content (String). :contentReference[oaicite:14]{index=14}
+      properties:
+        id:
+          type: string
+          format: uuid
+        sender:
+          $ref: '#/components/schemas/User'
+        timestamp:
+          type: string
+          format: date-time
+        content:
+          type: string
+      required:
+        - id
+        - sender
+        - timestamp
+        - content
+  responses:
+    UnauthorizedError:
+      description: |
+        Authentication failed due to missing or invalid OAuth2 token.
+    NotFoundError:
+      description: |
+        The requested resource (e.g., User, Preference, Match, Invitation) was not found.
+    BadRequestError:
+      description: |
+        The request was malformed or contained invalid parameters.
+paths:
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Retrieve current user's profile
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    put:
+      tags: [Users]
+      summary: Update current user's profile
+      security:
+        - oauth2: []
+      requestBody:
+        description: Updated profile attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileAttributes'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /preferences:
+    get:
+      tags: [Preferences]
+      summary: List all meeting preferences for current user
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: Array of MeetingPreference objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MeetingPreference'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      tags: [Preferences]
+      summary: Create a new meeting preference
+      security:
+        - oauth2: []
+      requestBody:
+        description: Meeting preference to create
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeSlot:
+                  $ref: '#/components/schemas/DateTimeRange'
+                filters:
+                  $ref: '#/components/schemas/PreferenceFilters'
+                mensaID:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Meeting preference created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeetingPreference'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /preferences/{preferenceId}:
+    parameters:
+      - name: preferenceId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Preferences]
+      summary: Retrieve a specific meeting preference
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: MeetingPreference object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeetingPreference'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    put:
+      tags: [Preferences]
+      summary: Update an existing meeting preference
+      security:
+        - oauth2: []
+      requestBody:
+        description: Updated fields for MeetingPreference
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timeSlot:
+                  $ref: '#/components/schemas/DateTimeRange'
+                filters:
+                  $ref: '#/components/schemas/PreferenceFilters'
+                mensaID:
+                  type: string
+                  format: uuid
+                status:
+                  $ref: '#/components/schemas/PreferenceStatus'
+      responses:
+        '200':
+          description: Meeting preference updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeetingPreference'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    delete:
+      tags: [Preferences]
+      summary: Cancel a meeting preference
+      security:
+        - oauth2: []
+      responses:
+        '204':
+          description: Meeting preference cancelled successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /matches:
+    get:
+      tags: [Matching]
+      summary: List all matches for current user
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: Array of Match objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Match'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /matches/{matchId}:
+    parameters:
+      - name: matchId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Matching]
+      summary: Retrieve a specific match
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: Match object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Match'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /invitations:
+    get:
+      tags: [Invitations]
+      summary: List all invitations for current user
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: Array of Invitation objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invitation'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /invitations/{invitationId}:
+    parameters:
+      - name: invitationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Invitations]
+      summary: Retrieve a specific invitation
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: Invitation object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    patch:
+      tags: [Invitations]
+      summary: Respond to an invitation (accept or decline)
+      security:
+        - oauth2: []
+      requestBody:
+        description: Updated RSVP status
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  $ref: '#/components/schemas/RSVPStatus'
+      responses:
+        '200':
+          description: Invitation status updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /lunch-events:
+    get:
+      tags: [Events]
+      summary: List all lunch events for current user
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: Array of LunchEvent objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LunchEvent'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      tags: [Events]
+      summary: Create a new lunch event (after match and RSVP)
+      security:
+        - oauth2: []
+      requestBody:
+        description: Match ID and any additional data for event creation
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                matchID:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Lunch event created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LunchEvent'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /lunch-events/{eventId}/chat:
+    parameters:
+      - name: eventId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      tags: [Events]
+      summary: Start or retrieve chat room for a given lunch event
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: ChatRoom for the specified event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRoom'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /chats/{chatId}/messages:
+    parameters:
+      - name: chatId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags: [Chat]
+      summary: List messages in a chat room
+      security:
+        - oauth2: []
+      responses:
+        '200':
+          description: Array of ChatMessage objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+    post:
+      tags: [Chat]
+      summary: Send a new message in a chat room
+      security:
+        - oauth2: []
+      requestBody:
+        description: ChatMessage content (sender is inferred from token)
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '201':
+          description: ChatMessage created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+  /conversations/starter:
+    post:
+      tags: [GenAI]
+      summary: Generate an ice-breaker prompt for a LunchEvent
+      security:
+        - oauth2: []
+      requestBody:
+        description: List of userIDs or profile summaries to generate context-aware suggestions
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                inputInformation:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Generated ice-breaker prompt
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  suggestion:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+tags:
+  - name: Users
+    description: Operations related to user profiles and authentication.
+  - name: Preferences
+    description: CRUD operations for meeting preferences.
+  - name: Matching
+    description: Retrieve matches and handle match-related operations.
+  - name: Invitations
+    description: Manage invitations and RSVP statuses.
+  - name: Events
+    description: Create and retrieve lunch events.
+  - name: Chat
+    description: Real-time messaging within chat rooms tied to events.
+  - name: GenAI
+    description: Generate conversation starters (ice-breakers) using AI.
