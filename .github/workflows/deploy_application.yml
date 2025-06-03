@@ -3,6 +3,7 @@
 name: Deploy Meet@Mensa
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
