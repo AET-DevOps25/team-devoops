@@ -34,14 +34,9 @@ jobs:
 
     # Copy the details of Kubeconfig to enable authentication with the Rancher cluster
     - name: Load Kubeconfig
-      run: | # TODO: I'm unsure what the label and format for the secret containing the kubernetes token is. Will have to ask the Jan on Tuesday.
+      run: |
         mkdir -p ~/.kube
-        ls ~/.kube
         printf "%s" "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-        ls ~/.kube
-        head -2 ~/.kube/config
-        kubectl config get-contexts
-        kubectl config current-context
 
     # Run helm upgrade to upgrade deployment
     - name: Upgrade Deployment with Helm
