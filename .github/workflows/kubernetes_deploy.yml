@@ -31,7 +31,7 @@ jobs:
     - name: Load Kubeconfig
       run: | # TODO: I'm unsure what the label and format for the secret containing the kubernetes token is. Will have to ask the Jan on Tuesday.
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+        printf "%s" "${{ secrets.KUBECONFIG }}" > ~/.kube/config
         kubectl config get-contexts
         kubectl config current-context
 
