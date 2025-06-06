@@ -32,6 +32,7 @@ jobs:
       run: | # TODO: I'm unsure what the label and format for the secret containing the kubernetes token is. Will have to ask the Jan on Tuesday.
         mkdir -p ~/.kube
         echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+        kubectl config current-context
 
     # Run helm upgrade to upgrade deployment
     - name: Upgrade Deployment with Helm
