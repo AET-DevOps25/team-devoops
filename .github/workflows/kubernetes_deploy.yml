@@ -5,6 +5,11 @@ name: Deploy to Kubernetes Cluster
 on:
   workflow_call:
 
+    # Pass KUBECONFIG as a secret
+    secrets:
+      KUBECONFIG:
+        required: true
+
 jobs:
 
   deploy:

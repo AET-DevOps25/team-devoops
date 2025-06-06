@@ -27,6 +27,8 @@ jobs:
     name: Deploy to Kubernetes Cluster
     needs: build # wait for build to complete before running
     uses: ./.github/workflows/kubernetes_deploy.yml
+    secrets:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
   # Call the aws_deploy workflow to deploy to AWS
   # deploy_aws:
