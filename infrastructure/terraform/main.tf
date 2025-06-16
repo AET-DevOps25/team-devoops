@@ -47,6 +47,7 @@ resource "aws_security_group" "app" {
 resource "aws_instance" "app" {
   ami           = var.ami_id
   instance_type = var.instance_type
+  key_name      = "vockey"  # Use the existing vockey key pair
 
   vpc_security_group_ids = [aws_security_group.app.id]
 
