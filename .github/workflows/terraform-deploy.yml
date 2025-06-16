@@ -38,8 +38,9 @@ jobs:
         run: |
           cd infrastructure/terraform
           terraform apply -auto-approve
-          IP=$(terraform output -raw public_ip)
+          IP=$(terraform output -raw public_ip | tr -d '\r\n')
           echo "public_ip=$IP" >> $GITHUB_OUTPUT
+          echo "Extrahierte IP: $IP"
         env:
           TF_VAR_aws_access_key: ${{ github.event.inputs.aws_access_key_id }}
           TF_VAR_aws_secret_key: ${{ github.event.inputs.aws_secret_access_key }}
