@@ -12,8 +12,8 @@ on:
         required: true
         type: string
       aws_session_token:
-        description: "AWS Session Token from Learner Lab (if required)"
-        required: false
+        description: "AWS Session Token from Learner Lab"
+        required: true
         type: string
   push:
     branches:
@@ -41,9 +41,9 @@ jobs:
           cd infrastructure/terraform
           terraform apply -auto-approve
         env:
-          AWS_ACCESS_KEY_ID: ${{ github.event.inputs.aws_access_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
-          AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
+          TF_VAR_aws_access_key: ${{ github.event.inputs.aws_access_key_id }}
+          TF_VAR_aws_secret_key: ${{ github.event.inputs.aws_secret_access_key }}
+          TF_VAR_aws_session_token: ${{ github.event.inputs.aws_session_token }}
 
       - name: Get EC2 Public IP
         id: get-ip
