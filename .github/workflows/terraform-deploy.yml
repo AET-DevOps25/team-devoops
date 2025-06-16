@@ -46,6 +46,12 @@ jobs:
           TF_VAR_aws_secret_key: ${{ github.event.inputs.aws_secret_access_key }}
           TF_VAR_aws_session_token: ${{ github.event.inputs.aws_session_token }}
 
+      - name: Wait for instance to be ready
+        run: |
+          echo "Waiting for instance to be ready..."
+          sleep 60
+          echo "Instance should be ready now"
+
       - name: Copy Docker Compose File From Repo to VM Host
         uses: appleboy/scp-action@v0.1.7
         with:
