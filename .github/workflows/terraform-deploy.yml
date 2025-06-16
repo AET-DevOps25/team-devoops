@@ -38,7 +38,7 @@ jobs:
         run: |
           cd infrastructure/terraform
           terraform apply -auto-approve
-          IP=$(terraform output -raw public_ip | tr -d '\r\n')
+          IP=$(terraform output -raw public_ip | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')
           echo "public_ip=$IP" >> $GITHUB_OUTPUT
           echo "Extrahierte IP: $IP"
         env:
@@ -50,10 +50,10 @@ jobs:
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ steps.terraform.outputs.public_ip }}
-          username: ubuntu
+          username: ${{ vars.AWS_EC2_USER }}
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           source: "deployment/compose.aws.yml"
-          target: /home/ubuntu/deployment
+          target: "/home/${{ vars.AWS_EC2_USER }}/deployment"
           strip_components: 1
           overwrite: true
 
@@ -61,10 +61,10 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ steps.terraform.outputs.public_ip }}
-          username: ubuntu
+          username: ${{ vars.AWS_EC2_USER }}
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu
+            cd /home/${{ vars.AWS_EC2_USER }}
             rm -f .env.prod
             touch .env.prod
             echo "EC2_PUBLIC_IP=${{ steps.terraform.outputs.public_ip }}" >> .env.prod
@@ -76,9 +76,9 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ steps.terraform.outputs.public_ip }}
-          username: ubuntu
+          username: ${{ vars.AWS_EC2_USER }}
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu
+            cd /home/${{ vars.AWS_EC2_USER }}
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker compose -f deployment/compose.aws.yml --env-file=/home/ubuntu/.env.prod up -d
+            docker compose -f deployment/compose.aws.yml --env-file=/home/${{ vars.AWS_EC2_USER }}/.env.prod up -d
