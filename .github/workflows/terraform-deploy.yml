@@ -34,24 +34,20 @@ jobs:
           terraform init
 
       - name: Terraform Apply
+        id: terraform
         run: |
           cd infrastructure/terraform
           terraform apply -auto-approve
+          echo "public_ip=$(terraform output -raw public_ip)" >> $GITHUB_OUTPUT
         env:
           TF_VAR_aws_access_key: ${{ github.event.inputs.aws_access_key_id }}
           TF_VAR_aws_secret_key: ${{ github.event.inputs.aws_secret_access_key }}
           TF_VAR_aws_session_token: ${{ github.event.inputs.aws_session_token }}
 
-      - name: Get EC2 Public IP
-        id: get-ip
-        run: |
-          cd infrastructure/terraform
-          echo "ip=$(terraform output -raw public_ip)" >> $GITHUB_OUTPUT
-
       - name: Copy Docker Compose File From Repo to VM Host
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ steps.get-ip.outputs.ip }}
+          host: ${{ steps.terraform.outputs.public_ip }}
           username: ubuntu
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           source: "deployment/compose.aws.yml"
@@ -62,22 +58,22 @@ jobs:
       - name: SSH to VM and Create .env.prod
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ steps.get-ip.outputs.ip }}
+          host: ${{ steps.terraform.outputs.public_ip }}
           username: ubuntu
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu
             rm -f .env.prod
             touch .env.prod
-            echo "EC2_PUBLIC_IP=${{ steps.get-ip.outputs.ip }}" >> .env.prod
-            echo "CLIENT_HOST=client.${{ steps.get-ip.outputs.ip }}.nip.io" >> .env.prod
-            echo "SERVER_HOST=api.${{ steps.get-ip.outputs.ip }}.nip.io" >> .env.prod
-            echo "PUBLIC_API_URL=https://api.${{ steps.get-ip.outputs.ip }}.nip.io" >> .env.prod
+            echo "EC2_PUBLIC_IP=${{ steps.terraform.outputs.public_ip }}" >> .env.prod
+            echo "CLIENT_HOST=client.${{ steps.terraform.outputs.public_ip }}.nip.io" >> .env.prod
+            echo "SERVER_HOST=api.${{ steps.terraform.outputs.public_ip }}.nip.io" >> .env.prod
+            echo "PUBLIC_API_URL=https://api.${{ steps.terraform.outputs.public_ip }}.nip.io" >> .env.prod
 
       - name: SSH to VM and Execute Docker-Compose Up
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ steps.get-ip.outputs.ip }}
+          host: ${{ steps.terraform.outputs.public_ip }}
           username: ubuntu
           key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
           script: |
