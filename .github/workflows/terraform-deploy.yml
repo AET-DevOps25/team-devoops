@@ -1,0 +1,89 @@
+name: Terraform Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      aws_access_key_id:
+        description: "AWS Access Key ID from Learner Lab"
+        required: true
+        type: string
+      aws_secret_access_key:
+        description: "AWS Secret Access Key from Learner Lab"
+        required: true
+        type: string
+      aws_session_token:
+        description: "AWS Session Token from Learner Lab (if required)"
+        required: false
+        type: string
+  push:
+    branches:
+      - feature/deploy-images-aws
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: AWS
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: |
+          cd infrastructure/terraform
+          terraform init
+
+      - name: Terraform Apply
+        run: |
+          cd infrastructure/terraform
+          terraform apply -auto-approve
+        env:
+          AWS_ACCESS_KEY_ID: ${{ github.event.inputs.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.aws_secret_access_key }}
+          AWS_SESSION_TOKEN: ${{ github.event.inputs.aws_session_token }}
+
+      - name: Get EC2 Public IP
+        id: get-ip
+        run: |
+          cd infrastructure/terraform
+          echo "EC2_PUBLIC_IP=$(terraform output -raw public_ip)" >> $GITHUB_ENV
+
+      - name: Copy Docker Compose File From Repo to VM Host
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.EC2_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+          source: "deployment/compose.aws.yml"
+          target: /home/ubuntu/deployment
+          strip_components: 1
+          overwrite: true
+
+      - name: SSH to VM and Create .env.prod
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.EC2_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu
+            rm -f .env.prod
+            touch .env.prod
+            echo "EC2_PUBLIC_IP=${{ env.EC2_PUBLIC_IP }}" >> .env.prod
+            echo "CLIENT_HOST=client.${{ env.EC2_PUBLIC_IP }}.nip.io" >> .env.prod
+            echo "SERVER_HOST=api.${{ env.EC2_PUBLIC_IP }}.nip.io" >> .env.prod
+            echo "PUBLIC_API_URL=https://api.${{ env.EC2_PUBLIC_IP }}.nip.io" >> .env.prod
+
+      - name: SSH to VM and Execute Docker-Compose Up
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.EC2_PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker compose -f deployment/compose.aws.yml --env-file=/home/ubuntu/.env.prod up -d
