@@ -52,6 +52,36 @@ jobs:
           sleep 60
           echo "Instance should be ready now"
 
+      - name: Install Docker on EC2 instance
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ steps.terraform.outputs.public_ip }}
+          username: ${{ vars.AWS_EC2_USER }}
+          key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+          script: |
+            # Add Docker's official GPG key
+            sudo apt-get update
+            sudo apt-get install -y ca-certificates curl
+            sudo install -m 0755 -d /etc/apt/keyrings
+            sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+            sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+            # Add the repository to Apt sources
+            echo \
+              "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+              $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+              sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+            # Install Docker
+            sudo apt-get update
+            sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+            # Add user to docker group
+            sudo usermod -a -G docker ${{ vars.AWS_EC2_USER }}
+
+            # Apply group changes without logout
+            newgrp docker
+
       - name: Copy Docker Compose File From Repo to VM Host
         uses: appleboy/scp-action@v0.1.7
         with:
