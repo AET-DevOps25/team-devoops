@@ -7,7 +7,7 @@ provider "aws" {
 
 # Create a security group
 resource "aws_security_group" "app" {
-  name        = "app-sg"
+  name        = "app-sg-${formatdate("YYYYMMDDHHmmss", timestamp())}"
   description = "Security group for application"
 
   ingress {

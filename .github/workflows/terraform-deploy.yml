@@ -15,9 +15,6 @@ on:
         description: "AWS Session Token from Learner Lab"
         required: true
         type: string
-  push:
-    branches:
-      - feature/deploy-images-aws
 
 jobs:
   deploy:
