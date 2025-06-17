@@ -54,14 +54,19 @@ resource "aws_instance" "app" {
   tags = {
     Name = "app-instance"
   }
+}
 
-  # This will output the public IP after creation
-  provisioner "local-exec" {
-    command = "echo ${self.public_ip} > ec2_public_ip.txt"
+# Create an Elastic IP
+resource "aws_eip" "app" {
+  instance = aws_instance.app.id
+  domain   = "vpc"
+  
+  tags = {
+    Name = "app-eip"
   }
 }
 
-# Output the public IP
+# Output the Elastic IP
 output "public_ip" {
-  value = aws_instance.app.public_ip
+  value = aws_eip.app.public_ip
 } 
