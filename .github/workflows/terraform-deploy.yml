@@ -59,6 +59,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible
 
+      - name: Debug Inventory Variables
+        env:
+          EC2_PUBLIC_IP: ${{ steps.terraform.outputs.public_ip }}
+          AWS_EC2_USER: ${{ vars.AWS_EC2_USER }}
+          AWS_EC2_PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+        run: |
+          cd infrastructure/ansible
+          echo "EC2_PUBLIC_IP: $EC2_PUBLIC_IP"
+          echo "AWS_EC2_USER: $AWS_EC2_USER"
+          echo "AWS_EC2_PRIVATE_KEY exists: $([ ! -z "$AWS_EC2_PRIVATE_KEY" ] && echo 'yes' || echo 'no')"
+          echo "Inventory file contents:"
+          cat inventory.yml
+          echo "Testing inventory with debug:"
+          ansible-inventory -i inventory.yml --list -vvv
+
       - name: Run Ansible Playbook
         env:
           EC2_PUBLIC_IP: ${{ steps.terraform.outputs.public_ip }}
