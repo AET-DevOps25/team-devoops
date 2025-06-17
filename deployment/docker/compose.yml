@@ -66,7 +66,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
     expose:
-      - "3306:3306"
+      - "3306"
     networks:
       - backend
 
@@ -77,7 +77,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
     expose:
-      - "3307:3306"
+      - "3306"
     networks:
       - backend
 
@@ -88,7 +88,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=root
     expose:
-      - "3308:3306"
+      - "3306"
     networks:
       - backend
 
