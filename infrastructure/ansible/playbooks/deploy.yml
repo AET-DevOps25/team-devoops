@@ -66,7 +66,7 @@
 
     - name: Copy docker-compose file
       copy:
-        src: src: ../../../deployment/compose.aws.yml
+        src: ../../../deployment/compose.aws.yml
         dest: "{{ deployment_dir }}/compose.aws.yml"
         mode: "0644"
 
