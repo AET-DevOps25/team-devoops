@@ -105,3 +105,4 @@
         remove_orphans: yes
       environment:
         DOCKER_BUILDKIT: 1
+        EC2_PUBLIC_IP: "{{ ansible_host }}"
