@@ -72,7 +72,7 @@ jobs:
           echo "Inventory file contents:"
           cat inventory.yml
           echo "Testing inventory with debug:"
-          ansible-inventory -i inventory.yml --list -vvv
+          ansible-inventory -i inventory.yml --list -vvv -e "EC2_PUBLIC_IP=$EC2_PUBLIC_IP AWS_EC2_USER=$AWS_EC2_USER AWS_EC2_PRIVATE_KEY='$AWS_EC2_PRIVATE_KEY'"
 
       - name: Run Ansible Playbook
         env:
@@ -81,4 +81,4 @@ jobs:
           AWS_EC2_PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
         run: |
           cd infrastructure/ansible
-          ansible-playbook -i inventory.yml playbooks/deploy.yml
+          ansible-playbook -i inventory.yml playbooks/deploy.yml -e "EC2_PUBLIC_IP=$EC2_PUBLIC_IP AWS_EC2_USER=$AWS_EC2_USER AWS_EC2_PRIVATE_KEY='$AWS_EC2_PRIVATE_KEY'"
