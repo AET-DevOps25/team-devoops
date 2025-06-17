@@ -8,7 +8,7 @@ A mysql database for managing matching information
 docker build -t matchdb .
 
 # Run the Docker container forwarding port 3306 to 3307 and setting the root password via
-docker run --name matchdb-service -e MYSQL_ROOT_PASSWORD=root -p 3306:3307 matchdb .
+docker run --name matchdb-service -e MYSQL_ROOT_PASSWORD=root -p 3307:3306 matchdb .
 
 # List running containers (if needed) 
 docker ps

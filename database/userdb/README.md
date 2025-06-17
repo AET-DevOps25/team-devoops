@@ -8,7 +8,7 @@ A mysql database for managing user information
 docker build -t userdb .
 
 # Run the Docker container forwarding port 3306 to 3308 and setting the root password via
-docker run --name userdb-service -e MYSQL_ROOT_PASSWORD=root -p 3306:3308 userdb .
+docker run --name userdb-service -e MYSQL_ROOT_PASSWORD=root -p 3308:3306 userdb .
 
 # List running containers (if needed) 
 docker ps
