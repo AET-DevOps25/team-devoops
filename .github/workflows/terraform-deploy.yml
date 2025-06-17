@@ -42,11 +42,14 @@ jobs:
           terraform apply -auto-approve
           IP=$(terraform output -raw public_ip | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n1 | tr -d '\r\n')
           echo "public_ip=$IP" >> $GITHUB_OUTPUT
-          echo "Extrahierte IP: $IP"
+          echo "inventory<<EOF" >> $GITHUB_OUTPUT
+          terraform output -raw ansible_inventory >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
         env:
           TF_VAR_aws_access_key: ${{ github.event.inputs.aws_access_key_id }}
           TF_VAR_aws_secret_key: ${{ github.event.inputs.aws_secret_access_key }}
           TF_VAR_aws_session_token: ${{ github.event.inputs.aws_session_token }}
+          TF_VAR_aws_ec2_private_key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
 
       - name: Wait for instance to be ready
         run: |
@@ -59,26 +62,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible
 
-      - name: Debug Inventory Variables
-        env:
-          EC2_PUBLIC_IP: ${{ steps.terraform.outputs.public_ip }}
-          AWS_EC2_USER: ${{ vars.AWS_EC2_USER }}
-          AWS_EC2_PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+      - name: Create Inventory File
         run: |
           cd infrastructure/ansible
-          echo "EC2_PUBLIC_IP: $EC2_PUBLIC_IP"
-          echo "AWS_EC2_USER: $AWS_EC2_USER"
-          echo "AWS_EC2_PRIVATE_KEY exists: $([ ! -z "$AWS_EC2_PRIVATE_KEY" ] && echo 'yes' || echo 'no')"
-          echo "Inventory file contents:"
+          echo "${{ steps.terraform.outputs.inventory }}" > inventory.yml
           cat inventory.yml
-          echo "Testing inventory with debug:"
-          ansible-inventory -i inventory.yml --list -vvv -e "EC2_PUBLIC_IP=$EC2_PUBLIC_IP AWS_EC2_USER=$AWS_EC2_USER AWS_EC2_PRIVATE_KEY='$AWS_EC2_PRIVATE_KEY'"
 
       - name: Run Ansible Playbook
-        env:
-          EC2_PUBLIC_IP: ${{ steps.terraform.outputs.public_ip }}
-          AWS_EC2_USER: ${{ vars.AWS_EC2_USER }}
-          AWS_EC2_PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
         run: |
           cd infrastructure/ansible
-          ansible-playbook -i inventory.yml playbooks/deploy.yml -e "EC2_PUBLIC_IP=$EC2_PUBLIC_IP AWS_EC2_USER=$AWS_EC2_USER AWS_EC2_PRIVATE_KEY='$AWS_EC2_PRIVATE_KEY'"
+          ansible-playbook -i inventory.yml playbooks/deploy.yml

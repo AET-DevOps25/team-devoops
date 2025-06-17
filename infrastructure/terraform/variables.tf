@@ -32,4 +32,10 @@ variable "instance_type" {
   description = "Instance type for the EC2 instance"
   type        = string
   default     = "t2.micro"
+}
+
+variable "aws_ec2_private_key" {
+  description = "Private key for EC2 instance"
+  type        = string
+  sensitive   = true
 } 
