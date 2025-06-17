@@ -70,16 +70,3 @@ resource "aws_eip" "app" {
 output "public_ip" {
   value = aws_eip.app.public_ip
 }
-
-# Output the Ansible inventory
-output "ansible_inventory" {
-  value = <<-EOT
-all:
-  hosts:
-    app_server:
-      ansible_host: ${aws_eip.app.public_ip}
-      ansible_user: ubuntu
-      ansible_ssh_private_key: ${var.aws_ec2_private_key}
-      ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
-EOT
-} 
