@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         # Add any future services relative paths from . here
-        service: [client, server/chat, server/gateway, server/matching, server/user, genai, database/userdb]
+        service: [client, server/chat, server/gateway, server/matching, server/user, genai, database/userdb, database/chatdb, database/matchdb]
     
     steps:
 
