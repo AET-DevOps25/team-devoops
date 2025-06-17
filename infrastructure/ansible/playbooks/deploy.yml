@@ -65,7 +65,7 @@
         mode: "0644"
 
     - name: Start Docker Compose
-      docker_compose:
+      community.docker.docker_compose_v2:
         project_src: "{{ deployment_dir }}"
         files:
           - compose.aws.yml
