@@ -42,9 +42,6 @@ jobs:
           terraform apply -auto-approve
           IP=$(terraform output -raw public_ip | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n1 | tr -d '\r\n')
           echo "public_ip=$IP" >> $GITHUB_OUTPUT
-          echo "inventory<<EOF" >> $GITHUB_OUTPUT
-          terraform output -raw ansible_inventory >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
         env:
           TF_VAR_aws_access_key: ${{ github.event.inputs.aws_access_key_id }}
           TF_VAR_aws_secret_key: ${{ github.event.inputs.aws_secret_access_key }}
@@ -65,7 +62,15 @@ jobs:
       - name: Create Inventory File
         run: |
           cd infrastructure/ansible
-          echo "${{ steps.terraform.outputs.inventory }}" > inventory.yml
+          cat > inventory.yml << 'EOL'
+          all:
+            hosts:
+              app_server:
+                ansible_host: ${{ steps.terraform.outputs.public_ip }}
+                ansible_user: ubuntu
+                ansible_ssh_private_key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
+                ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+          EOL
           cat inventory.yml
 
       - name: Run Ansible Playbook
