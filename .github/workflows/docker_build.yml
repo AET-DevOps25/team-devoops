@@ -1,19 +1,22 @@
 # This workflow should build docker images every time code is pushed to the repository
-name: Build Docker Images
+name: Build and Publish Docker Images
 
+# This workflow is triggered only when called by another workflow
 on:
-  push:
+  workflow_call:
 
-# List of jobs to be run
 jobs:
 
   build:
     name: Build Docker Images
     runs-on: ubuntu-latest
-    strategy: # Use a matrix strategy to run the build process for all our containers
+
+    # Use a matrix strategy to run the build process for all our containers
+    strategy:
       matrix:
         # Add any future services relative paths from . here
         service: [client, server/chat, server/gateway, server/matching, server/user, genai]
+    
     steps:
 
       # Use pre-existing action to login to GHCR.io
