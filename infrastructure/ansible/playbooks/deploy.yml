@@ -35,6 +35,16 @@
         state: present
         update_cache: yes
 
+    - name: Verify Docker repository was added
+      shell: apt-cache policy docker-ce
+      register: docker_repo_check
+      changed_when: false
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
     - name: Install Docker packages
       apt:
         name:
