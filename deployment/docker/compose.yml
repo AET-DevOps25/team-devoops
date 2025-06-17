@@ -20,6 +20,8 @@ services:
     container_name: meetatmensa-chat
     expose:
       - "80"
+    depends_on:
+      - chat-database
     networks:
       - backend
 
@@ -28,6 +30,8 @@ services:
     container_name: meetatmensa-matching
     expose:
       - "80"
+    depends_on:
+      - match-database
     networks:
       - backend
 
@@ -36,6 +40,8 @@ services:
     container_name: meetatmensa-user
     expose:
       - "80"
+    depends_on:
+      - user-database
     networks:
       - backend
 
@@ -52,6 +58,39 @@ services:
     container_name: meetatmensa-client
     ports:
       - "80:80"
+
+  chat-database:
+    build: ../../database/chatdb
+    container_name: meetatmensa-chatdb
+    # TODO: Implement password passed via secret
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    expose:
+      - "3306:3306"
+    networks:
+      - backend
+
+  match-database:
+    build: ../../database/matchdb
+    container_name: meetatmensa-matchdb
+    # TODO: Implement password passed via secret
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    expose:
+      - "3307:3306"
+    networks:
+      - backend
+
+  user-database:
+    build: ../../database/userdb
+    container_name: meetatmensa-userdb
+    # TODO: Implement password passed via secret
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    expose:
+      - "3308:3306"
+    networks:
+      - backend
 
 networks:
   backend:
