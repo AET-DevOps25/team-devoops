@@ -71,4 +71,4 @@ jobs:
           echo "=== Testing SSH Connection ==="
           ssh -i vockey.pem -o StrictHostKeyChecking=no ubuntu@${{ steps.terraform.outputs.public_ip }} "echo 'SSH connection successful'"
           echo "=== Running Ansible Playbook ==="
-          ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_DEBUG=1 ansible-playbook -i inventory.yml playbooks/deploy.yml -vvv --extra-vars "ansible_host=${{ steps.terraform.outputs.public_ip }}"
+          ANSIBLE_HOST_KEY_CHECKING=False ANSIBLE_DEBUG=1 ansible-playbook -i inventory.yml playbooks/deploy.yml -vvv --extra-vars "ansible_host=${{ steps.terraform.outputs.public_ip }}" --start-at-task="Test connection"
