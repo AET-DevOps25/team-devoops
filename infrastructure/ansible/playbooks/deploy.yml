@@ -23,27 +23,30 @@
 - name: Setup Docker
   hosts: app_server
   become: yes
+  vars:
+    docker_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
   tasks:
-    - name: Add Docker GPG key
-      apt_key:
+    - name: Create Docker keyring directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Download Docker GPG key
+      get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+        dest: /etc/apt/keyrings/docker.asc
+        mode: "0644"
 
-    - name: Add Docker repository
+    - name: Add Docker APT repository
       apt_repository:
-        repo: "deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        repo: "deb [arch={{ docker_arch }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        filename: docker
         state: present
-        update_cache: yes
-
-    - name: Verify Docker repository was added
-      shell: apt-cache policy docker-ce
-      register: docker_repo_check
-      changed_when: false
 
     - name: Update apt cache
       apt:
         update_cache: yes
-        cache_valid_time: 3600
 
     - name: Install Docker packages
       apt:
@@ -54,7 +57,6 @@
           - docker-buildx-plugin
           - docker-compose-plugin
         state: present
-        update_cache: yes
 
 - name: Configure Docker
   hosts: app_server
@@ -83,13 +85,13 @@
 
     - name: Copy docker-compose file
       copy:
-        src: ../../deployment/compose.aws.yml
+        src: "{{ playbook_dir }}/../../../deployment/compose.aws.yml"
         dest: "{{ deployment_dir }}/compose.aws.yml"
         mode: "0644"
 
     - name: Create .env.prod file
       template:
-        src: ../templates/env.prod.j2
+        src: "{{ playbook_dir }}/../templates/env.prod.j2"
         dest: "{{ app_dir }}/.env.prod"
         mode: "0644"
 
