@@ -62,7 +62,7 @@ jobs:
       - name: Create Inventory File
         run: |
           cd infrastructure/ansible
-          cat > inventory.yml << 'EOL'
+          cat > inventory.yml << EOF
           all:
             hosts:
               app_server:
@@ -70,10 +70,15 @@ jobs:
                 ansible_user: ubuntu
                 ansible_ssh_private_key: ${{ secrets.AWS_EC2_PRIVATE_KEY }}
                 ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
-          EOL
+          EOF
+          echo "=== Inventory File Contents ==="
           cat inventory.yml
+          echo "=== End Inventory File ==="
 
       - name: Run Ansible Playbook
         run: |
           cd infrastructure/ansible
-          ansible-playbook -i inventory.yml playbooks/deploy.yml
+          echo "=== Testing SSH Connection ==="
+          ssh -i <(echo "${{ secrets.AWS_EC2_PRIVATE_KEY }}") -o StrictHostKeyChecking=no ubuntu@${{ steps.terraform.outputs.public_ip }} "echo 'SSH connection successful'"
+          echo "=== Running Ansible Playbook ==="
+          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.yml playbooks/deploy.yml -vvv
