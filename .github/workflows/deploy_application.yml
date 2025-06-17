@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - main
-      # TODO: Set to only run when pushed to main before PR is merged
-      - feature/github-actions-helm
 
 jobs:
 
