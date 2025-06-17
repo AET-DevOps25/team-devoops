@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS matching (
 -- meetup_time: Date and Time a group is set to meet
 CREATE TABLE IF NOT EXISTS groups (
     group_id INT PRIMARY KEY,
-    meetup_time INT,
+    meetup_time INT
 );
