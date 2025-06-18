@@ -19,20 +19,20 @@ public class UserApplication {
 		SpringApplication.run(UserApplication.class, args);
 	}
 
-    // Wait 20s to ensure that databases have started
+    // Wait 30s to ensure that databases have started
     private static void wait_for_database_startup() {
 
         System.out.println("Waiting for databases to start...");
 
         try {
 
-            TimeUnit.SECONDS.sleep(20);
+            TimeUnit.SECONDS.sleep(30);
 
         } catch (InterruptedException e) {
 
             Thread.currentThread().interrupt();
             System.out.println("Wait was interrupted");
-            
+
         }
 
         System.out.println("Done waiting for databases to start");        
