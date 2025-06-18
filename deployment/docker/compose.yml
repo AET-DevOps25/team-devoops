@@ -65,6 +65,8 @@ services:
     # TODO: Implement password passed via secret
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - chatdb_data:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -76,6 +78,8 @@ services:
     # TODO: Implement password passed via secret
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - matchdb_data:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -87,6 +91,8 @@ services:
     # TODO: Implement password passed via secret
     environment:
       - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - userdb_data:/var/lib/mysql
     expose:
       - "3306"
     networks:
@@ -95,3 +101,8 @@ services:
 networks:
   backend:
     driver: bridge
+
+volumes:
+  chatdb_data:
+  matchdb_data:
+  userdb_data:
