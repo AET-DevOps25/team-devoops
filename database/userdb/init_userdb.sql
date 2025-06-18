@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS user_data (
     user_id INT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    gender ENUM('Male', 'Female', 'Other')
+    gender VARCHAR(255) NOT NULL
 );
 
 -- Create user-credentials table
