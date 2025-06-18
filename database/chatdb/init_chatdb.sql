@@ -1,9 +1,9 @@
--- Create user-data table
+-- chats table
 -- chat_id: UUID of the chat
 -- group_id: UUID of the group in the chat
 CREATE TABLE IF NOT EXISTS `chats` (
-    chat_id INT PRIMARY KEY,
-    group_id INT
+    chat_id VARBINARY(16) PRIMARY KEY,
+    group_id VARBINARY(16),
 );
 
 -- Create user-credentials table
@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS `chats` (
 -- timestamp: time the message was sent
 -- content: content of the message
 CREATE TABLE IF NOT EXISTS `messages` (
-    message_id INT PRIMARY KEY,
-    chat_id INT,
-    user_id INT,
+    message_id VARBINARY(16) PRIMARY KEY,
+    chat_id VARBINARY(16),
+    user_id VARBINARY(16),
     timestamp INT,
     content VARCHAR(255) NOT NULL
 );

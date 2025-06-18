@@ -1,15 +1,42 @@
--- Create user-data table
--- user_id UUID associated with a user
--- group_id UUID of the group a user has been matched withe
-CREATE TABLE IF NOT EXISTS `matching` (
-    user_id INT PRIMARY KEY,
-    group_id INT
+-- matches table
+-- contains information about what group a user has been matched with
+    -- user_id UUID associated with a user
+    -- group_id UUID of the group a user has been matched with
+    -- rsvp Has the user RSVP'd the meeting
+CREATE TABLE IF NOT EXISTS `matches` (
+    user_id VARBINARY(16) PRIMARY KEY,
+    group_id VARBINARY(16) NOT NULL,
+    rsvp BIT NOT NULL
 );
 
--- Create groups table
--- group_id: UUID of each matched group
--- meetup_time: Date and Time a group is set to meet
+-- groups table
+-- contains information about groups
+    -- group_id: UUID of each matched group
+    -- meet_time: time a group is set to meet at
+    -- meet_date: date a group is set to meet at
+    -- mensa: mensa a group is set to meet at
 CREATE TABLE IF NOT EXISTS `groups` (
-    group_id INT PRIMARY KEY,
-    meetup_time INT
+    group_id VARBINARY(16) PRIMARY KEY,
+    meet_date INT NOT NULL,
+    meet_time INT NOT NULL,
+    meet_place VARCHAR(255) NOT NULL,
+);
+
+-- match requests table
+-- contains information about individual requests for matches made by users
+    -- user_id UUID associated with a user
+    -- group_id UUID of the group a user was matched with. Null if unmatched
+    -- time_slot time slots a user is available to be matched, encoded as an integer
+    -- date_slot date a user is available to be matched
+    -- degree_pref whether a user prefers others with the same degree
+    -- age_pref whether a user prefers others of similar age
+    -- gender_pref whether a user prefers others of the same gender
+CREATE TABLE IF NOT EXISTS `match_requests` (
+    user_id VARBINARY(16) PRIMARY KEY,
+    group_id VARBINARY(16),
+    time_slot INT NOT NULL,
+    date_slot INT NOT NULL,
+    degree_pref BIT,
+    age_pref BIT,
+    gender_pref BIT
 );
