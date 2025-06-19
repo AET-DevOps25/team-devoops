@@ -20,8 +20,9 @@ CREATE TABLE IF NOT EXISTS `user_data` (
     -- user_id: UUID of the given user
     -- interest: String representing a given interest
 CREATE TABLE IF NOT EXISTS `user_interests` (
-    user_id VARBINARY(16) PRIMARY KEY,
-    interest VARCHAR(255) UNIQUE NOT NULL
+    list_id VARBINARY(16) PRIMARY KEY,
+    user_id VARBINARY(16) NOT NULL,
+    interest VARCHAR(255) NOT NULL
 );
 
 -- user_credentials table

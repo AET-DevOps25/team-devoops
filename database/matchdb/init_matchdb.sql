@@ -4,7 +4,8 @@
     -- group_id UUID of the group a user has been matched with
     -- rsvp Has the user RSVP'd the meeting
 CREATE TABLE IF NOT EXISTS `matches` (
-    user_id VARBINARY(16) PRIMARY KEY,
+    match_id VARBINARY(16) PRIMARY KEY,
+    user_id VARBINARY(16) NOT NULL,
     group_id VARBINARY(16) NOT NULL,
     rsvp BIT NOT NULL
 );
@@ -19,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
     group_id VARBINARY(16) PRIMARY KEY,
     meet_date INT NOT NULL,
     meet_time INT NOT NULL,
-    meet_place VARCHAR(255) NOT NULL,
+    meet_place VARCHAR(255) NOT NULL
 );
 
 -- match requests table
@@ -32,8 +33,9 @@ CREATE TABLE IF NOT EXISTS `groups` (
     -- age_pref whether a user prefers others of similar age
     -- gender_pref whether a user prefers others of the same gender
 CREATE TABLE IF NOT EXISTS `match_requests` (
-    user_id VARBINARY(16) PRIMARY KEY,
-    group_id VARBINARY(16),
+    request_id VARBINARY(16) PRIMARY KEY,
+    user_id VARBINARY(16) NOT NULL,
+    group_id VARBINARY(16) NOT NULL,
     time_slot INT NOT NULL,
     date_slot INT NOT NULL,
     degree_pref BIT,
