@@ -1,0 +1,15 @@
+package meet_at_mensa.user;
+
+// import CRUD repository (Create/Read/Update/Delete)
+import org.springframework.data.repository.CrudRepository;
+import java.util.UUID;
+
+// Interface UserRepository represents the userdb table
+public interface InterestRepository extends CrudRepository<Interest, Integer> {
+    
+    // This is auto-implemented by springboot into a userRepository Bean
+
+    // Custom Queries as described here: https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
+    Iterable<Interest> findByUserID(UUID userID);
+
+}
