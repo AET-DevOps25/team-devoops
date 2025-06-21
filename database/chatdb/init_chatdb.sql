@@ -3,7 +3,7 @@
 -- group_id: UUID of the group in the chat
 CREATE TABLE IF NOT EXISTS `chats` (
     chat_id VARBINARY(16) PRIMARY KEY,
-    group_id VARBINARY(16),
+    group_id VARBINARY(16)
 );
 
 -- Create user-credentials table
