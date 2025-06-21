@@ -1,8 +1,9 @@
 -- matches table
--- contains information about what group a user has been matched with
-    -- user_id UUID associated with a user
-    -- group_id UUID of the group a user has been matched with
-    -- rsvp Has the user RSVP'd the meeting
+-- which user has been matched with which group
+    -- match_id: UUID of the match, primary key
+    -- user_id: UUID of the matched user
+    -- group_id: UUID of group the user has been matched to
+    -- rsvp: Has the user RSVP'd?
 CREATE TABLE IF NOT EXISTS `matches` (
     match_id VARBINARY(16) PRIMARY KEY,
     user_id VARBINARY(16) NOT NULL,
@@ -11,44 +12,45 @@ CREATE TABLE IF NOT EXISTS `matches` (
 );
 
 -- groups table
--- contains information about groups
-    -- group_id: UUID of each matched group
-    -- meet_time: time a group is set to meet at
-    -- meet_date: date a group is set to meet at
-    -- mensa: mensa a group is set to meet at
+-- information about groups
+    -- group_id: UUID of the group
+    -- meet_date: date a group is set to meet
+    -- meet_timeslot: time a group is set to meet, encoded as Integer
+    -- meet_location: mensa a group is set to meet at
 CREATE TABLE IF NOT EXISTS `groups` (
     group_id VARBINARY(16) PRIMARY KEY,
-    meet_date INT NOT NULL,
-    meet_time INT NOT NULL,
-    meet_place VARCHAR(255) NOT NULL
+    meet_date DATE NOT NULL,
+    meet_timeslot INT NOT NULL,
+    meet_location VARCHAR(255) NOT NULL
 );
 
 -- match requests table
--- contains information about individual requests for matches made by users
-    -- user_id UUID associated with a user
-    -- group_id UUID of the group a user was matched with. Null if unmatched
-    -- time_slot time slots a user is available to be matched, encoded as an integer
-    -- date_slot date a user is available to be matched
-    -- degree_pref whether a user prefers others with the same degree
-    -- age_pref whether a user prefers others of similar age
-    -- gender_pref whether a user prefers others of the same gender
+-- individual match requests
+    -- request_id: UUID of the request, primary key
+    -- user_id: UUID of user making the request
+    -- group_id: UUID of the group the user was matched to. Null if Unmatched
+    -- request_date: date the user would like to be matched
+    -- degree_pref: does user prefer matches with same degree?
+    -- age_pref: does user prefer matches with same age?
+    -- gender_pref: does user prefer matches with same gender?
 CREATE TABLE IF NOT EXISTS `match_requests` (
     request_id VARBINARY(16) PRIMARY KEY,
     user_id VARBINARY(16) NOT NULL,
     group_id VARBINARY(16),
-    match_date DATE NOT NULL,
+    request_date DATE NOT NULL,
+    request_location VARCHAR(255) NOT NULL,
     degree_pref BIT NOT NULL,
     age_pref BIT NOT NULL,
     gender_pref BIT NOT NULL
 );
 
 -- match timeslot table
--- contains information about timeslots belonging to a specific request
-    -- timeslot_id UUID primary key (Unique)
-    -- request_id UUID of the request this timeslot belongs to
-    -- time_slot time slot ID (encoded as integer)
+-- What time-slots has a user selected in their requests
+    -- timeslot_id: UUID primary key (Unique)
+    -- request_id: UUID of the corresponding request
+    -- time_slot time slot (encoded as integer)
 CREATE TABLE IF NOT EXISTS `match_timeslots` (
     timeslot_id VARBINARY(16) PRIMARY KEY,
     request_id VARBINARY(16) NOT NULL,
-    timeslot INT NOT NULL
+    request_timeslot INT NOT NULL
 );
