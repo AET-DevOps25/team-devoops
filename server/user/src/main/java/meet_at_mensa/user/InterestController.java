@@ -30,7 +30,7 @@ public class InterestController {
         return interestRepository.findByUserID(userID);
     }
 
-    // Awaits an interest .json {user_id: UUID userID, interest: String interest}
+    // Awaits an interest .json {userID: UUID userID, interest: String interest}
     @PostMapping(path="/api/users/interests/add")
     public Interest addInterest(@RequestBody Interest interest) {
         return interestRepository.save(interest);
