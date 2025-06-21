@@ -64,6 +64,34 @@ public class User {
         return degree;
     }
 
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    // -------
+    // Setters
+    // -------
+
+    // no function to change used UUID
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     // ------------
