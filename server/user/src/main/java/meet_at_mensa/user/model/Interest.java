@@ -1,4 +1,4 @@
-package meet_at_mensa.user;
+package meet_at_mensa.user.model;
 
 // import persistence tags
 import jakarta.persistence.Entity;

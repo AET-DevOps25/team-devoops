@@ -1,7 +1,10 @@
-package meet_at_mensa.user;
+package meet_at_mensa.user.repository;
 
 // import CRUD repository (Create/Read/Update/Delete)
 import org.springframework.data.repository.CrudRepository;
+
+import meet_at_mensa.user.model.User;
+
 import java.util.UUID;
 
 // Interface UserRepository represents the userdb table

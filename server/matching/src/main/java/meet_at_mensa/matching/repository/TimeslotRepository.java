@@ -1,7 +1,10 @@
-package meet_at_mensa.matching;
+package meet_at_mensa.matching.repository;
 
 // import CRUD repository (Create/Read/Update/Delete)
 import org.springframework.data.repository.CrudRepository;
+
+import meet_at_mensa.matching.model.Timeslot;
+
 import java.util.UUID;
 
 // Interface TimeslotRepository represents the matchdb/match_timeslots table

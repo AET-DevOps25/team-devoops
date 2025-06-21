@@ -1,4 +1,4 @@
-package meet_at_mensa.matching;
+package meet_at_mensa.matching.model;
 
 // import persistence tags
 import jakarta.persistence.Entity;

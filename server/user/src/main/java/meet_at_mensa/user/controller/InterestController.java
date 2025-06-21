@@ -1,8 +1,12 @@
-package meet_at_mensa.user;
+package meet_at_mensa.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.RestController;
+
+import meet_at_mensa.user.model.Interest;
+import meet_at_mensa.user.repository.InterestRepository;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,10 @@
-package meet_at_mensa.matching;
+package meet_at_mensa.matching.repository;
 
 // import CRUD repository (Create/Read/Update/Delete)
 import org.springframework.data.repository.CrudRepository;
+
+import meet_at_mensa.matching.model.Match;
+
 import java.util.UUID;
 
 // Interface MatchRepository represents the matchdb/matches table
