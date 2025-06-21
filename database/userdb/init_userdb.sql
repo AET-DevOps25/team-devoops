@@ -5,14 +5,14 @@
     -- name: user's name
     -- gender: user's gender
     -- degree: user's TUM degree
-    -- age: user's age
+    -- birthday: user's Date of birth
 CREATE TABLE IF NOT EXISTS `user_data` (
     user_id VARBINARY(16) PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
     name VARCHAR(255) NOT NULL,
     gender VARCHAR(255) NOT NULL,
     degree VARCHAR(255) NOT NULL,
-    age INT NOT NULL
+    birthday DATE NOT NULL
 ); 
 
 -- user-interests table

@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.UUID;
+import java.time.LocalDate;
 
 // Class User represents a single entry (row) in the userdb/users table
 @Entity
@@ -36,8 +37,8 @@ public class User {
     @Column(name = "degree")
     private String degree;
 
-    @Column(name = "age")
-    private Integer age;
+    @Column(name = "birthday")
+    private LocalDate birthday;
 
     // -------
     // Getters
@@ -63,8 +64,6 @@ public class User {
         return degree;
     }
 
-    public Integer getAge() {
-        return age;
     }
 
     // ------------
@@ -77,13 +76,13 @@ public class User {
 
     }
 
-    public User(String email, String name, String gender, String degree, Integer age) {
+    public User(String email, String name, String gender, String degree, LocalDate birthday) {
 
         this.email = email;
         this.name = name;
         this.gender = gender;
         this.degree = degree;
-        this.age = age;
+        this.birthday = birthday;
 
     }
 }
