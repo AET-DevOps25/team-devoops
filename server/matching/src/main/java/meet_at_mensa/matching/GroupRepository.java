@@ -14,5 +14,5 @@ public interface GroupRepository extends CrudRepository<Group, UUID> {
     // Custom Queries as described here: https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
 
     // Find all matches on the same date
-    Iterable<MatchRequest> findByDate(LocalDate date);
+    Iterable<Group> findByDate(LocalDate date);
 }
