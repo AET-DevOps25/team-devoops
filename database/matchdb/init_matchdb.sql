@@ -35,10 +35,20 @@ CREATE TABLE IF NOT EXISTS `groups` (
 CREATE TABLE IF NOT EXISTS `match_requests` (
     request_id VARBINARY(16) PRIMARY KEY,
     user_id VARBINARY(16) NOT NULL,
-    group_id VARBINARY(16) NOT NULL,
-    time_slot INT NOT NULL,
-    date_slot INT NOT NULL,
-    degree_pref BIT,
-    age_pref BIT,
-    gender_pref BIT
+    group_id VARBINARY(16),
+    match_date DATE NOT NULL,
+    degree_pref BIT NOT NULL,
+    age_pref BIT NOT NULL,
+    gender_pref BIT NOT NULL
+);
+
+-- match timeslot table
+-- contains information about timeslots belonging to a specific request
+    -- timeslot_id UUID primary key (Unique)
+    -- request_id UUID of the request this timeslot belongs to
+    -- time_slot time slot ID (encoded as integer)
+CREATE TABLE IF NOT EXISTS `match_timeslots` (
+    timeslot_id VARBINARY(16) PRIMARY KEY,
+    request_id VARBINARY(16) NOT NULL,
+    timeslot INT NOT NULL
 );
