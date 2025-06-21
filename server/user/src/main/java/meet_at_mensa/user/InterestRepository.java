@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 // Interface UserRepository represents the userdb table
-public interface InterestRepository extends CrudRepository<Interest, Integer> {
+public interface InterestRepository extends CrudRepository<Interest, UUID> {
     
     // This is auto-implemented by springboot into a userRepository Bean
 
