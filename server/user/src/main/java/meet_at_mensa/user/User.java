@@ -23,7 +23,7 @@ public class User {
     @Id // This value is the User's UUID
     @GeneratedValue(strategy=GenerationType.UUID)
     @Column(name = "user_id")
-    private UUID id;
+    private UUID userID;
     
     @Column(name = "email")
     private String email;
@@ -44,8 +44,8 @@ public class User {
     // Getters
     // -------
 
-    public UUID getId() {
-        return id;
+    public UUID getUserID() {
+        return userID;
     }
 
     public String getEmail() {
