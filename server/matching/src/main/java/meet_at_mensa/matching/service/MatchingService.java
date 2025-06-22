@@ -50,13 +50,11 @@ public class MatchingService {
         // get all Matching requests for this date
         Iterable<MatchRequest> requests = requestRepository.findByDate(date);
 
-        Iterable<Timeslots>
-
         for (MatchRequest matchRequest : requests) {
             
             // get timeslots
         }
-        requestService.getTimeslots(null)
+        requestService.getTimeslots(null);
 
         // get Timeslots
 
