@@ -8,20 +8,9 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - chat-service
       - matching-service
       - user-service
       - genai-service
-    networks:
-      - backend
-
-  chat-service:
-    build: ../../server/chat
-    container_name: meetatmensa-chat
-    expose:
-      - "80"
-    depends_on:
-      - chat-database
     networks:
       - backend
 
@@ -59,19 +48,6 @@ services:
     ports:
       - "80:80"
 
-  chat-database:
-    build: ../../database/chatdb
-    container_name: meetatmensa-chatdb
-    # TODO: Implement password passed via secret
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-    volumes:
-      - chatdb_data:/var/lib/mysql
-    expose:
-      - "3306"
-    networks:
-      - backend
-
   match-database:
     build: ../../database/matchdb
     container_name: meetatmensa-matchdb
@@ -103,6 +79,5 @@ networks:
     driver: bridge
 
 volumes:
-  chatdb_data:
   matchdb_data:
   userdb_data:
