@@ -7,11 +7,6 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: chat_route
-          uri: http://meetatmensa-chat:80
-          predicates:
-            - Path=/chat/**
-
         - id: matching_route
           uri: http://meetatmensa-matching:80
           predicates:

@@ -17,9 +17,6 @@ dependencies:
   - name: matching
     version: 1.0.0
     repository: file://charts/matching
-  - name: chat
-    version: 1.0.0
-    repository: file://charts/chat
   - name: genai
     version: 1.0.0
     repository: file://charts/genai
