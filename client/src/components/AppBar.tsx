@@ -17,7 +17,7 @@ import { useAuth } from '../contexts/AuthContext';
 import mensaLogo from '../assets/meet@mensa_transparent.svg';
 import { useTheme, useMediaQuery } from '@mui/material';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 interface AppBarProps {
   onHamburgerClick?: () => void;
@@ -25,7 +25,7 @@ interface AppBarProps {
 
 const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
@@ -44,12 +44,6 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
       case 'Profile':
         navigate('/profile');
         break;
-      case 'Account':
-        navigate('/account');
-        break;
-      case 'Dashboard':
-        navigate('/dashboard');
-        break;
       case 'Logout':
         logout();
         navigate('/login');
@@ -59,13 +53,21 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
     }
   };
 
+  // Helper to get initials from name
+  const getInitials = (name: string) => {
+    const [first, ...rest] = name.split(' ');
+    const last = rest.length > 0 ? rest[rest.length - 1] : '';
+    return `${first?.[0] || ''}${last?.[0] || ''}`.toUpperCase();
+  };
+
   return (
     <MuiAppBar
       position="fixed"
       sx={{
-        backgroundColor: 'white',
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         boxShadow: 'none',
-        borderBottom: '1px solid #e0e0e0',
+        borderBottom: `1px solid ${theme.palette.divider}`,
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
@@ -79,7 +81,9 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
             onClick={onHamburgerClick}
             sx={{ ml: 1, mr: 1 }}
           >
-            <MenuIcon sx={{ color: 'black' }} />
+            <MenuIcon
+              sx={{ color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black') }}
+            />
           </IconButton>
         )}
         {/* Logo ganz links */}
@@ -87,7 +91,11 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
           <img
             src={mensaLogo}
             alt="Meet@Mensa"
-            style={{ height: '40px', cursor: 'pointer' }}
+            style={{
+              height: smDown ? '30px' : '40px',
+              marginTop: smDown ? '-15px' : 0,
+              cursor: 'pointer',
+            }}
             onClick={() => navigate('/')}
           />
         </Box>
@@ -99,7 +107,17 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
         <Box sx={{ flexGrow: 0, pr: 2 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+              <Avatar
+                sx={{
+                  color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black'),
+                  bgcolor: (theme) =>
+                    theme.palette.mode === 'dark'
+                      ? theme.palette.grey[800]
+                      : theme.palette.grey[200],
+                }}
+              >
+                {user?.name ? getInitials(user.name) : 'U'}
+              </Avatar>
             </IconButton>
           </Tooltip>
           <Menu

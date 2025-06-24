@@ -9,6 +9,12 @@ import Invitations from './components/Invitations';
 import LunchMeetings from './components/LunchMeetings';
 import Chat from './components/Chat';
 import { useAuth } from './contexts/AuthContext';
+import Profile from './components/Profile';
+
+interface AppProps {
+  toggleColorMode: () => void;
+  mode: 'light' | 'dark';
+}
 
 // Protected Route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -16,7 +22,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
 };
 
-const App = () => {
+const App = ({ toggleColorMode, mode }: AppProps) => {
   return (
     <AuthProvider>
       <Router>
@@ -28,7 +34,7 @@ const App = () => {
           <Route
             path="/"
             element={
-              <Layout>
+              <Layout toggleColorMode={toggleColorMode} mode={mode}>
                 <Dashboard />
               </Layout>
             }
@@ -36,7 +42,7 @@ const App = () => {
           <Route
             path="/dashboard"
             element={
-              <Layout>
+              <Layout toggleColorMode={toggleColorMode} mode={mode}>
                 <Dashboard />
               </Layout>
             }
@@ -44,7 +50,7 @@ const App = () => {
           <Route
             path="/preferences"
             element={
-              <Layout>
+              <Layout toggleColorMode={toggleColorMode} mode={mode}>
                 <MatchRequests />
               </Layout>
             }
@@ -52,7 +58,7 @@ const App = () => {
           <Route
             path="/invitations"
             element={
-              <Layout>
+              <Layout toggleColorMode={toggleColorMode} mode={mode}>
                 <Invitations />
               </Layout>
             }
@@ -60,7 +66,7 @@ const App = () => {
           <Route
             path="/meetings"
             element={
-              <Layout>
+              <Layout toggleColorMode={toggleColorMode} mode={mode}>
                 <LunchMeetings />
               </Layout>
             }
@@ -68,28 +74,26 @@ const App = () => {
           <Route
             path="/chat"
             element={
-              <Layout>
+              <Layout toggleColorMode={toggleColorMode} mode={mode}>
                 <Chat />
+              </Layout>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <Layout toggleColorMode={toggleColorMode} mode={mode}>
+                <Profile />
               </Layout>
             }
           />
 
           {/* Protected routes */}
           <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Layout>
-                  <div>Profile Page (Coming Soon)</div>
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/account"
             element={
               <ProtectedRoute>
-                <Layout>
+                <Layout toggleColorMode={toggleColorMode} mode={mode}>
                   <div>Account Settings (Coming Soon)</div>
                 </Layout>
               </ProtectedRoute>
