@@ -1,0 +1,35 @@
+# This workflow builds and publishes the images, then deploys them to the Kubernetes cluster.
+# It runs only when code is pushed to the main branch, and is thus considered ready for production.
+name: Deploy Meet@Mensa
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  # Run tests (unimplemented)
+  # test:
+  #   name: Run Tests
+  #   uses: ./.github/workflows/test_application.yml
+
+  # Call the docker_build workflow to build and publish images
+  build:
+    name: Build & Publish Images
+    uses: ./.github/workflows/docker_build.yml
+
+  # Call the kubernetes_deploy workflow to deploy to Rancher
+  deploy_kubernetes:
+    name: Deploy to Kubernetes Cluster
+    needs: build # wait for build to complete before running
+    uses: ./.github/workflows/kubernetes_deploy.yml
+    secrets: # Pass KUBECONFIG to called workflow
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
+
+  # Call the aws_deploy workflow to deploy to AWS
+  # deploy_aws:
+  #  name: Deploy to AWS
+  #  needs: build
+  #  uses: ./.github/workflows/aws_deploy.yml

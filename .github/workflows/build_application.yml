@@ -1,0 +1,21 @@
+# This workflow runs tests, builds, and publishes the images. It performs no deployment.
+# It runs on all branches when code is pushed to ensure tests pass and images are available for testing purposes.
+name: Build & Test Meet@Mensa
+
+# Run on all branches except main
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+
+  # Run tests (unimplemented)
+  # test:
+  #   name: Run Tests
+  #   uses: ./.github/workflows/test_application.yml
+
+  # Call the docker_build workflow to build and publish images
+  build:
+    name: Build & Publish Images
+    uses: ./.github/workflows/docker_build.yml

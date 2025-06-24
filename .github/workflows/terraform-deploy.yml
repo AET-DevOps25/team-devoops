@@ -1,0 +1,24 @@
+name: Terraform Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      aws_access_key_id:
+        description: "AWS Access Key ID from Learner Lab"
+        required: true
+        type: string
+      aws_secret_access_key:
+        description: "AWS Secret Access Key from Learner Lab"
+        required: true
+        type: string
+      aws_session_token:
+        description: "AWS Session Token from Learner Lab (if required)"
+        required: false
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4

@@ -7,10 +7,13 @@ Implementation details to follow.
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/matching .
+docker build -t ghcr.io/aet-devops25/team-devoops/server/matching .
+
+# Push the image to GHCR (latest tag by default, access needed)
+docker push ghcr.io/aet-devops25/team-devoops/server/matching
 
 # Run the Docker container on port 8082
-docker run --name matching-service -p 8082:80 meet_at_mensa/matching
+docker run --name matching-service -p 8082:80 ghcr.io/aet-devops25/team-devoops/server/matching
 
 # List running containers (if needed) 
 docker ps
