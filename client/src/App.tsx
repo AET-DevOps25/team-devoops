@@ -4,7 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import MeetingPreferences from './components/MeetingPreferences';
+import MatchRequests from './components/MatchRequests';
 import Invitations from './components/Invitations';
 import LunchMeetings from './components/LunchMeetings';
 import Chat from './components/Chat';
@@ -45,7 +45,7 @@ const App = () => {
             path="/preferences"
             element={
               <Layout>
-                <MeetingPreferences />
+                <MatchRequests />
               </Layout>
             }
           />
