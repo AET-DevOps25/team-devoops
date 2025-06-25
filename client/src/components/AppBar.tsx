@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth0 } from '@auth0/auth0-react';
 import mensaLogo from '../assets/meet@mensa_transparent.svg';
 import { useTheme, useMediaQuery } from '@mui/material';
 
@@ -25,7 +25,7 @@ interface AppBarProps {
 
 const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { logout, user } = useAuth();
+  const { logout, user } = useAuth0();
   const navigate = useNavigate();
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
@@ -45,8 +45,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
         navigate('/profile');
         break;
       case 'Logout':
-        logout();
-        navigate('/login');
+        logout({ logoutParams: { returnTo: `${window.location.origin}` } });
         break;
       default:
         break;
@@ -108,6 +107,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
+                src={user?.picture}
                 sx={{
                   color: (theme) => (theme.palette.mode === 'dark' ? 'white' : 'black'),
                   bgcolor: (theme) =>

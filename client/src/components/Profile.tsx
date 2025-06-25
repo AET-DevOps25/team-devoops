@@ -26,7 +26,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 interface UserProfile {
   userID: string;
@@ -53,7 +53,7 @@ const mockProfile: UserProfile = {
 };
 
 const Profile: React.FC = () => {
-  const { user } = useAuth();
+  const { user } = useAuth0();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
@@ -68,10 +68,10 @@ const Profile: React.FC = () => {
       setLoading(false);
       return;
     }
-    if (user?.id) {
+    if (user?.sub) {
       setLoading(true);
       axios
-        .get(`https://meetatmensa.com/api/v1/user/${user.id}`)
+        .get(`https://meetatmensa.com/api/v1/user/${user.sub}`)
         .then((res) => {
           setProfile(res.data);
           setEditData(res.data);
@@ -131,7 +131,7 @@ const Profile: React.FC = () => {
         ...editData,
       };
       const updated = { email, name, birthday, gender, degree, interests, bio };
-      await axios.put(`https://meetatmensa.com/api/v1/user/${user?.id}`, updated);
+      await axios.put(`https://meetatmensa.com/api/v1/user/${user?.sub}`, updated);
       setProfile((prev) => ({ ...prev!, ...updated }) as UserProfile);
       setEditMode(false);
     } catch (e) {
@@ -174,7 +174,7 @@ const Profile: React.FC = () => {
         )}
         {/* Avatar */}
         <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
-          <Avatar sx={{ width: 80, height: 80, mb: 1, fontSize: 36 }}>
+          <Avatar src={user?.picture} sx={{ width: 80, height: 80, mb: 1, fontSize: 36 }}>
             {getInitials(profile.name)}
           </Avatar>
           <Typography variant="h5" fontWeight={600} align="center">

@@ -3,8 +3,10 @@ import { createRoot } from 'react-dom/client';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { Auth0Provider } from '@auth0/auth0-react';
 import './index.css';
 import App from './App.tsx';
+import authConfig from './auth_config.json';
 
 const COLOR_MODE_KEY = 'colorMode';
 
@@ -49,10 +51,18 @@ function Main() {
   if (mode === undefined) return null;
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App toggleColorMode={toggleColorMode} mode={mode} />
-    </ThemeProvider>
+    <Auth0Provider
+      domain={authConfig.domain}
+      clientId={authConfig.clientId}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+    >
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App toggleColorMode={toggleColorMode} mode={mode} />
+      </ThemeProvider>
+    </Auth0Provider>
   );
 }
 
