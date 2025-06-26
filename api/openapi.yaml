@@ -1,6 +1,6 @@
 openapi: 3.1.0
 x-stoplight:
-  id: ra3dw7l8yudk6
+  id: ceylawji1yc2t
 info:
   title: MeetAtMensa
   version: 1.0.0
@@ -81,7 +81,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
       operationId: get-api-v2-user-userID
       x-stoplight:
-        id: s30bozzx1imjb
+        id: p1d67jb8y16q8
       description: 'Fetch all information about user with ID {user-id} from user-service'
       security:
         - auth0: []
@@ -104,12 +104,12 @@ paths:
           $ref: '#/components/responses/NotFoundError'
       operationId: put-api-v2-user-userID
       x-stoplight:
-        id: qpy386xev4isw
+        id: exmvsbw8301bi
       requestBody:
         content:
           application/json:
             schema:
-              $ref: 'stoplight://resources/overrides/d4ZcttiCduU'
+              $ref: ./models/masks/UpdateUser.yaml
       description: 'Update all information about user with ID {user-id} from user-service'
     delete:
       summary: 'Delete User with {user-id}'
@@ -126,7 +126,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
       operationId: delete-api-v2-user-userID
       x-stoplight:
-        id: d5oluqthtpk0j
+        id: 407z5o4zq5tvl
       description: 'Remove all information about user with ID {user-id} from user-service'
   /api/v2/user/register:
     parameters: []
@@ -149,12 +149,12 @@ paths:
           description: Conflict
       operationId: post-api-v2-user-register
       x-stoplight:
-        id: rylxkkav8zfbw
+        id: laufntfpxgg42
       requestBody:
         content:
           application/json:
             schema:
-              $ref: 'stoplight://resources/overrides/ZBKuhqr5Udo'
+              $ref: ./models/masks/NewUser.yaml
         description: ''
       description: 'Register a new user and respond with it''s {user-id}'
   /api/v2/matching/request/submit:
@@ -172,12 +172,12 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
       operationId: post-api-v2-matching-request
       x-stoplight:
-        id: snpxjvnherhqo
+        id: 1x5ta8qguutzq
       requestBody:
         content:
           application/json:
             schema:
-              $ref: 'stoplight://resources/overrides/LiusN8sr3Lg'
+              $ref: ./models/masks/NewMatchRequest.yaml
       description: Submit a new matching request to the Matching-Service
   '/api/v2/matching/matches/{user-id}':
     parameters:
@@ -185,7 +185,7 @@ paths:
     get:
       summary: 'Retrieve all matches for a {user-id}'
       x-stoplight:
-        id: yi9tcjix8188b
+        id: nxywx9cl1qg31
       tags:
         - Matching
       responses:
@@ -198,7 +198,7 @@ paths:
                 properties:
                   matches:
                     x-stoplight:
-                      id: 2e0ptji16wel5
+                      id: khem7b58qtvyr
                     type: array
                     items:
                       $ref: ./models/objects/Match.yaml
@@ -237,7 +237,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
       operationId: get-api-v2-matching-requests-userID
       x-stoplight:
-        id: bpwtd0yzaqoij
+        id: wkc1ys6vkbv12
       description: 'Retrieve all MatchRequests for a user with {user-id} from the matching-service'
   '/api/v2/matching/request/{request-id}':
     parameters:
@@ -257,7 +257,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
       operationId: delete-api-v2-matching-matches-request-id
       x-stoplight:
-        id: jx437fzerwzkg
+        id: shgx14ydoaa2f
       description: 'Delete MatchRequest with ID {request-id} from the system'
     put:
       summary: 'Update MatchRequest with {request-id}'
@@ -280,12 +280,12 @@ paths:
           description: Not Acceptable
       operationId: put-api-v2-matching-request-request-id
       x-stoplight:
-        id: f29245yb6atms
+        id: f6t3aeqcvup68
       requestBody:
         content:
           application/json:
             schema:
-              $ref: 'stoplight://resources/overrides/yYf63A5flbM'
+              $ref: ./models/masks/UpdateMatchRequest.yaml
       description: 'Update all information in the MatchRequest with ID {request-id}'
   '/api/v2/matching/rsvp/{match-id}/accept':
     get:
@@ -301,7 +301,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
       operationId: get-api-v2-matching-rsvp-match-id-accept
       x-stoplight:
-        id: agyrofyxjblw6
+        id: am6b7xnyytanu
       description: Accept invitation to a given match
     parameters:
       - name: match-id
@@ -326,14 +326,14 @@ paths:
       operationId: get-api-v2-matching-rsvp-match-id-reject
       description: Reject invitation to a given match
       x-stoplight:
-        id: deu0sdrli2bmb
+        id: swjozsxt7gvip
     parameters:
       - $ref: '#/components/parameters/match-id'
   /api/v2/genai/conversation-starter:
     get:
       summary: Request conversation starter
       x-stoplight:
-        id: qgqsp9m9g4pe3
+        id: 2gb78xli5e55w
       tags:
         - GenAI
       responses:
@@ -347,7 +347,7 @@ paths:
                   conversationStarters:
                     $ref: ./models/objects/ConversationStarter.yaml
                     x-stoplight:
-                      id: 42dhftssp2c85
+                      id: lt5efiufixsnu
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -364,7 +364,7 @@ paths:
                 users:
                   type: array
                   x-stoplight:
-                    id: fvj0ezq5l48c2
+                    id: kqrqaz6h0yzui
                   items:
                     $ref: ./models/objects/User.yaml
         description: Request Conversation starter for these users
@@ -377,3 +377,5 @@ tags:
     description: Paths belonging to the Matching microservice
   - name: User
     description: Paths belonging to the User microservice
+security:
+  - auth0: []

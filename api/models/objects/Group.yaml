@@ -29,7 +29,7 @@ properties:
       id: hmw3co8pjszgj
     minItems: 2
     items:
-      $ref: 'stoplight://resources/overrides/RmEa5NhKGpw'
+      $ref: ../masks/matchStatus.yaml
       x-stoplight:
         id: cuf40ovv2gt87
   conversationStarters:

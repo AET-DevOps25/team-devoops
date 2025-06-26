@@ -1,0 +1,73 @@
+x-stoplight:
+  id: sagkpw0prr2n6
+type: object
+description: Object representing a student user in the Meet@Mensa system.
+required:
+  - email
+  - firstname
+  - lastname
+  - birthday
+  - gender
+  - degree
+  - degreeStart
+  - interests
+  - bio
+properties:
+  email:
+    type: string
+    x-stoplight:
+      id: 0nyeve74ir1dn
+    format: email
+    description: Users's e-mail
+  firstname:
+    type: string
+    x-stoplight:
+      id: gkvzbzzze2w5u
+    description: User's given name
+    example: Max
+  lastname:
+    type: string
+    x-stoplight:
+      id: l2hhplp6bxk15
+    description: User's surname
+    example: Mustermann
+  birthday:
+    type: string
+    x-stoplight:
+      id: 57jhzco8y1bl4
+    format: date
+    description: User's date of birth
+  gender:
+    type: string
+    x-stoplight:
+      id: nwpau60zic5m9
+    description: User's gender
+    default: other
+  degree:
+    type: string
+    x-stoplight:
+      id: a6jlhdt5az5oh
+    description: User's degree program
+    example: msc_informatics
+  degreeStart:
+    type: integer
+    x-stoplight:
+      id: egy6nzptgfbm0
+    minimum: 2000
+    maximum: 2100
+    description: What year User started their degree
+    example: 2024
+  interests:
+    x-stoplight:
+      id: b7rcq9x59ngrb
+    type: array
+    description: Array of a User's interests
+    items:
+      $ref: ../values/interest.yaml
+      x-stoplight:
+        id: v0h3sk9kzzq0r
+  bio:
+    type: string
+    x-stoplight:
+      id: te54o833aixf0
+    description: Short introduction text written by the user

@@ -1,0 +1,37 @@
+x-stoplight:
+  id: 3k8e2egr16sfx
+type: object
+description: Object representing a request for matching a given user on a given date in the Meet@Mensa system.
+required:
+  - userID
+  - date
+  - timeslot
+  - location
+  - preferences
+properties:
+  userID:
+    $ref: ../values/userID.yaml
+    x-stoplight:
+      id: n4wdcfrmzx0br
+  date:
+    type: string
+    x-stoplight:
+      id: 4p1ncij1h0rb0
+    format: date
+    description: The date a user would like meet@mensa to find them a match
+  timeslot:
+    type: array
+    x-stoplight:
+      id: nm1ht2n4e7m9o
+    items:
+      $ref: ../values/timeslot.yaml
+      x-stoplight:
+        id: v8jsbc5jl29pg
+  location:
+    $ref: ../values/location.yaml
+    x-stoplight:
+      id: cgv3s59nnkhtc
+  preferences:
+    $ref: ../values/matchPreferences.yaml
+    x-stoplight:
+      id: 7f1ocyx4ugwp8
