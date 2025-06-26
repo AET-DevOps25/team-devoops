@@ -1,0 +1,6 @@
+title: matchID
+x-stoplight:
+  id: 1sbe6y11zvxje
+type: string
+description: The unique ID of a Group in the Meet@Mensa system.
+format: uuid
