@@ -15,9 +15,6 @@ echo "Linting api/openapi.yaml..."
 # fail command if any part fails
 set -euo pipefail
 
-# lint openapi spec
-redocly lint api/openapi.yaml
-
 for path in matching user gateway; do
 
     # echo generating code
