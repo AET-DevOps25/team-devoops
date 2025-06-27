@@ -12,7 +12,7 @@ for path in matching user; do
     openapi-generator-cli generate \
         -g spring \
         -i api/openapi.yaml \
-        -o server/{$path}/generated \
+        -o server/$path/generated \
         --additional-properties=useTags=true,interfaceOnly=true
 
     # echo generating gradle
@@ -23,6 +23,6 @@ for path in matching user; do
         --type pom \
         --dsl groovy \
         --no-incubating \
-        --project-dir server/{$path}/generated
+        --project-dir server/$path/generated
 
 done
