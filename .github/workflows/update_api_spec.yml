@@ -57,8 +57,10 @@ jobs:
           git add server/matching/generated
           git add server/user/generated
           git add server/gateway/generated
+          git add client/src/api.ts
+          git add docs/api.html
 
       - name: Commit & Push Generated Code
         run: | 
-          git commit -m "gen: generate code based on latest version of openapi.yaml"
+          git commit -m "gen: generate code and documentation based on latest version of openapi.yaml"
           git push
