@@ -1,4 +1,4 @@
-openapi: 3.1.0 # add comment to test github action 2
+openapi: 3.1.0
 x-stoplight:
   id: ceylawji1yc2t
 info:
