@@ -20,7 +20,7 @@ for path in matching user; do
     gradle init \
         --type pom \
         --dsl groovy \
-        --no-incubating
+        --no-incubating \
         --project-dir server/{$path}/generated
 
 done
