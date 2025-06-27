@@ -13,11 +13,11 @@ required:
   - status
 properties:
   requestID:
-    $ref: ../values/requestID.yaml
+    $ref: ./requestID.yaml
     x-stoplight:
       id: yb5gfku85aju1
   userID:
-    $ref: ../values/userID.yaml
+    $ref: ./userID.yaml
     x-stoplight:
       id: k77yrmxh1et46
   date:
@@ -31,18 +31,18 @@ properties:
     x-stoplight:
       id: 7q7ast68lvs4u
     items:
-      $ref: ../values/timeslot.yaml
+      $ref: ./timeslot.yaml
       x-stoplight:
         id: 1bm3e0opi8ib4
   location:
-    $ref: ../values/location.yaml
+    $ref: ./location.yaml
     x-stoplight:
       id: e1uluvx96xipa
   preferences:
-    $ref: ../values/matchPreferences.yaml
+    $ref: ./matchPreferences.yaml
     x-stoplight:
       id: alvtpofqxwm25
   status:
-    $ref: ../values/requestStatus.yaml
+    $ref: ./requestStatus.yaml
     x-stoplight:
       id: tgo0whxjsxif2

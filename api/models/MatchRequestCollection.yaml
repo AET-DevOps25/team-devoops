@@ -9,6 +9,6 @@ properties:
     x-stoplight:
       id: wfe1ymfi052cg
     items:
-      $ref: ../objects/MatchRequest.yaml
+      $ref: ./MatchRequest.yaml
       x-stoplight:
         id: 5qqpua4xl4vfr

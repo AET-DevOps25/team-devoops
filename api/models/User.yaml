@@ -1,64 +1,79 @@
-title: UpdateUser
+title: User
 x-stoplight:
-  id: heva6gjdd7b3p
+  id: k21d7pds0kt8x
 type: object
 description: Object representing a student user in the Meet@Mensa system.
+required:
+  - userID
+  - email
+  - firstname
+  - lastname
+  - birthday
+  - gender
+  - degree
+  - degreeStart
+  - interests
+  - bio
 properties:
+  userID:
+    $ref: ./userID.yaml
+    x-stoplight:
+      id: ekespe3d8mvhz
   email:
     type: string
     x-stoplight:
-      id: a7ipfyhwfk3kq
+      id: e7l4vk5tcpzog
     format: email
     description: Users's e-mail
   firstname:
     type: string
     x-stoplight:
-      id: zuytjxvn77rjp
+      id: d32i2omc3k6nn
     description: User's given name
     example: Max
   lastname:
     type: string
     x-stoplight:
-      id: rfs2renb5sp1w
+      id: 5jc0p1zr8vy4p
     description: User's surname
     example: Mustermann
   birthday:
     type: string
     x-stoplight:
-      id: flo8chb4q1fy9
+      id: nm996scnjz7dk
     format: date
     description: User's date of birth
   gender:
     type: string
     x-stoplight:
-      id: p54y08lil9jxo
+      id: itop4gfsf1ch7
     description: User's gender
     default: other
   degree:
     type: string
     x-stoplight:
-      id: njs5xyq3x3ied
+      id: u7kkx1ewi0g3o
     description: User's degree program
     example: msc_informatics
   degreeStart:
     type: integer
     x-stoplight:
-      id: kjpj2awg3hh63
+      id: nd14ato08ps5k
     minimum: 2000
     maximum: 2100
     description: What year User started their degree
     example: 2024
   interests:
     x-stoplight:
-      id: d72bsbld6n0jl
+      id: y9ktoyz2v1to4
     type: array
     description: Array of a User's interests
     items:
-      $ref: ../values/interest.yaml
+      $ref: ./interest.yaml
       x-stoplight:
-        id: dnew96thyaji2
+        id: c3kskc3eertnn
   bio:
     type: string
     x-stoplight:
-      id: pue21yfv8sss5
+      id: pyp2f4rynj24v
     description: Short introduction text written by the user

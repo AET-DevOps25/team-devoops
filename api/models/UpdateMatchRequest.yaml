@@ -5,7 +5,7 @@ description: Object representing a request for matching a given user on a given 
 title: UpdateMatchRequest
 properties:
   userID:
-    $ref: ../values/userID.yaml
+    $ref: ./userID.yaml
     x-stoplight:
       id: rpwxqsd1z3mwd
   date:
@@ -19,14 +19,14 @@ properties:
     x-stoplight:
       id: nbnmmzg9ffaap
     items:
-      $ref: ../values/timeslot.yaml
+      $ref: ./timeslot.yaml
       x-stoplight:
         id: tam2l6eluav6j
   location:
-    $ref: ../values/location.yaml
+    $ref: ./location.yaml
     x-stoplight:
       id: u6xcu7j63em9v
   preferences:
-    $ref: ../values/matchPreferences.yaml
+    $ref: ./matchPreferences.yaml
     x-stoplight:
       id: y8ku0ok7n93v8

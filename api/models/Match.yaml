@@ -10,15 +10,15 @@ required:
   - group
 properties:
   matchID:
-    $ref: ../values/matchID.yaml
+    $ref: ./matchID.yaml
     x-stoplight:
       id: im627f7om9dae
   userID:
-    $ref: ../values/userID.yaml
+    $ref: ./userID.yaml
     x-stoplight:
       id: ezp3u9d94rqkc
   status:
-    $ref: ../values/inviteStatus.yaml
+    $ref: ./inviteStatus.yaml
     x-stoplight:
       id: fdw4tem5k7yp7
   group:

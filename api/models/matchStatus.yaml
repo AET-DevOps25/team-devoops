@@ -4,10 +4,10 @@ x-stoplight:
 type: object
 properties:
   userID:
-    $ref: ../values/userID.yaml
+    $ref: ./userID.yaml
     x-stoplight:
       id: nzr8uzfv86vuo
   status:
-    $ref: ../values/inviteStatus.yaml
+    $ref: ./inviteStatus.yaml
     x-stoplight:
       id: 16nv6br9k5fg8

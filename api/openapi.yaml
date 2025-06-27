@@ -72,7 +72,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/objects/User.yaml
+                $ref: ./models/User.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -95,7 +95,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/objects/User.yaml
+                $ref: ./models/User.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -109,7 +109,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/masks/UpdateUser.yaml
+              $ref: ./models/UpdateUser.yaml
       description: 'Update all information about user with ID {user-id} from user-service'
     delete:
       summary: 'Delete User with {user-id}'
@@ -140,7 +140,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/values/userID.yaml
+                $ref: ./models/User.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -154,7 +154,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/masks/NewUser.yaml
+              $ref: ./models/NewUser.yaml
         description: ''
       description: 'Register a new user and respond with it''s {user-id}'
   /api/v2/matching/request/submit:
@@ -177,7 +177,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/masks/NewMatchRequest.yaml
+              $ref: ./models/NewMatchRequest.yaml
       description: Submit a new matching request to the Matching-Service
   '/api/v2/matching/matches/{user-id}':
     parameters:
@@ -194,7 +194,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/collections/MatchCollection.yaml
+                $ref: ./models/MatchCollection.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -216,7 +216,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/collections/MatchRequestCollection.yaml
+                $ref: ./models/MatchRequestCollection.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -257,7 +257,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./models/objects/MatchRequest.yaml
+                $ref: ./models/MatchRequest.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -273,7 +273,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./models/masks/UpdateMatchRequest.yaml
+              $ref: ./models/UpdateMatchRequest.yaml
       description: 'Update all information in the MatchRequest with ID {request-id}'
   '/api/v2/matching/rsvp/{match-id}/accept':
     get:
@@ -330,12 +330,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  conversationStarters:
-                    $ref: ./models/objects/ConversationStarter.yaml
-                    x-stoplight:
-                      id: lt5efiufixsnu
+                $ref: ./models/ConversationStarterCollection.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -347,14 +342,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                users:
-                  type: array
-                  x-stoplight:
-                    id: kqrqaz6h0yzui
-                  items:
-                    $ref: ./models/objects/User.yaml
+              $ref: ./models/UserCollection.yaml
         description: Request Conversation starter for these users
       description: Request a series of conversation starter prompts from the GenAI microservice. Provide infomation about users on request.
     parameters: []

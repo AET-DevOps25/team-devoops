@@ -5,7 +5,7 @@ type: object
 description: Object representing a group that has been matched in the Meet@Mensa system.
 properties:
   groupID:
-    $ref: ../values/groupID.yaml
+    $ref: ./groupID.yaml
     x-stoplight:
       id: y8pic7dl28cjq
   date:
@@ -15,12 +15,12 @@ properties:
     format: date
     description: Date the group is scheduled to meet at
   time:
-    $ref: ../values/timeslot.yaml
+    $ref: ./timeslot.yaml
     x-stoplight:
       id: 6unlwq2rrpk1l
     description: Timeslot the group is scheduled to meet at
   location:
-    $ref: ../values/location.yaml
+    $ref: ./location.yaml
     x-stoplight:
       id: qi13z2dxxkrwy
   userStatus:
@@ -29,10 +29,10 @@ properties:
       id: hmw3co8pjszgj
     minItems: 2
     items:
-      $ref: ../masks/matchStatus.yaml
+      $ref: ./matchStatus.yaml
       x-stoplight:
         id: cuf40ovv2gt87
   conversationStarters:
-    $ref: ./ConversationStarter.yaml
+    $ref: ./ConversationStarterCollection.yaml
     x-stoplight:
       id: 5rxxwsjqh0sja

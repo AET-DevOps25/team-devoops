@@ -11,7 +11,7 @@ required:
   - preferences
 properties:
   userID:
-    $ref: ../values/userID.yaml
+    $ref: ./userID.yaml
     x-stoplight:
       id: n4wdcfrmzx0br
   date:
@@ -25,14 +25,14 @@ properties:
     x-stoplight:
       id: nm1ht2n4e7m9o
     items:
-      $ref: ../values/timeslot.yaml
+      $ref: ./timeslot.yaml
       x-stoplight:
         id: v8jsbc5jl29pg
   location:
-    $ref: ../values/location.yaml
+    $ref: ./location.yaml
     x-stoplight:
       id: cgv3s59nnkhtc
   preferences:
-    $ref: ../values/matchPreferences.yaml
+    $ref: ./matchPreferences.yaml
     x-stoplight:
       id: 7f1ocyx4ugwp8
