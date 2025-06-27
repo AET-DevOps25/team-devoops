@@ -21,8 +21,10 @@ jobs:
 
       - name: Make Scripts Executable
         run: |
-          chmod +x api/scripts/install_tools.sh
+          chmod +x api/scripts/gen_docs.sh
           chmod +x api/scripts/gen_spring.sh
+          chmod +x api/scripts/gen_typescript.sh
+          chmod +x api/scripts/install_tools.sh
           chmod +x api/scripts/lint.sh
         
       - name: Install Tools
@@ -32,9 +34,17 @@ jobs:
       - name: Lint
         run: ./api/scripts/lint.sh
         shell: bash
+        
+      - name: Generate Docs
+        run: ./api/scripts/gen_docs.sh
+        shell: bash
 
       - name: Generate Spring Code
         run: ./api/scripts/gen_spring.sh
+        shell: bash
+
+      - name: Generate api.ts
+        run: ./api/scripts/gen_typescript.sh
         shell: bash
 
       - name: Setup Git
