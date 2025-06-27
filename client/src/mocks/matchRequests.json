@@ -1,0 +1,144 @@
+{
+  "matches": [
+    {
+      "requestID": "e4619679-f5d9-4eff-9f79-bbded6130bb1",
+      "userID": "2c3821b8-1cdb-4b77-bcd8-a1da701e46aa",
+      "groupID": "ec414289-a6cd-4a76-a6d7-c7f42c7f1517",
+      "date": "2024-03-20",
+      "location": "garching",
+      "preferences": {
+        "degreePref": true,
+        "agePref": true,
+        "genderPref": false
+      },
+      "timeslots": [9, 10, 11, 12],
+      "status": "PENDING"
+    },
+    {
+      "requestID": "f5720780-g6ea-5fgg-0g80-ccdef7241cc2",
+      "userID": "3d4932c9-2dec-5c88-cde9-b2eb812f57bb",
+      "groupID": "fd525390-b7de-5b87-b7e8-d8g53d8g2628",
+      "date": "2024-03-21",
+      "location": "arcisstr",
+      "preferences": {
+        "degreePref": false,
+        "agePref": true,
+        "genderPref": true
+      },
+      "timeslots": [11, 12, 13, 14],
+      "status": "MATCHED"
+    },
+    {
+      "requestID": "g6831891-h7fb-6ghh-1h91-ddef8352dd3",
+      "userID": "4e5a43da-3efd-6d99-def0-c3fc923g68cc",
+      "groupID": "ge6364a1-c8ef-6c98-c8f9-e9h64e9h3739",
+      "date": "2024-03-19",
+      "location": "garching",
+      "preferences": {
+        "degreePref": true,
+        "agePref": false,
+        "genderPref": true
+      },
+      "timeslots": [8, 9, 10, 11, 12, 13],
+      "status": "UNMATCHABLE"
+    },
+    {
+      "requestID": "h7942902-i8gc-7hii-2i02-eef9463ee4",
+      "userID": "5f6b54eb-4fge-7ea0-efg1-d4gd034h79dd",
+      "groupID": "hf7475b2-d9fg-7da9-d9g0-f0i75f0i4840",
+      "date": "2024-03-22",
+      "location": "arcisstr",
+      "preferences": {
+        "degreePref": false,
+        "agePref": false,
+        "genderPref": false
+      },
+      "timeslots": [10, 11, 12],
+      "status": "PENDING"
+    },
+    {
+      "requestID": "i8053013-j9hd-8ijj-3j13-ffga574ff5",
+      "userID": "6g7c65fc-5ghf-8fb1-fgh2-e5he145i80ee",
+      "groupID": "ig8586c3-e0gh-8eb0-e0h1-g1j86g1j5951",
+      "date": "2024-03-23",
+      "location": "garching",
+      "preferences": {
+        "degreePref": true,
+        "agePref": true,
+        "genderPref": true
+      },
+      "timeslots": [12, 13, 14, 15, 16],
+      "status": "REMATCH"
+    },
+    {
+      "requestID": "j9164124-k0ie-9jkk-4k24-ggfb685gg6",
+      "userID": "7h8d76gd-6hig-9gc2-ghi3-f6if256j91ff",
+      "groupID": "jh9697d4-f1hi-9fc1-f1i2-h2k97h2k6062",
+      "date": "2024-03-18",
+      "location": "arcisstr",
+      "preferences": {
+        "degreePref": true,
+        "agePref": false,
+        "genderPref": true
+      },
+      "timeslots": [9, 10, 11],
+      "status": "EXPIRED"
+    },
+    {
+      "requestID": "k0275235-l1jf-0kll-5l35-hhgc796hh7",
+      "userID": "8i9e87he-7ijh-0hd3-hij4-g7jg367k02gg",
+      "groupID": "ki0708e5-g2ij-0gd2-g2j3-i3l08i3l7173",
+      "date": "2024-03-24",
+      "location": "garching",
+      "preferences": {
+        "degreePref": false,
+        "agePref": true,
+        "genderPref": false
+      },
+      "timeslots": [10, 11, 12, 13, 14, 15],
+      "status": "PENDING"
+    },
+    {
+      "requestID": "l1386346-m2kg-1lmm-6m46-iihd807ii8",
+      "userID": "9j0f98if-8jki-1ie4-ijk5-h8kh478l13hh",
+      "groupID": "lj1819f6-h3jk-1he3-h3k4-j4m19j4m8284",
+      "date": "2024-03-25",
+      "location": "arcisstr",
+      "preferences": {
+        "degreePref": true,
+        "agePref": true,
+        "genderPref": true
+      },
+      "timeslots": [11, 12, 13],
+      "status": "MATCHED"
+    },
+    {
+      "requestID": "m2497457-n3lh-2mnn-7n57-jjie918jj9",
+      "userID": "0k1g09jg-9klj-2jf5-jkl6-i9li589m24ii",
+      "groupID": "mk2920g7-i4kl-2if4-i4l5-k5n20k5n9395",
+      "date": "2024-03-26",
+      "location": "garching",
+      "preferences": {
+        "degreePref": false,
+        "agePref": false,
+        "genderPref": true
+      },
+      "timeslots": [8, 9, 10, 11, 12],
+      "status": "PENDING"
+    },
+    {
+      "requestID": "n3508568-o4mi-3noo-8o68-kkjf029kk0",
+      "userID": "1l2h10kh-0lmk-3kg6-lm7-j0mj690n35jj",
+      "groupID": "nl3031h8-j5lm-3jg5-j5m6-l6o31l6o0406",
+      "date": "2024-03-27",
+      "location": "arcisstr",
+      "preferences": {
+        "degreePref": true,
+        "agePref": false,
+        "genderPref": false
+      },
+      "timeslots": [12, 13, 14, 15, 16],
+      "status": "UNMATCHABLE"
+    }
+  ]
+} 
