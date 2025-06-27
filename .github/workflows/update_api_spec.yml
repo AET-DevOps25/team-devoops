@@ -19,16 +19,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Lint
-        run: npx @redocly/cli lint api/openapi.yaml
-
       - name: Make Scripts Executable
         run: |
           chmod +x api/scripts/install_tools.sh
           chmod +x api/scripts/gen_spring.sh
+          chmod +x api/scripts/lint.sh
         
       - name: Install Tools
         run: ./api/scripts/install_tools.sh
+        shell: bash
+
+      - name: Lint
+        run: ./api/scripts/lint.sh
         shell: bash
 
       - name: Generate Spring Code
