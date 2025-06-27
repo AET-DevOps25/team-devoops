@@ -6,6 +6,11 @@ WORKDIR /app
 COPY build.gradle settings.gradle ./
 COPY src ./src
 
+# Copy only necessary files for generated dependencies
+COPY generated/build.gradle generated/settings.gradle ./generated/
+COPY generated/src ./generated/src
+COPY generated/gradle/libs.versions.toml ./generated/gradle/
+
 # Build the application
 RUN gradle clean bootJar --no-daemon
 
