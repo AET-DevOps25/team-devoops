@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# fail command if any part fails
+set -euo pipefail
 
 for path in matching user; do
 
