@@ -21,6 +21,9 @@ jobs:
       - name: Lint
         run: npx @redocly/cli lint api/openapi.yaml
 
+      - name: Make Scripts Executable
+        run: chmod +x api/scripts/gen_spring.sh
+
       - name: Generate Spring Code
         run: ./api/scripts/gen_spring.sh
         shell: bash
