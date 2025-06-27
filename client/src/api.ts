@@ -219,16 +219,219 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /**
-         * userID
-         * Format: uuid
-         * @description The unique ID of a single student in the Meet@Mensa system.
+         * ConversationStarter
+         * @description Object representing a conversation starter in the meet@mensa system
          */
-        userID: string;
+        ConversationStarter: {
+            prompt?: string;
+        };
+        /**
+         * ConversationStarterCollection
+         * @description Object representing a collection of conversation starters in the Meet@Mensa system.
+         */
+        ConversationStarterCollection: {
+            conversationsStarters?: components["schemas"]["ConversationStarter"][];
+        };
+        /**
+         * Group
+         * @description Object representing a group that has been matched in the Meet@Mensa system.
+         */
+        Group: {
+            groupID?: components["schemas"]["groupID"];
+            /**
+             * Format: date
+             * @description Date the group is scheduled to meet at
+             */
+            date?: string;
+            /** @description Timeslot the group is scheduled to meet at */
+            time?: components["schemas"]["timeslot"];
+            location?: components["schemas"]["location"];
+            userStatus?: components["schemas"]["MatchStatus"][];
+            conversationStarters?: components["schemas"]["ConversationStarterCollection"];
+        };
+        /**
+         * groupID
+         * Format: uuid
+         * @description The unique ID of a Group in the Meet@Mensa system.
+         */
+        groupID: string;
         /**
          * interest
          * @description String representing an interest a user has
          */
         interest: string;
+        /**
+         * inviteStatus
+         * @description Enumerator representing the status of a Invitation
+         *     | Value | Description |
+         *     ---------|----------|
+         *     | UNSENT | The system has not sent out this invitation yet |
+         *     | SENT | The system has sent out this invitation |
+         *     | CONFIRMED | The user has confirmed this invitation |
+         *     | REJECTED | The user has rejected this invitation |
+         *     | EXPIRED | The date for this invitation is in the past |
+         * @enum {unknown}
+         */
+        inviteStatus: "UNSENT" | "SENT" | "CONFIRMED" | "REJECTED" | "EXPIRED";
+        /**
+         * location
+         * @description Enumerator representing a mensa at which a meet can happen
+         *
+         *     | Value | Description |
+         *     ---------|----------|
+         *     | GARCHING | The Mensa at the TUM Garching Campus |
+         *     | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) |
+         *
+         * @enum {unknown}
+         */
+        location: "GARCHING" | "ARCISSTR";
+        /**
+         * Match
+         * @description Object representing a single match for a given user on a given date in the Meet@Mensa system.
+         */
+        Match: {
+            matchID: components["schemas"]["matchID"];
+            userID: components["schemas"]["userID"];
+            status: components["schemas"]["inviteStatus"];
+            group: components["schemas"]["Group"];
+        };
+        /**
+         * MatchCollection
+         * @description Object representing a collection of matches in the Meet@Mensa system.
+         */
+        MatchCollection: {
+            matches?: components["schemas"]["Match"];
+        };
+        /**
+         * matchID
+         * Format: uuid
+         * @description The unique ID of a Group in the Meet@Mensa system.
+         */
+        matchID: string;
+        /**
+         * MatchPreferences
+         * @description Object Representing a set of user preferences
+         */
+        MatchPreferences: {
+            /** @description Value | Meaning
+             *     ---------|---------
+             *     true | degree = same (priority)
+             *     false | degree = any (no priority) */
+            degreePref?: boolean;
+            /** @description Value | Meaning
+             *     ---------|---------
+             *     true | age = same (priority)
+             *     false | age = any (no priority) */
+            agePref?: boolean;
+            /** @description Value | Meaning
+             *     ---------|---------
+             *     true | gender = same (priority)
+             *     false | gender = any (no priority) */
+            genderPref?: boolean;
+        };
+        /**
+         * MatchRequest
+         * @description Object representing a request for matching a given user on a given date in the Meet@Mensa system.
+         */
+        MatchRequest: {
+            requestID: components["schemas"]["requestID"];
+            userID: components["schemas"]["userID"];
+            /**
+             * Format: date
+             * @description The date a user would like meet@mensa to find them a match
+             */
+            date: string;
+            timeslot: components["schemas"]["timeslot"][];
+            location: components["schemas"]["location"];
+            preferences: components["schemas"]["MatchPreferences"];
+            status: components["schemas"]["requestStatus"];
+        };
+        /**
+         * MatchRequestCollection
+         * @description Object representing a collection of match requests in the Meet@Mensa system.
+         */
+        MatchRequestCollection: {
+            requests?: components["schemas"]["MatchRequest"][];
+        };
+        /**
+         * MatchRequestNew
+         * @description Object representing a request for matching a given user on a given date in the Meet@Mensa system.
+         */
+        MatchRequestNew: {
+            userID: components["schemas"]["userID"];
+            /**
+             * Format: date
+             * @description The date a user would like meet@mensa to find them a match
+             */
+            date: string;
+            timeslot: components["schemas"]["timeslot"][];
+            location: components["schemas"]["location"];
+            preferences: components["schemas"]["MatchPreferences"];
+        };
+        /**
+         * MatchRequestUpdate
+         * @description Object representing a request for matching a given user on a given date in the Meet@Mensa system.
+         */
+        MatchRequestUpdate: {
+            userID?: components["schemas"]["userID"];
+            /**
+             * Format: date
+             * @description The date a user would like meet@mensa to find them a match
+             */
+            date?: string;
+            timeslot?: components["schemas"]["timeslot"][];
+            location?: components["schemas"]["location"];
+            preferences?: components["schemas"]["MatchPreferences"];
+        };
+        /** MatchStatus */
+        MatchStatus: {
+            userID?: components["schemas"]["userID"];
+            status?: components["schemas"]["inviteStatus"];
+        };
+        /**
+         * requestID
+         * Format: uuid
+         * @description The unique ID of a MatchRequest in the Meet@Mensa system.
+         */
+        requestID: string;
+        /**
+         * requestStatus
+         * @description Enumerator representing the status of a MatchRequest
+         *     | Value | Description |
+         *     ---------|----------|
+         *     | PENDING | The system has not attempted to match this request yet |
+         *     | MATCHED | The system has fulfilled this request |
+         *     | UNMATCHABLE | The system was unable to fulfill this request |
+         *     | REMATCH | The sytem should attempt to fulfill this request again (ex: group cancelled for lacking RSVPs) |
+         *     | EXPIRED | The date for this MatchRequest is in the past |
+         *
+         * @enum {unknown}
+         */
+        requestStatus: "PENDING" | "MATCHED" | "UNMATCHABLE" | "REMATCH" | "EXPIRED";
+        /**
+         * timeslot
+         * @description What times a user is available to be matched
+         *
+         *     Value | Start Time | End Time
+         *     ---------|----------|---------
+         *     | 1     | 10:00      | 10:15    |
+         *     | 2     | 10:15      | 10:30    |
+         *     | 3     | 10:30      | 10:45    |
+         *     | 4     | 10:45      | 11:00    |
+         *     | 5     | 11:00      | 11:15    |
+         *     | 6     | 11:15      | 11:30    |
+         *     | 7     | 11:30      | 11:45    |
+         *     | 8     | 11:45      | 12:00    |
+         *     | 9     | 12:00      | 12:15    |
+         *     | 10    | 12:15      | 12:30    |
+         *     | 11    | 12:30      | 12:45    |
+         *     | 12    | 12:45      | 13:00    |
+         *     | 13    | 13:00      | 13:15    |
+         *     | 14    | 13:15      | 13:30    |
+         *     | 15    | 13:30      | 13:45    |
+         *     | 16    | 13:45      | 14:00    |
+         */
+        timeslot: number;
         /**
          * User
          * @description Object representing a student user in the Meet@Mensa system.
@@ -275,50 +478,18 @@ export interface components {
             /** @description Short introduction text written by the user */
             bio: string;
         };
-        /** @description Object representing a student user in the Meet@Mensa system. */
-        UpdateUser: {
-            /**
-             * Format: email
-             * @description Users's e-mail
-             */
-            email?: string;
-            /**
-             * @description User's given name
-             * @example Max
-             */
-            firstname?: string;
-            /**
-             * @description User's surname
-             * @example Mustermann
-             */
-            lastname?: string;
-            /**
-             * Format: date
-             * @description User's date of birth
-             */
-            birthday?: string;
-            /**
-             * @description User's gender
-             * @default other
-             */
-            gender: string;
-            /**
-             * @description User's degree program
-             * @example msc_informatics
-             */
-            degree?: string;
-            /**
-             * @description What year User started their degree
-             * @example 2024
-             */
-            degreeStart?: number;
-            /** @description Array of a User's interests */
-            interests?: components["schemas"]["interest"][];
-            /** @description Short introduction text written by the user */
-            bio?: string;
+        /**
+         * UserCollection
+         * @description Object representing a collection of student user in the Meet@Mensa system.
+         */
+        UserCollection: {
+            users?: components["schemas"]["User"];
         };
-        /** @description Object representing a student user in the Meet@Mensa system. */
-        NewUser: {
+        /**
+         * UserNew
+         * @description Object representing a student user in the Meet@Mensa system.
+         */
+        UserNew: {
             /**
              * Format: email
              * @description Users's e-mail
@@ -360,187 +531,56 @@ export interface components {
             bio: string;
         };
         /**
-         * timeslot
-         * @description What times a user is available to be matched
-         *
-         *     Value | Start Time | End Time
-         *     ---------|----------|---------
-         *     | 1     | 10:00      | 10:15    |
-         *     | 2     | 10:15      | 10:30    |
-         *     | 3     | 10:30      | 10:45    |
-         *     | 4     | 10:45      | 11:00    |
-         *     | 5     | 11:00      | 11:15    |
-         *     | 6     | 11:15      | 11:30    |
-         *     | 7     | 11:30      | 11:45    |
-         *     | 8     | 11:45      | 12:00    |
-         *     | 9     | 12:00      | 12:15    |
-         *     | 10    | 12:15      | 12:30    |
-         *     | 11    | 12:30      | 12:45    |
-         *     | 12    | 12:45      | 13:00    |
-         *     | 13    | 13:00      | 13:15    |
-         *     | 14    | 13:15      | 13:30    |
-         *     | 15    | 13:30      | 13:45    |
-         *     | 16    | 13:45      | 14:00    |
+         * UserUpdate
+         * @description Object representing a student user in the Meet@Mensa system.
          */
-        timeslot: number;
-        /**
-         * location
-         * @description Enumerator representing a mensa at which a meet can happen
-         *
-         *     Value | Description |
-         *     ---------|----------|
-         *     | GARCHING | The Mensa at the TUM Garching Campus |
-         *     | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) |
-         *
-         * @enum {unknown}
-         */
-        location: "GARCHING" | "ARCISSTR";
-        /**
-         * matchPreferences
-         * @description Object Representing a set of user preferences
-         */
-        matchPreferences: {
-            /** @description Value | Meaning
-             *     ---------|---------
-             *     true | degree = same (priority)
-             *     false | degree = any (no priority) */
-            degreePref?: boolean;
-            /** @description Value | Meaning
-             *     ---------|---------
-             *     true | age = same (priority)
-             *     false | age = any (no priority) */
-            agePref?: boolean;
-            /** @description Value | Meaning
-             *     ---------|---------
-             *     true | gender = same (priority)
-             *     false | gender = any (no priority) */
-            genderPref?: boolean;
-        };
-        /** @description Object representing a request for matching a given user on a given date in the Meet@Mensa system. */
-        NewMatchRequest: {
-            userID: components["schemas"]["userID"];
+        UserUpdate: {
+            /**
+             * Format: email
+             * @description Users's e-mail
+             */
+            email?: string;
+            /**
+             * @description User's given name
+             * @example Max
+             */
+            firstname?: string;
+            /**
+             * @description User's surname
+             * @example Mustermann
+             */
+            lastname?: string;
             /**
              * Format: date
-             * @description The date a user would like meet@mensa to find them a match
+             * @description User's date of birth
              */
-            date: string;
-            timeslot: components["schemas"]["timeslot"][];
-            location: components["schemas"]["location"];
-            preferences: components["schemas"]["matchPreferences"];
+            birthday?: string;
+            /**
+             * @description User's gender
+             * @default other
+             */
+            gender: string;
+            /**
+             * @description User's degree program
+             * @example msc_informatics
+             */
+            degree?: string;
+            /**
+             * @description What year User started their degree
+             * @example 2024
+             */
+            degreeStart?: number;
+            /** @description Array of a User's interests */
+            interests?: components["schemas"]["interest"][];
+            /** @description Short introduction text written by the user */
+            bio?: string;
         };
         /**
-         * matchID
+         * userID
          * Format: uuid
-         * @description The unique ID of a Group in the Meet@Mensa system.
+         * @description The unique ID of a single student in the Meet@Mensa system.
          */
-        matchID: string;
-        /**
-         * inviteStatus
-         * @description Enumerator representing the status of a Invitation
-         *     Value | Description |
-         *     ---------|----------|
-         *     | UNSENT | The system has not sent out this invitation yet |
-         *     | SENT | The system has sent out this invitation |
-         *     | CONFIRMED | The user has confirmed this invitation |
-         *     | REJECTED | The user has rejected this invitation |
-         *     | EXPIRED | The date for this invitation is in the past |
-         * @enum {unknown}
-         */
-        inviteStatus: "UNSENT" | "SENT" | "CONFIRMED" | "REJECTED" | "EXPIRED";
-        /**
-         * groupID
-         * Format: uuid
-         * @description The unique ID of a Group in the Meet@Mensa system.
-         */
-        groupID: string;
-        /** matchStatus */
-        matchStatus: {
-            userID?: components["schemas"]["userID"];
-            status?: components["schemas"]["inviteStatus"];
-        };
-        /**
-         * ConversationStarter
-         * @description Object representing a conversation starter in the meet@mensa system
-         */
-        ConversationStarter: {
-            prompt?: string;
-        };
-        /**
-         * Group
-         * @description Object representing a group that has been matched in the Meet@Mensa system.
-         */
-        Group: {
-            groupID?: components["schemas"]["groupID"];
-            /**
-             * Format: date
-             * @description Date the group is scheduled to meet at
-             */
-            date?: string;
-            /** @description Timeslot the group is scheduled to meet at */
-            time?: components["schemas"]["timeslot"];
-            location?: components["schemas"]["location"];
-            userStatus?: components["schemas"]["matchStatus"][];
-            conversationStarters?: components["schemas"]["ConversationStarter"];
-        };
-        /**
-         * Match
-         * @description Object representing a single match for a given user on a given date in the Meet@Mensa system.
-         */
-        Match: {
-            matchID: components["schemas"]["matchID"];
-            userID: components["schemas"]["userID"];
-            status: components["schemas"]["inviteStatus"];
-            group: components["schemas"]["Group"];
-        };
-        /**
-         * requestID
-         * Format: uuid
-         * @description The unique ID of a MatchRequest in the Meet@Mensa system.
-         */
-        requestID: string;
-        /**
-         * requestStatus
-         * @description Enumerator representing the status of a MatchRequest
-         *     Value | Description |
-         *     ---------|----------|
-         *     | PENDING | The system has not attempted to match this request yet |
-         *     | MATCHED | The system has fulfilled this request |
-         *     | UNMATCHABLE | The system was unable to fulfill this request |
-         *     | REMATCH | The sytem should attempt to fulfill this request again (ex: group cancelled for lacking RSVPs) |
-         *     | EXPIRED | The date for this MatchRequest is in the past |
-         *
-         * @enum {unknown}
-         */
-        requestStatus: "PENDING" | "MATCHED" | "UNMATCHABLE" | "REMATCH" | "EXPIRED";
-        /**
-         * MatchRequest
-         * @description Object representing a request for matching a given user on a given date in the Meet@Mensa system.
-         */
-        MatchRequest: {
-            requestID: components["schemas"]["requestID"];
-            userID: components["schemas"]["userID"];
-            /**
-             * Format: date
-             * @description The date a user would like meet@mensa to find them a match
-             */
-            date: string;
-            timeslot: components["schemas"]["timeslot"][];
-            location: components["schemas"]["location"];
-            preferences: components["schemas"]["matchPreferences"];
-            status: components["schemas"]["requestStatus"];
-        };
-        /** @description Object representing a request for matching a given user on a given date in the Meet@Mensa system. */
-        UpdateMatchRequest: {
-            userID?: components["schemas"]["userID"];
-            /**
-             * Format: date
-             * @description The date a user would like meet@mensa to find them a match
-             */
-            date?: string;
-            timeslot?: components["schemas"]["timeslot"][];
-            location?: components["schemas"]["location"];
-            preferences?: components["schemas"]["matchPreferences"];
-        };
+        userID: string;
     };
     responses: {
         /** @description Authentication failed due to missing or invalid OAuth2 token.
@@ -620,7 +660,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["UpdateUser"];
+                "application/json": components["schemas"]["UserUpdate"];
             };
         };
         responses: {
@@ -671,7 +711,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["NewUser"];
+                "application/json": components["schemas"]["UserNew"];
             };
         };
         responses: {
@@ -681,7 +721,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["userID"];
+                    "application/json": components["schemas"]["User"];
                 };
             };
             400: components["responses"]["BadRequestError"];
@@ -704,7 +744,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["NewMatchRequest"];
+                "application/json": components["schemas"]["MatchRequestNew"];
             };
         };
         responses: {
@@ -737,9 +777,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        matches?: components["schemas"]["Match"][];
-                    };
+                    "application/json": components["schemas"]["MatchCollection"];
                 };
             };
             400: components["responses"]["BadRequestError"];
@@ -765,9 +803,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        matches?: components["schemas"]["MatchRequest"][];
-                    };
+                    "application/json": components["schemas"]["MatchRequestCollection"];
                 };
             };
             400: components["responses"]["BadRequestError"];
@@ -787,11 +823,11 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["UpdateMatchRequest"];
+                "application/json": components["schemas"]["MatchRequestUpdate"];
             };
         };
         responses: {
-            /** @description MatchRequest cannot be updated since it has already been fulfilled! */
+            /** @description Ok */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -803,7 +839,7 @@ export interface operations {
             400: components["responses"]["BadRequestError"];
             401: components["responses"]["UnauthorizedError"];
             404: components["responses"]["NotFoundError"];
-            /** @description Not Acceptable */
+            /** @description MatchRequest cannot be updated since it has already been fulfilled! */
             406: {
                 headers: {
                     [name: string]: unknown;
@@ -892,9 +928,7 @@ export interface operations {
         /** @description Request Conversation starter for these users */
         requestBody?: {
             content: {
-                "application/json": {
-                    users?: components["schemas"]["User"][];
-                };
+                "application/json": components["schemas"]["UserCollection"];
             };
         };
         responses: {
@@ -904,9 +938,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        conversationStarters?: components["schemas"]["ConversationStarter"];
-                    };
+                    "application/json": components["schemas"]["ConversationStarterCollection"];
                 };
             };
             400: components["responses"]["BadRequestError"];
