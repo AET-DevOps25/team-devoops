@@ -26,22 +26,29 @@ James Stark
 
 @@ All @@
 - remove model.yaml from subfolders ../models/{collections | values | masks | objects}/model
-+ insert model.yaml into to new flattened model folder ../models/model
++ insert entry for each model into openapi.yaml
 + update refernces to point at new flattened model
 # this helps prevent openapi-codegen from generating multiple model files for each relative path
+
+@ Update / New @@
+- remove all models with template NewObject
+- remove all models with template UpdateObject
++ insert models with template ObjectNew
++ insert models with template ObjectUpdate
+# this helps keep things together alphabetically
 
 ```
 
 ### Paths
 - Replace {array[Object]} with ObjectCollections
     - this should not change return types, just make code-generation cleaner
-- updated refs to point to new flatend model directory
+- updated refs to point to new flatend models in Openapi.yaml
 
 ``` diff
 
 @@ All @@
 - remove model references to subfolders ../models/{collections | values | masks | objects}/model
-+ insert model references to new flattened model folder ../models/model
++ insert model references to new flattened structure within openapi.yaml
 # this helps prevent openapi-codegen from generating multiple model files for each relative path
 
 @@ /api/v2/matching/matches/{user-id} GET @@
