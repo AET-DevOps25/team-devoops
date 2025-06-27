@@ -1,7 +1,22 @@
 #!/bin/bash
 
+# generate code and build files based on openapi spec for springboot backend services
+
+# dependencies:
+#   - npm:
+#       - @openapitools/openapi-generator-cli
+#       - @redocly/cli
+#   - other:
+#       - gradle
+
+# echo linting
+echo "Linting api/openapi.yaml..."
+
 # fail command if any part fails
 set -euo pipefail
+
+# lint openapi spec
+redocly lint api/openapi.yaml
 
 for path in matching user gateway; do
 
