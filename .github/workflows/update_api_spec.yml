@@ -4,6 +4,9 @@ name: Update API Spec
 # This workflow is triggered only when called by another workflow
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'api/openapi.yaml'
 
 jobs:
 
