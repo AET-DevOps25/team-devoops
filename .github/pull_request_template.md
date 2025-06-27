@@ -9,6 +9,7 @@
 - [ ] 🚀 Performance improvement
 - [ ] ✅ Test addition/update
 - [ ] 🧹 Chore/maintenance
+- [ ] 📐 API Spec update
 - [ ] Other (please describe):
 
 ## Changes
@@ -26,6 +27,7 @@
 - [ ] My changes generate no new warnings
 - [ ] I have added tests that prove my fix is effective or that my feature works
 - [ ] New and existing unit tests pass locally with my changes
+- [ ] I have updated the API spec to reflect any changes my code makes
 
 ## Related Issues
 
