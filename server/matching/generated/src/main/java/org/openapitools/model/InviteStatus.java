@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Enumerator representing the status of a Invitation | Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:54:00.939458997+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:14:10.917196655Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public enum InviteStatus {
   
   UNSENT("UNSENT"),
