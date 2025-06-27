@@ -10,6 +10,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -25,9 +27,8 @@ interface MatchRequestCardProps {
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
+    weekday: 'short',
+    month: 'short',
     day: 'numeric',
   });
 };
@@ -103,6 +104,8 @@ const getMensaImage = (location: string) => {
 
 const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDelete }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleCancelClick = () => setConfirmOpen(true);
   const handleCloseDialog = () => setConfirmOpen(false);
@@ -113,114 +116,180 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
 
   return (
     <Paper
-      elevation={2}
+      elevation={3}
       sx={{
-        p: 2,
+        maxWidth: 400,
+        width: '100%',
         mb: 2,
-        display: 'flex',
-        gap: 2,
-        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 2,
+        transition: 'all 0.3s ease-in-out',
+        '&:hover': {
+          elevation: 6,
+          transform: 'translateY(-2px)',
+        },
       }}
     >
+      {/* Mensa Image */}
       <Box
         sx={{
-          width: 120,
-          height: 120,
-          borderRadius: 1,
-          flexShrink: 0,
+          width: '100%',
+          height: 160,
+          position: 'relative',
           overflow: 'hidden',
-          bgcolor: 'grey.100',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
         }}
       >
         <img
           src={getMensaImage(matchRequest.location)}
           alt={matchRequest.location}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
         />
+        {/* Status badge overlay */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+          }}
+        >
+          <Chip
+            label={matchRequest.status}
+            color={getStatusColor(matchRequest.status)}
+            size="small"
+            sx={{
+              fontWeight: 'bold',
+              fontSize: '0.75rem',
+            }}
+          />
+        </Box>
       </Box>
 
-      <Box sx={{ flexGrow: 1 }}>
-        <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}
-        >
-          <Typography variant="h6">
-            {formatLocation(matchRequest.location)} - {formatDate(matchRequest.date)}
-          </Typography>
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            onClick={handleCancelClick}
+      {/* Content */}
+      <Box sx={{ p: 2 }}>
+        {/* Mensa name and date */}
+        <Box sx={{ mb: 2 }}>
+          <Typography
+            variant="h6"
             sx={{
-              borderColor: 'error.main',
-              color: 'error.main',
-              '&:hover': {
-                borderColor: 'error.dark',
-                backgroundColor: 'error.light',
-                color: 'error.dark',
-              },
+              fontWeight: 600,
+              mb: 0.5,
+              color: 'text.primary',
             }}
           >
-            Cancel
-          </Button>
+            {formatLocation(matchRequest.location)}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              fontWeight: 500,
+            }}
+          >
+            {formatDate(matchRequest.date)}
+          </Typography>
         </Box>
 
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          Available times: {formatTimeslots(matchRequest.timeslots)}
-        </Typography>
-
+        {/* Available times */}
         <Box sx={{ mb: 2 }}>
-          <Grid container spacing={1}>
-            <Grid item>
-              <Chip
-                icon={matchRequest.preferences.degreePref ? <CheckCircleIcon /> : <CancelIcon />}
-                label={matchRequest.preferences.degreePref ? 'Same Degree' : 'Any Degree'}
-                color="default"
-                variant={matchRequest.preferences.degreePref ? 'filled' : 'outlined'}
-                size="small"
-              />
-            </Grid>
-            <Grid item>
-              <Chip
-                icon={matchRequest.preferences.agePref ? <CheckCircleIcon /> : <CancelIcon />}
-                label={matchRequest.preferences.agePref ? 'Similar Age' : 'Any Age'}
-                color="default"
-                variant={matchRequest.preferences.agePref ? 'filled' : 'outlined'}
-                size="small"
-              />
-            </Grid>
-            <Grid item>
-              <Chip
-                icon={matchRequest.preferences.genderPref ? <CheckCircleIcon /> : <CancelIcon />}
-                label={matchRequest.preferences.genderPref ? 'Same Gender' : 'Any Gender'}
-                color="default"
-                variant={matchRequest.preferences.genderPref ? 'filled' : 'outlined'}
-                size="small"
-              />
-            </Grid>
-          </Grid>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mb: 1,
+              fontWeight: 500,
+            }}
+          >
+            Available times:
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'primary.main',
+              fontWeight: 600,
+              fontSize: '0.875rem',
+            }}
+          >
+            {formatTimeslots(matchRequest.timeslots)}
+          </Typography>
         </Box>
 
-        <Chip
-          label={matchRequest.status}
-          color={getStatusColor(matchRequest.status)}
-          size="small"
-        />
+        {/* Preferences chips */}
+        <Box sx={{ mb: 2 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mb: 1,
+              fontWeight: 500,
+            }}
+          >
+            Preferences:
+          </Typography>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+            <Chip
+              icon={matchRequest.preferences.degreePref ? <CheckCircleIcon /> : <CancelIcon />}
+              label={matchRequest.preferences.degreePref ? 'Same Degree' : 'Any Degree'}
+              color={matchRequest.preferences.degreePref ? 'primary' : 'default'}
+              variant={matchRequest.preferences.degreePref ? 'filled' : 'outlined'}
+              size="small"
+              sx={{ fontSize: '0.75rem' }}
+            />
+            <Chip
+              icon={matchRequest.preferences.agePref ? <CheckCircleIcon /> : <CancelIcon />}
+              label={matchRequest.preferences.agePref ? 'Similar Age' : 'Any Age'}
+              color={matchRequest.preferences.agePref ? 'primary' : 'default'}
+              variant={matchRequest.preferences.agePref ? 'filled' : 'outlined'}
+              size="small"
+              sx={{ fontSize: '0.75rem' }}
+            />
+            <Chip
+              icon={matchRequest.preferences.genderPref ? <CheckCircleIcon /> : <CancelIcon />}
+              label={matchRequest.preferences.genderPref ? 'Same Gender' : 'Any Gender'}
+              color={matchRequest.preferences.genderPref ? 'primary' : 'default'}
+              variant={matchRequest.preferences.genderPref ? 'filled' : 'outlined'}
+              size="small"
+              sx={{ fontSize: '0.75rem' }}
+            />
+          </Box>
+        </Box>
 
-        <Dialog open={confirmOpen} onClose={handleCloseDialog}>
-          <DialogTitle>Cancel Match Request</DialogTitle>
-          <DialogContent>Are you sure you want to delete this match request?</DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Close</Button>
-            <Button onClick={handleConfirmDelete} color="error" variant="contained">
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
+        {/* Cancel button */}
+        <Button
+          variant="outlined"
+          color="error"
+          size="small"
+          onClick={handleCancelClick}
+          fullWidth
+          sx={{
+            borderColor: 'error.main',
+            color: 'error.main',
+            fontWeight: 600,
+            '&:hover': {
+              borderColor: 'error.dark',
+              backgroundColor: 'error.light',
+              color: 'error.dark',
+            },
+          }}
+        >
+          Cancel Request
+        </Button>
       </Box>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmOpen} onClose={handleCloseDialog}>
+        <DialogTitle>Cancel Match Request</DialogTitle>
+        <DialogContent>Are you sure you want to delete this match request?</DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Close</Button>
+          <Button onClick={handleConfirmDelete} color="error" variant="contained">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };

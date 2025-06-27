@@ -39,6 +39,37 @@ function Main() {
         palette: {
           mode: mode || (prefersDarkMode ? 'dark' : 'light'),
         },
+        typography: {
+          // Reduce all font sizes by about 12.5%
+          fontSize: 14, // Default is 16
+          h1: {
+            fontSize: '2.625rem', // Reduced from 3rem
+          },
+          h2: {
+            fontSize: '2.1875rem', // Reduced from 2.5rem
+          },
+          h3: {
+            fontSize: '1.75rem', // Reduced from 2rem
+          },
+          h4: {
+            fontSize: '1.53125rem', // Reduced from 1.75rem
+          },
+          h5: {
+            fontSize: '1.3125rem', // Reduced from 1.5rem
+          },
+          h6: {
+            fontSize: '1.09375rem', // Reduced from 1.25rem
+          },
+          body1: {
+            fontSize: '0.875rem', // Reduced from 1rem
+          },
+          body2: {
+            fontSize: '0.8125rem', // Reduced from 0.9375rem
+          },
+          button: {
+            fontSize: '0.875rem', // Reduced from 1rem
+          },
+        },
       }),
     [mode, prefersDarkMode]
   );

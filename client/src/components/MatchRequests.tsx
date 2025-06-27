@@ -10,6 +10,7 @@ import {
   InputLabel,
   CircularProgress,
   SelectChangeEvent,
+  Grid,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {
@@ -108,7 +109,7 @@ const MatchRequests = () => {
     <Box>
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
             <FormControl size="small" sx={{ minWidth: 120 }}>
               <InputLabel id="sort-select-label">Sort by</InputLabel>
               <Select
@@ -146,15 +147,13 @@ const MatchRequests = () => {
           No match requests found. Create your first match request to get started!
         </Typography>
       ) : (
-        <Box>
+        <Grid container spacing={3} justifyContent="flex-start">
           {sortedMatchRequests.map((matchRequest) => (
-            <MatchRequestCard
-              key={matchRequest.requestID}
-              matchRequest={matchRequest}
-              onDelete={handleDelete}
-            />
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3} key={matchRequest.requestID}>
+              <MatchRequestCard matchRequest={matchRequest} onDelete={handleDelete} />
+            </Grid>
           ))}
-        </Box>
+        </Grid>
       )}
 
       <CreateMatchRequestDialog
