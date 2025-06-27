@@ -23,7 +23,13 @@ jobs:
         run: npx @redocly/cli lint api/openapi.yaml
 
       - name: Make Scripts Executable
-        run: chmod +x api/scripts/gen_spring.sh
+        run: |
+          chmod +x api/scripts/install_tools.sh
+          chmod +x api/scripts/gen_spring.sh
+        
+      - name: Install Tools
+        run: ./api/scrips/install_tools.sh
+        shell: bash
 
       - name: Generate Spring Code
         run: ./api/scripts/gen_spring.sh

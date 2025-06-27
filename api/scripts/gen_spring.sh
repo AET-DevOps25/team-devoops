@@ -9,9 +9,6 @@
 #   - other:
 #       - gradle
 
-# echo linting
-echo "Linting api/openapi.yaml..."
-
 # fail command if any part fails
 set -euo pipefail
 
