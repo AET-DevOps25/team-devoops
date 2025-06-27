@@ -1,0 +1,10 @@
+x-stoplight:
+  id: 4bem9fq0uukzk
+type: object
+description: Object representing a collection of matches in the Meet@Mensa system.
+properties:
+  matches:
+    $ref: ../objects/Match.yaml
+    x-stoplight:
+      id: xxfpxm2j35k81
+title: MatchCollection

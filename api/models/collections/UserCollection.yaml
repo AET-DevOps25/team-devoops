@@ -1,0 +1,10 @@
+x-stoplight:
+  id: 8qy8pit8jdvq3
+type: object
+description: Object representing a collection of student user in the Meet@Mensa system.
+properties:
+  users:
+    $ref: ../objects/User.yaml
+    x-stoplight:
+      id: l8a1hngdfmgzr
+title: UserCollection

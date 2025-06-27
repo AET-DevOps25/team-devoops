@@ -2,6 +2,7 @@ x-stoplight:
   id: 3k8e2egr16sfx
 type: object
 description: Object representing a request for matching a given user on a given date in the Meet@Mensa system.
+title: NewMatchRequest
 required:
   - userID
   - date

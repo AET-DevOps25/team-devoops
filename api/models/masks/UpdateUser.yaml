@@ -1,4 +1,4 @@
-title: ''
+title: UpdateUser
 x-stoplight:
   id: heva6gjdd7b3p
 type: object
@@ -41,43 +41,24 @@ properties:
     description: User's degree program
     example: msc_informatics
   degreeStart:
-    type: >-
-      integer
+    type: integer
     x-stoplight:
-      id: >-
-        kjpj2awg3hh63
+      id: kjpj2awg3hh63
     minimum: 2000
     maximum: 2100
-    description: >-
-      What
-      year
-      User
-      started
-      their
-      degree
+    description: What year User started their degree
     example: 2024
   interests:
     x-stoplight:
-      id: >-
-        d72bsbld6n0jl
-    type: >-
-      array
-    description: >-
-      Array
-      of
-      a
-      User's
-      interests
+      id: d72bsbld6n0jl
+    type: array
+    description: Array of a User's interests
     items:
-      $ref: >-
-        ../values/interest.yaml
+      $ref: ../values/interest.yaml
       x-stoplight:
-        id: >-
-          dnew96thyaji2
+        id: dnew96thyaji2
   bio:
-    type: >-
-      string
+    type: string
     x-stoplight:
-      id: >-
-        pue21yfv8sss5
+      id: pue21yfv8sss5
     description: Short introduction text written by the user

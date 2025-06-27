@@ -194,14 +194,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  matches:
-                    x-stoplight:
-                      id: khem7b58qtvyr
-                    type: array
-                    items:
-                      $ref: ./models/objects/Match.yaml
+                $ref: ./models/collections/MatchCollection.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
@@ -223,12 +216,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  matches:
-                    type: array
-                    items:
-                      $ref: ./models/objects/MatchRequest.yaml
+                $ref: ./models/collections/MatchRequestCollection.yaml
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':

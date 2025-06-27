@@ -2,6 +2,7 @@ type: object
 x-stoplight:
   id: lbk154l1vchxi
 description: Object representing a request for matching a given user on a given date in the Meet@Mensa system.
+title: UpdateMatchRequest
 properties:
   userID:
     $ref: ../values/userID.yaml
