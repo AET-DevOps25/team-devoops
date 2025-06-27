@@ -25,7 +25,7 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("get_api_v2_matching_matches_userID_200_response")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:19.777600418+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
 public class GetApiV2MatchingMatchesUserID200Response {
 
   @Valid
