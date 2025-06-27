@@ -28,7 +28,7 @@ jobs:
           chmod +x api/scripts/gen_spring.sh
         
       - name: Install Tools
-        run: ./api/scrips/install_tools.sh
+        run: ./api/scripts/install_tools.sh
         shell: bash
 
       - name: Generate Spring Code
