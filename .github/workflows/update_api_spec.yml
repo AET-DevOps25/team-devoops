@@ -1,0 +1,42 @@
+# This workflow should generate code based on the openapi.yaml and commit it to the branch.
+name: Update API Spec
+
+# This workflow is triggered only when called by another workflow
+on:
+  push:
+    paths:
+      - 'api/openapi.yaml'
+
+jobs:
+
+  generate:
+    name: Generate code from OpenAPI spec
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint
+        run: npx @redocly/cli lint api/openapi.yaml
+
+      - name: Generate Spring Code
+        run: ./api/scripts/gen_spring.sh
+        shell: bash
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Stage Generated Code
+        run: |
+          git add server/matching/generated
+          git add server/user/generated
+          git add server/gateway/generated
+
+      - name: Commit & Push Generated Code
+        run: | 
+          git commit -m "gen: generate code based on latest version of openapi.yaml"
+          git push
