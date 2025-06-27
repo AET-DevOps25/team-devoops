@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:20:40.516697276Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:25:26.874700909Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "User", description = "Paths belonging to the User microservice")
 public interface UserApi {

@@ -21,7 +21,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchCollection", description = "Object representing a collection of matches in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:20:24.345994145Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:24:55.320955675Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchCollection {
 
   private @Nullable Match matches;
