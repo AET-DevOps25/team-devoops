@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.openapitools.model.MatchPreferences2;
+import org.openapitools.model.MatchPreferences;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -28,15 +28,15 @@ import javax.annotation.Generated;
  * Object representing a request for matching a given user on a given date in the Meet@Mensa system.
  */
 
-@Schema(name = "put_api_v2_matching_request_request_id_request", description = "Object representing a request for matching a given user on a given date in the Meet@Mensa system.")
-@JsonTypeName("put_api_v2_matching_request_request_id_request")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
-public class PutApiV2MatchingRequestRequestIdRequest {
+@Schema(name = "post_api_v2_matching_request_request", description = "Object representing a request for matching a given user on a given date in the Meet@Mensa system.")
+@JsonTypeName("post_api_v2_matching_request_request")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:35.907606713+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class PostApiV2MatchingRequestRequest {
 
-  private @Nullable UUID userID;
+  private UUID userID;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-  private @Nullable LocalDate date;
+  private LocalDate date;
 
   @Valid
   private List<@Min(1) @Max(16)Integer> timeslot = new ArrayList<>();
@@ -76,11 +76,26 @@ public class PutApiV2MatchingRequestRequestIdRequest {
     }
   }
 
-  private @Nullable LocationEnum location;
+  private LocationEnum location;
 
-  private @Nullable MatchPreferences2 preferences;
+  private MatchPreferences preferences;
 
-  public PutApiV2MatchingRequestRequestIdRequest userID(@Nullable UUID userID) {
+  public PostApiV2MatchingRequestRequest() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public PostApiV2MatchingRequestRequest(UUID userID, LocalDate date, List<@Min(1) @Max(16)Integer> timeslot, LocationEnum location, MatchPreferences preferences) {
+    this.userID = userID;
+    this.date = date;
+    this.timeslot = timeslot;
+    this.location = location;
+    this.preferences = preferences;
+  }
+
+  public PostApiV2MatchingRequestRequest userID(UUID userID) {
     this.userID = userID;
     return this;
   }
@@ -89,18 +104,18 @@ public class PutApiV2MatchingRequestRequestIdRequest {
    * The unique ID of a single student in the Meet@Mensa system.
    * @return userID
    */
-  @Valid 
-  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("userID")
-  public @Nullable UUID getUserID() {
+  public UUID getUserID() {
     return userID;
   }
 
-  public void setUserID(@Nullable UUID userID) {
+  public void setUserID(UUID userID) {
     this.userID = userID;
   }
 
-  public PutApiV2MatchingRequestRequestIdRequest date(@Nullable LocalDate date) {
+  public PostApiV2MatchingRequestRequest date(LocalDate date) {
     this.date = date;
     return this;
   }
@@ -109,23 +124,23 @@ public class PutApiV2MatchingRequestRequestIdRequest {
    * The date a user would like meet@mensa to find them a match
    * @return date
    */
-  @Valid 
-  @Schema(name = "date", description = "The date a user would like meet@mensa to find them a match", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "date", description = "The date a user would like meet@mensa to find them a match", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("date")
-  public @Nullable LocalDate getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(@Nullable LocalDate date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 
-  public PutApiV2MatchingRequestRequestIdRequest timeslot(List<@Min(1) @Max(16)Integer> timeslot) {
+  public PostApiV2MatchingRequestRequest timeslot(List<@Min(1) @Max(16)Integer> timeslot) {
     this.timeslot = timeslot;
     return this;
   }
 
-  public PutApiV2MatchingRequestRequestIdRequest addTimeslotItem(Integer timeslotItem) {
+  public PostApiV2MatchingRequestRequest addTimeslotItem(Integer timeslotItem) {
     if (this.timeslot == null) {
       this.timeslot = new ArrayList<>();
     }
@@ -137,8 +152,8 @@ public class PutApiV2MatchingRequestRequestIdRequest {
    * Get timeslot
    * @return timeslot
    */
-  
-  @Schema(name = "timeslot", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "timeslot", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("timeslot")
   public List<@Min(1) @Max(16)Integer> getTimeslot() {
     return timeslot;
@@ -148,7 +163,7 @@ public class PutApiV2MatchingRequestRequestIdRequest {
     this.timeslot = timeslot;
   }
 
-  public PutApiV2MatchingRequestRequestIdRequest location(@Nullable LocationEnum location) {
+  public PostApiV2MatchingRequestRequest location(LocationEnum location) {
     this.location = location;
     return this;
   }
@@ -157,18 +172,18 @@ public class PutApiV2MatchingRequestRequestIdRequest {
    * Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | 
    * @return location
    */
-  
-  @Schema(name = "location", description = "Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | ", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "location", description = "Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | ", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("location")
-  public @Nullable LocationEnum getLocation() {
+  public LocationEnum getLocation() {
     return location;
   }
 
-  public void setLocation(@Nullable LocationEnum location) {
+  public void setLocation(LocationEnum location) {
     this.location = location;
   }
 
-  public PutApiV2MatchingRequestRequestIdRequest preferences(@Nullable MatchPreferences2 preferences) {
+  public PostApiV2MatchingRequestRequest preferences(MatchPreferences preferences) {
     this.preferences = preferences;
     return this;
   }
@@ -177,14 +192,14 @@ public class PutApiV2MatchingRequestRequestIdRequest {
    * Get preferences
    * @return preferences
    */
-  @Valid 
-  @Schema(name = "preferences", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "preferences", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("preferences")
-  public @Nullable MatchPreferences2 getPreferences() {
+  public MatchPreferences getPreferences() {
     return preferences;
   }
 
-  public void setPreferences(@Nullable MatchPreferences2 preferences) {
+  public void setPreferences(MatchPreferences preferences) {
     this.preferences = preferences;
   }
 
@@ -196,12 +211,12 @@ public class PutApiV2MatchingRequestRequestIdRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PutApiV2MatchingRequestRequestIdRequest putApiV2MatchingRequestRequestIdRequest = (PutApiV2MatchingRequestRequestIdRequest) o;
-    return Objects.equals(this.userID, putApiV2MatchingRequestRequestIdRequest.userID) &&
-        Objects.equals(this.date, putApiV2MatchingRequestRequestIdRequest.date) &&
-        Objects.equals(this.timeslot, putApiV2MatchingRequestRequestIdRequest.timeslot) &&
-        Objects.equals(this.location, putApiV2MatchingRequestRequestIdRequest.location) &&
-        Objects.equals(this.preferences, putApiV2MatchingRequestRequestIdRequest.preferences);
+    PostApiV2MatchingRequestRequest postApiV2MatchingRequestRequest = (PostApiV2MatchingRequestRequest) o;
+    return Objects.equals(this.userID, postApiV2MatchingRequestRequest.userID) &&
+        Objects.equals(this.date, postApiV2MatchingRequestRequest.date) &&
+        Objects.equals(this.timeslot, postApiV2MatchingRequestRequest.timeslot) &&
+        Objects.equals(this.location, postApiV2MatchingRequestRequest.location) &&
+        Objects.equals(this.preferences, postApiV2MatchingRequestRequest.preferences);
   }
 
   @Override
@@ -212,7 +227,7 @@ public class PutApiV2MatchingRequestRequestIdRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PutApiV2MatchingRequestRequestIdRequest {\n");
+    sb.append("class PostApiV2MatchingRequestRequest {\n");
     sb.append("    userID: ").append(toIndentedString(userID)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    timeslot: ").append(toIndentedString(timeslot)).append("\n");

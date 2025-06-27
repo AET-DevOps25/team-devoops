@@ -25,51 +25,32 @@ import javax.annotation.Generated;
  * Object representing a student user in the Meet@Mensa system.
  */
 
-@Schema(name = "post_api_v2_user_register_request", description = "Object representing a student user in the Meet@Mensa system.")
-@JsonTypeName("post_api_v2_user_register_request")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
-public class PostApiV2UserRegisterRequest {
+@Schema(name = "put_api_v2_user_userID_request", description = "Object representing a student user in the Meet@Mensa system.")
+@JsonTypeName("put_api_v2_user_userID_request")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:35.907606713+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class PutApiV2UserUserIDRequest {
 
-  private String email;
+  private @Nullable String email;
 
-  private String firstname;
+  private @Nullable String firstname;
 
-  private String lastname;
+  private @Nullable String lastname;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-  private LocalDate birthday;
+  private @Nullable LocalDate birthday;
 
   private String gender = "other";
 
-  private String degree;
+  private @Nullable String degree;
 
-  private Integer degreeStart;
+  private @Nullable Integer degreeStart;
 
   @Valid
   private List<String> interests = new ArrayList<>();
 
-  private String bio;
+  private @Nullable String bio;
 
-  public PostApiV2UserRegisterRequest() {
-    super();
-  }
-
-  /**
-   * Constructor with only required parameters
-   */
-  public PostApiV2UserRegisterRequest(String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, List<String> interests, String bio) {
-    this.email = email;
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.birthday = birthday;
-    this.gender = gender;
-    this.degree = degree;
-    this.degreeStart = degreeStart;
-    this.interests = interests;
-    this.bio = bio;
-  }
-
-  public PostApiV2UserRegisterRequest email(String email) {
+  public PutApiV2UserUserIDRequest email(@Nullable String email) {
     this.email = email;
     return this;
   }
@@ -78,18 +59,18 @@ public class PostApiV2UserRegisterRequest {
    * Users's e-mail
    * @return email
    */
-  @NotNull @javax.validation.constraints.Email 
-  @Schema(name = "email", description = "Users's e-mail", requiredMode = Schema.RequiredMode.REQUIRED)
+  @javax.validation.constraints.Email 
+  @Schema(name = "email", description = "Users's e-mail", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("email")
-  public String getEmail() {
+  public @Nullable String getEmail() {
     return email;
   }
 
-  public void setEmail(String email) {
+  public void setEmail(@Nullable String email) {
     this.email = email;
   }
 
-  public PostApiV2UserRegisterRequest firstname(String firstname) {
+  public PutApiV2UserUserIDRequest firstname(@Nullable String firstname) {
     this.firstname = firstname;
     return this;
   }
@@ -98,18 +79,18 @@ public class PostApiV2UserRegisterRequest {
    * User's given name
    * @return firstname
    */
-  @NotNull 
-  @Schema(name = "firstname", example = "Max", description = "User's given name", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "firstname", example = "Max", description = "User's given name", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("firstname")
-  public String getFirstname() {
+  public @Nullable String getFirstname() {
     return firstname;
   }
 
-  public void setFirstname(String firstname) {
+  public void setFirstname(@Nullable String firstname) {
     this.firstname = firstname;
   }
 
-  public PostApiV2UserRegisterRequest lastname(String lastname) {
+  public PutApiV2UserUserIDRequest lastname(@Nullable String lastname) {
     this.lastname = lastname;
     return this;
   }
@@ -118,18 +99,18 @@ public class PostApiV2UserRegisterRequest {
    * User's surname
    * @return lastname
    */
-  @NotNull 
-  @Schema(name = "lastname", example = "Mustermann", description = "User's surname", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "lastname", example = "Mustermann", description = "User's surname", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("lastname")
-  public String getLastname() {
+  public @Nullable String getLastname() {
     return lastname;
   }
 
-  public void setLastname(String lastname) {
+  public void setLastname(@Nullable String lastname) {
     this.lastname = lastname;
   }
 
-  public PostApiV2UserRegisterRequest birthday(LocalDate birthday) {
+  public PutApiV2UserUserIDRequest birthday(@Nullable LocalDate birthday) {
     this.birthday = birthday;
     return this;
   }
@@ -138,18 +119,18 @@ public class PostApiV2UserRegisterRequest {
    * User's date of birth
    * @return birthday
    */
-  @NotNull @Valid 
-  @Schema(name = "birthday", description = "User's date of birth", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Valid 
+  @Schema(name = "birthday", description = "User's date of birth", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("birthday")
-  public LocalDate getBirthday() {
+  public @Nullable LocalDate getBirthday() {
     return birthday;
   }
 
-  public void setBirthday(LocalDate birthday) {
+  public void setBirthday(@Nullable LocalDate birthday) {
     this.birthday = birthday;
   }
 
-  public PostApiV2UserRegisterRequest gender(String gender) {
+  public PutApiV2UserUserIDRequest gender(String gender) {
     this.gender = gender;
     return this;
   }
@@ -158,8 +139,8 @@ public class PostApiV2UserRegisterRequest {
    * User's gender
    * @return gender
    */
-  @NotNull 
-  @Schema(name = "gender", description = "User's gender", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "gender", description = "User's gender", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("gender")
   public String getGender() {
     return gender;
@@ -169,7 +150,7 @@ public class PostApiV2UserRegisterRequest {
     this.gender = gender;
   }
 
-  public PostApiV2UserRegisterRequest degree(String degree) {
+  public PutApiV2UserUserIDRequest degree(@Nullable String degree) {
     this.degree = degree;
     return this;
   }
@@ -178,18 +159,18 @@ public class PostApiV2UserRegisterRequest {
    * User's degree program
    * @return degree
    */
-  @NotNull 
-  @Schema(name = "degree", example = "msc_informatics", description = "User's degree program", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "degree", example = "msc_informatics", description = "User's degree program", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("degree")
-  public String getDegree() {
+  public @Nullable String getDegree() {
     return degree;
   }
 
-  public void setDegree(String degree) {
+  public void setDegree(@Nullable String degree) {
     this.degree = degree;
   }
 
-  public PostApiV2UserRegisterRequest degreeStart(Integer degreeStart) {
+  public PutApiV2UserUserIDRequest degreeStart(@Nullable Integer degreeStart) {
     this.degreeStart = degreeStart;
     return this;
   }
@@ -200,23 +181,23 @@ public class PostApiV2UserRegisterRequest {
    * maximum: 2100
    * @return degreeStart
    */
-  @NotNull @Min(2000) @Max(2100) 
-  @Schema(name = "degreeStart", example = "2024", description = "What year User started their degree", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Min(2000) @Max(2100) 
+  @Schema(name = "degreeStart", example = "2024", description = "What year User started their degree", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("degreeStart")
-  public Integer getDegreeStart() {
+  public @Nullable Integer getDegreeStart() {
     return degreeStart;
   }
 
-  public void setDegreeStart(Integer degreeStart) {
+  public void setDegreeStart(@Nullable Integer degreeStart) {
     this.degreeStart = degreeStart;
   }
 
-  public PostApiV2UserRegisterRequest interests(List<String> interests) {
+  public PutApiV2UserUserIDRequest interests(List<String> interests) {
     this.interests = interests;
     return this;
   }
 
-  public PostApiV2UserRegisterRequest addInterestsItem(String interestsItem) {
+  public PutApiV2UserUserIDRequest addInterestsItem(String interestsItem) {
     if (this.interests == null) {
       this.interests = new ArrayList<>();
     }
@@ -228,8 +209,8 @@ public class PostApiV2UserRegisterRequest {
    * Array of a User's interests
    * @return interests
    */
-  @NotNull 
-  @Schema(name = "interests", description = "Array of a User's interests", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "interests", description = "Array of a User's interests", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("interests")
   public List<String> getInterests() {
     return interests;
@@ -239,7 +220,7 @@ public class PostApiV2UserRegisterRequest {
     this.interests = interests;
   }
 
-  public PostApiV2UserRegisterRequest bio(String bio) {
+  public PutApiV2UserUserIDRequest bio(@Nullable String bio) {
     this.bio = bio;
     return this;
   }
@@ -248,14 +229,14 @@ public class PostApiV2UserRegisterRequest {
    * Short introduction text written by the user
    * @return bio
    */
-  @NotNull 
-  @Schema(name = "bio", description = "Short introduction text written by the user", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "bio", description = "Short introduction text written by the user", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("bio")
-  public String getBio() {
+  public @Nullable String getBio() {
     return bio;
   }
 
-  public void setBio(String bio) {
+  public void setBio(@Nullable String bio) {
     this.bio = bio;
   }
 
@@ -267,16 +248,16 @@ public class PostApiV2UserRegisterRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PostApiV2UserRegisterRequest postApiV2UserRegisterRequest = (PostApiV2UserRegisterRequest) o;
-    return Objects.equals(this.email, postApiV2UserRegisterRequest.email) &&
-        Objects.equals(this.firstname, postApiV2UserRegisterRequest.firstname) &&
-        Objects.equals(this.lastname, postApiV2UserRegisterRequest.lastname) &&
-        Objects.equals(this.birthday, postApiV2UserRegisterRequest.birthday) &&
-        Objects.equals(this.gender, postApiV2UserRegisterRequest.gender) &&
-        Objects.equals(this.degree, postApiV2UserRegisterRequest.degree) &&
-        Objects.equals(this.degreeStart, postApiV2UserRegisterRequest.degreeStart) &&
-        Objects.equals(this.interests, postApiV2UserRegisterRequest.interests) &&
-        Objects.equals(this.bio, postApiV2UserRegisterRequest.bio);
+    PutApiV2UserUserIDRequest putApiV2UserUserIDRequest = (PutApiV2UserUserIDRequest) o;
+    return Objects.equals(this.email, putApiV2UserUserIDRequest.email) &&
+        Objects.equals(this.firstname, putApiV2UserUserIDRequest.firstname) &&
+        Objects.equals(this.lastname, putApiV2UserUserIDRequest.lastname) &&
+        Objects.equals(this.birthday, putApiV2UserUserIDRequest.birthday) &&
+        Objects.equals(this.gender, putApiV2UserUserIDRequest.gender) &&
+        Objects.equals(this.degree, putApiV2UserUserIDRequest.degree) &&
+        Objects.equals(this.degreeStart, putApiV2UserUserIDRequest.degreeStart) &&
+        Objects.equals(this.interests, putApiV2UserUserIDRequest.interests) &&
+        Objects.equals(this.bio, putApiV2UserUserIDRequest.bio);
   }
 
   @Override
@@ -287,7 +268,7 @@ public class PostApiV2UserRegisterRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PostApiV2UserRegisterRequest {\n");
+    sb.append("class PutApiV2UserUserIDRequest {\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    firstname: ").append(toIndentedString(firstname)).append("\n");
     sb.append("    lastname: ").append(toIndentedString(lastname)).append("\n");

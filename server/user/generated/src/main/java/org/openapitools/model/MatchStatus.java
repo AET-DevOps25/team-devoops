@@ -4,9 +4,9 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.UUID;
-import org.openapitools.model.Group;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -19,16 +19,14 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * Object representing a single match for a given user on a given date in the Meet@Mensa system.
+ * MatchStatus
  */
 
-@Schema(name = "Match", description = "Object representing a single match for a given user on a given date in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
-public class Match {
+@JsonTypeName("matchStatus")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:35.907606713+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class MatchStatus {
 
-  private UUID matchID;
-
-  private UUID userID;
+  private @Nullable UUID userID;
 
   /**
    * Enumerator representing the status of a Invitation Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |
@@ -71,45 +69,9 @@ public class Match {
     }
   }
 
-  private StatusEnum status;
+  private @Nullable StatusEnum status;
 
-  private Group group;
-
-  public Match() {
-    super();
-  }
-
-  /**
-   * Constructor with only required parameters
-   */
-  public Match(UUID matchID, UUID userID, StatusEnum status, Group group) {
-    this.matchID = matchID;
-    this.userID = userID;
-    this.status = status;
-    this.group = group;
-  }
-
-  public Match matchID(UUID matchID) {
-    this.matchID = matchID;
-    return this;
-  }
-
-  /**
-   * The unique ID of a Group in the Meet@Mensa system.
-   * @return matchID
-   */
-  @NotNull @Valid 
-  @Schema(name = "matchID", description = "The unique ID of a Group in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("matchID")
-  public UUID getMatchID() {
-    return matchID;
-  }
-
-  public void setMatchID(UUID matchID) {
-    this.matchID = matchID;
-  }
-
-  public Match userID(UUID userID) {
+  public MatchStatus userID(@Nullable UUID userID) {
     this.userID = userID;
     return this;
   }
@@ -118,18 +80,18 @@ public class Match {
    * The unique ID of a single student in the Meet@Mensa system.
    * @return userID
    */
-  @NotNull @Valid 
-  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Valid 
+  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("userID")
-  public UUID getUserID() {
+  public @Nullable UUID getUserID() {
     return userID;
   }
 
-  public void setUserID(UUID userID) {
+  public void setUserID(@Nullable UUID userID) {
     this.userID = userID;
   }
 
-  public Match status(StatusEnum status) {
+  public MatchStatus status(@Nullable StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -138,35 +100,15 @@ public class Match {
    * Enumerator representing the status of a Invitation Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |
    * @return status
    */
-  @NotNull 
-  @Schema(name = "status", description = "Enumerator representing the status of a Invitation Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "status", description = "Enumerator representing the status of a Invitation Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("status")
-  public StatusEnum getStatus() {
+  public @Nullable StatusEnum getStatus() {
     return status;
   }
 
-  public void setStatus(StatusEnum status) {
+  public void setStatus(@Nullable StatusEnum status) {
     this.status = status;
-  }
-
-  public Match group(Group group) {
-    this.group = group;
-    return this;
-  }
-
-  /**
-   * Get group
-   * @return group
-   */
-  @NotNull @Valid 
-  @Schema(name = "group", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("group")
-  public Group getGroup() {
-    return group;
-  }
-
-  public void setGroup(Group group) {
-    this.group = group;
   }
 
   @Override
@@ -177,26 +119,22 @@ public class Match {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Match match = (Match) o;
-    return Objects.equals(this.matchID, match.matchID) &&
-        Objects.equals(this.userID, match.userID) &&
-        Objects.equals(this.status, match.status) &&
-        Objects.equals(this.group, match.group);
+    MatchStatus matchStatus = (MatchStatus) o;
+    return Objects.equals(this.userID, matchStatus.userID) &&
+        Objects.equals(this.status, matchStatus.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(matchID, userID, status, group);
+    return Objects.hash(userID, status);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Match {\n");
-    sb.append("    matchID: ").append(toIndentedString(matchID)).append("\n");
+    sb.append("class MatchStatus {\n");
     sb.append("    userID: ").append(toIndentedString(userID)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    group: ").append(toIndentedString(group)).append("\n");
     sb.append("}");
     return sb.toString();
   }

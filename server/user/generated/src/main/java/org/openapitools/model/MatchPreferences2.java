@@ -20,10 +20,10 @@ import javax.annotation.Generated;
  * Object Representing a set of user preferences
  */
 
-@Schema(name = "matchPreferences", description = "Object Representing a set of user preferences")
-@JsonTypeName("matchPreferences")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
-public class MatchPreferences {
+@Schema(name = "matchPreferences_2", description = "Object Representing a set of user preferences")
+@JsonTypeName("matchPreferences_2")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:35.907606713+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class MatchPreferences2 {
 
   private @Nullable Boolean degreePref;
 
@@ -31,7 +31,7 @@ public class MatchPreferences {
 
   private @Nullable Boolean genderPref;
 
-  public MatchPreferences degreePref(@Nullable Boolean degreePref) {
+  public MatchPreferences2 degreePref(@Nullable Boolean degreePref) {
     this.degreePref = degreePref;
     return this;
   }
@@ -51,7 +51,7 @@ public class MatchPreferences {
     this.degreePref = degreePref;
   }
 
-  public MatchPreferences agePref(@Nullable Boolean agePref) {
+  public MatchPreferences2 agePref(@Nullable Boolean agePref) {
     this.agePref = agePref;
     return this;
   }
@@ -71,7 +71,7 @@ public class MatchPreferences {
     this.agePref = agePref;
   }
 
-  public MatchPreferences genderPref(@Nullable Boolean genderPref) {
+  public MatchPreferences2 genderPref(@Nullable Boolean genderPref) {
     this.genderPref = genderPref;
     return this;
   }
@@ -99,10 +99,10 @@ public class MatchPreferences {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MatchPreferences matchPreferences = (MatchPreferences) o;
-    return Objects.equals(this.degreePref, matchPreferences.degreePref) &&
-        Objects.equals(this.agePref, matchPreferences.agePref) &&
-        Objects.equals(this.genderPref, matchPreferences.genderPref);
+    MatchPreferences2 matchPreferences2 = (MatchPreferences2) o;
+    return Objects.equals(this.degreePref, matchPreferences2.degreePref) &&
+        Objects.equals(this.agePref, matchPreferences2.agePref) &&
+        Objects.equals(this.genderPref, matchPreferences2.genderPref);
   }
 
   @Override
@@ -113,7 +113,7 @@ public class MatchPreferences {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class MatchPreferences {\n");
+    sb.append("class MatchPreferences2 {\n");
     sb.append("    degreePref: ").append(toIndentedString(degreePref)).append("\n");
     sb.append("    agePref: ").append(toIndentedString(agePref)).append("\n");
     sb.append("    genderPref: ").append(toIndentedString(genderPref)).append("\n");

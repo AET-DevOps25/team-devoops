@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -20,14 +19,13 @@ import javax.annotation.Generated;
  * Object representing a conversation starter in the meet@mensa system
  */
 
-@Schema(name = "ConversationStarter_1", description = "Object representing a conversation starter in the meet@mensa system")
-@JsonTypeName("ConversationStarter_1")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
-public class ConversationStarter1 {
+@Schema(name = "ConversationStarter", description = "Object representing a conversation starter in the meet@mensa system")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:35.907606713+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class ConversationStarter {
 
   private @Nullable String prompt;
 
-  public ConversationStarter1 prompt(@Nullable String prompt) {
+  public ConversationStarter prompt(@Nullable String prompt) {
     this.prompt = prompt;
     return this;
   }
@@ -55,8 +53,8 @@ public class ConversationStarter1 {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ConversationStarter1 conversationStarter1 = (ConversationStarter1) o;
-    return Objects.equals(this.prompt, conversationStarter1.prompt);
+    ConversationStarter conversationStarter = (ConversationStarter) o;
+    return Objects.equals(this.prompt, conversationStarter.prompt);
   }
 
   @Override
@@ -67,7 +65,7 @@ public class ConversationStarter1 {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ConversationStarter1 {\n");
+    sb.append("class ConversationStarter {\n");
     sb.append("    prompt: ").append(toIndentedString(prompt)).append("\n");
     sb.append("}");
     return sb.toString();

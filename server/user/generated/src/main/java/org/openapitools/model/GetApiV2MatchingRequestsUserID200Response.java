@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.model.Match;
+import org.openapitools.model.MatchRequest;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -21,22 +21,22 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * GetApiV2MatchingMatchesUserID200Response
+ * GetApiV2MatchingRequestsUserID200Response
  */
 
-@JsonTypeName("get_api_v2_matching_matches_userID_200_response")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
-public class GetApiV2MatchingMatchesUserID200Response {
+@JsonTypeName("get_api_v2_matching_requests_userID_200_response")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:35.907606713+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class GetApiV2MatchingRequestsUserID200Response {
 
   @Valid
-  private List<@Valid Match> matches = new ArrayList<>();
+  private List<@Valid MatchRequest> matches = new ArrayList<>();
 
-  public GetApiV2MatchingMatchesUserID200Response matches(List<@Valid Match> matches) {
+  public GetApiV2MatchingRequestsUserID200Response matches(List<@Valid MatchRequest> matches) {
     this.matches = matches;
     return this;
   }
 
-  public GetApiV2MatchingMatchesUserID200Response addMatchesItem(Match matchesItem) {
+  public GetApiV2MatchingRequestsUserID200Response addMatchesItem(MatchRequest matchesItem) {
     if (this.matches == null) {
       this.matches = new ArrayList<>();
     }
@@ -51,11 +51,11 @@ public class GetApiV2MatchingMatchesUserID200Response {
   @Valid 
   @Schema(name = "matches", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("matches")
-  public List<@Valid Match> getMatches() {
+  public List<@Valid MatchRequest> getMatches() {
     return matches;
   }
 
-  public void setMatches(List<@Valid Match> matches) {
+  public void setMatches(List<@Valid MatchRequest> matches) {
     this.matches = matches;
   }
 
@@ -67,8 +67,8 @@ public class GetApiV2MatchingMatchesUserID200Response {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GetApiV2MatchingMatchesUserID200Response getApiV2MatchingMatchesUserID200Response = (GetApiV2MatchingMatchesUserID200Response) o;
-    return Objects.equals(this.matches, getApiV2MatchingMatchesUserID200Response.matches);
+    GetApiV2MatchingRequestsUserID200Response getApiV2MatchingRequestsUserID200Response = (GetApiV2MatchingRequestsUserID200Response) o;
+    return Objects.equals(this.matches, getApiV2MatchingRequestsUserID200Response.matches);
   }
 
   @Override
@@ -79,7 +79,7 @@ public class GetApiV2MatchingMatchesUserID200Response {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class GetApiV2MatchingMatchesUserID200Response {\n");
+    sb.append("class GetApiV2MatchingRequestsUserID200Response {\n");
     sb.append("    matches: ").append(toIndentedString(matches)).append("\n");
     sb.append("}");
     return sb.toString();

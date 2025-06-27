@@ -4,11 +4,11 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -25,10 +25,11 @@ import javax.annotation.Generated;
  * Object representing a student user in the Meet@Mensa system.
  */
 
-@Schema(name = "post_api_v2_user_register_request", description = "Object representing a student user in the Meet@Mensa system.")
-@JsonTypeName("post_api_v2_user_register_request")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:30.929671817+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
-public class PostApiV2UserRegisterRequest {
+@Schema(name = "User", description = "Object representing a student user in the Meet@Mensa system.")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:31:35.907606713+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class User {
+
+  private UUID userID;
 
   private String email;
 
@@ -50,14 +51,15 @@ public class PostApiV2UserRegisterRequest {
 
   private String bio;
 
-  public PostApiV2UserRegisterRequest() {
+  public User() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public PostApiV2UserRegisterRequest(String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, List<String> interests, String bio) {
+  public User(UUID userID, String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, List<String> interests, String bio) {
+    this.userID = userID;
     this.email = email;
     this.firstname = firstname;
     this.lastname = lastname;
@@ -69,7 +71,27 @@ public class PostApiV2UserRegisterRequest {
     this.bio = bio;
   }
 
-  public PostApiV2UserRegisterRequest email(String email) {
+  public User userID(UUID userID) {
+    this.userID = userID;
+    return this;
+  }
+
+  /**
+   * The unique ID of a single student in the Meet@Mensa system.
+   * @return userID
+   */
+  @NotNull @Valid 
+  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("userID")
+  public UUID getUserID() {
+    return userID;
+  }
+
+  public void setUserID(UUID userID) {
+    this.userID = userID;
+  }
+
+  public User email(String email) {
     this.email = email;
     return this;
   }
@@ -89,7 +111,7 @@ public class PostApiV2UserRegisterRequest {
     this.email = email;
   }
 
-  public PostApiV2UserRegisterRequest firstname(String firstname) {
+  public User firstname(String firstname) {
     this.firstname = firstname;
     return this;
   }
@@ -109,7 +131,7 @@ public class PostApiV2UserRegisterRequest {
     this.firstname = firstname;
   }
 
-  public PostApiV2UserRegisterRequest lastname(String lastname) {
+  public User lastname(String lastname) {
     this.lastname = lastname;
     return this;
   }
@@ -129,7 +151,7 @@ public class PostApiV2UserRegisterRequest {
     this.lastname = lastname;
   }
 
-  public PostApiV2UserRegisterRequest birthday(LocalDate birthday) {
+  public User birthday(LocalDate birthday) {
     this.birthday = birthday;
     return this;
   }
@@ -149,7 +171,7 @@ public class PostApiV2UserRegisterRequest {
     this.birthday = birthday;
   }
 
-  public PostApiV2UserRegisterRequest gender(String gender) {
+  public User gender(String gender) {
     this.gender = gender;
     return this;
   }
@@ -169,7 +191,7 @@ public class PostApiV2UserRegisterRequest {
     this.gender = gender;
   }
 
-  public PostApiV2UserRegisterRequest degree(String degree) {
+  public User degree(String degree) {
     this.degree = degree;
     return this;
   }
@@ -189,7 +211,7 @@ public class PostApiV2UserRegisterRequest {
     this.degree = degree;
   }
 
-  public PostApiV2UserRegisterRequest degreeStart(Integer degreeStart) {
+  public User degreeStart(Integer degreeStart) {
     this.degreeStart = degreeStart;
     return this;
   }
@@ -211,12 +233,12 @@ public class PostApiV2UserRegisterRequest {
     this.degreeStart = degreeStart;
   }
 
-  public PostApiV2UserRegisterRequest interests(List<String> interests) {
+  public User interests(List<String> interests) {
     this.interests = interests;
     return this;
   }
 
-  public PostApiV2UserRegisterRequest addInterestsItem(String interestsItem) {
+  public User addInterestsItem(String interestsItem) {
     if (this.interests == null) {
       this.interests = new ArrayList<>();
     }
@@ -239,7 +261,7 @@ public class PostApiV2UserRegisterRequest {
     this.interests = interests;
   }
 
-  public PostApiV2UserRegisterRequest bio(String bio) {
+  public User bio(String bio) {
     this.bio = bio;
     return this;
   }
@@ -267,27 +289,29 @@ public class PostApiV2UserRegisterRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PostApiV2UserRegisterRequest postApiV2UserRegisterRequest = (PostApiV2UserRegisterRequest) o;
-    return Objects.equals(this.email, postApiV2UserRegisterRequest.email) &&
-        Objects.equals(this.firstname, postApiV2UserRegisterRequest.firstname) &&
-        Objects.equals(this.lastname, postApiV2UserRegisterRequest.lastname) &&
-        Objects.equals(this.birthday, postApiV2UserRegisterRequest.birthday) &&
-        Objects.equals(this.gender, postApiV2UserRegisterRequest.gender) &&
-        Objects.equals(this.degree, postApiV2UserRegisterRequest.degree) &&
-        Objects.equals(this.degreeStart, postApiV2UserRegisterRequest.degreeStart) &&
-        Objects.equals(this.interests, postApiV2UserRegisterRequest.interests) &&
-        Objects.equals(this.bio, postApiV2UserRegisterRequest.bio);
+    User user = (User) o;
+    return Objects.equals(this.userID, user.userID) &&
+        Objects.equals(this.email, user.email) &&
+        Objects.equals(this.firstname, user.firstname) &&
+        Objects.equals(this.lastname, user.lastname) &&
+        Objects.equals(this.birthday, user.birthday) &&
+        Objects.equals(this.gender, user.gender) &&
+        Objects.equals(this.degree, user.degree) &&
+        Objects.equals(this.degreeStart, user.degreeStart) &&
+        Objects.equals(this.interests, user.interests) &&
+        Objects.equals(this.bio, user.bio);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, firstname, lastname, birthday, gender, degree, degreeStart, interests, bio);
+    return Objects.hash(userID, email, firstname, lastname, birthday, gender, degree, degreeStart, interests, bio);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class PostApiV2UserRegisterRequest {\n");
+    sb.append("class User {\n");
+    sb.append("    userID: ").append(toIndentedString(userID)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    firstname: ").append(toIndentedString(firstname)).append("\n");
     sb.append("    lastname: ").append(toIndentedString(lastname)).append("\n");
