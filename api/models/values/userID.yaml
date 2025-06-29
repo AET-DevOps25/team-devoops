@@ -1,6 +1,0 @@
-title: userID
-x-stoplight:
-  id: qlawgs207p4xu
-type: string
-format: uuid
-description: The unique ID of a single student in the Meet@Mensa system.

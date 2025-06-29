@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -20,9 +19,8 @@ import javax.annotation.Generated;
  * Object Representing a set of user preferences
  */
 
-@Schema(name = "matchPreferences", description = "Object Representing a set of user preferences")
-@JsonTypeName("matchPreferences")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:25.075958280+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Schema(name = "MatchPreferences", description = "Object Representing a set of user preferences")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:32:29.428265425Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchPreferences {
 
   private @Nullable Boolean degreePref;

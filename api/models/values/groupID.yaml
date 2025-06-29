@@ -1,6 +1,0 @@
-title: groupID
-x-stoplight:
-  id: dg33pzgpoa25z
-type: string
-description: The unique ID of a Group in the Meet@Mensa system.
-format: uuid

@@ -1,6 +1,0 @@
-title: requestID
-x-stoplight:
-  id: rjnh43gvsnw2a
-type: string
-description: The unique ID of a MatchRequest in the Meet@Mensa system.
-format: uuid

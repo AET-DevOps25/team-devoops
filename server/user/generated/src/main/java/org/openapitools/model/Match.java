@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.UUID;
 import org.openapitools.model.Group;
+import org.openapitools.model.InviteStatus;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -23,55 +24,14 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "Match", description = "Object representing a single match for a given user on a given date in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:25.075958280+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:32:29.428265425Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class Match {
 
   private UUID matchID;
 
   private UUID userID;
 
-  /**
-   * Enumerator representing the status of a Invitation Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |
-   */
-  public enum StatusEnum {
-    UNSENT("UNSENT"),
-    
-    SENT("SENT"),
-    
-    CONFIRMED("CONFIRMED"),
-    
-    REJECTED("REJECTED"),
-    
-    EXPIRED("EXPIRED");
-
-    private final String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StatusEnum fromValue(String value) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
-  private StatusEnum status;
+  private InviteStatus status;
 
   private Group group;
 
@@ -82,7 +42,7 @@ public class Match {
   /**
    * Constructor with only required parameters
    */
-  public Match(UUID matchID, UUID userID, StatusEnum status, Group group) {
+  public Match(UUID matchID, UUID userID, InviteStatus status, Group group) {
     this.matchID = matchID;
     this.userID = userID;
     this.status = status;
@@ -129,23 +89,23 @@ public class Match {
     this.userID = userID;
   }
 
-  public Match status(StatusEnum status) {
+  public Match status(InviteStatus status) {
     this.status = status;
     return this;
   }
 
   /**
-   * Enumerator representing the status of a Invitation Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |
+   * Get status
    * @return status
    */
-  @NotNull 
-  @Schema(name = "status", description = "Enumerator representing the status of a Invitation Value | Description | ---------|----------| | UNSENT | The system has not sent out this invitation yet | | SENT | The system has sent out this invitation | | CONFIRMED | The user has confirmed this invitation | | REJECTED | The user has rejected this invitation | | EXPIRED | The date for this invitation is in the past |", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "status", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("status")
-  public StatusEnum getStatus() {
+  public InviteStatus getStatus() {
     return status;
   }
 
-  public void setStatus(StatusEnum status) {
+  public void setStatus(InviteStatus status) {
     this.status = status;
   }
 

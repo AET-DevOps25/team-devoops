@@ -5,10 +5,10 @@
  */
 package org.openapitools.api;
 
-import org.openapitools.model.PostApiV2UserRegisterRequest;
-import org.openapitools.model.PutApiV2UserUserIDRequest;
 import java.util.UUID;
 import org.openapitools.model.User;
+import org.openapitools.model.UserNew;
+import org.openapitools.model.UserUpdate;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:19.777600418+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:32:03.677324691Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "User", description = "Paths belonging to the User microservice")
 public interface UserApi {
@@ -123,7 +123,7 @@ public interface UserApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ \"interests\", \"interests\" ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }";
+                    String exampleString = "{ \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ null, null ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -138,7 +138,7 @@ public interface UserApi {
      * POST /api/v2/user/register : Register new User
      * Register a new user and respond with it&#39;s {user-id}
      *
-     * @param postApiV2UserRegisterRequest  (optional)
+     * @param userNew  (optional)
      * @return Successfully created user (status code 201)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
@@ -151,7 +151,7 @@ public interface UserApi {
         tags = { "User" },
         responses = {
             @ApiResponse(responseCode = "201", description = "Successfully created user", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = UUID.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
@@ -168,9 +168,18 @@ public interface UserApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<UUID> postApiV2UserRegister(
-        @Parameter(name = "PostApiV2UserRegisterRequest", description = "") @Valid @RequestBody(required = false) @Nullable PostApiV2UserRegisterRequest postApiV2UserRegisterRequest
+    default ResponseEntity<User> postApiV2UserRegister(
+        @Parameter(name = "UserNew", description = "") @Valid @RequestBody(required = false) @Nullable UserNew userNew
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ null, null ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -181,7 +190,7 @@ public interface UserApi {
      * Update all information about user with ID {user-id} from user-service
      *
      * @param userId UUID associated with a given user (required)
-     * @param putApiV2UserUserIDRequest  (optional)
+     * @param userUpdate  (optional)
      * @return User updated successfully (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
@@ -213,12 +222,12 @@ public interface UserApi {
     
     default ResponseEntity<User> putApiV2UserUserID(
         @Parameter(name = "user-id", description = "UUID associated with a given user", required = true, in = ParameterIn.PATH) @PathVariable("user-id") UUID userId,
-        @Parameter(name = "PutApiV2UserUserIDRequest", description = "") @Valid @RequestBody(required = false) @Nullable PutApiV2UserUserIDRequest putApiV2UserUserIDRequest
+        @Parameter(name = "UserUpdate", description = "") @Valid @RequestBody(required = false) @Nullable UserUpdate userUpdate
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ \"interests\", \"interests\" ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }";
+                    String exampleString = "{ \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ null, null ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
