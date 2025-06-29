@@ -11,10 +11,11 @@ CREATE TABLE IF NOT EXISTS `user_data` (
     email VARCHAR(255) UNIQUE NOT NULL,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
+    birthday DATE NOT NULL,
     gender VARCHAR(255) NOT NULL,
     degree VARCHAR(255) NOT NULL,
     degree_start INT NOT NULL,
-    birthday DATE NOT NULL
+    bio VARCHAR(1023) NOT NULL,
 ); 
 
 -- user-interests table
