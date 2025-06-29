@@ -22,7 +22,7 @@ for path in matching user gateway; do
         -g spring \
         -i api/openapi.yaml \
         -o server/$path/generated \
-        --additional-properties=useTags=true,interfaceOnly=true
+        --additional-properties=useTags=true,interfaceOnly=true,artifactId=openapi-spring-$path
 
     # echo generating gradle
     echo "Generating gradle project files for $path..."
