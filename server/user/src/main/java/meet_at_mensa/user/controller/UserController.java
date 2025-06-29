@@ -28,6 +28,7 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<Void> deleteApiV2UserUserID(UUID userID) {
 
+        // 200
         try {
             
             // attempt to delete user with given ID
@@ -36,12 +37,20 @@ public class UserController implements UserApi {
             // if delete operation succeeded, return 200
             return ResponseEntity.ok().build();
 
+        // 404
         } catch (UserNotFoundException e) {
 
             // if user was not found, return 404
             return ResponseEntity.notFound().build();
+        
+        // 500
+        } catch (Exception e) {
+
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
 
         }
+
     }
 
 
@@ -49,6 +58,7 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<User> getApiV2UserUserID(UUID userID) {
 
+        // 200
         try {
         
             // attempt to get user with the given ID
@@ -57,13 +67,20 @@ public class UserController implements UserApi {
             // return 200 with User
             return ResponseEntity.ok(user);
         
-
+        // 404
         } catch (UserNotFoundException e) {
             
             // if user was not found, return 404
             return ResponseEntity.notFound().build();
 
+        // 500
+        } catch (Exception e) {
+
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
+
         }
+
     }
 
 
@@ -71,6 +88,7 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<User> postApiV2UserRegister(UserNew userNew) {
 
+        // 200
         try {
 
             // attempt to register a new user
@@ -78,9 +96,9 @@ public class UserController implements UserApi {
 
             return ResponseEntity.status(201).body(newUser);
 
+        // 500
         } catch (Exception e) {
 
-            // TODO fix signature to match API, this should not return 503
             return ResponseEntity.internalServerError().build();
         
         }
@@ -90,6 +108,7 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<User> putApiV2UserUserID(UUID userID, UserUpdate userUpdate) {
 
+        // 200
         try {
             
             // attempt to update User
@@ -98,10 +117,18 @@ public class UserController implements UserApi {
             // return the updated user
             return ResponseEntity.ok(updatedUser);
 
+        // 404
         } catch (UserNotFoundException e) {
             
             // if user was not found, return 404
             return ResponseEntity.notFound().build();
+
+        // 500
+        } catch (Exception e) {
+
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
+
         }
 
     }
