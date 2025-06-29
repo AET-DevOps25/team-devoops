@@ -1,0 +1,99 @@
+package org.openapitools.model;
+
+import java.net.URI;
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.openapitools.model.Match;
+import org.springframework.lang.Nullable;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.time.OffsetDateTime;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+import java.util.*;
+import javax.annotation.Generated;
+
+/**
+ * GetApiV2MatchingMatchesUserID200Response
+ */
+
+@JsonTypeName("get_api_v2_matching_matches_userID_200_response")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:25.075958280+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+public class GetApiV2MatchingMatchesUserID200Response {
+
+  @Valid
+  private List<@Valid Match> matches = new ArrayList<>();
+
+  public GetApiV2MatchingMatchesUserID200Response matches(List<@Valid Match> matches) {
+    this.matches = matches;
+    return this;
+  }
+
+  public GetApiV2MatchingMatchesUserID200Response addMatchesItem(Match matchesItem) {
+    if (this.matches == null) {
+      this.matches = new ArrayList<>();
+    }
+    this.matches.add(matchesItem);
+    return this;
+  }
+
+  /**
+   * Get matches
+   * @return matches
+   */
+  @Valid 
+  @Schema(name = "matches", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("matches")
+  public List<@Valid Match> getMatches() {
+    return matches;
+  }
+
+  public void setMatches(List<@Valid Match> matches) {
+    this.matches = matches;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    GetApiV2MatchingMatchesUserID200Response getApiV2MatchingMatchesUserID200Response = (GetApiV2MatchingMatchesUserID200Response) o;
+    return Objects.equals(this.matches, getApiV2MatchingMatchesUserID200Response.matches);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(matches);
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class GetApiV2MatchingMatchesUserID200Response {\n");
+    sb.append("    matches: ").append(toIndentedString(matches)).append("\n");
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+}
+
