@@ -28,8 +28,14 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "birthday")
+    private LocalDate birthday;
 
     @Column(name = "gender")
     private String gender;
@@ -37,8 +43,12 @@ public class User {
     @Column(name = "degree")
     private String degree;
 
-    @Column(name = "birthday")
-    private LocalDate birthday;
+    @Column(name = "degree_start")
+    private Integer degreeStart;
+
+    @Column(name = "bio")
+    private String bio;
+
 
     // -------
     // Getters
@@ -52,8 +62,16 @@ public class User {
         return email;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
     }
 
     public String getGender() {
@@ -64,8 +82,12 @@ public class User {
         return degree;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public Integer getDegreeStart() {
+        return degreeStart;
+    }
+
+    public String getBio() {
+        return bio;
     }
 
     // -------
@@ -78,8 +100,16 @@ public class User {
         this.email = email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     public void setGender(String gender) {
@@ -90,8 +120,12 @@ public class User {
         this.degree = degree;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setDegreeStart(Integer degreeStart) {
+        this.degreeStart = degreeStart;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     // ------------
@@ -104,13 +138,16 @@ public class User {
 
     }
 
-    public User(String email, String name, String gender, String degree, LocalDate birthday) {
+    public User(String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, String bio) {
 
         this.email = email;
-        this.name = name;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.birthday = birthday;
         this.gender = gender;
         this.degree = degree;
-        this.birthday = birthday;
+        this.degreeStart = degreeStart;
+        this.bio = bio;
 
     }
 }
