@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.openapitools.model.MatchPreferences1;
+import org.openapitools.model.Location;
+import org.openapitools.model.MatchPreferences;
+import org.openapitools.model.RequestStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -28,7 +30,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchRequest", description = "Object representing a request for matching a given user on a given date in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:19.777600418+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:54:00.939458997+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
 public class MatchRequest {
 
   private UUID requestID;
@@ -41,87 +43,11 @@ public class MatchRequest {
   @Valid
   private List<@Min(1) @Max(16)Integer> timeslot = new ArrayList<>();
 
-  /**
-   * Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | 
-   */
-  public enum LocationEnum {
-    GARCHING("GARCHING"),
-    
-    ARCISSTR("ARCISSTR");
+  private Location location;
 
-    private final String value;
+  private MatchPreferences preferences;
 
-    LocationEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static LocationEnum fromValue(String value) {
-      for (LocationEnum b : LocationEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
-  private LocationEnum location;
-
-  private MatchPreferences1 preferences;
-
-  /**
-   * Enumerator representing the status of a MatchRequest Value | Description | ---------|----------| | PENDING | The system has not attempted to match this request yet | | MATCHED | The system has fulfilled this request | | UNMATCHABLE | The system was unable to fulfill this request | | REMATCH | The sytem should attempt to fulfill this request again (ex: group cancelled for lacking RSVPs) | | EXPIRED | The date for this MatchRequest is in the past | 
-   */
-  public enum StatusEnum {
-    PENDING("PENDING"),
-    
-    MATCHED("MATCHED"),
-    
-    UNMATCHABLE("UNMATCHABLE"),
-    
-    REMATCH("REMATCH"),
-    
-    EXPIRED("EXPIRED");
-
-    private final String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StatusEnum fromValue(String value) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
-  private StatusEnum status;
+  private RequestStatus status;
 
   public MatchRequest() {
     super();
@@ -130,7 +56,7 @@ public class MatchRequest {
   /**
    * Constructor with only required parameters
    */
-  public MatchRequest(UUID requestID, UUID userID, LocalDate date, List<@Min(1) @Max(16)Integer> timeslot, LocationEnum location, MatchPreferences1 preferences, StatusEnum status) {
+  public MatchRequest(UUID requestID, UUID userID, LocalDate date, List<@Min(1) @Max(16)Integer> timeslot, Location location, MatchPreferences preferences, RequestStatus status) {
     this.requestID = requestID;
     this.userID = userID;
     this.date = date;
@@ -228,27 +154,27 @@ public class MatchRequest {
     this.timeslot = timeslot;
   }
 
-  public MatchRequest location(LocationEnum location) {
+  public MatchRequest location(Location location) {
     this.location = location;
     return this;
   }
 
   /**
-   * Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | 
+   * Get location
    * @return location
    */
-  @NotNull 
-  @Schema(name = "location", description = "Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | ", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "location", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("location")
-  public LocationEnum getLocation() {
+  public Location getLocation() {
     return location;
   }
 
-  public void setLocation(LocationEnum location) {
+  public void setLocation(Location location) {
     this.location = location;
   }
 
-  public MatchRequest preferences(MatchPreferences1 preferences) {
+  public MatchRequest preferences(MatchPreferences preferences) {
     this.preferences = preferences;
     return this;
   }
@@ -260,31 +186,31 @@ public class MatchRequest {
   @NotNull @Valid 
   @Schema(name = "preferences", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("preferences")
-  public MatchPreferences1 getPreferences() {
+  public MatchPreferences getPreferences() {
     return preferences;
   }
 
-  public void setPreferences(MatchPreferences1 preferences) {
+  public void setPreferences(MatchPreferences preferences) {
     this.preferences = preferences;
   }
 
-  public MatchRequest status(StatusEnum status) {
+  public MatchRequest status(RequestStatus status) {
     this.status = status;
     return this;
   }
 
   /**
-   * Enumerator representing the status of a MatchRequest Value | Description | ---------|----------| | PENDING | The system has not attempted to match this request yet | | MATCHED | The system has fulfilled this request | | UNMATCHABLE | The system was unable to fulfill this request | | REMATCH | The sytem should attempt to fulfill this request again (ex: group cancelled for lacking RSVPs) | | EXPIRED | The date for this MatchRequest is in the past | 
+   * Get status
    * @return status
    */
-  @NotNull 
-  @Schema(name = "status", description = "Enumerator representing the status of a MatchRequest Value | Description | ---------|----------| | PENDING | The system has not attempted to match this request yet | | MATCHED | The system has fulfilled this request | | UNMATCHABLE | The system was unable to fulfill this request | | REMATCH | The sytem should attempt to fulfill this request again (ex: group cancelled for lacking RSVPs) | | EXPIRED | The date for this MatchRequest is in the past | ", requiredMode = Schema.RequiredMode.REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "status", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("status")
-  public StatusEnum getStatus() {
+  public RequestStatus getStatus() {
     return status;
   }
 
-  public void setStatus(StatusEnum status) {
+  public void setStatus(RequestStatus status) {
     this.status = status;
   }
 

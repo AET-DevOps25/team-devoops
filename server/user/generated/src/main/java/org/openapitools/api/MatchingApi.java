@@ -5,11 +5,11 @@
  */
 package org.openapitools.api;
 
-import org.openapitools.model.GetApiV2MatchingMatchesUserID200Response;
-import org.openapitools.model.GetApiV2MatchingRequestsUserID200Response;
+import org.openapitools.model.MatchCollection;
 import org.openapitools.model.MatchRequest;
-import org.openapitools.model.PostApiV2MatchingRequestRequest;
-import org.openapitools.model.PutApiV2MatchingRequestRequestIdRequest;
+import org.openapitools.model.MatchRequestCollection;
+import org.openapitools.model.MatchRequestNew;
+import org.openapitools.model.MatchRequestUpdate;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:25.075958280+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:54:06.634109022+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -103,7 +103,7 @@ public interface MatchingApi {
         tags = { "Matching" },
         responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = GetApiV2MatchingMatchesUserID200Response.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MatchCollection.class))
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
@@ -119,13 +119,13 @@ public interface MatchingApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<GetApiV2MatchingMatchesUserID200Response> getApiV2MatchingMatchesUserID(
+    default ResponseEntity<MatchCollection> getApiV2MatchingMatchesUserID(
         @Parameter(name = "user-id", description = "UUID associated with a given user", required = true, in = ParameterIn.PATH) @PathVariable("user-id") UUID userId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"matches\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"prompt\" : \"prompt\" }, \"time\" : 2 } }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"prompt\" : \"prompt\" }, \"time\" : 2 } } ] }";
+                    String exampleString = "{ \"matches\" : { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 } } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -153,7 +153,7 @@ public interface MatchingApi {
         tags = { "Matching" },
         responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = GetApiV2MatchingRequestsUserID200Response.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MatchRequestCollection.class))
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
@@ -169,13 +169,13 @@ public interface MatchingApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<GetApiV2MatchingRequestsUserID200Response> getApiV2MatchingRequestsUserID(
+    default ResponseEntity<MatchRequestCollection> getApiV2MatchingRequestsUserID(
         @Parameter(name = "user-id", description = "UUID associated with a given user", required = true, in = ParameterIn.PATH) @PathVariable("user-id") UUID userId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"matches\" : [ { \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ 2, 2 ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" }, { \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ 2, 2 ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" } ] }";
+                    String exampleString = "{ \"requests\" : [ { \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ null, null ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" }, { \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ null, null ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -262,7 +262,7 @@ public interface MatchingApi {
      * POST /api/v2/matching/request/submit : Submit matching Request
      * Submit a new matching request to the Matching-Service
      *
-     * @param postApiV2MatchingRequestRequest  (optional)
+     * @param matchRequestNew  (optional)
      * @return Request submitted sucessfully (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
@@ -288,7 +288,7 @@ public interface MatchingApi {
     )
     
     default ResponseEntity<Void> postApiV2MatchingRequest(
-        @Parameter(name = "PostApiV2MatchingRequestRequest", description = "") @Valid @RequestBody(required = false) @Nullable PostApiV2MatchingRequestRequest postApiV2MatchingRequestRequest
+        @Parameter(name = "MatchRequestNew", description = "") @Valid @RequestBody(required = false) @Nullable MatchRequestNew matchRequestNew
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
@@ -300,12 +300,12 @@ public interface MatchingApi {
      * Update all information in the MatchRequest with ID {request-id}
      *
      * @param requestId UUID associated with a given match request (required)
-     * @param putApiV2MatchingRequestRequestIdRequest  (optional)
-     * @return MatchRequest cannot be updated since it has already been fulfilled! (status code 200)
+     * @param matchRequestUpdate  (optional)
+     * @return Ok (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
-     *         or Not Acceptable (status code 406)
+     *         or MatchRequest cannot be updated since it has already been fulfilled! (status code 406)
      */
     @Operation(
         operationId = "putApiV2MatchingRequestRequestId",
@@ -313,13 +313,13 @@ public interface MatchingApi {
         description = "Update all information in the MatchRequest with ID {request-id}",
         tags = { "Matching" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "MatchRequest cannot be updated since it has already been fulfilled!", content = {
+            @ApiResponse(responseCode = "200", description = "Ok", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = MatchRequest.class))
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
             @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
-            @ApiResponse(responseCode = "406", description = "Not Acceptable")
+            @ApiResponse(responseCode = "406", description = "MatchRequest cannot be updated since it has already been fulfilled!")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -334,12 +334,12 @@ public interface MatchingApi {
     
     default ResponseEntity<MatchRequest> putApiV2MatchingRequestRequestId(
         @Parameter(name = "request-id", description = "UUID associated with a given match request", required = true, in = ParameterIn.PATH) @PathVariable("request-id") UUID requestId,
-        @Parameter(name = "PutApiV2MatchingRequestRequestIdRequest", description = "") @Valid @RequestBody(required = false) @Nullable PutApiV2MatchingRequestRequestIdRequest putApiV2MatchingRequestRequestIdRequest
+        @Parameter(name = "MatchRequestUpdate", description = "") @Valid @RequestBody(required = false) @Nullable MatchRequestUpdate matchRequestUpdate
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ 2, 2 ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" }";
+                    String exampleString = "{ \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ null, null ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

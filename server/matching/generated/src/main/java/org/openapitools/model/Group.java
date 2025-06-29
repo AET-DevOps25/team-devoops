@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import org.openapitools.model.ConversationStarter;
+import org.openapitools.model.ConversationStarterCollection;
+import org.openapitools.model.Location;
 import org.openapitools.model.MatchStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
@@ -29,7 +30,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "Group", description = "Object representing a group that has been matched in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:19.777600418+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:54:00.939458997+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
 public class Group {
 
   private @Nullable UUID groupID;
@@ -39,47 +40,12 @@ public class Group {
 
   private @Nullable Integer time;
 
-  /**
-   * Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | 
-   */
-  public enum LocationEnum {
-    GARCHING("GARCHING"),
-    
-    ARCISSTR("ARCISSTR");
-
-    private final String value;
-
-    LocationEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static LocationEnum fromValue(String value) {
-      for (LocationEnum b : LocationEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
-  private @Nullable LocationEnum location;
+  private @Nullable Location location;
 
   @Valid
   private List<@Valid MatchStatus> userStatus = new ArrayList<>();
 
-  private @Nullable ConversationStarter conversationStarters;
+  private @Nullable ConversationStarterCollection conversationStarters;
 
   public Group groupID(@Nullable UUID groupID) {
     this.groupID = groupID;
@@ -127,13 +93,13 @@ public class Group {
   }
 
   /**
-   * Timeslot the group is scheduled to meet at
+   * What times a user is available to be matched  Value | Start Time | End Time ---------|----------|--------- | 1     | 10:00      | 10:15    | | 2     | 10:15      | 10:30    | | 3     | 10:30      | 10:45    | | 4     | 10:45      | 11:00    | | 5     | 11:00      | 11:15    | | 6     | 11:15      | 11:30    | | 7     | 11:30      | 11:45    | | 8     | 11:45      | 12:00    | | 9     | 12:00      | 12:15    | | 10    | 12:15      | 12:30    | | 11    | 12:30      | 12:45    | | 12    | 12:45      | 13:00    | | 13    | 13:00      | 13:15    | | 14    | 13:15      | 13:30    | | 15    | 13:30      | 13:45    | | 16    | 13:45      | 14:00    |
    * minimum: 1
    * maximum: 16
    * @return time
    */
   @Min(1) @Max(16) 
-  @Schema(name = "time", description = "Timeslot the group is scheduled to meet at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "time", description = "What times a user is available to be matched  Value | Start Time | End Time ---------|----------|--------- | 1     | 10:00      | 10:15    | | 2     | 10:15      | 10:30    | | 3     | 10:30      | 10:45    | | 4     | 10:45      | 11:00    | | 5     | 11:00      | 11:15    | | 6     | 11:15      | 11:30    | | 7     | 11:30      | 11:45    | | 8     | 11:45      | 12:00    | | 9     | 12:00      | 12:15    | | 10    | 12:15      | 12:30    | | 11    | 12:30      | 12:45    | | 12    | 12:45      | 13:00    | | 13    | 13:00      | 13:15    | | 14    | 13:15      | 13:30    | | 15    | 13:30      | 13:45    | | 16    | 13:45      | 14:00    |", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("time")
   public @Nullable Integer getTime() {
     return time;
@@ -143,23 +109,23 @@ public class Group {
     this.time = time;
   }
 
-  public Group location(@Nullable LocationEnum location) {
+  public Group location(@Nullable Location location) {
     this.location = location;
     return this;
   }
 
   /**
-   * Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | 
+   * Get location
    * @return location
    */
-  
-  @Schema(name = "location", description = "Enumerator representing a mensa at which a meet can happen  Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | ", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Valid 
+  @Schema(name = "location", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("location")
-  public @Nullable LocationEnum getLocation() {
+  public @Nullable Location getLocation() {
     return location;
   }
 
-  public void setLocation(@Nullable LocationEnum location) {
+  public void setLocation(@Nullable Location location) {
     this.location = location;
   }
 
@@ -191,7 +157,7 @@ public class Group {
     this.userStatus = userStatus;
   }
 
-  public Group conversationStarters(@Nullable ConversationStarter conversationStarters) {
+  public Group conversationStarters(@Nullable ConversationStarterCollection conversationStarters) {
     this.conversationStarters = conversationStarters;
     return this;
   }
@@ -203,11 +169,11 @@ public class Group {
   @Valid 
   @Schema(name = "conversationStarters", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("conversationStarters")
-  public @Nullable ConversationStarter getConversationStarters() {
+  public @Nullable ConversationStarterCollection getConversationStarters() {
     return conversationStarters;
   }
 
-  public void setConversationStarters(@Nullable ConversationStarter conversationStarters) {
+  public void setConversationStarters(@Nullable ConversationStarterCollection conversationStarters) {
     this.conversationStarters = conversationStarters;
   }
 

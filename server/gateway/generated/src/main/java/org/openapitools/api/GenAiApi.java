@@ -5,8 +5,8 @@
  */
 package org.openapitools.api;
 
-import org.openapitools.model.GetApiV2GenaiConversationStarter200Response;
-import org.openapitools.model.GetApiV2GenaiConversationStarterRequest;
+import org.openapitools.model.ConversationStarterCollection;
+import org.openapitools.model.UserCollection;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T14:50:29.454419621+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-27T17:54:11.100148917+02:00[Europe/Berlin]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "GenAI", description = "Paths belonging to the GenAI microservice")
 public interface GenAiApi {
@@ -48,7 +48,7 @@ public interface GenAiApi {
      * GET /api/v2/genai/conversation-starter : Request conversation starter
      * Request a series of conversation starter prompts from the GenAI microservice. Provide infomation about users on request.
      *
-     * @param getApiV2GenaiConversationStarterRequest Request Conversation starter for these users (optional)
+     * @param userCollection Request Conversation starter for these users (optional)
      * @return OK (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
@@ -61,7 +61,7 @@ public interface GenAiApi {
         tags = { "GenAI" },
         responses = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = GetApiV2GenaiConversationStarter200Response.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ConversationStarterCollection.class))
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
@@ -78,13 +78,13 @@ public interface GenAiApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<GetApiV2GenaiConversationStarter200Response> getApiV2GenaiConversationStarter(
-        @Parameter(name = "GetApiV2GenaiConversationStarterRequest", description = "Request Conversation starter for these users") @Valid @RequestBody(required = false) @Nullable GetApiV2GenaiConversationStarterRequest getApiV2GenaiConversationStarterRequest
+    default ResponseEntity<ConversationStarterCollection> getApiV2GenaiConversationStarter(
+        @Parameter(name = "UserCollection", description = "Request Conversation starter for these users") @Valid @RequestBody(required = false) @Nullable UserCollection userCollection
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"conversationStarters\" : { \"prompt\" : \"prompt\" } }";
+                    String exampleString = "{ \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

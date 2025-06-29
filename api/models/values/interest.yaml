@@ -1,5 +1,0 @@
-title: interest
-x-stoplight:
-  id: 2gt8tcnnuxxjw
-type: string
-description: String representing an interest a user has
