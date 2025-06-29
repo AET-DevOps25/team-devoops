@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T10:03:47.238894464Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T16:18:57.731593174Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "GenAI", description = "Paths belonging to the GenAI microservice")
 public interface GenAiApi {
@@ -53,6 +53,7 @@ public interface GenAiApi {
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "getApiV2GenaiConversationStarter",
@@ -65,7 +66,8 @@ public interface GenAiApi {
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")

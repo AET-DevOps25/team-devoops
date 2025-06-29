@@ -30,7 +30,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "Group", description = "Object representing a group that has been matched in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T10:04:06.736101869Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T16:19:23.653238918Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class Group {
 
   private @Nullable UUID groupID;

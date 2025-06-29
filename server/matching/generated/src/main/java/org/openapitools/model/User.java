@@ -26,7 +26,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "User", description = "Object representing a student user in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T10:03:47.238894464Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T16:18:57.731593174Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class User {
 
   private UUID userID;

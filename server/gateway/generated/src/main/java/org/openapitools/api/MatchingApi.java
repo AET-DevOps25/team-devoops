@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T10:04:06.736101869Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T16:19:23.653238918Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -57,6 +57,7 @@ public interface MatchingApi {
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "deleteApiV2MatchingMatchesRequestId",
@@ -67,7 +68,8 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "200", description = "Request Deleted"),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -95,6 +97,7 @@ public interface MatchingApi {
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "getApiV2MatchingMatchesUserID",
@@ -107,7 +110,8 @@ public interface MatchingApi {
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -145,6 +149,7 @@ public interface MatchingApi {
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "getApiV2MatchingRequestsUserID",
@@ -157,7 +162,8 @@ public interface MatchingApi {
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -194,6 +200,7 @@ public interface MatchingApi {
      * @return OK (status code 200)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "getApiV2MatchingRsvpMatchIdAccept",
@@ -203,7 +210,8 @@ public interface MatchingApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -230,6 +238,7 @@ public interface MatchingApi {
      * @return OK (status code 200)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "getApiV2MatchingRsvpMatchIdReject",
@@ -239,7 +248,8 @@ public interface MatchingApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -266,6 +276,7 @@ public interface MatchingApi {
      * @return Request submitted sucessfully (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "postApiV2MatchingRequest",
@@ -275,7 +286,8 @@ public interface MatchingApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "Request submitted sucessfully"),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
-            @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. ")
+            @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -306,6 +318,7 @@ public interface MatchingApi {
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
      *         or MatchRequest cannot be updated since it has already been fulfilled! (status code 406)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "putApiV2MatchingRequestRequestId",
@@ -319,7 +332,8 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
             @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
-            @ApiResponse(responseCode = "406", description = "MatchRequest cannot be updated since it has already been fulfilled!")
+            @ApiResponse(responseCode = "406", description = "MatchRequest cannot be updated since it has already been fulfilled!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
