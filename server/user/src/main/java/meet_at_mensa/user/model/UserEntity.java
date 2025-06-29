@@ -13,7 +13,7 @@ import java.time.LocalDate;
 // Class User represents a single entry (row) in the userdb/users table
 @Entity
 @Table(name = "user_data")
-public class User {
+public class UserEntity {
     
     // ----------
     // Attributes
@@ -132,13 +132,13 @@ public class User {
     // Constructors
     // ------------
 
-    public User() {
+    public UserEntity() {
 
         // default constructor required by JPA
 
     }
 
-    public User(String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, String bio) {
+    public UserEntity(String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, String bio) {
 
         this.email = email;
         this.firstname = firstname;

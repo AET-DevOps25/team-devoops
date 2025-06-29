@@ -12,7 +12,7 @@ import java.util.UUID;
 // Class User represents a single entry (row) in the userdb/users table
 @Entity
 @Table(name = "user_interests")
-public class Interest {
+public class InterestEntity {
     
     // ----------
     // Attributes
@@ -50,13 +50,13 @@ public class Interest {
     // Constructors
     // ------------
 
-    public Interest() {
+    public InterestEntity() {
 
         // default constructor required by JPA
 
     }
 
-    public Interest(UUID userID, String interest) {
+    public InterestEntity(UUID userID, String interest) {
 
         this.userID = userID;
         this.interest = interest;
