@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 1.0.0
+  version: 2.1.1
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -701,6 +701,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: get-api-v2-user-userID
       x-stoplight:
         id: p1d67jb8y16q8
@@ -724,6 +726,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        5XX:
+          description: Server Error
       operationId: put-api-v2-user-userID
       x-stoplight:
         id: exmvsbw8301bi
@@ -746,6 +750,8 @@ paths:
           $ref: '#/components/responses/BadRequestError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: delete-api-v2-user-userID
       x-stoplight:
         id: 407z5o4zq5tvl
@@ -757,8 +763,8 @@ paths:
       tags:
         - User
       responses:
-        '201':
-          description: Successfully created user
+        '200':
+          description: OK
           content:
             application/json:
               schema:
@@ -769,6 +775,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '409':
           description: Conflict
+        '500':
+          description: Internal Server Error
       operationId: post-api-v2-user-register
       x-stoplight:
         id: laufntfpxgg42
@@ -792,6 +800,8 @@ paths:
           $ref: '#/components/responses/BadRequestError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          description: Internal Server Error
       operationId: post-api-v2-matching-request
       x-stoplight:
         id: 1x5ta8qguutzq
@@ -823,6 +833,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: get-api-v2-matching-matches-userID
       description: 'Retrieve all matches for a user with {user-id} from the matching-service'
   '/api/v2/matching/requests/{user-id}':
@@ -845,6 +857,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: get-api-v2-matching-requests-userID
       x-stoplight:
         id: wkc1ys6vkbv12
@@ -865,6 +879,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: delete-api-v2-matching-matches-request-id
       x-stoplight:
         id: shgx14ydoaa2f
@@ -888,6 +904,8 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '406':
           description: MatchRequest cannot be updated since it has already been fulfilled!
+        '500':
+          description: Internal Server Error
       operationId: put-api-v2-matching-request-request-id
       x-stoplight:
         id: f6t3aeqcvup68
@@ -909,6 +927,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: get-api-v2-matching-rsvp-match-id-accept
       x-stoplight:
         id: am6b7xnyytanu
@@ -933,6 +953,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: get-api-v2-matching-rsvp-match-id-reject
       description: Reject invitation to a given match
       x-stoplight:
@@ -959,6 +981,8 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal Server Error
       operationId: get-api-v2-genai-conversation-starter
       requestBody:
         content:
