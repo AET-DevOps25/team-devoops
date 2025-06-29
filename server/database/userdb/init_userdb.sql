@@ -9,9 +9,11 @@
 CREATE TABLE IF NOT EXISTS `user_data` (
     user_id VARBINARY(16) PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    firstname VARCHAR(255) NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
     gender VARCHAR(255) NOT NULL,
     degree VARCHAR(255) NOT NULL,
+    degree_start INT NOT NULL,
     birthday DATE NOT NULL
 ); 
 
@@ -23,12 +25,4 @@ CREATE TABLE IF NOT EXISTS `user_interests` (
     list_id VARBINARY(16) PRIMARY KEY,
     user_id VARBINARY(16) NOT NULL,
     interest VARCHAR(255) NOT NULL
-);
-
--- user_credentials table
-    -- user_id: UUID of the given user
-    -- password_hash: user's hashed password
-CREATE TABLE IF NOT EXISTS `user_credentials` (
-    user_id VARBINARY(16) PRIMARY KEY,
-    password_hash VARCHAR(255) NOT NULL
 );
