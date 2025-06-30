@@ -24,7 +24,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchRequestCollection", description = "Object representing a collection of match requests in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T16:19:18.913506101Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T08:36:23.620452344Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchRequestCollection {
 
   @Valid
