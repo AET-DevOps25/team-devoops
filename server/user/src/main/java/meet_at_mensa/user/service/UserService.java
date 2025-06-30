@@ -49,7 +49,7 @@ public class UserService {
 
         // construct new User object
         User user = new User(
-            userID,
+            userEntity.getUserID(), // id
             userEntity.getEmail(), // email
             userEntity.getFirstname(), // firstname
             userEntity.getLastname(), // lastname
