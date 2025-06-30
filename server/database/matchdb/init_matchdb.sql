@@ -3,12 +3,12 @@
     -- match_id: UUID of the match, primary key
     -- user_id: UUID of the matched user
     -- group_id: UUID of group the user has been matched to
-    -- rsvp: Has the user RSVP'd?
+    -- invite_status: Has the user RSVP'd?
 CREATE TABLE IF NOT EXISTS `matches` (
     match_id VARBINARY(16) PRIMARY KEY,
     user_id VARBINARY(16) NOT NULL,
     group_id VARBINARY(16) NOT NULL,
-    rsvp BIT NOT NULL
+    invite_status VARCHAR(255) NOT NULL
 );
 
 -- groups table
@@ -24,6 +24,17 @@ CREATE TABLE IF NOT EXISTS `groups` (
     meet_location VARCHAR(255) NOT NULL
 );
 
+-- prompts table
+-- contains conversation starters
+    -- prompt_id: UUID of the prompt
+    -- group_id: UUID of the group this conversation starter prompt belongs to
+    -- prompt: prompt itself
+CREATE TABLE IF NOT EXISTS `prompts` (
+    prompt_id VARBINARY(16) PRIMARY KEY,
+    group_id VARBINARY(16) NOT NULL,
+    prompt VARCHAR(1023) NOT NULL
+);
+
 -- match requests table
 -- individual match requests
     -- request_id: UUID of the request, primary key
@@ -36,12 +47,12 @@ CREATE TABLE IF NOT EXISTS `groups` (
 CREATE TABLE IF NOT EXISTS `match_requests` (
     request_id VARBINARY(16) PRIMARY KEY,
     user_id VARBINARY(16) NOT NULL,
-    group_id VARBINARY(16),
     request_date DATE NOT NULL,
     request_location VARCHAR(255) NOT NULL,
     degree_pref BIT NOT NULL,
     age_pref BIT NOT NULL,
     gender_pref BIT NOT NULL
+    request_status VARCHAR(255) NOT NULL,
 );
 
 -- match timeslot table

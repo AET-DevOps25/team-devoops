@@ -10,6 +10,10 @@ import jakarta.persistence.Id;
 
 // import utils
 import java.util.UUID;
+
+// import from openapi spec
+import org.openapitools.model.RequestStatus;
+
 import java.time.LocalDate;
 
 // Class MatchRequest represents a single entry (row) in the matchdb/match_requests table
@@ -32,10 +36,6 @@ public class MatchRequest {
     @Column(name = "user_id")
     private UUID userID;
 
-    // group ID for the match. Null if currently unmatched
-    @Column(name = "group_id")
-    private UUID groupID;
-
     // date for the match
     @Column(name = "request_date")
     private LocalDate date;
@@ -56,6 +56,9 @@ public class MatchRequest {
     @Column(name = "gender_pref")
     private Boolean genderPref;
 
+    @Column(name = "request_status")
+    private RequestStatus requestStatus;
+
     // -------
     // Getters
     // -------
@@ -66,10 +69,6 @@ public class MatchRequest {
     
     public UUID getUserID() {
         return userID;
-    }
-    
-    public UUID getGroupID() {
-        return groupID;
     }
     
     public LocalDate getDate() {
@@ -92,6 +91,10 @@ public class MatchRequest {
         return genderPref;
     }
 
+    public RequestStatus getRequestStatus() {
+        return requestStatus;
+    }
+
     // -------
     // Setters
     // -------
@@ -99,10 +102,6 @@ public class MatchRequest {
     // no setters for
     // - RequestID
     // - UserID
-
-    public void setGroupID(UUID groupID) {
-        this.groupID = groupID;
-    }
 
     public void setDate(LocalDate date) {
         this.date = date;
@@ -124,6 +123,10 @@ public class MatchRequest {
         this.genderPref = genderPref;
     }
 
+    public void setRequestStatus(RequestStatus requestStatus) {
+        this.requestStatus = requestStatus;
+    }
+
     // ------------
     // Constructors
     // ------------
@@ -138,12 +141,14 @@ public class MatchRequest {
     public MatchRequest(UUID userID, LocalDate date, String location, Boolean degreePref, Boolean agePref, Boolean genderPref) {
 
         this.userID = userID;
-        this.groupID = null; // groupID is set when request is fullfilled
         this.date = date;
         this.location = location;
         this.degreePref = degreePref;
         this.agePref = agePref;
         this.genderPref = genderPref;
+
+        // all new requests are created with the pending status
+        this.requestStatus = RequestStatus.PENDING;
 
     }
 
@@ -153,7 +158,9 @@ public class MatchRequest {
 
     // whether or not this request has been fulfilled
     public Boolean isMatched() {
-        return (this.groupID != null);
+        
+        return (this.requestStatus == RequestStatus.MATCHED);
+
     }
 
     // returns true if this match requests' date is in the past

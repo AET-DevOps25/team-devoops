@@ -11,6 +11,9 @@ import jakarta.persistence.Id;
 // import utils
 import java.util.UUID;
 
+// import from openapi generated
+import org.openapitools.model.InviteStatus;
+
 // Class Match represents a single entry (row) in the matchdb/matches table
 @Entity
 @Table(name = "matches")
@@ -36,8 +39,8 @@ public class Match {
     private UUID groupID;
 
     // Whether to prioritize students with the same gender
-    @Column(name = "rsvp")
-    private Boolean rsvp;
+    @Column(name = "invite_status")
+    private InviteStatus inviteStatus;
 
     // -------
     // Getters
@@ -55,8 +58,8 @@ public class Match {
         return groupID;
     }
     
-    public Boolean getRsvp() {
-        return rsvp;
+    public InviteStatus getRsvp() {
+        return inviteStatus;
     }
 
     // -------
@@ -74,8 +77,8 @@ public class Match {
         this.groupID = groupID;
     }
 
-    public void setRsvp(Boolean rsvp) {
-        this.rsvp = rsvp;
+    public void setInviteStatus(InviteStatus inviteStatus) {
+        this.inviteStatus = inviteStatus;
     }
 
     // ------------
@@ -88,11 +91,11 @@ public class Match {
 
     }
 
-    public Match(UUID userID, UUID groupID, Boolean rsvp) {
+    public Match(UUID userID, UUID groupID, InviteStatus inviteStatus) {
 
         this.userID = userID;
         this.groupID = groupID;
-        this.rsvp = rsvp;
+        this.inviteStatus = inviteStatus;
 
     }
 

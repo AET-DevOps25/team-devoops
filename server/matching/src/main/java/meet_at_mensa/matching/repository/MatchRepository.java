@@ -1,5 +1,6 @@
 package meet_at_mensa.matching.repository;
 
+import org.openapitools.model.InviteStatus;
 // import CRUD repository (Create/Read/Update/Delete)
 import org.springframework.data.repository.CrudRepository;
 
@@ -22,5 +23,5 @@ public interface MatchRepository extends CrudRepository<Match, UUID> {
     Iterable<Match> findByGroupID(UUID groupID);
 
     // Find by RSVP status
-    Iterable<Match> findByRsvp(Boolean rsvp);
+    Iterable<Match> findByInviteStatus(InviteStatus inviteStatus);
 }
