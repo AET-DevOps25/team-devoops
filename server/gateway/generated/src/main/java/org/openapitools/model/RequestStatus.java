@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Enumerator representing the status of a MatchRequest | Value | Description | ---------|----------| | PENDING | The system has not attempted to match this request yet | | MATCHED | The system has fulfilled this request | | UNMATCHABLE | The system was unable to fulfill this request | | REMATCH | The sytem should attempt to fulfill this request again (ex: group cancelled for lacking RSVPs) | | EXPIRED | The date for this MatchRequest is in the past | 
  */
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T08:36:28.287057915Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:42:06.096041329Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public enum RequestStatus {
   
   PENDING("PENDING"),
