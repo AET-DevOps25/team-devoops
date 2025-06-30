@@ -58,7 +58,7 @@ public class MatchEntity {
         return groupID;
     }
     
-    public InviteStatus getRsvp() {
+    public InviteStatus getInviteStatus() {
         return inviteStatus;
     }
 

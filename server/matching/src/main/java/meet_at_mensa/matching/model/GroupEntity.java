@@ -10,6 +10,9 @@ import jakarta.persistence.Id;
 
 // import utils
 import java.util.UUID;
+
+import org.openapitools.model.Location;
+
 import java.time.LocalDate;
 
 // Class Group represents a single entry (row) in the matchdb/groups table
@@ -38,7 +41,7 @@ public class GroupEntity {
 
     // Whether to prioritize students with the same gender
     @Column(name = "meet_location")
-    private String location;
+    private Location location;
 
     // -------
     // Getters
@@ -56,7 +59,7 @@ public class GroupEntity {
         return timeslot;
     }
     
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
@@ -75,7 +78,7 @@ public class GroupEntity {
         this.timeslot = timeslot;
     }
     
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -89,7 +92,7 @@ public class GroupEntity {
 
     }
 
-    public GroupEntity(LocalDate date, Integer timeslot, String location) {
+    public GroupEntity(LocalDate date, Integer timeslot, Location location) {
 
         this.date = date;
         this.timeslot = timeslot;
