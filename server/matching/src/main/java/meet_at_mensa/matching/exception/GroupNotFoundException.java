@@ -3,7 +3,7 @@ package meet_at_mensa.matching.exception;
 public class GroupNotFoundException extends RuntimeException {
     
     public GroupNotFoundException() {
-        super("Match Request not found");
+        super("Group not found");
     }
 
     public GroupNotFoundException(String message) {
