@@ -300,7 +300,7 @@ export interface components {
          * @description Object representing a collection of matches in the Meet@Mensa system.
          */
         MatchCollection: {
-            matches: components["schemas"]["Match"];
+            matches: components["schemas"]["Match"][];
         };
         /**
          * matchID
@@ -483,7 +483,7 @@ export interface components {
          * @description Object representing a collection of student user in the Meet@Mensa system.
          */
         UserCollection: {
-            users: components["schemas"]["User"];
+            users: components["schemas"]["User"][];
         };
         /**
          * UserNew

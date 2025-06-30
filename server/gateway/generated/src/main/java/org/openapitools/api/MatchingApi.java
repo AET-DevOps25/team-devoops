@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:46:00.335141012Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T16:41:37.680885361Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -129,7 +129,7 @@ public interface MatchingApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"matches\" : { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 } } }";
+                    String exampleString = "{ \"matches\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 } }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 } } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

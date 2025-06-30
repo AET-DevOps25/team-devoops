@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.openapitools.model.User;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -21,10 +24,11 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "UserCollection", description = "Object representing a collection of student user in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:45:34.052791219Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T16:41:00.409372153Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class UserCollection {
 
-  private User users;
+  @Valid
+  private List<@Valid User> users = new ArrayList<>();
 
   public UserCollection() {
     super();
@@ -33,12 +37,20 @@ public class UserCollection {
   /**
    * Constructor with only required parameters
    */
-  public UserCollection(User users) {
+  public UserCollection(List<@Valid User> users) {
     this.users = users;
   }
 
-  public UserCollection users(User users) {
+  public UserCollection users(List<@Valid User> users) {
     this.users = users;
+    return this;
+  }
+
+  public UserCollection addUsersItem(User usersItem) {
+    if (this.users == null) {
+      this.users = new ArrayList<>();
+    }
+    this.users.add(usersItem);
     return this;
   }
 
@@ -49,11 +61,11 @@ public class UserCollection {
   @NotNull @Valid 
   @Schema(name = "users", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("users")
-  public User getUsers() {
+  public List<@Valid User> getUsers() {
     return users;
   }
 
-  public void setUsers(User users) {
+  public void setUsers(List<@Valid User> users) {
     this.users = users;
   }
 

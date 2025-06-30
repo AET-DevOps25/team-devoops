@@ -22,7 +22,7 @@ import javax.annotation.Generated;
  * MatchStatus
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:45:55.615775058Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T16:41:32.764015496Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchStatus {
 
   private UUID userID;
