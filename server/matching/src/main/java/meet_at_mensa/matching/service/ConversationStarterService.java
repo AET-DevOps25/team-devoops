@@ -1,7 +1,5 @@
 package meet_at_mensa.matching.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.openapitools.model.ConversationStarter;
@@ -11,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import meet_at_mensa.matching.exception.GroupNotFoundException;
 import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.model.PromptEntity;
-import meet_at_mensa.matching.model.TimeslotEntity;
 import meet_at_mensa.matching.repository.PromptRepository;
 
 public class ConversationStarterService {
