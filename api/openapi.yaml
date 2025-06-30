@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.1.1
+  version: 2.1.2
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -65,6 +65,8 @@ components:
         id: 5grlrzedrmo9k
       type: object
       description: Object representing a conversation starter in the meet@mensa system
+      required:
+        - prompt
       properties:
         prompt:
           type: string
@@ -76,6 +78,8 @@ components:
         id: p1vhmcpea8fmp
       type: object
       description: Object representing a collection of conversation starters in the Meet@Mensa system.
+      required:
+        - conversationsStarters
       properties:
         conversationsStarters:
           type: array
@@ -91,6 +95,13 @@ components:
         id: 67i45cu41e80g
       type: object
       description: Object representing a group that has been matched in the Meet@Mensa system.
+      required:
+        - groupID
+        - date
+        - time
+        - location
+        - userStatus
+        - conversationStarters
       properties:
         groupID:
           $ref: '#/components/schemas/groupID'
@@ -204,6 +215,8 @@ components:
         id: 4bem9fq0uukzk
       type: object
       description: Object representing a collection of matches in the Meet@Mensa system.
+      required:
+        - matches
       properties:
         matches:
           $ref: '#/components/schemas/Match'
@@ -222,6 +235,10 @@ components:
         id: azr6ciwnsz5nr
       type: object
       description: Object Representing a set of user preferences
+      required:
+        - degreePref
+        - agePref
+        - genderPref
       properties:
         degreePref:
           type: boolean
@@ -293,6 +310,8 @@ components:
         id: ccqjyx1unnz6s
       type: object
       description: Object representing a collection of match requests in the Meet@Mensa system.
+      required:
+        - requests
       properties:
         requests:
           type: array
@@ -379,6 +398,9 @@ components:
       x-stoplight:
         id: pdsvthtexm88j
       type: object
+      required:
+        - userID
+        - status
       properties:
         userID:
           $ref: '#/components/schemas/userID'
@@ -528,6 +550,8 @@ components:
         id: 8qy8pit8jdvq3
       type: object
       description: Object representing a collection of student user in the Meet@Mensa system.
+      required:
+        - users
       properties:
         users:
           $ref: '#/components/schemas/User'
