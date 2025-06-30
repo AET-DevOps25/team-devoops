@@ -14,7 +14,7 @@ import java.util.UUID;
 // Class Timeslot represents a single entry (row) in the matchdb/match_timeslots
 @Entity
 @Table(name = "match_timeslots")
-public class Timeslot {
+public class TimeslotEntity {
     
     // ----------
     // Attributes
@@ -68,13 +68,13 @@ public class Timeslot {
     // Constructors
     // ------------
 
-    public Timeslot() {
+    public TimeslotEntity() {
 
         // default constructor required by JPA
 
     }
 
-    public Timeslot(UUID requestID, Integer timeslot) {
+    public TimeslotEntity(UUID requestID, Integer timeslot) {
 
         this.requestID = requestID;
         this.timeslot = timeslot;

@@ -17,7 +17,7 @@ import org.openapitools.model.InviteStatus;
 // Class Match represents a single entry (row) in the matchdb/matches table
 @Entity
 @Table(name = "matches")
-public class Match {
+public class MatchEntity {
     
     // ----------
     // Attributes
@@ -85,13 +85,13 @@ public class Match {
     // Constructors
     // ------------
 
-    public Match() {
+    public MatchEntity() {
 
         // default constructor required by JPA
 
     }
 
-    public Match(UUID userID, UUID groupID, InviteStatus inviteStatus) {
+    public MatchEntity(UUID userID, UUID groupID, InviteStatus inviteStatus) {
 
         this.userID = userID;
         this.groupID = groupID;

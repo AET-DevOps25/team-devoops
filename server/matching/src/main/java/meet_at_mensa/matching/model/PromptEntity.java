@@ -14,7 +14,7 @@ import java.util.UUID;
 // Class Timeslot represents a single entry (row) in the matchdb/match_timeslots
 @Entity
 @Table(name = "prompts")
-public class Prompt {
+public class PromptEntity {
     
     // ----------
     // Attributes
@@ -68,13 +68,13 @@ public class Prompt {
     // Constructors
     // ------------
 
-    public Prompt() {
+    public PromptEntity() {
 
         // default constructor required by JPA
 
     }
 
-    public Prompt(UUID groupID, String prompt) {
+    public PromptEntity(UUID groupID, String prompt) {
 
         this.groupID = groupID;
         this.prompt = prompt;

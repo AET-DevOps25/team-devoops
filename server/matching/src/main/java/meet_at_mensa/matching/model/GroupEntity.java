@@ -15,7 +15,7 @@ import java.time.LocalDate;
 // Class Group represents a single entry (row) in the matchdb/groups table
 @Entity
 @Table(name = "groups")
-public class Group {
+public class GroupEntity {
     
     // ----------
     // Attributes
@@ -83,13 +83,13 @@ public class Group {
     // Constructors
     // ------------
 
-    public Group() {
+    public GroupEntity() {
 
         // default constructor required by JPA
 
     }
 
-    public Group(LocalDate date, Integer timeslot, String location) {
+    public GroupEntity(LocalDate date, Integer timeslot, String location) {
 
         this.date = date;
         this.timeslot = timeslot;

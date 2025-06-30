@@ -19,7 +19,7 @@ import java.time.LocalDate;
 // Class MatchRequest represents a single entry (row) in the matchdb/match_requests table
 @Entity
 @Table(name = "match_requests")
-public class MatchRequest {
+public class MatchRequestEntity {
     
     // ----------
     // Attributes
@@ -131,14 +131,14 @@ public class MatchRequest {
     // Constructors
     // ------------
 
-    public MatchRequest() {
+    public MatchRequestEntity() {
 
         // default constructor required by JPA
 
     }
 
     // Note: Constructor doesn't contain group ID since it's filled only when matching is fullfilled!
-    public MatchRequest(UUID userID, LocalDate date, String location, Boolean degreePref, Boolean agePref, Boolean genderPref) {
+    public MatchRequestEntity(UUID userID, LocalDate date, String location, Boolean degreePref, Boolean agePref, Boolean genderPref) {
 
         this.userID = userID;
         this.date = date;
