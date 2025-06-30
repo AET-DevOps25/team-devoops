@@ -223,31 +223,31 @@ export interface components {
          * @description Object representing a conversation starter in the meet@mensa system
          */
         ConversationStarter: {
-            prompt?: string;
+            prompt: string;
         };
         /**
          * ConversationStarterCollection
          * @description Object representing a collection of conversation starters in the Meet@Mensa system.
          */
         ConversationStarterCollection: {
-            conversationsStarters?: components["schemas"]["ConversationStarter"][];
+            conversationsStarters: components["schemas"]["ConversationStarter"][];
         };
         /**
          * Group
          * @description Object representing a group that has been matched in the Meet@Mensa system.
          */
         Group: {
-            groupID?: components["schemas"]["groupID"];
+            groupID: components["schemas"]["groupID"];
             /**
              * Format: date
              * @description Date the group is scheduled to meet at
              */
-            date?: string;
+            date: string;
             /** @description Timeslot the group is scheduled to meet at */
-            time?: components["schemas"]["timeslot"];
-            location?: components["schemas"]["location"];
-            userStatus?: components["schemas"]["MatchStatus"][];
-            conversationStarters?: components["schemas"]["ConversationStarterCollection"];
+            time: components["schemas"]["timeslot"];
+            location: components["schemas"]["location"];
+            userStatus: components["schemas"]["MatchStatus"][];
+            conversationStarters: components["schemas"]["ConversationStarterCollection"];
         };
         /**
          * groupID
@@ -300,7 +300,7 @@ export interface components {
          * @description Object representing a collection of matches in the Meet@Mensa system.
          */
         MatchCollection: {
-            matches?: components["schemas"]["Match"];
+            matches: components["schemas"]["Match"];
         };
         /**
          * matchID
@@ -317,17 +317,17 @@ export interface components {
              *     ---------|---------
              *     true | degree = same (priority)
              *     false | degree = any (no priority) */
-            degreePref?: boolean;
+            degreePref: boolean;
             /** @description Value | Meaning
              *     ---------|---------
              *     true | age = same (priority)
              *     false | age = any (no priority) */
-            agePref?: boolean;
+            agePref: boolean;
             /** @description Value | Meaning
              *     ---------|---------
              *     true | gender = same (priority)
              *     false | gender = any (no priority) */
-            genderPref?: boolean;
+            genderPref: boolean;
         };
         /**
          * MatchRequest
@@ -351,7 +351,7 @@ export interface components {
          * @description Object representing a collection of match requests in the Meet@Mensa system.
          */
         MatchRequestCollection: {
-            requests?: components["schemas"]["MatchRequest"][];
+            requests: components["schemas"]["MatchRequest"][];
         };
         /**
          * MatchRequestNew
@@ -385,8 +385,8 @@ export interface components {
         };
         /** MatchStatus */
         MatchStatus: {
-            userID?: components["schemas"]["userID"];
-            status?: components["schemas"]["inviteStatus"];
+            userID: components["schemas"]["userID"];
+            status: components["schemas"]["inviteStatus"];
         };
         /**
          * requestID
@@ -483,7 +483,7 @@ export interface components {
          * @description Object representing a collection of student user in the Meet@Mensa system.
          */
         UserCollection: {
-            users?: components["schemas"]["User"];
+            users: components["schemas"]["User"];
         };
         /**
          * UserNew

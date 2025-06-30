@@ -24,11 +24,22 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "ConversationStarterCollection", description = "Object representing a collection of conversation starters in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:41:06.560518124Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:45:34.052791219Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class ConversationStarterCollection {
 
   @Valid
   private List<@Valid ConversationStarter> conversationsStarters = new ArrayList<>();
+
+  public ConversationStarterCollection() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public ConversationStarterCollection(List<@Valid ConversationStarter> conversationsStarters) {
+    this.conversationsStarters = conversationsStarters;
+  }
 
   public ConversationStarterCollection conversationsStarters(List<@Valid ConversationStarter> conversationsStarters) {
     this.conversationsStarters = conversationsStarters;
@@ -47,8 +58,8 @@ public class ConversationStarterCollection {
    * Get conversationsStarters
    * @return conversationsStarters
    */
-  @Valid 
-  @Schema(name = "conversationsStarters", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "conversationsStarters", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("conversationsStarters")
   public List<@Valid ConversationStarter> getConversationsStarters() {
     return conversationsStarters;

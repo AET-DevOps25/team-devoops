@@ -21,12 +21,23 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchCollection", description = "Object representing a collection of matches in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:42:01.040689771Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:45:55.615775058Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchCollection {
 
-  private @Nullable Match matches;
+  private Match matches;
 
-  public MatchCollection matches(@Nullable Match matches) {
+  public MatchCollection() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public MatchCollection(Match matches) {
+    this.matches = matches;
+  }
+
+  public MatchCollection matches(Match matches) {
     this.matches = matches;
     return this;
   }
@@ -35,14 +46,14 @@ public class MatchCollection {
    * Get matches
    * @return matches
    */
-  @Valid 
-  @Schema(name = "matches", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "matches", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("matches")
-  public @Nullable Match getMatches() {
+  public Match getMatches() {
     return matches;
   }
 
-  public void setMatches(@Nullable Match matches) {
+  public void setMatches(Match matches) {
     this.matches = matches;
   }
 

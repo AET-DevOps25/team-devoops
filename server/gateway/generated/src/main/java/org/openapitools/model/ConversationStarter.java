@@ -20,12 +20,23 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "ConversationStarter", description = "Object representing a conversation starter in the meet@mensa system")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:42:06.096041329Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:46:00.335141012Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class ConversationStarter {
 
-  private @Nullable String prompt;
+  private String prompt;
 
-  public ConversationStarter prompt(@Nullable String prompt) {
+  public ConversationStarter() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public ConversationStarter(String prompt) {
+    this.prompt = prompt;
+  }
+
+  public ConversationStarter prompt(String prompt) {
     this.prompt = prompt;
     return this;
   }
@@ -34,14 +45,14 @@ public class ConversationStarter {
    * Get prompt
    * @return prompt
    */
-  
-  @Schema(name = "prompt", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "prompt", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("prompt")
-  public @Nullable String getPrompt() {
+  public String getPrompt() {
     return prompt;
   }
 
-  public void setPrompt(@Nullable String prompt) {
+  public void setPrompt(String prompt) {
     this.prompt = prompt;
   }
 

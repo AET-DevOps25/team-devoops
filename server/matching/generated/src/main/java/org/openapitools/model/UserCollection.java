@@ -21,12 +21,23 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "UserCollection", description = "Object representing a collection of student user in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:41:06.560518124Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T15:45:34.052791219Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class UserCollection {
 
-  private @Nullable User users;
+  private User users;
 
-  public UserCollection users(@Nullable User users) {
+  public UserCollection() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public UserCollection(User users) {
+    this.users = users;
+  }
+
+  public UserCollection users(User users) {
     this.users = users;
     return this;
   }
@@ -35,14 +46,14 @@ public class UserCollection {
    * Get users
    * @return users
    */
-  @Valid 
-  @Schema(name = "users", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "users", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("users")
-  public @Nullable User getUsers() {
+  public User getUsers() {
     return users;
   }
 
-  public void setUsers(@Nullable User users) {
+  public void setUsers(User users) {
     this.users = users;
   }
 
