@@ -4,18 +4,18 @@ All URIs are relative to *https://meetatmensa.com*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**deleteApiV2MatchingMatchesRequestId**](MatchingApi.md#deleteApiV2MatchingMatchesRequestId) | **DELETE** /api/v2/matching/request/{request-id} | Delete MatchRequest with {request-id} |
+| [**deleteApiV2MatchingRequestRequestId**](MatchingApi.md#deleteApiV2MatchingRequestRequestId) | **DELETE** /api/v2/matching/request/{request-id} | Delete MatchRequest with {request-id} |
 | [**getApiV2MatchingMatchesUserID**](MatchingApi.md#getApiV2MatchingMatchesUserID) | **GET** /api/v2/matching/matches/{user-id} | Retrieve all matches for a {user-id} |
 | [**getApiV2MatchingRequestsUserID**](MatchingApi.md#getApiV2MatchingRequestsUserID) | **GET** /api/v2/matching/requests/{user-id} | Retrieve all MatchRequests for a {user-id} |
 | [**getApiV2MatchingRsvpMatchIdAccept**](MatchingApi.md#getApiV2MatchingRsvpMatchIdAccept) | **GET** /api/v2/matching/rsvp/{match-id}/accept | Accept invitation to a given match |
 | [**getApiV2MatchingRsvpMatchIdReject**](MatchingApi.md#getApiV2MatchingRsvpMatchIdReject) | **GET** /api/v2/matching/rsvp/{match-id}/reject | Reject invitation to a given match |
-| [**postApiV2MatchingRequest**](MatchingApi.md#postApiV2MatchingRequest) | **POST** /api/v2/matching/request/submit | Submit matching Request |
+| [**postApiV2MatchingRequestSubmit**](MatchingApi.md#postApiV2MatchingRequestSubmit) | **POST** /api/v2/matching/request/submit | Submit matching Request |
 | [**putApiV2MatchingRequestRequestId**](MatchingApi.md#putApiV2MatchingRequestRequestId) | **PUT** /api/v2/matching/request/{request-id} | Update MatchRequest with {request-id} |
 
 
-<a id="deleteApiV2MatchingMatchesRequestId"></a>
-# **deleteApiV2MatchingMatchesRequestId**
-> deleteApiV2MatchingMatchesRequestId(requestId)
+<a id="deleteApiV2MatchingRequestRequestId"></a>
+# **deleteApiV2MatchingRequestRequestId**
+> deleteApiV2MatchingRequestRequestId(requestId)
 
 Delete MatchRequest with {request-id}
 
@@ -40,9 +40,9 @@ public class Example {
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     UUID requestId = UUID.randomUUID(); // UUID | UUID associated with a given match request
     try {
-      apiInstance.deleteApiV2MatchingMatchesRequestId(requestId);
+      apiInstance.deleteApiV2MatchingRequestRequestId(requestId);
     } catch (ApiException e) {
-      System.err.println("Exception when calling MatchingApi#deleteApiV2MatchingMatchesRequestId");
+      System.err.println("Exception when calling MatchingApi#deleteApiV2MatchingRequestRequestId");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -348,9 +348,9 @@ null (empty response body)
 | **404** | The requested resource was not found.  |  -  |
 | **500** | Internal Server Error |  -  |
 
-<a id="postApiV2MatchingRequest"></a>
-# **postApiV2MatchingRequest**
-> postApiV2MatchingRequest(matchRequestNew)
+<a id="postApiV2MatchingRequestSubmit"></a>
+# **postApiV2MatchingRequestSubmit**
+> postApiV2MatchingRequestSubmit(matchRequestNew)
 
 Submit matching Request
 
@@ -375,9 +375,9 @@ public class Example {
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     MatchRequestNew matchRequestNew = new MatchRequestNew(); // MatchRequestNew | 
     try {
-      apiInstance.postApiV2MatchingRequest(matchRequestNew);
+      apiInstance.postApiV2MatchingRequestSubmit(matchRequestNew);
     } catch (ApiException e) {
-      System.err.println("Exception when calling MatchingApi#postApiV2MatchingRequest");
+      System.err.println("Exception when calling MatchingApi#postApiV2MatchingRequestSubmit");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());

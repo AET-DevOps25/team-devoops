@@ -1,8 +1,8 @@
 # openapi-client-matching
 
 MeetAtMensa
-- API version: 2.1.4
-  - Build date: 2025-07-01T11:47:19.337976375Z[Etc/UTC]
+- API version: 2.1.5
+  - Build date: 2025-07-01T14:30:35.158036039Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-matching</artifactId>
-  <version>2.1.4</version>
+  <version>2.1.5</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-matching:2.1.4"
+     implementation "org.openapitools.client:openapi-client-matching:2.1.5"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-matching-2.1.4.jar`
+* `target/openapi-client-matching-2.1.5.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -120,12 +120,12 @@ All URIs are relative to *https://meetatmensa.com*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *GenAiApi* | [**getApiV2GenaiConversationStarter**](docs/GenAiApi.md#getApiV2GenaiConversationStarter) | **GET** /api/v2/genai/conversation-starter | Request conversation starter
-*MatchingApi* | [**deleteApiV2MatchingMatchesRequestId**](docs/MatchingApi.md#deleteApiV2MatchingMatchesRequestId) | **DELETE** /api/v2/matching/request/{request-id} | Delete MatchRequest with {request-id}
+*MatchingApi* | [**deleteApiV2MatchingRequestRequestId**](docs/MatchingApi.md#deleteApiV2MatchingRequestRequestId) | **DELETE** /api/v2/matching/request/{request-id} | Delete MatchRequest with {request-id}
 *MatchingApi* | [**getApiV2MatchingMatchesUserID**](docs/MatchingApi.md#getApiV2MatchingMatchesUserID) | **GET** /api/v2/matching/matches/{user-id} | Retrieve all matches for a {user-id}
 *MatchingApi* | [**getApiV2MatchingRequestsUserID**](docs/MatchingApi.md#getApiV2MatchingRequestsUserID) | **GET** /api/v2/matching/requests/{user-id} | Retrieve all MatchRequests for a {user-id}
 *MatchingApi* | [**getApiV2MatchingRsvpMatchIdAccept**](docs/MatchingApi.md#getApiV2MatchingRsvpMatchIdAccept) | **GET** /api/v2/matching/rsvp/{match-id}/accept | Accept invitation to a given match
 *MatchingApi* | [**getApiV2MatchingRsvpMatchIdReject**](docs/MatchingApi.md#getApiV2MatchingRsvpMatchIdReject) | **GET** /api/v2/matching/rsvp/{match-id}/reject | Reject invitation to a given match
-*MatchingApi* | [**postApiV2MatchingRequest**](docs/MatchingApi.md#postApiV2MatchingRequest) | **POST** /api/v2/matching/request/submit | Submit matching Request
+*MatchingApi* | [**postApiV2MatchingRequestSubmit**](docs/MatchingApi.md#postApiV2MatchingRequestSubmit) | **POST** /api/v2/matching/request/submit | Submit matching Request
 *MatchingApi* | [**putApiV2MatchingRequestRequestId**](docs/MatchingApi.md#putApiV2MatchingRequestRequestId) | **PUT** /api/v2/matching/request/{request-id} | Update MatchRequest with {request-id}
 *UserApi* | [**deleteApiV2UserUserID**](docs/UserApi.md#deleteApiV2UserUserID) | **DELETE** /api/v2/user/{user-id} | Delete User with {user-id}
 *UserApi* | [**getApiV2UserUserID**](docs/UserApi.md#getApiV2UserUserID) | **GET** /api/v2/user/{user-id} | Retrieve User with {user-id}

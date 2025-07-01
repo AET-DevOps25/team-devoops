@@ -11,7 +11,7 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.1.4
+  version: 2.1.5
 servers:
 - description: ""
   url: https://meetatmensa.com
@@ -149,7 +149,7 @@ paths:
   /api/v2/matching/request/submit:
     post:
       description: Submit a new matching request to the Matching-Service
-      operationId: post-api-v2-matching-request
+      operationId: post-api-v2-matching-request-submit
       requestBody:
         content:
           application/json:
@@ -236,7 +236,7 @@ paths:
   /api/v2/matching/request/{request-id}:
     delete:
       description: "Delete MatchRequest with ID {request-id} from the system"
-      operationId: delete-api-v2-matching-matches-request-id
+      operationId: delete-api-v2-matching-request-request-id
       parameters:
       - $ref: "#/components/parameters/request-id"
       responses:

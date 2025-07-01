@@ -68,7 +68,7 @@ export interface paths {
          * Submit matching Request
          * @description Submit a new matching request to the Matching-Service
          */
-        post: operations["post-api-v2-matching-request"];
+        post: operations["post-api-v2-matching-request-submit"];
         delete?: never;
         options?: never;
         head?: never;
@@ -142,7 +142,7 @@ export interface paths {
          * Delete MatchRequest with {request-id}
          * @description Delete MatchRequest with ID {request-id} from the system
          */
-        delete: operations["delete-api-v2-matching-matches-request-id"];
+        delete: operations["delete-api-v2-matching-request-request-id"];
         options?: never;
         head?: never;
         patch?: never;
@@ -762,7 +762,7 @@ export interface operations {
             };
         };
     };
-    "post-api-v2-matching-request": {
+    "post-api-v2-matching-request-submit": {
         parameters: {
             query?: never;
             header?: never;
@@ -903,7 +903,7 @@ export interface operations {
             };
         };
     };
-    "delete-api-v2-matching-matches-request-id": {
+    "delete-api-v2-matching-request-request-id": {
         parameters: {
             query?: never;
             header?: never;

@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T11:47:14.577743198Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T14:30:30.394847767Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -60,7 +60,7 @@ public interface MatchingApi {
      *         or Internal Server Error (status code 500)
      */
     @Operation(
-        operationId = "deleteApiV2MatchingMatchesRequestId",
+        operationId = "deleteApiV2MatchingRequestRequestId",
         summary = "Delete MatchRequest with {request-id}",
         description = "Delete MatchRequest with ID {request-id} from the system",
         tags = { "Matching" },
@@ -80,7 +80,7 @@ public interface MatchingApi {
         value = "/api/v2/matching/request/{request-id}"
     )
     
-    default ResponseEntity<Void> deleteApiV2MatchingMatchesRequestId(
+    default ResponseEntity<Void> deleteApiV2MatchingRequestRequestId(
         @Parameter(name = "request-id", description = "UUID associated with a given match request", required = true, in = ParameterIn.PATH) @PathVariable("request-id") UUID requestId
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -279,7 +279,7 @@ public interface MatchingApi {
      *         or Internal Server Error (status code 500)
      */
     @Operation(
-        operationId = "postApiV2MatchingRequest",
+        operationId = "postApiV2MatchingRequestSubmit",
         summary = "Submit matching Request",
         description = "Submit a new matching request to the Matching-Service",
         tags = { "Matching" },
@@ -299,7 +299,7 @@ public interface MatchingApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<Void> postApiV2MatchingRequest(
+    default ResponseEntity<Void> postApiV2MatchingRequestSubmit(
         @Parameter(name = "MatchRequestNew", description = "") @Valid @RequestBody(required = false) @Nullable MatchRequestNew matchRequestNew
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
