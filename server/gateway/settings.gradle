@@ -1,2 +1,3 @@
 rootProject.name = 'gateway'
 includeBuild('generated')
+includeBuild('generated-client')
