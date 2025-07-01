@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.1.3
+  version: 2.1.4
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -371,10 +371,6 @@ components:
       description: Object representing a request for matching a given user on a given date in the Meet@Mensa system.
       title: MatchRequestUpdate
       properties:
-        userID:
-          $ref: '#/components/schemas/userID'
-          x-stoplight:
-            id: rpwxqsd1z3mwd
         date:
           type: string
           x-stoplight:
