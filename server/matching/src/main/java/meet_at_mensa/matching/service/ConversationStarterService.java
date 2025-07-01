@@ -81,7 +81,7 @@ public class ConversationStarterService {
 
         // if list is empty, throw exception
         if (!promptEntities.iterator().hasNext()) {
-            throw new RequestNotFoundException();
+            throw new GroupNotFoundException();
         }
 
         // remove all entries from database
