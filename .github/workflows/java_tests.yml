@@ -29,10 +29,12 @@ jobs:
           java-version: 17
 
       - name: Make Gradle wrapper executable
-        run: chmod +x ./${{ matrix.service }}/gradlew
+        run: chmod +x gradlew
+        working-directory: ${{ matrix.service }}
 
       - name: Run tests
-        run: ./${{ matrix.service }}/gradlew test --info
+        run: ./gradlew test --info
+        working-directory: ${{ matrix.service }}
 
         # Upload the junit reports as artifacts
       - name: Upload JUnit test reports
@@ -49,7 +51,8 @@ jobs:
         if: always()
         uses: dorny/test-reporter@v2
         with:
+          artifact: ${{ matrix.service }}-test-results
           name: ${{ matrix.service }}
-          path: ./${{ matrix.service }}/build/test-results/**/*.xml
-          reporter: github
+          # path: ./${{ matrix.service }}/build/test-results/**/*.xml
+          reporter: java-junit
           token: ${{ secrets.GITHUB_TOKEN }}
