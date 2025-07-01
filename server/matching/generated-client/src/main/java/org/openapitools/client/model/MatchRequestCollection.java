@@ -51,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * Object representing a collection of match requests in the Meet@Mensa system.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T11:33:41.928973646Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T11:47:19.337976375Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchRequestCollection {
   public static final String SERIALIZED_NAME_REQUESTS = "requests";
   @SerializedName(SERIALIZED_NAME_REQUESTS)

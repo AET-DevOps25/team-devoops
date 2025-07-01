@@ -2,7 +2,7 @@
 
 MeetAtMensa
 - API version: 2.1.4
-  - Build date: 2025-07-01T11:33:41.928973646Z[Etc/UTC]
+  - Build date: 2025-07-01T11:47:19.337976375Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
