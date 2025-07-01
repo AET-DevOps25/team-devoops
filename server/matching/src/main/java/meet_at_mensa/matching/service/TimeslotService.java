@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.model.TimeslotEntity;
 import meet_at_mensa.matching.repository.TimeslotRepository;
 
-
+@Service
 public class TimeslotService {
 
     @Autowired

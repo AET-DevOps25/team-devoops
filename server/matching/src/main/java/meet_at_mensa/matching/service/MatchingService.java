@@ -13,12 +13,14 @@ import org.openapitools.model.MatchRequest;
 import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.algorithm.MatchingAlgorithm;
 import meet_at_mensa.matching.algorithm.MatchingSolution;
 import meet_at_mensa.matching.algorithm.MatchingSolutionBlock;
 import meet_at_mensa.matching.client.UserClient;
 
+@Service
 public class MatchingService {
     
     // Send out invites

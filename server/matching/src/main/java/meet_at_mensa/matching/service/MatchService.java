@@ -9,11 +9,13 @@ import org.openapitools.model.Match;
 import org.openapitools.model.MatchCollection;
 import org.openapitools.model.MatchStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.MatchNotFoundException;
 import meet_at_mensa.matching.model.MatchEntity;
 import meet_at_mensa.matching.repository.MatchRepository;
 
+@Service
 public class MatchService {
 
     // TODO: Removed Expired

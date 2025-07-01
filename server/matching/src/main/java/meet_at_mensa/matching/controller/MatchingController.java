@@ -1,9 +1,13 @@
 package meet_at_mensa.matching.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import meet_at_mensa.matching.service.MatchRequestService;
+import meet_at_mensa.matching.service.MatchService;
+import meet_at_mensa.matching.service.MatchingService;
 
 import java.util.UUID;
 
@@ -12,6 +16,15 @@ import org.openapitools.model.*;
 
 @RestController
 public class MatchingController implements MatchingApi {
+
+    @Autowired
+    MatchRequestService requestService;
+
+    @Autowired
+    MatchingService matchingService;
+
+    @Autowired
+    MatchService matchService;
 
     // DELETE @ api/v2/matching/request/{requestID}
     @Override

@@ -6,11 +6,13 @@ import java.util.UUID;
 import org.openapitools.model.Group;
 import org.openapitools.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.GroupNotFoundException;
 import meet_at_mensa.matching.model.GroupEntity;
 import meet_at_mensa.matching.repository.GroupRepository;
 
+@Service
 public class GroupService {
 
 

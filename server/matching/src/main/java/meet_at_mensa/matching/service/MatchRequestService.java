@@ -9,12 +9,14 @@ import org.openapitools.model.MatchRequestNew;
 import org.openapitools.model.MatchRequestUpdate;
 import org.openapitools.model.RequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.exception.RequestOverlapException;
 import meet_at_mensa.matching.model.MatchRequestEntity;
 import meet_at_mensa.matching.repository.MatchRequestRepository;
 
+@Service
 public class MatchRequestService {
 
     // Remove Expired
