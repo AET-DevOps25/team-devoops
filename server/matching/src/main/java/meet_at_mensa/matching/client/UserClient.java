@@ -1,12 +1,15 @@
 package meet_at_mensa.matching.client;
 
 import java.util.UUID;
+import java.util.List;
 
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.Configuration;
 import org.openapitools.client.auth.*;
 import org.openapitools.client.api.UserApi;
 import org.openapitools.client.model.User;
+
+import org.openapitools.model.UserCollection;
 
 import meet_at_mensa.matching.exception.RestException;
 
@@ -55,13 +58,23 @@ public class UserClient {
             // convert to server-type object and return
             return convertUser(userClient);
 
-
         } catch (Exception e) {
-
             throw new RestException();
+        }
+    }
 
+    public UserCollection getUsers(List<UUID> userIDs) {
+
+        // create empty UserCollection
+        UserCollection users = new UserCollection();
+
+        // get each user individually
+        for (UUID userID : userIDs) {
+            users.addUsersItem(getUser(userID));
         }
 
+        // return userCollection
+        return users;
 
     }
 
