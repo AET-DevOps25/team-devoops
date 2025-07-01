@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'api/*'
+      - 'api/openapi.yaml'
+      - 'api/scripts/*'
 
 jobs:
 
@@ -43,6 +44,10 @@ jobs:
         run: ./api/scripts/gen_spring.sh
         shell: bash
 
+      - name: Generate Client Code
+        run: ./api/scripts/gen_client.sh
+        shell: bash
+
       - name: Generate api.ts
         run: ./api/scripts/gen_typescript.sh
         shell: bash
@@ -57,6 +62,9 @@ jobs:
           git add server/matching/generated
           git add server/user/generated
           git add server/gateway/generated
+          git add server/matching/generated-client
+          git add server/user/generated-client
+          git add server/gateway/generated-client
           git add client/src/api.ts
           git add docs/api.html
 
