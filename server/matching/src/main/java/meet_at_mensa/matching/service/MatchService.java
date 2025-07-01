@@ -10,7 +10,6 @@ import org.openapitools.model.MatchCollection;
 import org.openapitools.model.MatchStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import meet_at_mensa.matching.exception.GroupNotFoundException;
 import meet_at_mensa.matching.exception.MatchNotFoundException;
 import meet_at_mensa.matching.model.MatchEntity;
 import meet_at_mensa.matching.repository.MatchRepository;
