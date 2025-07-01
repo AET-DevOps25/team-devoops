@@ -18,4 +18,10 @@ public interface MatchRequestRepository extends CrudRepository<MatchRequestEntit
 
     // Find all matches on the same date
     Iterable<MatchRequestEntity> findByDate(LocalDate date);
+
+    // Find all matches from the same user
+    Iterable<MatchRequestEntity> findByUserID(UUID userID);
+
+    // Find all matches from the same user on the same date
+    Iterable<MatchRequestEntity> findByDateAndUserID(LocalDate date, UUID userID);
 }

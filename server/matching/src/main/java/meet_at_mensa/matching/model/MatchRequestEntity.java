@@ -11,8 +11,10 @@ import jakarta.persistence.Id;
 // import utils
 import java.util.UUID;
 
+import org.openapitools.model.MatchPreferences;
 // import from openapi spec
 import org.openapitools.model.RequestStatus;
+import org.openapitools.model.Location;
 
 import java.time.LocalDate;
 
@@ -42,7 +44,7 @@ public class MatchRequestEntity {
 
     // date for the match
     @Column(name = "request_location")
-    private String location;
+    private Location location;
 
     // Whether to prioritize students with the same degree
     @Column(name = "degree_pref")
@@ -75,7 +77,7 @@ public class MatchRequestEntity {
         return date;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
     
@@ -95,6 +97,11 @@ public class MatchRequestEntity {
         return requestStatus;
     }
 
+    // bonus constructor to return preferences as an object
+    public MatchPreferences getPreferences() {
+        return new MatchPreferences(degreePref, agePref, genderPref);
+    }
+
     // -------
     // Setters
     // -------
@@ -107,7 +114,7 @@ public class MatchRequestEntity {
         this.date = date;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -127,6 +134,12 @@ public class MatchRequestEntity {
         this.requestStatus = requestStatus;
     }
 
+    public void setPreferences(MatchPreferences preferences) {
+        this.degreePref = preferences.getDegreePref();
+        this.agePref = preferences.getAgePref();
+        this.genderPref = preferences.getGenderPref();
+    }
+
     // ------------
     // Constructors
     // ------------
@@ -138,7 +151,7 @@ public class MatchRequestEntity {
     }
 
     // Note: Constructor doesn't contain group ID since it's filled only when matching is fullfilled!
-    public MatchRequestEntity(UUID userID, LocalDate date, String location, Boolean degreePref, Boolean agePref, Boolean genderPref) {
+    public MatchRequestEntity(UUID userID, LocalDate date, Location location, Boolean degreePref, Boolean agePref, Boolean genderPref) {
 
         this.userID = userID;
         this.date = date;
