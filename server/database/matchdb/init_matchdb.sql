@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `match_requests` (
     degree_pref BIT NOT NULL,
     age_pref BIT NOT NULL,
     gender_pref BIT NOT NULL
-    request_status VARCHAR(255) NOT NULL,
+    request_status VARCHAR(255) NOT NULL
 );
 
 -- match timeslot table
