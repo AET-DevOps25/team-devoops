@@ -350,7 +350,7 @@ null (empty response body)
 
 <a id="postApiV2MatchingRequestSubmit"></a>
 # **postApiV2MatchingRequestSubmit**
-> postApiV2MatchingRequestSubmit(matchRequestNew)
+> MatchRequest postApiV2MatchingRequestSubmit(matchRequestNew)
 
 Submit matching Request
 
@@ -375,7 +375,8 @@ public class Example {
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     MatchRequestNew matchRequestNew = new MatchRequestNew(); // MatchRequestNew | 
     try {
-      apiInstance.postApiV2MatchingRequestSubmit(matchRequestNew);
+      MatchRequest result = apiInstance.postApiV2MatchingRequestSubmit(matchRequestNew);
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling MatchingApi#postApiV2MatchingRequestSubmit");
       System.err.println("Status code: " + e.getCode());
@@ -395,7 +396,7 @@ public class Example {
 
 ### Return type
 
-null (empty response body)
+[**MatchRequest**](MatchRequest.md)
 
 ### Authorization
 
@@ -404,7 +405,7 @@ null (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -412,6 +413,7 @@ null (empty response body)
 | **200** | Request submitted sucessfully |  -  |
 | **400** | The request was malformed or contained invalid parameters.  |  -  |
 | **401** | Authentication failed due to missing or invalid OAuth2 token.  |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal Server Error |  -  |
 
 <a id="putApiV2MatchingRequestRequestId"></a>

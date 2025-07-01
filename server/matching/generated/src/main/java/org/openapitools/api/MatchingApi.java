@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T14:38:04.287496310Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:08:44.948656538Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -276,6 +276,7 @@ public interface MatchingApi {
      * @return Request submitted sucessfully (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
+     *         or Conflict (status code 409)
      *         or Internal Server Error (status code 500)
      */
     @Operation(
@@ -284,9 +285,12 @@ public interface MatchingApi {
         description = "Submit a new matching request to the Matching-Service",
         tags = { "Matching" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Request submitted sucessfully"),
+            @ApiResponse(responseCode = "200", description = "Request submitted sucessfully", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MatchRequest.class))
+            }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
+            @ApiResponse(responseCode = "409", description = "Conflict"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
@@ -296,12 +300,22 @@ public interface MatchingApi {
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/api/v2/matching/request/submit",
+        produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<Void> postApiV2MatchingRequestSubmit(
+    default ResponseEntity<MatchRequest> postApiV2MatchingRequestSubmit(
         @Parameter(name = "MatchRequestNew", description = "") @Valid @RequestBody(required = false) @Nullable MatchRequestNew matchRequestNew
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ null, null ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

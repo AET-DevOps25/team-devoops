@@ -24,7 +24,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "UserCollection", description = "Object representing a collection of student user in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T14:38:38.942433404Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:09:21.038189319Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class UserCollection {
 
   @Valid

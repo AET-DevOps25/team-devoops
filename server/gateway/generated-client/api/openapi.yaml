@@ -11,7 +11,7 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.1.5
+  version: 2.1.6
 servers:
 - description: ""
   url: https://meetatmensa.com
@@ -157,11 +157,17 @@ paths:
               $ref: "#/components/schemas/MatchRequestNew"
       responses:
         "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchRequest"
           description: Request submitted sucessfully
         "400":
           $ref: "#/components/responses/BadRequestError"
         "401":
           $ref: "#/components/responses/UnauthorizedError"
+        "409":
+          description: Conflict
         "500":
           description: Internal Server Error
       summary: Submit matching Request

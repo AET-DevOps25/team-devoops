@@ -1,8 +1,8 @@
 # openapi-client-matching
 
 MeetAtMensa
-- API version: 2.1.5
-  - Build date: 2025-07-01T14:38:43.661755594Z[Etc/UTC]
+- API version: 2.1.6
+  - Build date: 2025-07-01T15:09:25.743002216Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-matching</artifactId>
-  <version>2.1.5</version>
+  <version>2.1.6</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-matching:2.1.5"
+     implementation "org.openapitools.client:openapi-client-matching:2.1.6"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-matching-2.1.5.jar`
+* `target/openapi-client-matching-2.1.6.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
