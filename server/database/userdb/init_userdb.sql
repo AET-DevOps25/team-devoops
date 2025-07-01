@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `user_data` (
     gender VARCHAR(255) NOT NULL,
     degree VARCHAR(255) NOT NULL,
     degree_start INT NOT NULL,
-    bio VARCHAR(1023) NOT NULL,
+    bio VARCHAR(1023) NOT NULL
 ); 
 
 -- user-interests table
