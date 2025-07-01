@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.Map;
 import java.util.List;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T11:00:52.819010394Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T11:33:41.928973646Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public interface Authentication {
     /**
      * Apply authentication settings to header and query params.

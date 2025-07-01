@@ -48,7 +48,7 @@ import org.openapitools.client.JSON;
 /**
  * Object representing a conversation starter in the meet@mensa system
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T11:00:52.819010394Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T11:33:41.928973646Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class ConversationStarter {
   public static final String SERIALIZED_NAME_PROMPT = "prompt";
   @SerializedName(SERIALIZED_NAME_PROMPT)
