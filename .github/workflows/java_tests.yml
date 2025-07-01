@@ -29,13 +29,14 @@ jobs:
           java-version: 17
 
       - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+        run: chmod +x ./${{ matrix.service }}/gradlew
 
       - name: Run tests
         run: ./${{ matrix.service }}/gradlew test --info
 
         # Upload the junit reports as artifacts
       - name: Upload JUnit test reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.service }}-test-results
@@ -50,5 +51,5 @@ jobs:
         with:
           name: ${{ matrix.service }}
           path: ./${{ matrix.service }}/build/test-results/**/*.xml
-          reporter: junit
+          reporter: github
           token: ${{ secrets.GITHUB_TOKEN }}
