@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.1.5
+  version: 2.1.6
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -824,10 +824,17 @@ paths:
       responses:
         '200':
           description: Request submitted sucessfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchRequest'
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          description: Conflict
         '500':
           description: Internal Server Error
       operationId: post-api-v2-matching-request-submit
