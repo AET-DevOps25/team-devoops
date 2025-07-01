@@ -109,7 +109,7 @@ public class MatchRequestService {
      * @return MatchRequestCollection of all requests for this date
      * @throws RequestNotFoundException if no request with id {requestID} is found
      */
-    public MatchRequestCollection getDateRequests(LocalDate date) {
+    public MatchRequestCollection getUnmatchedRequests(LocalDate date) {
 
 
         // search the database for match requests associated with the given date
@@ -124,20 +124,25 @@ public class MatchRequestService {
         MatchRequestCollection requestCollection = new MatchRequestCollection();
 
         for (MatchRequestEntity requestEntity : requestEntities) {
-            
-            // create new MatchRequest Object
-            MatchRequest request = new MatchRequest(
-                requestEntity.getRequestID(), // requestID
-                requestEntity.getUserID(), // userID
-                requestEntity.getDate(), // date 
-                timeslotService.getTimeslots(requestEntity.getRequestID()), // timeslots
-                requestEntity.getLocation(), // location
-                requestEntity.getPreferences(), // Match preferences
-                requestEntity.getRequestStatus() // Status
-            );
 
-            // add to request collection
-            requestCollection.addRequestsItem(request);
+            // if the request is unmatched
+            if (requestEntity.getRequestStatus() != RequestStatus.MATCHED){
+
+                // create new MatchRequest Object
+                MatchRequest request = new MatchRequest(
+                    requestEntity.getRequestID(), // requestID
+                    requestEntity.getUserID(), // userID
+                    requestEntity.getDate(), // date 
+                    timeslotService.getTimeslots(requestEntity.getRequestID()), // timeslots
+                    requestEntity.getLocation(), // location
+                    requestEntity.getPreferences(), // Match preferences
+                    requestEntity.getRequestStatus() // Status
+                );
+
+                // add to request collection
+                requestCollection.addRequestsItem(request);
+            }
+            
         }
 
         // returns the collection

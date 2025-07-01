@@ -1,26 +1,35 @@
 package meet_at_mensa.matching.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import org.openapitools.model.ConversationStarterCollection;
+import org.openapitools.model.MatchRequestCollection;
+import org.openapitools.model.RequestStatus;
 import org.openapitools.model.Group;
 import org.openapitools.model.Location;
+import org.openapitools.model.MatchRequest;
 import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import meet_at_mensa.matching.algorithm.MatchingAlgorithm;
+import meet_at_mensa.matching.algorithm.MatchingSolution;
+import meet_at_mensa.matching.algorithm.MatchingSolutionBlock;
+import meet_at_mensa.matching.client.UserClient;
+
 public class MatchingService {
     
-    // Do matching (run the algorithim)
     // Send out invites
     // Update Statuses
     // Check if re-mathching is needed
+    // remove group
 
 
     // handles MatchRequests
     @Autowired
-    MatchRequestService matchRequestService;
+    MatchRequestService requestService;
 
     // handles Matches
     @Autowired
@@ -33,6 +42,10 @@ public class MatchingService {
     // handles genAI conversation starters
     @Autowired
     ConversationStarterService conversationStarterService;
+
+    // hanles user-service calls
+    @Autowired
+    UserClient userClient;
 
     /**
      * Creates entries in the Group and Match tables for a new matched group
@@ -72,6 +85,83 @@ public class MatchingService {
         // fetch the group object to return
         return groupService.getGroup(groupID);
 
+    }
+
+
+    /**
+     * Runs the matching algorithm and generates groups
+     * 
+     * @param date the date for which to run the algorithm
+     * @return List of all matched groups
+     */
+    public List<Group> match(LocalDate date){
+
+        // --------------------
+        // Part 1: Prepare Data
+        // --------------------
+
+        // get all unmatched requests for today's date
+        MatchRequestCollection requests = requestService.getUnmatchedRequests(date);
+
+        // get list of all user UUIDs
+        List<UUID> userIDs = new ArrayList<>();
+        for (MatchRequest request : requests.getRequests()) {
+            userIDs.add(request.getUserID());
+        }
+
+        // get all Users from today's Requests
+        UserCollection users = userClient.getUsers(userIDs);
+
+        // --------------------
+        // Part 2: Run Algorithm
+        // --------------------
+
+        // Prepare matching algorithm
+        MatchingAlgorithm algorithm = new MatchingAlgorithm(users, requests);
+
+        // Generate solution
+        MatchingSolution solution = algorithm.generateSolution();
+
+        // --------------------
+        // Part 3: Create Groups
+        // --------------------
+
+        // create empty group list
+        List<Group> groups = new ArrayList<>();
+
+        // for each group in the solution
+        for (MatchingSolutionBlock solutionBlock : solution.getSolution()) {
+
+            // for successfully matched groups
+            if (solutionBlock.getStatus() == RequestStatus.MATCHED) {
+
+                // update request status to matched
+                for (MatchRequest request : solutionBlock.getRequests().getRequests()) {
+                    requestService.updateRequstStatus(request.getRequestID(), RequestStatus.MATCHED);
+                }
+
+                // create a Group, Matches, and ConversationStarters
+                groups.add(
+                    createGroup(
+                        solutionBlock.getUsers(),
+                        solutionBlock.getDate(),
+                        solutionBlock.getTime(),
+                        solutionBlock.getLocation()
+                    )
+                );
+
+            // for Unmatchable requests
+            } else if (solutionBlock.getStatus() == RequestStatus.UNMATCHABLE) {
+
+                // update request status to unmatchable
+                for (MatchRequest request : solutionBlock.getRequests().getRequests()) {
+                    requestService.updateRequstStatus(request.getRequestID(), RequestStatus.UNMATCHABLE);
+                }
+            }
+        }
+
+        // return groups once completed
+        return groups;
     }
 
 }
