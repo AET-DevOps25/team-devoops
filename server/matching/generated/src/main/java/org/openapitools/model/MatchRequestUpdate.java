@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import org.openapitools.model.Location;
 import org.openapitools.model.MatchPreferences;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,10 +28,8 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchRequestUpdate", description = "Object representing a request for matching a given user on a given date in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T16:41:00.409372153Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T08:27:20.111128052Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchRequestUpdate {
-
-  private @Nullable UUID userID;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private @Nullable LocalDate date;
@@ -43,26 +40,6 @@ public class MatchRequestUpdate {
   private @Nullable Location location;
 
   private @Nullable MatchPreferences preferences;
-
-  public MatchRequestUpdate userID(@Nullable UUID userID) {
-    this.userID = userID;
-    return this;
-  }
-
-  /**
-   * The unique ID of a single student in the Meet@Mensa system.
-   * @return userID
-   */
-  @Valid 
-  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("userID")
-  public @Nullable UUID getUserID() {
-    return userID;
-  }
-
-  public void setUserID(@Nullable UUID userID) {
-    this.userID = userID;
-  }
 
   public MatchRequestUpdate date(@Nullable LocalDate date) {
     this.date = date;
@@ -161,8 +138,7 @@ public class MatchRequestUpdate {
       return false;
     }
     MatchRequestUpdate matchRequestUpdate = (MatchRequestUpdate) o;
-    return Objects.equals(this.userID, matchRequestUpdate.userID) &&
-        Objects.equals(this.date, matchRequestUpdate.date) &&
+    return Objects.equals(this.date, matchRequestUpdate.date) &&
         Objects.equals(this.timeslot, matchRequestUpdate.timeslot) &&
         Objects.equals(this.location, matchRequestUpdate.location) &&
         Objects.equals(this.preferences, matchRequestUpdate.preferences);
@@ -170,14 +146,13 @@ public class MatchRequestUpdate {
 
   @Override
   public int hashCode() {
-    return Objects.hash(userID, date, timeslot, location, preferences);
+    return Objects.hash(date, timeslot, location, preferences);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class MatchRequestUpdate {\n");
-    sb.append("    userID: ").append(toIndentedString(userID)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    timeslot: ").append(toIndentedString(timeslot)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");

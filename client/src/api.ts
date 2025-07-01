@@ -373,7 +373,6 @@ export interface components {
          * @description Object representing a request for matching a given user on a given date in the Meet@Mensa system.
          */
         MatchRequestUpdate: {
-            userID?: components["schemas"]["userID"];
             /**
              * Format: date
              * @description The date a user would like meet@mensa to find them a match
