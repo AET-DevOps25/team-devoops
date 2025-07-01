@@ -22,8 +22,9 @@ import meet_at_mensa.matching.client.UserClient;
 public class MatchingService {
     
     // Send out invites
+    // group health
     // Update Statuses
-    // Check if re-mathching is needed
+    // Check if re-matching is needed
     // remove group
 
 
