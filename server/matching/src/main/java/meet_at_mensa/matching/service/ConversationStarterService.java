@@ -4,10 +4,11 @@ import java.util.UUID;
 
 import org.openapitools.model.ConversationStarter;
 import org.openapitools.model.ConversationStarterCollection;
+import org.openapitools.model.User;
+import org.openapitools.model.UserCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import meet_at_mensa.matching.exception.GroupNotFoundException;
-import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.model.PromptEntity;
 import meet_at_mensa.matching.repository.PromptRepository;
 
@@ -15,6 +16,37 @@ public class ConversationStarterService {
 
     @Autowired
     private PromptRepository promptRepository;
+
+    /**
+     * Calls remote service to generate prompts for a given group
+     *
+     * This function only generates the propmts, to add them to the database registerPrompts must be called separately!
+     * 
+     * TODO: This function is currently unimplemented, and returns placeholder values
+     *
+     * @param users UserCollection object with all users in a given group
+     * @return generated ConversationStarterCollection
+     * @throws RestException if the call fails
+     */
+    public ConversationStarterCollection generatePrompts(UserCollection users) {
+
+        // create empty Collection
+        ConversationStarterCollection collection = new ConversationStarterCollection();
+
+        // TODO: this is a dummy implementation. This should just the ConversationStarterCollection returned by the GenAi service
+        for (User user : users.getUsers()) {
+            
+            // new placeholder prompt
+            ConversationStarter prompt = new ConversationStarter("This is a placeholder, it should be fetched from the GenAi microservice");
+
+            // add to collection
+            collection.addConversationsStartersItem(prompt);
+        }
+
+        // return collection
+        return collection;
+
+    }
 
     /**
      * Fetches all prompts for a given group
