@@ -21,7 +21,7 @@ for path in matching user gateway; do
         -g java \
         -i api/openapi.yaml \
         -o server/$path/generated-client \
-        --additional-properties=groupId=org.openapitools.client,artifactId=openapi-client-$path
+        --additional-properties=scmConnection=false,groupId=org.openapitools.client,artifactId=openapi-client-$path
 
     # echo generating gradle
     echo "Generating gradle project files for $path..."
