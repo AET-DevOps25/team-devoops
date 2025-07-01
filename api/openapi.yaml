@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.1.4
+  version: 2.1.5
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -830,7 +830,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           description: Internal Server Error
-      operationId: post-api-v2-matching-request
+      operationId: post-api-v2-matching-request-submit
       x-stoplight:
         id: 1x5ta8qguutzq
       requestBody:
@@ -909,7 +909,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           description: Internal Server Error
-      operationId: delete-api-v2-matching-matches-request-id
+      operationId: delete-api-v2-matching-request-request-id
       x-stoplight:
         id: shgx14ydoaa2f
       description: 'Delete MatchRequest with ID {request-id} from the system'
