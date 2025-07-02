@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T08:36:28.287057915Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:44.158646690Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
