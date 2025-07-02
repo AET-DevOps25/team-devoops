@@ -20,6 +20,8 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import meet_at_mensa.user.exception.UserConflictException;
+import meet_at_mensa.user.exception.UserMalformedException;
 import meet_at_mensa.user.exception.UserNotFoundException;
 
 @SpringBootTest
@@ -284,6 +286,104 @@ public class UserServiceTest {
         assertThrows(
             UserNotFoundException.class,
             () -> userService.getUser(userID)
+        );
+
+    }
+
+    @Test
+    void rejectsInvalidEmail() {
+
+        // -------
+        // PREPARE
+        // -------
+
+        User template = new User()
+            .email("bademail.com")
+            .firstname("Max")
+            .lastname("Mustermann")
+            .birthday(LocalDate.of(1969, 6, 9))
+            .gender("male")
+            .degree("msc_informatics")
+            .degreeStart(2024)
+            .interests(List.of("dnd", "gaming"))
+            .bio("I am a Stegosaurus");
+
+        UserNew userBadEmail = new UserNew()
+            .email(template.getEmail())
+            .firstname(template.getFirstname())
+            .lastname(template.getLastname())
+            .birthday(template.getBirthday())
+            .gender(template.getGender())
+            .degree(template.getDegree())
+            .degreeStart(template.getDegreeStart())
+            .interests(template.getInterests())
+            .bio(template.getBio());
+
+
+        // ------
+        // ASSERT
+        // ------
+
+        assertThrows(
+            UserMalformedException.class,
+            () -> userService.registerUser(userBadEmail)
+        );
+
+    }
+
+    @Test
+    void rejectsDuplicateEmail() {
+
+        // -------
+        // PREPARE
+        // -------
+
+        User template = new User()
+            .email("max@duplicatemann.com")
+            .firstname("Max")
+            .lastname("Mustermann")
+            .birthday(LocalDate.of(1969, 6, 9))
+            .gender("male")
+            .degree("msc_informatics")
+            .degreeStart(2024)
+            .interests(List.of("dnd", "gaming"))
+            .bio("I am a Stegosaurus");
+
+        UserNew user1 = new UserNew()
+            .email(template.getEmail())
+            .firstname(template.getFirstname())
+            .lastname(template.getLastname())
+            .birthday(template.getBirthday())
+            .gender(template.getGender())
+            .degree(template.getDegree())
+            .degreeStart(template.getDegreeStart())
+            .interests(template.getInterests())
+            .bio(template.getBio());
+
+        UserNew user2 = new UserNew()
+            .email(template.getEmail())
+            .firstname(template.getFirstname())
+            .lastname(template.getLastname())
+            .birthday(template.getBirthday())
+            .gender(template.getGender())
+            .degree(template.getDegree())
+            .degreeStart(template.getDegreeStart())
+            .interests(template.getInterests())
+            .bio(template.getBio());
+
+        // -------
+        // Act
+        // -------
+
+        userService.registerUser(user1);
+
+        // ------
+        // ASSERT
+        // ------
+
+        assertThrows(
+            UserConflictException.class,
+            () -> userService.registerUser(user2)
         );
 
     }
