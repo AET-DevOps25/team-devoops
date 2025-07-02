@@ -65,7 +65,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          # context: "{{ defaultContext }}:${{ matrix.service }}" # run in the subdirectory specified by matrix
+          #context: "{{ defaultContext }}:${{ matrix.service }}"
+          context: ${{ matrix.context }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
