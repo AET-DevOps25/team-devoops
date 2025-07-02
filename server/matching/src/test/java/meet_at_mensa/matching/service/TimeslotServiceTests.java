@@ -20,8 +20,8 @@ import meet_at_mensa.matching.exception.TimeslotNotFoundException;
 
 @SpringBootTest
 @Testcontainers
-
 class TimeSlotServiceTests {
+
 
 	@Container
     static MySQLContainer<?> matchdb = new MySQLContainer<>("mysql:8.0")
@@ -30,6 +30,7 @@ class TimeSlotServiceTests {
         .withUsername("root")
         .withPassword("root");
 
+
     @DynamicPropertySource
     static void overrideProps(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", matchdb::getJdbcUrl);
@@ -37,8 +38,10 @@ class TimeSlotServiceTests {
         registry.add("spring.datasource.password", matchdb::getPassword);
     }
 
+
     @Autowired
     TimeslotService timeslotService;
+
 
     @Test
     void canRegisterTimeslot(){
@@ -69,6 +72,7 @@ class TimeSlotServiceTests {
         assertEquals(16, output.size(), "There should be 16 timeslots!");
         assertEquals(new HashSet<>(timeslots), new HashSet<>(output), "Timeslots should match!");
     }
+
 
     @Test
     void canGetTimeslots(){
@@ -104,6 +108,7 @@ class TimeSlotServiceTests {
         assertEquals(2, output.size(), "There should be 2 timeslots!");
         assertEquals(new HashSet<>(timeslots), new HashSet<>(output), "Timeslots should match!");
     }
+
 
     @Test
     void canUpdateTimeslots(){
@@ -142,6 +147,7 @@ class TimeSlotServiceTests {
         assertEquals(3, output.size(), "There should be 3 timeslots!");
         assertEquals(new HashSet<>(update), new HashSet<>(output), "Timeslots should match!");
     }
+
 
     @Test
     void canDeleteTimeslots(){
@@ -218,7 +224,34 @@ class TimeSlotServiceTests {
             () -> timeslotService.registerTimeslots(requestID, timeslots2),
             "Should not accept 0"
         );
+    }
 
+
+    @Test
+    void failsGetGracefully(){
+        
+        // ----
+        // PREP
+        // ----
+
+        // generate a random UUID
+        UUID requestID = UUID.randomUUID();
+        
+
+        // ----
+        // ACT
+        // ----
+        
+
+        // ----
+        // ASSERT
+        // ----
+
+        assertThrows(
+            TimeslotNotFoundException.class,
+            () -> timeslotService.getTimeslots(requestID),
+            "Should throw TimeslotNotFoundException"
+        );
     }
 
 }
