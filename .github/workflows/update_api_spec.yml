@@ -5,6 +5,8 @@ name: Update API Spec
 on:
   workflow_dispatch:
   push:
+    branches-ignore:
+      - main
     paths:
       - 'api/*'
 
