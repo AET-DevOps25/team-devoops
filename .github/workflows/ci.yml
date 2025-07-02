@@ -31,6 +31,7 @@ jobs:
   unit_tests:
     name: Run Tests
     uses: ./.github/workflows/java_tests.yml
+    needs: update_api_spec
 
   # Call the docker_build workflow to build and publish images
   build:
