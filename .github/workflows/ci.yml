@@ -27,11 +27,15 @@ jobs:
     name: Update API Spec
     uses: ./.github/workflows/update_api_spec.yml
 
+  # TODO Add linting
+
   # Run Java unit-tests
   unit_tests:
     name: Run Tests
     uses: ./.github/workflows/java_tests.yml
     needs: update_api_spec
+
+  # TODO Add Integration Testing
 
   # Call the docker_build workflow to build and publish images
   build:

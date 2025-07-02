@@ -1,5 +1,5 @@
 # This workflow should generate code based on the openapi.yaml and commit it to the branch.
-name: Update API Spec
+name: OpenAPI Codegen
 
 # This workflow is triggered only when called by another workflow
 on:
@@ -10,7 +10,7 @@ jobs:
 
   update_openapi_generated:
 
-    name: Generate from OpenAPI spec if necessary
+    name: Check & Generate
     runs-on: ubuntu-latest
     
     steps:
