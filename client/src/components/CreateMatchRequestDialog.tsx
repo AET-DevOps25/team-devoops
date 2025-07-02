@@ -98,12 +98,12 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
       '13:45',
       '14:00',
     ];
-    return TIMESLOT_OPTIONS.filter((slot, idx) => {
+    return TIMESLOT_OPTIONS.filter((_, idx) => {
       const [h, m] = slotEndTimes[idx].split(':').map(Number);
       const slotEnd = new Date(selectedDate);
       slotEnd.setHours(h, m, 0, 0);
       return isBefore(slotEnd, now);
-    }).map((slot) => slot.value);
+    }).map((timeslot) => timeslot.value);
   };
 
   const handleSubmit = () => {
@@ -149,7 +149,6 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
               label="Date"
               value={selectedDate}
               onChange={(newValue) => setSelectedDate(newValue)}
-              slotProps={{ textField: { fullWidth: true } }}
               disablePast
             />
           </LocalizationProvider>

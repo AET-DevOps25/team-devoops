@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Paper, Box } from '@mui/material';
 
 const LunchMeetings = () => {

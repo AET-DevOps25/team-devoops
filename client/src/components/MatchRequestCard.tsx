@@ -4,14 +4,11 @@ import {
   Paper,
   Box,
   Button,
-  Grid,
   Chip,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -104,8 +101,6 @@ const getMensaImage = (location: string) => {
 
 const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDelete }) => {
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleCancelClick = () => setConfirmOpen(true);
   const handleCloseDialog = () => setConfirmOpen(false);

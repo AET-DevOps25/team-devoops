@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import {
   Typography,
-  Paper,
   Box,
   Button,
   Select,
@@ -22,8 +21,6 @@ import {
 } from '../services/matchRequestService';
 import MatchRequestCard from './MatchRequestCard';
 import CreateMatchRequestDialog from './CreateMatchRequestDialog';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 type SortOption = 'date' | 'status' | 'location';
 

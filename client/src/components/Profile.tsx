@@ -113,9 +113,6 @@ const Profile: React.FC = () => {
   const handleChange = (field: keyof UserProfile) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditData((prev) => ({ ...prev, [field]: e.target.value }));
   };
-  const handleInterestsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditData((prev) => ({ ...prev, interests: e.target.value.split(',').map((s) => s.trim()) }));
-  };
   const handleSave = async () => {
     setSaving(true);
     try {
