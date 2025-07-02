@@ -1,20 +1,25 @@
 package meet_at_mensa.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import jakarta.validation.Valid;
 
 import org.openapitools.model.User;
 import org.openapitools.model.UserNew;
 import org.openapitools.model.UserUpdate;
 
 import meet_at_mensa.user.repository.*;
+import meet_at_mensa.user.exception.UserConflictException;
+import meet_at_mensa.user.exception.UserMalformedException;
 import meet_at_mensa.user.exception.UserNotFoundException;
 import meet_at_mensa.user.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 
 @Service
 public class UserService {
@@ -75,6 +80,11 @@ public class UserService {
      */
     public User registerUser(UserNew userNew) {
 
+        // validate email
+        if(!isValidEmail(userNew.getEmail())) {
+            throw new UserMalformedException();
+        }
+
         // construct new UserEntity object
         UserEntity userEntity = new UserEntity(
             userNew.getEmail(), // email
@@ -87,8 +97,17 @@ public class UserService {
             userNew.getBio() // bio
         );
 
-        // save user entity to database
-        userEntity = userRepository.save(userEntity);
+        try {
+
+            // save user entity to database
+            userEntity = userRepository.save(userEntity);
+
+        // throw Exception if duplicate email
+        } catch (DataIntegrityViolationException e) {
+            throw new UserConflictException(e.toString());
+        }
+
+        
 
         // register interests
         registerInterests(userEntity.getUserID(), userNew.getInterests());
@@ -304,6 +323,21 @@ public class UserService {
 
         return users;
 
+    }
+
+    /**
+     * Checks if an email is valid
+     *
+     * @param email to be checked
+     * @return true if valid, false if not
+     */
+    public Boolean isValidEmail(String email){
+
+        // Regex taken from https://www.baeldung.com/java-email-validation-regex
+        String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
+        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+
+        return email.matches(emailRegex);
     }
 
 }
