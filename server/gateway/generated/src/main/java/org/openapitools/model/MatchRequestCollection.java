@@ -24,11 +24,22 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchRequestCollection", description = "Object representing a collection of match requests in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:44.158646690Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:09:21.038189319Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchRequestCollection {
 
   @Valid
   private List<@Valid MatchRequest> requests = new ArrayList<>();
+
+  public MatchRequestCollection() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public MatchRequestCollection(List<@Valid MatchRequest> requests) {
+    this.requests = requests;
+  }
 
   public MatchRequestCollection requests(List<@Valid MatchRequest> requests) {
     this.requests = requests;
@@ -47,8 +58,8 @@ public class MatchRequestCollection {
    * Get requests
    * @return requests
    */
-  @Valid 
-  @Schema(name = "requests", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "requests", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("requests")
   public List<@Valid MatchRequest> getRequests() {
     return requests;

@@ -20,16 +20,29 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchPreferences", description = "Object Representing a set of user preferences")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:13.737697830Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:08:44.948656538Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchPreferences {
 
-  private @Nullable Boolean degreePref;
+  private Boolean degreePref;
 
-  private @Nullable Boolean agePref;
+  private Boolean agePref;
 
-  private @Nullable Boolean genderPref;
+  private Boolean genderPref;
 
-  public MatchPreferences degreePref(@Nullable Boolean degreePref) {
+  public MatchPreferences() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public MatchPreferences(Boolean degreePref, Boolean agePref, Boolean genderPref) {
+    this.degreePref = degreePref;
+    this.agePref = agePref;
+    this.genderPref = genderPref;
+  }
+
+  public MatchPreferences degreePref(Boolean degreePref) {
     this.degreePref = degreePref;
     return this;
   }
@@ -38,18 +51,18 @@ public class MatchPreferences {
    * Value | Meaning  ---------|---------  true | degree = same (priority)  false | degree = any (no priority)
    * @return degreePref
    */
-  
-  @Schema(name = "degreePref", description = "Value | Meaning  ---------|---------  true | degree = same (priority)  false | degree = any (no priority)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "degreePref", description = "Value | Meaning  ---------|---------  true | degree = same (priority)  false | degree = any (no priority)", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("degreePref")
-  public @Nullable Boolean getDegreePref() {
+  public Boolean getDegreePref() {
     return degreePref;
   }
 
-  public void setDegreePref(@Nullable Boolean degreePref) {
+  public void setDegreePref(Boolean degreePref) {
     this.degreePref = degreePref;
   }
 
-  public MatchPreferences agePref(@Nullable Boolean agePref) {
+  public MatchPreferences agePref(Boolean agePref) {
     this.agePref = agePref;
     return this;
   }
@@ -58,18 +71,18 @@ public class MatchPreferences {
    * Value | Meaning  ---------|---------  true | age = same (priority)  false | age = any (no priority)
    * @return agePref
    */
-  
-  @Schema(name = "agePref", description = "Value | Meaning  ---------|---------  true | age = same (priority)  false | age = any (no priority)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "agePref", description = "Value | Meaning  ---------|---------  true | age = same (priority)  false | age = any (no priority)", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("agePref")
-  public @Nullable Boolean getAgePref() {
+  public Boolean getAgePref() {
     return agePref;
   }
 
-  public void setAgePref(@Nullable Boolean agePref) {
+  public void setAgePref(Boolean agePref) {
     this.agePref = agePref;
   }
 
-  public MatchPreferences genderPref(@Nullable Boolean genderPref) {
+  public MatchPreferences genderPref(Boolean genderPref) {
     this.genderPref = genderPref;
     return this;
   }
@@ -78,14 +91,14 @@ public class MatchPreferences {
    * Value | Meaning  ---------|---------  true | gender = same (priority)  false | gender = any (no priority)
    * @return genderPref
    */
-  
-  @Schema(name = "genderPref", description = "Value | Meaning  ---------|---------  true | gender = same (priority)  false | gender = any (no priority)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "genderPref", description = "Value | Meaning  ---------|---------  true | gender = same (priority)  false | gender = any (no priority)", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("genderPref")
-  public @Nullable Boolean getGenderPref() {
+  public Boolean getGenderPref() {
     return genderPref;
   }
 
-  public void setGenderPref(@Nullable Boolean genderPref) {
+  public void setGenderPref(Boolean genderPref) {
     this.genderPref = genderPref;
   }
 

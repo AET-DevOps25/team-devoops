@@ -22,14 +22,26 @@ import javax.annotation.Generated;
  * MatchStatus
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:44.158646690Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:09:21.038189319Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchStatus {
 
-  private @Nullable UUID userID;
+  private UUID userID;
 
-  private @Nullable InviteStatus status;
+  private InviteStatus status;
 
-  public MatchStatus userID(@Nullable UUID userID) {
+  public MatchStatus() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public MatchStatus(UUID userID, InviteStatus status) {
+    this.userID = userID;
+    this.status = status;
+  }
+
+  public MatchStatus userID(UUID userID) {
     this.userID = userID;
     return this;
   }
@@ -38,18 +50,18 @@ public class MatchStatus {
    * The unique ID of a single student in the Meet@Mensa system.
    * @return userID
    */
-  @Valid 
-  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "userID", description = "The unique ID of a single student in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("userID")
-  public @Nullable UUID getUserID() {
+  public UUID getUserID() {
     return userID;
   }
 
-  public void setUserID(@Nullable UUID userID) {
+  public void setUserID(UUID userID) {
     this.userID = userID;
   }
 
-  public MatchStatus status(@Nullable InviteStatus status) {
+  public MatchStatus status(InviteStatus status) {
     this.status = status;
     return this;
   }
@@ -58,14 +70,14 @@ public class MatchStatus {
    * Get status
    * @return status
    */
-  @Valid 
-  @Schema(name = "status", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "status", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("status")
-  public @Nullable InviteStatus getStatus() {
+  public InviteStatus getStatus() {
     return status;
   }
 
-  public void setStatus(@Nullable InviteStatus status) {
+  public void setStatus(InviteStatus status) {
     this.status = status;
   }
 

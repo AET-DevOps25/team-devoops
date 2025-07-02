@@ -68,7 +68,7 @@ export interface paths {
          * Submit matching Request
          * @description Submit a new matching request to the Matching-Service
          */
-        post: operations["post-api-v2-matching-request"];
+        post: operations["post-api-v2-matching-request-submit"];
         delete?: never;
         options?: never;
         head?: never;
@@ -142,7 +142,7 @@ export interface paths {
          * Delete MatchRequest with {request-id}
          * @description Delete MatchRequest with ID {request-id} from the system
          */
-        delete: operations["delete-api-v2-matching-matches-request-id"];
+        delete: operations["delete-api-v2-matching-request-request-id"];
         options?: never;
         head?: never;
         patch?: never;
@@ -223,31 +223,31 @@ export interface components {
          * @description Object representing a conversation starter in the meet@mensa system
          */
         ConversationStarter: {
-            prompt?: string;
+            prompt: string;
         };
         /**
          * ConversationStarterCollection
          * @description Object representing a collection of conversation starters in the Meet@Mensa system.
          */
         ConversationStarterCollection: {
-            conversationsStarters?: components["schemas"]["ConversationStarter"][];
+            conversationsStarters: components["schemas"]["ConversationStarter"][];
         };
         /**
          * Group
          * @description Object representing a group that has been matched in the Meet@Mensa system.
          */
         Group: {
-            groupID?: components["schemas"]["groupID"];
+            groupID: components["schemas"]["groupID"];
             /**
              * Format: date
              * @description Date the group is scheduled to meet at
              */
-            date?: string;
+            date: string;
             /** @description Timeslot the group is scheduled to meet at */
-            time?: components["schemas"]["timeslot"];
-            location?: components["schemas"]["location"];
-            userStatus?: components["schemas"]["MatchStatus"][];
-            conversationStarters?: components["schemas"]["ConversationStarterCollection"];
+            time: components["schemas"]["timeslot"];
+            location: components["schemas"]["location"];
+            userStatus: components["schemas"]["MatchStatus"][];
+            conversationStarters: components["schemas"]["ConversationStarterCollection"];
         };
         /**
          * groupID
@@ -300,7 +300,7 @@ export interface components {
          * @description Object representing a collection of matches in the Meet@Mensa system.
          */
         MatchCollection: {
-            matches?: components["schemas"]["Match"];
+            matches: components["schemas"]["Match"][];
         };
         /**
          * matchID
@@ -317,17 +317,17 @@ export interface components {
              *     ---------|---------
              *     true | degree = same (priority)
              *     false | degree = any (no priority) */
-            degreePref?: boolean;
+            degreePref: boolean;
             /** @description Value | Meaning
              *     ---------|---------
              *     true | age = same (priority)
              *     false | age = any (no priority) */
-            agePref?: boolean;
+            agePref: boolean;
             /** @description Value | Meaning
              *     ---------|---------
              *     true | gender = same (priority)
              *     false | gender = any (no priority) */
-            genderPref?: boolean;
+            genderPref: boolean;
         };
         /**
          * MatchRequest
@@ -351,7 +351,7 @@ export interface components {
          * @description Object representing a collection of match requests in the Meet@Mensa system.
          */
         MatchRequestCollection: {
-            requests?: components["schemas"]["MatchRequest"][];
+            requests: components["schemas"]["MatchRequest"][];
         };
         /**
          * MatchRequestNew
@@ -373,7 +373,6 @@ export interface components {
          * @description Object representing a request for matching a given user on a given date in the Meet@Mensa system.
          */
         MatchRequestUpdate: {
-            userID?: components["schemas"]["userID"];
             /**
              * Format: date
              * @description The date a user would like meet@mensa to find them a match
@@ -385,8 +384,8 @@ export interface components {
         };
         /** MatchStatus */
         MatchStatus: {
-            userID?: components["schemas"]["userID"];
-            status?: components["schemas"]["inviteStatus"];
+            userID: components["schemas"]["userID"];
+            status: components["schemas"]["inviteStatus"];
         };
         /**
          * requestID
@@ -483,7 +482,7 @@ export interface components {
          * @description Object representing a collection of student user in the Meet@Mensa system.
          */
         UserCollection: {
-            users?: components["schemas"]["User"];
+            users: components["schemas"]["User"][];
         };
         /**
          * UserNew
@@ -763,7 +762,7 @@ export interface operations {
             };
         };
     };
-    "post-api-v2-matching-request": {
+    "post-api-v2-matching-request-submit": {
         parameters: {
             query?: never;
             header?: never;
@@ -781,10 +780,19 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["MatchRequest"];
+                };
             };
             400: components["responses"]["BadRequestError"];
             401: components["responses"]["UnauthorizedError"];
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             /** @description Internal Server Error */
             500: {
                 headers: {
@@ -904,7 +912,7 @@ export interface operations {
             };
         };
     };
-    "delete-api-v2-matching-matches-request-id": {
+    "delete-api-v2-matching-request-request-id": {
         parameters: {
             query?: never;
             header?: never;

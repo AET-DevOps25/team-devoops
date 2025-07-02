@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:44.158646690Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:09:21.038189319Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -60,7 +60,7 @@ public interface MatchingApi {
      *         or Internal Server Error (status code 500)
      */
     @Operation(
-        operationId = "deleteApiV2MatchingMatchesRequestId",
+        operationId = "deleteApiV2MatchingRequestRequestId",
         summary = "Delete MatchRequest with {request-id}",
         description = "Delete MatchRequest with ID {request-id} from the system",
         tags = { "Matching" },
@@ -80,7 +80,7 @@ public interface MatchingApi {
         value = "/api/v2/matching/request/{request-id}"
     )
     
-    default ResponseEntity<Void> deleteApiV2MatchingMatchesRequestId(
+    default ResponseEntity<Void> deleteApiV2MatchingRequestRequestId(
         @Parameter(name = "request-id", description = "UUID associated with a given match request", required = true, in = ParameterIn.PATH) @PathVariable("request-id") UUID requestId
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -129,7 +129,7 @@ public interface MatchingApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"matches\" : { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 } } }";
+                    String exampleString = "{ \"matches\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 } }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"matchID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"UNSENT\", \"group\" : { \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 } } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -276,17 +276,21 @@ public interface MatchingApi {
      * @return Request submitted sucessfully (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
+     *         or Conflict (status code 409)
      *         or Internal Server Error (status code 500)
      */
     @Operation(
-        operationId = "postApiV2MatchingRequest",
+        operationId = "postApiV2MatchingRequestSubmit",
         summary = "Submit matching Request",
         description = "Submit a new matching request to the Matching-Service",
         tags = { "Matching" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Request submitted sucessfully"),
+            @ApiResponse(responseCode = "200", description = "Request submitted sucessfully", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = MatchRequest.class))
+            }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
+            @ApiResponse(responseCode = "409", description = "Conflict"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
@@ -296,12 +300,22 @@ public interface MatchingApi {
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/api/v2/matching/request/submit",
+        produces = { "application/json" },
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<Void> postApiV2MatchingRequest(
+    default ResponseEntity<MatchRequest> postApiV2MatchingRequestSubmit(
         @Parameter(name = "MatchRequestNew", description = "") @Valid @RequestBody(required = false) @Nullable MatchRequestNew matchRequestNew
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"date\" : \"2000-01-23\", \"preferences\" : { \"degreePref\" : true, \"agePref\" : true, \"genderPref\" : true }, \"requestID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"timeslot\" : [ null, null ], \"location\" : \"GARCHING\", \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"status\" : \"PENDING\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

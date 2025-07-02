@@ -94,7 +94,7 @@ public class UserController implements UserApi {
             // attempt to register a new user
             User newUser = userService.registerUser(userNew);
 
-            return ResponseEntity.status(201).body(newUser);
+            return ResponseEntity.ok(newUser);
 
         // 500
         } catch (Exception e) {

@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.1.1
+  version: 2.1.6
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -65,6 +65,8 @@ components:
         id: 5grlrzedrmo9k
       type: object
       description: Object representing a conversation starter in the meet@mensa system
+      required:
+        - prompt
       properties:
         prompt:
           type: string
@@ -76,6 +78,8 @@ components:
         id: p1vhmcpea8fmp
       type: object
       description: Object representing a collection of conversation starters in the Meet@Mensa system.
+      required:
+        - conversationsStarters
       properties:
         conversationsStarters:
           type: array
@@ -91,6 +95,13 @@ components:
         id: 67i45cu41e80g
       type: object
       description: Object representing a group that has been matched in the Meet@Mensa system.
+      required:
+        - groupID
+        - date
+        - time
+        - location
+        - userStatus
+        - conversationStarters
       properties:
         groupID:
           $ref: '#/components/schemas/groupID'
@@ -204,11 +215,17 @@ components:
         id: 4bem9fq0uukzk
       type: object
       description: Object representing a collection of matches in the Meet@Mensa system.
+      required:
+        - matches
       properties:
         matches:
-          $ref: '#/components/schemas/Match'
           x-stoplight:
             id: xxfpxm2j35k81
+          type: array
+          items:
+            $ref: '#/components/schemas/Match'
+            x-stoplight:
+              id: 3k8gw0nlqax44
     matchID:
       title: matchID
       x-stoplight:
@@ -222,6 +239,10 @@ components:
         id: azr6ciwnsz5nr
       type: object
       description: Object Representing a set of user preferences
+      required:
+        - degreePref
+        - agePref
+        - genderPref
       properties:
         degreePref:
           type: boolean
@@ -293,6 +314,8 @@ components:
         id: ccqjyx1unnz6s
       type: object
       description: Object representing a collection of match requests in the Meet@Mensa system.
+      required:
+        - requests
       properties:
         requests:
           type: array
@@ -348,10 +371,6 @@ components:
       description: Object representing a request for matching a given user on a given date in the Meet@Mensa system.
       title: MatchRequestUpdate
       properties:
-        userID:
-          $ref: '#/components/schemas/userID'
-          x-stoplight:
-            id: rpwxqsd1z3mwd
         date:
           type: string
           x-stoplight:
@@ -379,6 +398,9 @@ components:
       x-stoplight:
         id: pdsvthtexm88j
       type: object
+      required:
+        - userID
+        - status
       properties:
         userID:
           $ref: '#/components/schemas/userID'
@@ -528,11 +550,17 @@ components:
         id: 8qy8pit8jdvq3
       type: object
       description: Object representing a collection of student user in the Meet@Mensa system.
+      required:
+        - users
       properties:
         users:
-          $ref: '#/components/schemas/User'
           x-stoplight:
             id: l8a1hngdfmgzr
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+            x-stoplight:
+              id: l5erbwkguwpoa
     UserNew:
       title: UserNew
       x-stoplight:
@@ -796,13 +824,20 @@ paths:
       responses:
         '200':
           description: Request submitted sucessfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchRequest'
         '400':
           $ref: '#/components/responses/BadRequestError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '409':
+          description: Conflict
         '500':
           description: Internal Server Error
-      operationId: post-api-v2-matching-request
+      operationId: post-api-v2-matching-request-submit
       x-stoplight:
         id: 1x5ta8qguutzq
       requestBody:
@@ -881,7 +916,7 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         '500':
           description: Internal Server Error
-      operationId: delete-api-v2-matching-matches-request-id
+      operationId: delete-api-v2-matching-request-request-id
       x-stoplight:
         id: shgx14ydoaa2f
       description: 'Delete MatchRequest with ID {request-id} from the system'

@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.openapitools.model.Match;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -21,13 +24,33 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchCollection", description = "Object representing a collection of matches in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:44.158646690Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:09:21.038189319Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchCollection {
 
-  private @Nullable Match matches;
+  @Valid
+  private List<@Valid Match> matches = new ArrayList<>();
 
-  public MatchCollection matches(@Nullable Match matches) {
+  public MatchCollection() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public MatchCollection(List<@Valid Match> matches) {
     this.matches = matches;
+  }
+
+  public MatchCollection matches(List<@Valid Match> matches) {
+    this.matches = matches;
+    return this;
+  }
+
+  public MatchCollection addMatchesItem(Match matchesItem) {
+    if (this.matches == null) {
+      this.matches = new ArrayList<>();
+    }
+    this.matches.add(matchesItem);
     return this;
   }
 
@@ -35,14 +58,14 @@ public class MatchCollection {
    * Get matches
    * @return matches
    */
-  @Valid 
-  @Schema(name = "matches", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "matches", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("matches")
-  public @Nullable Match getMatches() {
+  public List<@Valid Match> getMatches() {
     return matches;
   }
 
-  public void setMatches(@Nullable Match matches) {
+  public void setMatches(List<@Valid Match> matches) {
     this.matches = matches;
   }
 

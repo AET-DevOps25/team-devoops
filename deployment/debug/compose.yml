@@ -1,0 +1,89 @@
+# This file is used to deploy the microservices using Docker Compose.
+# It defines the services, their images, build context, and ports.
+
+services:
+  gateway-service:
+    build: ../../server/gateway
+    container_name: meetatmensa-gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - matching-service
+      - user-service
+      - genai-service
+    networks:
+      - backend
+
+  matching-service:
+    build: ../../server/matching
+    container_name: meetatmensa-matching
+    expose:
+      - "80"
+    ports:
+      - "8081:80"
+    depends_on:
+      - match-database
+    networks:
+      - backend
+
+  user-service:
+    build: ../../server/user
+    container_name: meetatmensa-user
+    expose:
+      - "80"
+    ports:
+      - "8082:80"
+    depends_on:
+      - user-database
+    networks:
+      - backend
+
+  genai-service:
+    build: ../../server/genai
+    container_name: meetatmensa-genai
+    expose:
+      - "80"
+    ports:
+      - "8083:80"
+    networks:
+      - backend
+
+  client-service:
+    build: ../../client
+    container_name: meetatmensa-client
+    ports:
+      - "80:80"
+
+  match-database:
+    build: ../../server/database/matchdb
+    container_name: meetatmensa-matchdb
+    # TODO: Implement password passed via secret
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - matchdb_data:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - backend
+
+  user-database:
+    build: ../../server/database/userdb
+    container_name: meetatmensa-userdb
+    # TODO: Implement password passed via secret
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - userdb_data:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  matchdb_data:
+  userdb_data:

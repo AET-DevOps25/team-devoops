@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.openapitools.model.User;
 import org.springframework.lang.Nullable;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -21,13 +24,33 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "UserCollection", description = "Object representing a collection of student user in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:44.158646690Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:09:21.038189319Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class UserCollection {
 
-  private @Nullable User users;
+  @Valid
+  private List<@Valid User> users = new ArrayList<>();
 
-  public UserCollection users(@Nullable User users) {
+  public UserCollection() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public UserCollection(List<@Valid User> users) {
     this.users = users;
+  }
+
+  public UserCollection users(List<@Valid User> users) {
+    this.users = users;
+    return this;
+  }
+
+  public UserCollection addUsersItem(User usersItem) {
+    if (this.users == null) {
+      this.users = new ArrayList<>();
+    }
+    this.users.add(usersItem);
     return this;
   }
 
@@ -35,14 +58,14 @@ public class UserCollection {
    * Get users
    * @return users
    */
-  @Valid 
-  @Schema(name = "users", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "users", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("users")
-  public @Nullable User getUsers() {
+  public List<@Valid User> getUsers() {
     return users;
   }
 
-  public void setUsers(@Nullable User users) {
+  public void setUsers(List<@Valid User> users) {
     this.users = users;
   }
 

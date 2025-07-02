@@ -1,0 +1,1303 @@
+openapi: 3.1.0
+info:
+  contact:
+    email: devoops@tyrean.mozmail.com
+    name: Team DevOops
+    url: https://github.com/AET-DevOps25/team-devoops/
+  description: "This OpenAPI specification defines the endpoints, schemas, and security\
+    \ mechanisms\nfor the Meet@Mensa User micro-service. "
+  license:
+    name: MIT
+    url: https://mit-license.org/
+  termsOfService: ""
+  title: MeetAtMensa
+  version: 2.1.6
+servers:
+- description: ""
+  url: https://meetatmensa.com
+security:
+- auth0: []
+tags:
+- description: Paths belonging to the GenAI microservice
+  name: GenAI
+- description: Paths belonging to the Matching microservice
+  name: Matching
+- description: Paths belonging to the User microservice
+  name: User
+paths:
+  /api/v2/user/{user-id}:
+    delete:
+      description: "Remove all information about user with ID {user-id} from user-service"
+      operationId: delete-api-v2-user-userID
+      parameters:
+      - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          description: User deleted
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/BadRequestError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      summary: "Delete User with {user-id}"
+      tags:
+      - User
+      x-stoplight:
+        id: 407z5o4zq5tvl
+      x-accepts:
+      - application/json
+    get:
+      description: "Fetch all information about user with ID {user-id} from user-service"
+      operationId: get-api-v2-user-userID
+      parameters:
+      - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      security:
+      - auth0: []
+      summary: "Retrieve User with {user-id}"
+      tags:
+      - User
+      x-stoplight:
+        id: p1d67jb8y16q8
+      x-accepts:
+      - application/json
+    parameters:
+    - $ref: "#/components/parameters/user-id"
+    put:
+      description: "Update all information about user with ID {user-id} from user-service"
+      operationId: put-api-v2-user-userID
+      parameters:
+      - $ref: "#/components/parameters/user-id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: User updated successfully
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "5XX":
+          description: Server Error
+      summary: "Update User with {user-id}"
+      tags:
+      - User
+      x-stoplight:
+        id: exmvsbw8301bi
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/user/register:
+    post:
+      description: "Register a new user and respond with it's {user-id}"
+      operationId: post-api-v2-user-register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserNew"
+        description: ""
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "409":
+          description: Conflict
+        "500":
+          description: Internal Server Error
+      summary: Register new User
+      tags:
+      - User
+      x-stoplight:
+        id: laufntfpxgg42
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/matching/request/submit:
+    post:
+      description: Submit a new matching request to the Matching-Service
+      operationId: post-api-v2-matching-request-submit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchRequestNew"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchRequest"
+          description: Request submitted sucessfully
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "409":
+          description: Conflict
+        "500":
+          description: Internal Server Error
+      summary: Submit matching Request
+      tags:
+      - Matching
+      x-stoplight:
+        id: 1x5ta8qguutzq
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/matching/matches/{user-id}:
+    get:
+      description: "Retrieve all matches for a user with {user-id} from the matching-service"
+      operationId: get-api-v2-matching-matches-userID
+      parameters:
+      - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchCollection"
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      summary: "Retrieve all matches for a {user-id}"
+      tags:
+      - Matching
+      x-stoplight:
+        id: nxywx9cl1qg31
+      x-accepts:
+      - application/json
+    parameters:
+    - $ref: "#/components/parameters/user-id"
+  /api/v2/matching/requests/{user-id}:
+    get:
+      description: "Retrieve all MatchRequests for a user with {user-id} from the\
+        \ matching-service"
+      operationId: get-api-v2-matching-requests-userID
+      parameters:
+      - $ref: "#/components/parameters/user-id"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchRequestCollection"
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      summary: "Retrieve all MatchRequests for a {user-id}"
+      tags:
+      - Matching
+      x-stoplight:
+        id: wkc1ys6vkbv12
+      x-accepts:
+      - application/json
+    parameters:
+    - $ref: "#/components/parameters/user-id"
+  /api/v2/matching/request/{request-id}:
+    delete:
+      description: "Delete MatchRequest with ID {request-id} from the system"
+      operationId: delete-api-v2-matching-request-request-id
+      parameters:
+      - $ref: "#/components/parameters/request-id"
+      responses:
+        "200":
+          description: Request Deleted
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      summary: "Delete MatchRequest with {request-id}"
+      tags:
+      - Matching
+      x-stoplight:
+        id: shgx14ydoaa2f
+      x-accepts:
+      - application/json
+    parameters:
+    - $ref: "#/components/parameters/request-id"
+    put:
+      description: "Update all information in the MatchRequest with ID {request-id}"
+      operationId: put-api-v2-matching-request-request-id
+      parameters:
+      - $ref: "#/components/parameters/request-id"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchRequestUpdate"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchRequest"
+          description: Ok
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "406":
+          description: MatchRequest cannot be updated since it has already been fulfilled!
+        "500":
+          description: Internal Server Error
+      summary: "Update MatchRequest with {request-id}"
+      tags:
+      - Matching
+      x-stoplight:
+        id: f6t3aeqcvup68
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/matching/rsvp/{match-id}/accept:
+    get:
+      description: Accept invitation to a given match
+      operationId: get-api-v2-matching-rsvp-match-id-accept
+      parameters:
+      - description: UUID associated with a given match
+        explode: false
+        in: path
+        name: match-id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      summary: Accept invitation to a given match
+      tags:
+      - Matching
+      x-stoplight:
+        id: am6b7xnyytanu
+      x-accepts:
+      - application/json
+    parameters:
+    - description: UUID associated with a given match
+      explode: false
+      in: path
+      name: match-id
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+  /api/v2/matching/rsvp/{match-id}/reject:
+    get:
+      description: Reject invitation to a given match
+      operationId: get-api-v2-matching-rsvp-match-id-reject
+      parameters:
+      - $ref: "#/components/parameters/match-id"
+      responses:
+        "200":
+          description: OK
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      summary: Reject invitation to a given match
+      tags:
+      - Matching
+      x-stoplight:
+        id: swjozsxt7gvip
+      x-accepts:
+      - application/json
+    parameters:
+    - $ref: "#/components/parameters/match-id"
+  /api/v2/genai/conversation-starter:
+    get:
+      description: Request a series of conversation starter prompts from the GenAI
+        microservice. Provide infomation about users on request.
+      operationId: get-api-v2-genai-conversation-starter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCollection"
+        description: Request Conversation starter for these users
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationStarterCollection"
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequestError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "500":
+          description: Internal Server Error
+      summary: Request conversation starter
+      tags:
+      - GenAI
+      x-stoplight:
+        id: 2gb78xli5e55w
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  parameters:
+    user-id:
+      description: UUID associated with a given user
+      explode: false
+      in: path
+      name: user-id
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+    request-id:
+      description: UUID associated with a given match request
+      explode: false
+      in: path
+      name: request-id
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+    match-id:
+      description: UUID associated with a given match
+      explode: false
+      in: path
+      name: match-id
+      required: true
+      schema:
+        format: uuid
+        type: string
+      style: simple
+  responses:
+    UnauthorizedError:
+      description: |
+        Authentication failed due to missing or invalid OAuth2 token.
+    NotFoundError:
+      description: |
+        The requested resource was not found.
+    BadRequestError:
+      description: |
+        The request was malformed or contained invalid parameters.
+  schemas:
+    ConversationStarter:
+      description: Object representing a conversation starter in the meet@mensa system
+      example:
+        prompt: prompt
+      properties:
+        prompt:
+          type: string
+          x-stoplight:
+            id: lmwqzkbspxydt
+      required:
+      - prompt
+      title: ConversationStarter
+      x-stoplight:
+        id: 5grlrzedrmo9k
+    ConversationStarterCollection:
+      description: Object representing a collection of conversation starters in the
+        Meet@Mensa system.
+      example:
+        conversationsStarters:
+        - prompt: prompt
+        - prompt: prompt
+      properties:
+        conversationsStarters:
+          items:
+            $ref: "#/components/schemas/ConversationStarter"
+          type: array
+          x-stoplight:
+            id: b82xoshonnop6
+      required:
+      - conversationsStarters
+      title: ConversationStarterCollection
+      x-stoplight:
+        id: p1vhmcpea8fmp
+    Group:
+      description: Object representing a group that has been matched in the Meet@Mensa
+        system.
+      example:
+        date: 2000-01-23
+        userStatus:
+        - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: null
+        - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: null
+        groupID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        location: GARCHING
+        conversationStarters:
+          conversationsStarters:
+          - prompt: prompt
+          - prompt: prompt
+        time: 2
+      properties:
+        groupID:
+          description: The unique ID of a Group in the Meet@Mensa system.
+          format: uuid
+          title: groupID
+          type: string
+          x-stoplight:
+            id: dg33pzgpoa25z
+        date:
+          description: Date the group is scheduled to meet at
+          format: date
+          type: string
+          x-stoplight:
+            id: 967b4erje5ovf
+        time:
+          description: |-
+            What times a user is available to be matched
+
+            Value | Start Time | End Time
+            ---------|----------|---------
+            | 1     | 10:00      | 10:15    |
+            | 2     | 10:15      | 10:30    |
+            | 3     | 10:30      | 10:45    |
+            | 4     | 10:45      | 11:00    |
+            | 5     | 11:00      | 11:15    |
+            | 6     | 11:15      | 11:30    |
+            | 7     | 11:30      | 11:45    |
+            | 8     | 11:45      | 12:00    |
+            | 9     | 12:00      | 12:15    |
+            | 10    | 12:15      | 12:30    |
+            | 11    | 12:30      | 12:45    |
+            | 12    | 12:45      | 13:00    |
+            | 13    | 13:00      | 13:15    |
+            | 14    | 13:15      | 13:30    |
+            | 15    | 13:30      | 13:45    |
+            | 16    | 13:45      | 14:00    |
+          maximum: 16
+          minimum: 1
+          title: timeslot
+          type: integer
+          x-stoplight:
+            id: 2itw7kosig9bs
+        location:
+          $ref: "#/components/schemas/location"
+        userStatus:
+          items:
+            $ref: "#/components/schemas/MatchStatus"
+          minItems: 2
+          type: array
+          x-stoplight:
+            id: hmw3co8pjszgj
+        conversationStarters:
+          $ref: "#/components/schemas/ConversationStarterCollection"
+      required:
+      - conversationStarters
+      - date
+      - groupID
+      - location
+      - time
+      - userStatus
+      title: Group
+      x-stoplight:
+        id: 67i45cu41e80g
+    groupID:
+      description: The unique ID of a Group in the Meet@Mensa system.
+      format: uuid
+      title: groupID
+      type: string
+      x-stoplight:
+        id: dg33pzgpoa25z
+    interest:
+      description: String representing an interest a user has
+      title: interest
+      type: string
+      x-stoplight:
+        id: 2gt8tcnnuxxjw
+    inviteStatus:
+      description: |-
+        Enumerator representing the status of a Invitation
+        | Value | Description |
+        ---------|----------|
+        | UNSENT | The system has not sent out this invitation yet |
+        | SENT | The system has sent out this invitation |
+        | CONFIRMED | The user has confirmed this invitation |
+        | REJECTED | The user has rejected this invitation |
+        | EXPIRED | The date for this invitation is in the past |
+      enum:
+      - UNSENT
+      - SENT
+      - CONFIRMED
+      - REJECTED
+      - EXPIRED
+      title: inviteStatus
+      type: string
+      x-stoplight:
+        id: aofhvhl7vg79x
+    location:
+      description: |
+        Enumerator representing a mensa at which a meet can happen
+
+        | Value | Description |
+        ---------|----------|
+        | GARCHING | The Mensa at the TUM Garching Campus |
+        | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) |
+      enum:
+      - GARCHING
+      - ARCISSTR
+      title: location
+      type: string
+      x-stoplight:
+        id: k9joq1jvigmgk
+    Match:
+      description: Object representing a single match for a given user on a given
+        date in the Meet@Mensa system.
+      example:
+        userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        matchID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: UNSENT
+        group:
+          date: 2000-01-23
+          userStatus:
+          - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: null
+          - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            status: null
+          groupID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          location: GARCHING
+          conversationStarters:
+            conversationsStarters:
+            - prompt: prompt
+            - prompt: prompt
+          time: 2
+      properties:
+        matchID:
+          description: The unique ID of a Group in the Meet@Mensa system.
+          format: uuid
+          title: matchID
+          type: string
+          x-stoplight:
+            id: 1sbe6y11zvxje
+        userID:
+          description: The unique ID of a single student in the Meet@Mensa system.
+          format: uuid
+          title: userID
+          type: string
+          x-stoplight:
+            id: qlawgs207p4xu
+        status:
+          $ref: "#/components/schemas/inviteStatus"
+        group:
+          $ref: "#/components/schemas/Group"
+      required:
+      - group
+      - matchID
+      - status
+      - userID
+      title: Match
+      x-stoplight:
+        id: nn4ppj633bxbu
+    MatchCollection:
+      description: Object representing a collection of matches in the Meet@Mensa system.
+      example:
+        matches:
+        - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          matchID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: UNSENT
+          group:
+            date: 2000-01-23
+            userStatus:
+            - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: null
+            - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: null
+            groupID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            location: GARCHING
+            conversationStarters:
+              conversationsStarters:
+              - prompt: prompt
+              - prompt: prompt
+            time: 2
+        - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          matchID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: UNSENT
+          group:
+            date: 2000-01-23
+            userStatus:
+            - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: null
+            - userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              status: null
+            groupID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            location: GARCHING
+            conversationStarters:
+              conversationsStarters:
+              - prompt: prompt
+              - prompt: prompt
+            time: 2
+      properties:
+        matches:
+          items:
+            $ref: "#/components/schemas/Match"
+          type: array
+          x-stoplight:
+            id: xxfpxm2j35k81
+      required:
+      - matches
+      title: MatchCollection
+      x-stoplight:
+        id: 4bem9fq0uukzk
+    matchID:
+      description: The unique ID of a Group in the Meet@Mensa system.
+      format: uuid
+      title: matchID
+      type: string
+      x-stoplight:
+        id: 1sbe6y11zvxje
+    MatchPreferences:
+      description: Object Representing a set of user preferences
+      example:
+        degreePref: true
+        agePref: true
+        genderPref: true
+      properties:
+        degreePref:
+          description: "Value | Meaning\r\n---------|---------\r\ntrue | degree =\
+            \ same (priority)\r\nfalse | degree = any (no priority)"
+          type: boolean
+          x-stoplight:
+            id: pe4vc6qt9ettz
+        agePref:
+          description: "Value | Meaning\r\n---------|---------\r\ntrue | age = same\
+            \ (priority)\r\nfalse | age = any (no priority)"
+          type: boolean
+          x-stoplight:
+            id: wamd9v7r55gnm
+        genderPref:
+          description: "Value | Meaning\r\n---------|---------\r\ntrue | gender =\
+            \ same (priority)\r\nfalse | gender = any (no priority)"
+          type: boolean
+          x-stoplight:
+            id: jqgtylus97gbo
+      required:
+      - agePref
+      - degreePref
+      - genderPref
+      title: MatchPreferences
+      x-stoplight:
+        id: azr6ciwnsz5nr
+    MatchRequest:
+      description: Object representing a request for matching a given user on a given
+        date in the Meet@Mensa system.
+      example:
+        date: 2000-01-23
+        preferences:
+          degreePref: true
+          agePref: true
+          genderPref: true
+        requestID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        timeslot:
+        - null
+        - null
+        location: GARCHING
+        userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: PENDING
+      properties:
+        requestID:
+          description: The unique ID of a MatchRequest in the Meet@Mensa system.
+          format: uuid
+          title: requestID
+          type: string
+          x-stoplight:
+            id: rjnh43gvsnw2a
+        userID:
+          description: The unique ID of a single student in the Meet@Mensa system.
+          format: uuid
+          title: userID
+          type: string
+          x-stoplight:
+            id: qlawgs207p4xu
+        date:
+          description: The date a user would like meet@mensa to find them a match
+          format: date
+          type: string
+          x-stoplight:
+            id: hpw97fh7xj03p
+        timeslot:
+          items:
+            $ref: "#/components/schemas/timeslot"
+          type: array
+          x-stoplight:
+            id: 7q7ast68lvs4u
+        location:
+          $ref: "#/components/schemas/location"
+        preferences:
+          $ref: "#/components/schemas/MatchPreferences"
+        status:
+          $ref: "#/components/schemas/requestStatus"
+      required:
+      - date
+      - location
+      - preferences
+      - requestID
+      - status
+      - timeslot
+      - userID
+      title: MatchRequest
+      x-stoplight:
+        id: mbhmumrcj2bd4
+    MatchRequestCollection:
+      description: Object representing a collection of match requests in the Meet@Mensa
+        system.
+      example:
+        requests:
+        - date: 2000-01-23
+          preferences:
+            degreePref: true
+            agePref: true
+            genderPref: true
+          requestID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          timeslot:
+          - null
+          - null
+          location: GARCHING
+          userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: PENDING
+        - date: 2000-01-23
+          preferences:
+            degreePref: true
+            agePref: true
+            genderPref: true
+          requestID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          timeslot:
+          - null
+          - null
+          location: GARCHING
+          userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          status: PENDING
+      properties:
+        requests:
+          items:
+            $ref: "#/components/schemas/MatchRequest"
+          type: array
+          x-stoplight:
+            id: wfe1ymfi052cg
+      required:
+      - requests
+      title: MatchRequestCollection
+      x-stoplight:
+        id: ccqjyx1unnz6s
+    MatchRequestNew:
+      description: Object representing a request for matching a given user on a given
+        date in the Meet@Mensa system.
+      example:
+        date: 2000-01-23
+        preferences:
+          degreePref: true
+          agePref: true
+          genderPref: true
+        timeslot:
+        - null
+        - null
+        location: GARCHING
+        userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        userID:
+          description: The unique ID of a single student in the Meet@Mensa system.
+          format: uuid
+          title: userID
+          type: string
+          x-stoplight:
+            id: qlawgs207p4xu
+        date:
+          description: The date a user would like meet@mensa to find them a match
+          format: date
+          type: string
+          x-stoplight:
+            id: 4p1ncij1h0rb0
+        timeslot:
+          items:
+            $ref: "#/components/schemas/timeslot"
+          type: array
+          x-stoplight:
+            id: nm1ht2n4e7m9o
+        location:
+          $ref: "#/components/schemas/location"
+        preferences:
+          $ref: "#/components/schemas/MatchPreferences"
+      required:
+      - date
+      - location
+      - preferences
+      - timeslot
+      - userID
+      title: MatchRequestNew
+      x-stoplight:
+        id: 3k8e2egr16sfx
+    MatchRequestUpdate:
+      description: Object representing a request for matching a given user on a given
+        date in the Meet@Mensa system.
+      example:
+        date: 2000-01-23
+        preferences:
+          degreePref: true
+          agePref: true
+          genderPref: true
+        timeslot:
+        - null
+        - null
+        location: GARCHING
+      properties:
+        date:
+          description: The date a user would like meet@mensa to find them a match
+          format: date
+          type: string
+          x-stoplight:
+            id: e3ip4trvy1qan
+        timeslot:
+          items:
+            $ref: "#/components/schemas/timeslot"
+          type: array
+          x-stoplight:
+            id: nbnmmzg9ffaap
+        location:
+          $ref: "#/components/schemas/location"
+        preferences:
+          $ref: "#/components/schemas/MatchPreferences"
+      title: MatchRequestUpdate
+      x-stoplight:
+        id: lbk154l1vchxi
+    MatchStatus:
+      example:
+        userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: null
+      properties:
+        userID:
+          description: The unique ID of a single student in the Meet@Mensa system.
+          format: uuid
+          title: userID
+          type: string
+          x-stoplight:
+            id: qlawgs207p4xu
+        status:
+          $ref: "#/components/schemas/inviteStatus"
+      required:
+      - status
+      - userID
+      title: MatchStatus
+      x-stoplight:
+        id: pdsvthtexm88j
+    requestID:
+      description: The unique ID of a MatchRequest in the Meet@Mensa system.
+      format: uuid
+      title: requestID
+      type: string
+      x-stoplight:
+        id: rjnh43gvsnw2a
+    requestStatus:
+      description: |
+        Enumerator representing the status of a MatchRequest
+        | Value | Description |
+        ---------|----------|
+        | PENDING | The system has not attempted to match this request yet |
+        | MATCHED | The system has fulfilled this request |
+        | UNMATCHABLE | The system was unable to fulfill this request |
+        | REMATCH | The sytem should attempt to fulfill this request again (ex: group cancelled for lacking RSVPs) |
+        | EXPIRED | The date for this MatchRequest is in the past |
+      enum:
+      - PENDING
+      - MATCHED
+      - UNMATCHABLE
+      - REMATCH
+      - EXPIRED
+      title: requestStatus
+      type: string
+      x-stoplight:
+        id: 4y91brypg0hsb
+    timeslot:
+      description: |-
+        What times a user is available to be matched
+
+        Value | Start Time | End Time
+        ---------|----------|---------
+        | 1     | 10:00      | 10:15    |
+        | 2     | 10:15      | 10:30    |
+        | 3     | 10:30      | 10:45    |
+        | 4     | 10:45      | 11:00    |
+        | 5     | 11:00      | 11:15    |
+        | 6     | 11:15      | 11:30    |
+        | 7     | 11:30      | 11:45    |
+        | 8     | 11:45      | 12:00    |
+        | 9     | 12:00      | 12:15    |
+        | 10    | 12:15      | 12:30    |
+        | 11    | 12:30      | 12:45    |
+        | 12    | 12:45      | 13:00    |
+        | 13    | 13:00      | 13:15    |
+        | 14    | 13:15      | 13:30    |
+        | 15    | 13:30      | 13:45    |
+        | 16    | 13:45      | 14:00    |
+      maximum: 16
+      minimum: 1
+      title: timeslot
+      type: integer
+      x-stoplight:
+        id: 2itw7kosig9bs
+    User:
+      description: Object representing a student user in the Meet@Mensa system.
+      example:
+        birthday: 2000-01-23
+        firstname: Max
+        degreeStart: 2024
+        gender: other
+        degree: msc_informatics
+        bio: bio
+        interests:
+        - null
+        - null
+        userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        email: email
+        lastname: Mustermann
+      properties:
+        userID:
+          description: The unique ID of a single student in the Meet@Mensa system.
+          format: uuid
+          title: userID
+          type: string
+          x-stoplight:
+            id: qlawgs207p4xu
+        email:
+          description: Users's e-mail
+          format: email
+          type: string
+          x-stoplight:
+            id: e7l4vk5tcpzog
+        firstname:
+          description: User's given name
+          example: Max
+          type: string
+          x-stoplight:
+            id: d32i2omc3k6nn
+        lastname:
+          description: User's surname
+          example: Mustermann
+          type: string
+          x-stoplight:
+            id: 5jc0p1zr8vy4p
+        birthday:
+          description: User's date of birth
+          format: date
+          type: string
+          x-stoplight:
+            id: nm996scnjz7dk
+        gender:
+          default: other
+          description: User's gender
+          type: string
+          x-stoplight:
+            id: itop4gfsf1ch7
+        degree:
+          description: User's degree program
+          example: msc_informatics
+          type: string
+          x-stoplight:
+            id: u7kkx1ewi0g3o
+        degreeStart:
+          description: What year User started their degree
+          example: 2024
+          maximum: 2100
+          minimum: 2000
+          type: integer
+          x-stoplight:
+            id: nd14ato08ps5k
+        interests:
+          description: Array of a User's interests
+          items:
+            $ref: "#/components/schemas/interest"
+          type: array
+          x-stoplight:
+            id: y9ktoyz2v1to4
+        bio:
+          description: Short introduction text written by the user
+          type: string
+          x-stoplight:
+            id: pyp2f4rynj24v
+      required:
+      - bio
+      - birthday
+      - degree
+      - degreeStart
+      - email
+      - firstname
+      - gender
+      - interests
+      - lastname
+      - userID
+      title: User
+      x-stoplight:
+        id: k21d7pds0kt8x
+    UserCollection:
+      description: Object representing a collection of student user in the Meet@Mensa
+        system.
+      example:
+        users:
+        - birthday: 2000-01-23
+          firstname: Max
+          degreeStart: 2024
+          gender: other
+          degree: msc_informatics
+          bio: bio
+          interests:
+          - null
+          - null
+          userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          email: email
+          lastname: Mustermann
+        - birthday: 2000-01-23
+          firstname: Max
+          degreeStart: 2024
+          gender: other
+          degree: msc_informatics
+          bio: bio
+          interests:
+          - null
+          - null
+          userID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          email: email
+          lastname: Mustermann
+      properties:
+        users:
+          items:
+            $ref: "#/components/schemas/User"
+          type: array
+          x-stoplight:
+            id: l8a1hngdfmgzr
+      required:
+      - users
+      title: UserCollection
+      x-stoplight:
+        id: 8qy8pit8jdvq3
+    UserNew:
+      description: Object representing a student user in the Meet@Mensa system.
+      example:
+        birthday: 2000-01-23
+        firstname: Max
+        degreeStart: 2024
+        gender: other
+        degree: msc_informatics
+        bio: bio
+        interests:
+        - null
+        - null
+        email: email
+        lastname: Mustermann
+      properties:
+        email:
+          description: Users's e-mail
+          format: email
+          type: string
+          x-stoplight:
+            id: 0nyeve74ir1dn
+        firstname:
+          description: User's given name
+          example: Max
+          type: string
+          x-stoplight:
+            id: gkvzbzzze2w5u
+        lastname:
+          description: User's surname
+          example: Mustermann
+          type: string
+          x-stoplight:
+            id: l2hhplp6bxk15
+        birthday:
+          description: User's date of birth
+          format: date
+          type: string
+          x-stoplight:
+            id: 57jhzco8y1bl4
+        gender:
+          default: other
+          description: User's gender
+          type: string
+          x-stoplight:
+            id: nwpau60zic5m9
+        degree:
+          description: User's degree program
+          example: msc_informatics
+          type: string
+          x-stoplight:
+            id: a6jlhdt5az5oh
+        degreeStart:
+          description: What year User started their degree
+          example: 2024
+          maximum: 2100
+          minimum: 2000
+          type: integer
+          x-stoplight:
+            id: egy6nzptgfbm0
+        interests:
+          description: Array of a User's interests
+          items:
+            $ref: "#/components/schemas/interest"
+          type: array
+          x-stoplight:
+            id: b7rcq9x59ngrb
+        bio:
+          description: Short introduction text written by the user
+          type: string
+          x-stoplight:
+            id: te54o833aixf0
+      required:
+      - bio
+      - birthday
+      - degree
+      - degreeStart
+      - email
+      - firstname
+      - gender
+      - interests
+      - lastname
+      title: UserNew
+      x-stoplight:
+        id: sagkpw0prr2n6
+    UserUpdate:
+      description: Object representing a student user in the Meet@Mensa system.
+      example:
+        birthday: 2000-01-23
+        firstname: Max
+        degreeStart: 2024
+        gender: other
+        degree: msc_informatics
+        bio: bio
+        interests:
+        - null
+        - null
+        email: email
+        lastname: Mustermann
+      properties:
+        email:
+          description: Users's e-mail
+          format: email
+          type: string
+          x-stoplight:
+            id: a7ipfyhwfk3kq
+        firstname:
+          description: User's given name
+          example: Max
+          type: string
+          x-stoplight:
+            id: zuytjxvn77rjp
+        lastname:
+          description: User's surname
+          example: Mustermann
+          type: string
+          x-stoplight:
+            id: rfs2renb5sp1w
+        birthday:
+          description: User's date of birth
+          format: date
+          type: string
+          x-stoplight:
+            id: flo8chb4q1fy9
+        gender:
+          default: other
+          description: User's gender
+          type: string
+          x-stoplight:
+            id: p54y08lil9jxo
+        degree:
+          description: User's degree program
+          example: msc_informatics
+          type: string
+          x-stoplight:
+            id: njs5xyq3x3ied
+        degreeStart:
+          description: What year User started their degree
+          example: 2024
+          maximum: 2100
+          minimum: 2000
+          type: integer
+          x-stoplight:
+            id: kjpj2awg3hh63
+        interests:
+          description: Array of a User's interests
+          items:
+            $ref: "#/components/schemas/interest"
+          type: array
+          x-stoplight:
+            id: d72bsbld6n0jl
+        bio:
+          description: Short introduction text written by the user
+          type: string
+          x-stoplight:
+            id: pue21yfv8sss5
+      title: UserUpdate
+      x-stoplight:
+        id: heva6gjdd7b3p
+    userID:
+      description: The unique ID of a single student in the Meet@Mensa system.
+      format: uuid
+      title: userID
+      type: string
+      x-stoplight:
+        id: qlawgs207p4xu
+  securitySchemes:
+    auth0:
+      openIdConnectUrl: https://meetatmensa.eu.auth0.com/
+      type: openIdConnect
+x-stoplight:
+  id: ceylawji1yc2t
+

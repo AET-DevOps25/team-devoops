@@ -30,24 +30,40 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "Group", description = "Object representing a group that has been matched in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T08:29:13.737697830Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:08:44.948656538Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class Group {
 
-  private @Nullable UUID groupID;
+  private UUID groupID;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-  private @Nullable LocalDate date;
+  private LocalDate date;
 
-  private @Nullable Integer time;
+  private Integer time;
 
-  private @Nullable Location location;
+  private Location location;
 
   @Valid
   private List<@Valid MatchStatus> userStatus = new ArrayList<>();
 
-  private @Nullable ConversationStarterCollection conversationStarters;
+  private ConversationStarterCollection conversationStarters;
 
-  public Group groupID(@Nullable UUID groupID) {
+  public Group() {
+    super();
+  }
+
+  /**
+   * Constructor with only required parameters
+   */
+  public Group(UUID groupID, LocalDate date, Integer time, Location location, List<@Valid MatchStatus> userStatus, ConversationStarterCollection conversationStarters) {
+    this.groupID = groupID;
+    this.date = date;
+    this.time = time;
+    this.location = location;
+    this.userStatus = userStatus;
+    this.conversationStarters = conversationStarters;
+  }
+
+  public Group groupID(UUID groupID) {
     this.groupID = groupID;
     return this;
   }
@@ -56,18 +72,18 @@ public class Group {
    * The unique ID of a Group in the Meet@Mensa system.
    * @return groupID
    */
-  @Valid 
-  @Schema(name = "groupID", description = "The unique ID of a Group in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "groupID", description = "The unique ID of a Group in the Meet@Mensa system.", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("groupID")
-  public @Nullable UUID getGroupID() {
+  public UUID getGroupID() {
     return groupID;
   }
 
-  public void setGroupID(@Nullable UUID groupID) {
+  public void setGroupID(UUID groupID) {
     this.groupID = groupID;
   }
 
-  public Group date(@Nullable LocalDate date) {
+  public Group date(LocalDate date) {
     this.date = date;
     return this;
   }
@@ -76,18 +92,18 @@ public class Group {
    * Date the group is scheduled to meet at
    * @return date
    */
-  @Valid 
-  @Schema(name = "date", description = "Date the group is scheduled to meet at", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "date", description = "Date the group is scheduled to meet at", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("date")
-  public @Nullable LocalDate getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(@Nullable LocalDate date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 
-  public Group time(@Nullable Integer time) {
+  public Group time(Integer time) {
     this.time = time;
     return this;
   }
@@ -98,18 +114,18 @@ public class Group {
    * maximum: 16
    * @return time
    */
-  @Min(1) @Max(16) 
-  @Schema(name = "time", description = "What times a user is available to be matched  Value | Start Time | End Time ---------|----------|--------- | 1     | 10:00      | 10:15    | | 2     | 10:15      | 10:30    | | 3     | 10:30      | 10:45    | | 4     | 10:45      | 11:00    | | 5     | 11:00      | 11:15    | | 6     | 11:15      | 11:30    | | 7     | 11:30      | 11:45    | | 8     | 11:45      | 12:00    | | 9     | 12:00      | 12:15    | | 10    | 12:15      | 12:30    | | 11    | 12:30      | 12:45    | | 12    | 12:45      | 13:00    | | 13    | 13:00      | 13:15    | | 14    | 13:15      | 13:30    | | 15    | 13:30      | 13:45    | | 16    | 13:45      | 14:00    |", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Min(1) @Max(16) 
+  @Schema(name = "time", description = "What times a user is available to be matched  Value | Start Time | End Time ---------|----------|--------- | 1     | 10:00      | 10:15    | | 2     | 10:15      | 10:30    | | 3     | 10:30      | 10:45    | | 4     | 10:45      | 11:00    | | 5     | 11:00      | 11:15    | | 6     | 11:15      | 11:30    | | 7     | 11:30      | 11:45    | | 8     | 11:45      | 12:00    | | 9     | 12:00      | 12:15    | | 10    | 12:15      | 12:30    | | 11    | 12:30      | 12:45    | | 12    | 12:45      | 13:00    | | 13    | 13:00      | 13:15    | | 14    | 13:15      | 13:30    | | 15    | 13:30      | 13:45    | | 16    | 13:45      | 14:00    |", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("time")
-  public @Nullable Integer getTime() {
+  public Integer getTime() {
     return time;
   }
 
-  public void setTime(@Nullable Integer time) {
+  public void setTime(Integer time) {
     this.time = time;
   }
 
-  public Group location(@Nullable Location location) {
+  public Group location(Location location) {
     this.location = location;
     return this;
   }
@@ -118,14 +134,14 @@ public class Group {
    * Get location
    * @return location
    */
-  @Valid 
-  @Schema(name = "location", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "location", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("location")
-  public @Nullable Location getLocation() {
+  public Location getLocation() {
     return location;
   }
 
-  public void setLocation(@Nullable Location location) {
+  public void setLocation(Location location) {
     this.location = location;
   }
 
@@ -146,8 +162,8 @@ public class Group {
    * Get userStatus
    * @return userStatus
    */
-  @Valid @Size(min = 2) 
-  @Schema(name = "userStatus", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid @Size(min = 2) 
+  @Schema(name = "userStatus", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("userStatus")
   public List<@Valid MatchStatus> getUserStatus() {
     return userStatus;
@@ -157,7 +173,7 @@ public class Group {
     this.userStatus = userStatus;
   }
 
-  public Group conversationStarters(@Nullable ConversationStarterCollection conversationStarters) {
+  public Group conversationStarters(ConversationStarterCollection conversationStarters) {
     this.conversationStarters = conversationStarters;
     return this;
   }
@@ -166,14 +182,14 @@ public class Group {
    * Get conversationStarters
    * @return conversationStarters
    */
-  @Valid 
-  @Schema(name = "conversationStarters", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull @Valid 
+  @Schema(name = "conversationStarters", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("conversationStarters")
-  public @Nullable ConversationStarterCollection getConversationStarters() {
+  public ConversationStarterCollection getConversationStarters() {
     return conversationStarters;
   }
 
-  public void setConversationStarters(@Nullable ConversationStarterCollection conversationStarters) {
+  public void setConversationStarters(ConversationStarterCollection conversationStarters) {
     this.conversationStarters = conversationStarters;
   }
 

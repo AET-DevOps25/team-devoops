@@ -8,7 +8,8 @@ on:
     branches-ignore:
       - main
     paths:
-      - 'api/*'
+      - 'api/openapi.yaml'
+      - 'api/scripts/*'
 
 jobs:
 
@@ -23,6 +24,7 @@ jobs:
 
       - name: Make Scripts Executable
         run: |
+          chmod +x api/scripts/gen_client.sh
           chmod +x api/scripts/gen_docs.sh
           chmod +x api/scripts/gen_spring.sh
           chmod +x api/scripts/gen_typescript.sh
@@ -45,6 +47,10 @@ jobs:
         run: ./api/scripts/gen_spring.sh
         shell: bash
 
+      - name: Generate Client Code
+        run: ./api/scripts/gen_client.sh
+        shell: bash
+
       - name: Generate api.ts
         run: ./api/scripts/gen_typescript.sh
         shell: bash
@@ -59,6 +65,9 @@ jobs:
           git add server/matching/generated
           git add server/user/generated
           git add server/gateway/generated
+          git add server/matching/generated-client
+          git add server/user/generated-client
+          git add server/gateway/generated-client
           git add client/src/api.ts
           git add docs/api.html
 
