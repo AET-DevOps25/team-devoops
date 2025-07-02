@@ -15,7 +15,22 @@ jobs:
     strategy:
       matrix:
         # Add any future services relative paths from . here
-        service: [client, server/gateway, server/matching, server/user, server/genai, server/database/userdb, server/database/matchdb]
+        service: [client, gateway, matching, user, genai, userdb, matchdb]
+        include:
+          - service: client
+            context: ./client
+          - service: gateway
+            context: ./server/gateway
+          - service: matching
+            context: ./server/matching
+          - service: user
+            context: ./server/user
+          - service: genai
+            context: ./server/genai
+          - service: userdb
+            context: ./server/database/userdb
+          - service: matchdb
+            context: ./server/database/matchdb
     
     steps:
 
@@ -36,7 +51,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/${{ matrix.service.replace('/', '-') }} # ex: ghcr.io/aet-devops25/team-devoops/server/gateway
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/aet-devops25/team-devoops/server/gateway
           
           # Tags pushes to main with :latest, pushes to branches with ex :feature-github-actions-workflow, and PRs with ex :pr-42
           tags: |
@@ -50,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          context: "{{ defaultContext }}:${{ matrix.service }}" # run in the subdirectory specified by matrix
+          # context: "{{ defaultContext }}:${{ matrix.service }}" # run in the subdirectory specified by matrix
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
