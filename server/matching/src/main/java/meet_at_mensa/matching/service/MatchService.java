@@ -1,13 +1,10 @@
 package meet_at_mensa.matching.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.openapitools.model.InviteStatus;
 import org.openapitools.model.Match;
 import org.openapitools.model.MatchCollection;
-import org.openapitools.model.MatchStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,42 +23,6 @@ public class MatchService {
 
     @Autowired 
     private GroupService groupService;
-
-    
-    /**
-     * Retieves the match status for all users in a group
-     *
-     *
-     * @param groupID UUID of the group
-     * @return List<MatchStatus> objects representing each users' status
-     * @throws MatchNotFoundException if no user with id {userID} is found
-     */
-    public List<MatchStatus> getMatchStatus(UUID groupID) {
-
-        // get all matches in the system for a given group ID
-        Iterable<MatchEntity> matchEntities = matchRepository.findByGroupID(groupID);
-
-        // if list is empty, throw exception
-        if (!matchEntities.iterator().hasNext()) {
-            throw new MatchNotFoundException();
-        }
-
-        // create blank matchstatus list
-        List<MatchStatus> groupStatus = new ArrayList<MatchStatus>();
-
-        for (MatchEntity matchEntity : matchEntities) {
-
-            // create a match Status object for a single user
-            MatchStatus matchStatus = new MatchStatus(matchEntity.getUserID(), matchEntity.getInviteStatus());
-
-            // add it to the list
-            groupStatus.add(matchStatus);
-
-        }
-
-        // return the list
-        return groupStatus;
-    }
 
     /**
      * Retieves a specific match by it's matchID
