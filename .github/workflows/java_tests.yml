@@ -41,7 +41,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: junit-test-results
+          name: ${{ matrix.service }}-junit-test-results
           path: |
             server/${{ matrix.service }}/build/test-results
             server/${{ matrix.service }}/build/reports/tests
