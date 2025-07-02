@@ -10,12 +10,13 @@ on:
 
 jobs:
 
-  # Run tests (unimplemented)
-  # test:
-  #   name: Run Tests
-  #   uses: ./.github/workflows/test_application.yml
+  # Run tests
+  test:
+    name: Run Tests
+    uses: ./.github/workflows/java_tests.yml
 
   # Call the docker_build workflow to build and publish images
   build:
     name: Build & Publish Images
     uses: ./.github/workflows/docker_build.yml
+    needs: test

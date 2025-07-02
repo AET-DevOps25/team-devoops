@@ -1,81 +1,135 @@
 package meet_at_mensa.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.server.ResponseStatusException;
 
-import meet_at_mensa.user.model.User;
-import meet_at_mensa.user.repository.UserRepository;
+import meet_at_mensa.user.exception.UserNotFoundException;
+import meet_at_mensa.user.service.UserService;
 
-import org.springframework.http.HttpStatus;
+import org.openapitools.api.UserApi;
+import org.openapitools.model.User;
+import org.openapitools.model.UserNew;
+import org.openapitools.model.UserUpdate;
 
 import java.util.UUID;
-import java.util.Map;
+
+
 
 @RestController
-public class UserController {
-    
-    // Object representing the userdb database
-    @Autowired // This is auto-implemented by spring
-    private UserRepository userRepository;
+public class UserController implements UserApi {
 
-    // Show all users in database
-    // TODO: Remove in production
-    @GetMapping(path="/debug/users/all")
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    // UserService handles database operations
+    @Autowired
+    private UserService userService;
 
-    // Create a new user when provided with json formatted data
-    @PostMapping(path="/api/users/create")
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
 
-    // Return user information
-    @GetMapping(path="/api/users/get/{userID}")
-    public User getUser(@PathVariable UUID userID) {
-        return userRepository.findById(userID)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-    }
+    // DELETE @ api/v2/user/{userID}
+    @Override
+    public ResponseEntity<Void> deleteApiV2UserUserID(UUID userID) {
 
-    // Update user information
-    @PostMapping(path="api/users/edit/{userID}")
-    public User editUser(@PathVariable UUID userID, @RequestBody Map<String, String> update) {
+        // 200
+        try {
+            
+            // attempt to delete user with given ID
+            userService.deleteUser(userID);
+
+            // if delete operation succeeded, return 200
+            return ResponseEntity.ok().build();
+
+        // 404
+        } catch (UserNotFoundException e) {
+
+            // if user was not found, return 404
+            return ResponseEntity.notFound().build();
         
-        // find user
-        User user = userRepository.findById(userID)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        // 500
+        } catch (Exception e) {
 
-        // Update values if present in payload
-        if (update.containsKey("email")) {
-            user.setEmail(update.get("email"));
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
+
         }
 
-        if (update.containsKey("name")) {
-            user.setName(update.get("name"));
+    }
+
+
+    // GET @ api/v2/user/{userID}
+    @Override
+    public ResponseEntity<User> getApiV2UserUserID(UUID userID) {
+
+        // 200
+        try {
+        
+            // attempt to get user with the given ID
+            User user =  userService.getUser(userID);
+
+            // return 200 with User
+            return ResponseEntity.ok(user);
+        
+        // 404
+        } catch (UserNotFoundException e) {
+            
+            // if user was not found, return 404
+            return ResponseEntity.notFound().build();
+
+        // 500
+        } catch (Exception e) {
+
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
+
         }
 
-        if (update.containsKey("gender")) {
-            user.setGender(update.get("gender"));
-        }
+    }
 
-        if (update.containsKey("degree")) {
-            user.setDegree(update.get("degree"));
-        }
 
-        if (update.containsKey("birthday")) {
-            // implement later
-        }
+    // POST @ api/v2/user/register
+    @Override
+    public ResponseEntity<User> postApiV2UserRegister(UserNew userNew) {
 
-        // Save to Database and Return
-        return userRepository.save(user);
+        // 200
+        try {
+
+            // attempt to register a new user
+            User newUser = userService.registerUser(userNew);
+
+            return ResponseEntity.status(201).body(newUser);
+
+        // 500
+        } catch (Exception e) {
+
+            return ResponseEntity.internalServerError().build();
+        
+        }
+    }
+
+    // PUT @ api/v2/user/{userID}
+    @Override
+    public ResponseEntity<User> putApiV2UserUserID(UUID userID, UserUpdate userUpdate) {
+
+        // 200
+        try {
+            
+            // attempt to update User
+            User updatedUser = userService.updateUser(userID, userUpdate);
+
+            // return the updated user
+            return ResponseEntity.ok(updatedUser);
+
+        // 404
+        } catch (UserNotFoundException e) {
+            
+            // if user was not found, return 404
+            return ResponseEntity.notFound().build();
+
+        // 500
+        } catch (Exception e) {
+
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
+
+        }
 
     }
 

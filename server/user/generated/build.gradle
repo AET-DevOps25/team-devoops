@@ -28,7 +28,7 @@ dependencies {
 }
 
 group = 'org.openapitools'
-version = '1.0.0'
+version = '2.1.1'
 description = 'openapi-spring-user'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 

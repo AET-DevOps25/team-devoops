@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-29T10:44:09.399320448Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-06-30T08:36:23.620452344Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "User", description = "Paths belonging to the User microservice")
 public interface UserApi {
@@ -55,6 +55,7 @@ public interface UserApi {
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or The request was malformed or contained invalid parameters.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "deleteApiV2UserUserID",
@@ -65,7 +66,8 @@ public interface UserApi {
             @ApiResponse(responseCode = "200", description = "User deleted"),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "The request was malformed or contained invalid parameters. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -93,6 +95,7 @@ public interface UserApi {
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "getApiV2UserUserID",
@@ -105,7 +108,8 @@ public interface UserApi {
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -139,10 +143,11 @@ public interface UserApi {
      * Register a new user and respond with it&#39;s {user-id}
      *
      * @param userNew  (optional)
-     * @return Successfully created user (status code 201)
+     * @return OK (status code 200)
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or Conflict (status code 409)
+     *         or Internal Server Error (status code 500)
      */
     @Operation(
         operationId = "postApiV2UserRegister",
@@ -150,12 +155,13 @@ public interface UserApi {
         description = "Register a new user and respond with it's {user-id}",
         tags = { "User" },
         responses = {
-            @ApiResponse(responseCode = "201", description = "Successfully created user", content = {
+            @ApiResponse(responseCode = "200", description = "OK", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "409", description = "Conflict")
+            @ApiResponse(responseCode = "409", description = "Conflict"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
@@ -195,6 +201,7 @@ public interface UserApi {
      *         or The request was malformed or contained invalid parameters.  (status code 400)
      *         or Authentication failed due to missing or invalid OAuth2 token.  (status code 401)
      *         or The requested resource was not found.  (status code 404)
+     *         or Server Error (status code 5XX)
      */
     @Operation(
         operationId = "putApiV2UserUserID",
@@ -207,7 +214,8 @@ public interface UserApi {
             }),
             @ApiResponse(responseCode = "400", description = "The request was malformed or contained invalid parameters. "),
             @ApiResponse(responseCode = "401", description = "Authentication failed due to missing or invalid OAuth2 token. "),
-            @ApiResponse(responseCode = "404", description = "The requested resource was not found. ")
+            @ApiResponse(responseCode = "404", description = "The requested resource was not found. "),
+            @ApiResponse(responseCode = "5XX", description = "Server Error")
         },
         security = {
             @SecurityRequirement(name = "auth0")
