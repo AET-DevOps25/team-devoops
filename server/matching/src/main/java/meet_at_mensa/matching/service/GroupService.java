@@ -1,16 +1,22 @@
 package meet_at_mensa.matching.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.openapitools.model.Group;
 import org.openapitools.model.Location;
+import org.openapitools.model.MatchStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.GroupNotFoundException;
+import meet_at_mensa.matching.exception.MatchNotFoundException;
 import meet_at_mensa.matching.model.GroupEntity;
+import meet_at_mensa.matching.model.MatchEntity;
 import meet_at_mensa.matching.repository.GroupRepository;
+import meet_at_mensa.matching.repository.MatchRepository;
 
 @Service
 public class GroupService {
@@ -20,10 +26,10 @@ public class GroupService {
     private GroupRepository groupRepository;
 
     @Autowired
-    private ConversationStarterService conversationStarterService;
+    private MatchRepository matchRepository;
 
     @Autowired
-    private MatchService matchService;
+    private ConversationStarterService conversationStarterService;
 
     /**
      * Searches the database for a group with this groupID
@@ -43,7 +49,7 @@ public class GroupService {
             groupEntity.getDate(), // date
             groupEntity.getTimeslot(), // timeslot
             groupEntity.getLocation(), // Location (enum)
-            matchService.getMatchStatus(groupID), // List<MatchStatus>
+            getGroupStatus(groupID), // List<MatchStatus>
             conversationStarterService.getPrompts(groupID) // ConversationStarterCollection
         );
 
@@ -74,4 +80,40 @@ public class GroupService {
         return group.getGroupID();
     }
     
+
+    /**
+     * Retieves the match status for all users in a group
+     *
+     *
+     * @param groupID UUID of the group
+     * @return List<MatchStatus> objects representing each users' status
+     * @throws MatchNotFoundException if no user with id {userID} is found
+     */
+    private List<MatchStatus> getGroupStatus(UUID groupID){
+
+        // get all matches in the system for a given group ID
+        Iterable<MatchEntity> matchEntities = matchRepository.findByGroupID(groupID);
+
+        // if list is empty, throw exception
+        if (!matchEntities.iterator().hasNext()) {
+            throw new MatchNotFoundException();
+        }
+
+        // create blank matchstatus list
+        List<MatchStatus> groupStatus = new ArrayList<MatchStatus>();
+
+        for (MatchEntity matchEntity : matchEntities) {
+
+            // create a match Status object for a single user
+            MatchStatus matchStatus = new MatchStatus(matchEntity.getUserID(), matchEntity.getInviteStatus());
+
+            // add it to the list
+            groupStatus.add(matchStatus);
+
+        }
+
+        // return the list
+        return groupStatus;
+
+    }
 }
