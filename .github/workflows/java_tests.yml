@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         # Add any future services relative paths from . here
-        service: [server/user]
+        service: [user]
     
     steps:
 
@@ -30,11 +30,11 @@ jobs:
 
       - name: Make Gradle wrapper executable
         run: chmod +x gradlew
-        working-directory: ${{ matrix.service }}
+        working-directory: server/${{ matrix.service }}
 
       - name: Run tests
         run: ./gradlew test --info
-        working-directory: ${{ matrix.service }}
+        working-directory: server/${{ matrix.service }}
 
         # Upload the junit reports as artifacts
       - name: Upload JUnit test reports
@@ -43,8 +43,8 @@ jobs:
         with:
           name: junit-test-results
           path: |
-            ${{ matrix.service }}/build/test-results
-            ${{ matrix.service }}/build/reports/tests
+            server/${{ matrix.service }}/build/test-results
+            server/${{ matrix.service }}/build/reports/tests
 
         # Add annotations to checks tab
       - name: Report Tests
@@ -52,6 +52,6 @@ jobs:
         uses: dorny/test-reporter@v2
         with:
           name: ${{ matrix.service }}
-          path: ./${{ matrix.service }}/build/test-results/**/*.xml
+          path: ./server/${{ matrix.service }}/build/test-results/**/*.xml
           reporter: java-junit
           token: ${{ secrets.GITHUB_TOKEN }}
