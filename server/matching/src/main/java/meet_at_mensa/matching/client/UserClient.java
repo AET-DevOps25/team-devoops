@@ -10,9 +10,11 @@ import org.openapitools.client.api.UserApi;
 import org.openapitools.client.model.User;
 
 import org.openapitools.model.UserCollection;
+import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.RestException;
 
+@Service
 public class UserClient {
 
     private ApiClient defaultClient;
