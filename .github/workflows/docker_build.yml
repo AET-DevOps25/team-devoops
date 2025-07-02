@@ -18,19 +18,19 @@ jobs:
         service: [client, gateway, matching, user, genai, userdb, matchdb]
         include:
           - service: client
-            context: ./client
+            context: client
           - service: gateway
-            context: ./server/gateway
+            context: server/gateway
           - service: matching
-            context: ./server/matching
+            context: server/matching
           - service: user
-            context: ./server/user
+            context: server/user
           - service: genai
-            context: ./server/genai
+            context: server/genai
           - service: userdb
-            context: ./server/database/userdb
+            context: server/database/userdb
           - service: matchdb
-            context: ./server/database/matchdb
+            context: server/database/matchdb
     
     steps:
 
