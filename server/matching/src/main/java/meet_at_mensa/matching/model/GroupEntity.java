@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 // Class Group represents a single entry (row) in the matchdb/groups table
 @Entity
-@Table(name = "groups")
+@Table(name = "`groups`")
 public class GroupEntity {
     
     // ----------
