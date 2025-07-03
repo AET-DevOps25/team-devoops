@@ -25,6 +25,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import meet_at_mensa.matching.model.GroupEntity;
 import meet_at_mensa.matching.repository.GroupRepository;
+import meet_at_mensa.matching.util.Asserter;
 
 @SpringBootTest
 @Testcontainers
@@ -100,7 +101,7 @@ class GroupServiceTests {
     void canGetGroup(){
         
         // ----
-        // PREP
+        // DATA
         // ----
 
         // basic template
@@ -114,12 +115,18 @@ class GroupServiceTests {
 
         // create placeholder conversation starters
         ConversationStarterCollection prompts = new ConversationStarterCollection();
+
         prompts.addConversationsStartersItem(
             new ConversationStarter("User 1 likes Cats")
         );
+
         prompts.addConversationsStartersItem(
             new ConversationStarter("User 2 likes Dogs")
         );
+
+        // ----
+        // PREP
+        // ----
 
         // add partial group to database
         UUID groupID = groupService.registerGroup(date, timeslot, location);
@@ -141,37 +148,26 @@ class GroupServiceTests {
         // ASSERT
         // -----
 
+        // ID is not null
         assertNotNull(group, "Group should not be Null");
+
+        // basic values match
         assertEquals(groupID, group.getGroupID(), "IDs should match!");
         assertEquals(date, group.getDate(), "Dates should Match");
         assertEquals(timeslot, group.getTime(), "Timeslots should match!");
         assertEquals(location, group.getLocation(), "locations should match");
 
-        // check that conversationStarters match
-        assertEquals(
-            group.getConversationStarters().getConversationsStarters().stream()
-                .map(ConversationStarter::getPrompt)
-                .collect(Collectors.toSet()),
-
-            prompts.getConversationsStarters().stream()
-                .map(ConversationStarter::getPrompt)
-                .collect(Collectors.toSet())
+        // Assert that ConversationStarters match
+        Asserter.assertConversationStarterCollectionsMatch(
+            prompts,
+            group.getConversationStarters()
         );
-
-        // check if the userIDs match
-        assertEquals(
-                new HashSet<>(List.of(userID1, userID2)),
-                new HashSet<>(group.getUserStatus().stream()
-                                .map(MatchStatus::getUserID)
-                                .collect(Collectors.toList())
-                ),
-                "User IDs should Match"
-            );
-
-        // check if every entry has unsent status
-        for (MatchStatus matchStatus : group.getUserStatus()) {
-            assertEquals(matchStatus.getStatus(), InviteStatus.UNSENT, "Status is wrong!");
-        }
+        
+        // Assert that group.getUserStatus matches and was created successfully
+        Asserter.assertMatchStatusCreatedSuccessfully(
+            List.of(userID1, userID2),
+            group.getUserStatus()
+        );
 
         
     }
@@ -180,7 +176,7 @@ class GroupServiceTests {
     void canGetMatchStatuses(){
         
         // ----
-        // PREP
+        // DATA
         // ----
 
         // template information
@@ -194,6 +190,10 @@ class GroupServiceTests {
         // generate random userIDs
         UUID userID1 = UUID.randomUUID();
         UUID userID2 = UUID.randomUUID();
+
+        // ----
+        // PREP
+        // ----
 
         // add matches
         matchService.registerMatch(userID1, groupID);
@@ -211,20 +211,11 @@ class GroupServiceTests {
         // ASSERT
         // -----
 
-        // check if the userIDs match
-        assertEquals(
-                new HashSet<>(List.of(userID1, userID2)),
-                new HashSet<>(status.stream()
-                                .map(MatchStatus::getUserID)
-                                .collect(Collectors.toList())
-                ),
-                "User IDs should Match"
-            );
-
-        // check if every entry has unsent status
-        for (MatchStatus matchStatus : status) {
-            assertEquals(matchStatus.getStatus(), InviteStatus.UNSENT, "Status is wrong!");
-        }
+        // Assert that UserStatus matches and was created successfully
+        Asserter.assertMatchStatusCreatedSuccessfully(
+            List.of(userID1, userID2),
+            status
+        );
     }
 
 
