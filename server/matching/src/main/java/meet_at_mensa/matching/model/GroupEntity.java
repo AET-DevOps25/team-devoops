@@ -2,6 +2,8 @@ package meet_at_mensa.matching.model;
 
 // import persistence tags
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -40,6 +42,7 @@ public class GroupEntity {
     private Integer timeslot;
 
     // Whether to prioritize students with the same gender
+    @Enumerated(EnumType.STRING)
     @Column(name = "meet_location")
     private Location location;
 
