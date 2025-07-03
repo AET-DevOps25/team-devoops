@@ -8,7 +8,9 @@ import java.util.UUID;
 import org.openapitools.model.MatchRequestCollection;
 import org.openapitools.model.RequestStatus;
 import org.openapitools.model.Group;
+import org.openapitools.model.InviteStatus;
 import org.openapitools.model.Location;
+import org.openapitools.model.Match;
 import org.openapitools.model.MatchRequest;
 import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
@@ -19,6 +21,7 @@ import meet_at_mensa.matching.algorithm.MatchingAlgorithm;
 import meet_at_mensa.matching.algorithm.MatchingSolution;
 import meet_at_mensa.matching.algorithm.MatchingSolutionBlock;
 import meet_at_mensa.matching.client.UserClient;
+import meet_at_mensa.matching.exception.IllegalInputException;
 
 @Service
 public class MatchingService {
@@ -49,6 +52,66 @@ public class MatchingService {
     // hanles user-service calls
     @Autowired
     UserClient userClient;
+
+
+    /**
+     * Sends out an invite email for the corresponding matchID
+     * 
+     * TODO: @AK Implement this function
+     * 
+     * @param matchID the matchID of the invite being sent
+     * @return Match object of the updated match
+     */
+    public Match sendInvite(UUID matchID){
+
+        // get match object
+        Match match = matchService.getMatch(matchID);
+
+        // get user object for email and data
+        // WARNING: This function currently fails due to auth issues
+        User user = userClient.getUser(match.getUserID());
+        
+        //
+        //
+        // TODO: Craft and send email
+        //
+        //
+
+        // Update match status to SENT
+        match = matchService.updateStatus(matchID, InviteStatus.SENT);
+
+        // return updated match
+        return match;
+    }
+
+    /**
+     * Handle an incomming response to an invite
+     * 
+     * 
+     * @param matchID the matchID of the invite being sent
+     * @param response the new status set by the response
+     * @return Match object of the updated match
+     */
+    public Match respondInvite(UUID matchID, InviteStatus response){
+
+        // get match object
+        Match match = matchService.getMatch(matchID);
+
+        if(response == InviteStatus.CONFIRMED || response == InviteStatus.REJECTED) {
+
+            // Update match status to SENT
+            match = matchService.updateStatus(matchID, response);
+
+        } else {
+
+            // throw exception if response is EXPIRED, UNSENT or SENT
+            throw new IllegalInputException("User response to invite was invalid");
+
+        }
+
+        // return updated match
+        return match;
+    }
 
     /**
      * Creates entries in the Group and Match tables for a new matched group
@@ -135,35 +198,56 @@ public class MatchingService {
         // for each group in the solution
         for (MatchingSolutionBlock solutionBlock : solution.getSolution()) {
 
-            // for successfully matched groups
-            if (solutionBlock.getStatus() == RequestStatus.MATCHED) {
-
-                // update request status to matched
-                for (MatchRequest request : solutionBlock.getRequests().getRequests()) {
-                    requestService.updateRequestStatus(request.getRequestID(), RequestStatus.MATCHED);
-                }
-
-                // create a Group, Matches, and ConversationStarters
-                groups.add(
-                    createGroup(
-                        solutionBlock.getUsers(),
-                        solutionBlock.getDate(),
-                        solutionBlock.getTime(),
-                        solutionBlock.getLocation()
-                    )
-                );
-
-            // for Unmatchable requests
-            } else if (solutionBlock.getStatus() == RequestStatus.UNMATCHABLE) {
-
-                // update request status to unmatchable
-                for (MatchRequest request : solutionBlock.getRequests().getRequests()) {
-                    requestService.updateRequestStatus(request.getRequestID(), RequestStatus.UNMATCHABLE);
-                }
-            }
+            // register entries in all tables and add to groups list
+            groups.add(implementSolution(solutionBlock));
+          
         }
 
         // return groups once completed
         return groups;
     }
+
+
+    /**
+     * Creates all necessary entries corresponding to a given solution block
+     * 
+     * @param solution a group of users matched by the algorithm
+     * @return a group created containing all the users
+     */
+    public Group implementSolution(MatchingSolutionBlock solution){
+
+        // for successfully matched groups
+        if (solution.getStatus() == RequestStatus.MATCHED) {
+
+            // Update each match request to MATCHED status
+            for (MatchRequest request : solution.getRequests().getRequests()) {
+                requestService.updateRequestStatus(request.getRequestID(), RequestStatus.MATCHED);
+            }
+
+            // create a Group, Matches, and ConversationStarters
+            Group group = createGroup(
+                solution.getUsers(), 
+                solution.getDate(), 
+                solution.getTime(), 
+                solution.getLocation()
+            );
+
+            return group;
+
+        // for Unmatchable requests
+        } else if (solution.getStatus() == RequestStatus.UNMATCHABLE) {
+
+            // Update each match request to UNMATCHABLE status
+            for (MatchRequest request : solution.getRequests().getRequests()) {
+                requestService.updateRequestStatus(request.getRequestID(), RequestStatus.UNMATCHABLE);
+            }
+
+            return null;
+
+        } else {return null;}
+
+    }
+
+
+
 }
