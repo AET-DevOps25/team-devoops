@@ -20,7 +20,7 @@ import meet_at_mensa.matching.exception.TimeslotNotFoundException;
 
 @SpringBootTest
 @Testcontainers
-class TimeSlotServiceTests {
+class TimeslotServiceTests {
 
 
 	@Container
