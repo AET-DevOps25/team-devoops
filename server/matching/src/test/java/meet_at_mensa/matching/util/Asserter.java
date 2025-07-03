@@ -9,10 +9,12 @@ import java.util.UUID;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.openapitools.client.model.MatchPreferences;
 import org.openapitools.model.ConversationStarter;
 import org.openapitools.model.ConversationStarterCollection;
 import org.openapitools.model.Group;
 import org.openapitools.model.InviteStatus;
+import org.openapitools.model.MatchRequest;
 import org.openapitools.model.MatchStatus;
 import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
@@ -124,6 +126,32 @@ public class Asserter {
 
         // UserStatus
         assertUserStatusesAreIdentical(group1.getUserStatus(), group2.getUserStatus());
+
+    }
+
+    public static void assertMatchRequestsAreIdentical(MatchRequest request1, MatchRequest request2) {
+
+        // check that neither value is null
+        assertNotNull(request1, "Value should not be null");
+        assertNotNull(request2, "Value should not be null");
+
+        // check that basic values match
+        assertEquals(request1.getRequestID(), request2.getRequestID(), "RequestIDs should be identical");
+        assertEquals(request1.getUserID(), request2.getUserID(), "RequestIDs should be identical");
+        assertEquals(request1.getDate(), request2.getDate(), "RequestIDs should be identical");
+        assertEquals(request1.getLocation(), request2.getLocation(), "RequestIDs should be identical");
+        assertEquals(request1.getStatus(), request2.getStatus(), "RequestIDs should be identical");
+
+        // check that timeslots are the same
+        assertEquals(
+            new HashSet<>(request1.getTimeslot()),
+            new HashSet<>(request2.getTimeslot()),
+            "Timeslots should Match"
+        );
+
+        assertEquals(request1.getPreferences().getAgePref(), request2.getPreferences().getAgePref(), "Preferences should match");
+        assertEquals(request1.getPreferences().getDegreePref(), request2.getPreferences().getDegreePref(), "Preferences should match");
+        assertEquals(request1.getPreferences().getGenderPref(), request2.getPreferences().getGenderPref(), "Preferences should match");
 
     }
 

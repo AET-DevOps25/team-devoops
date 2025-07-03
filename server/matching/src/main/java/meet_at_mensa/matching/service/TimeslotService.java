@@ -60,7 +60,7 @@ public class TimeslotService {
 
             // check in bounds
             if(timeslot < 1 || timeslot > 16){
-                throw new IllegalInputException();
+                throw new IllegalInputException("Timeslot out of bounds [1,16]");
             }
 
             timeslotRepository.save(new TimeslotEntity(requestID, timeslot));

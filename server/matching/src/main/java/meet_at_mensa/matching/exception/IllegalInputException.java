@@ -3,7 +3,7 @@ package meet_at_mensa.matching.exception;
 public class IllegalInputException extends RuntimeException {
     
     public IllegalInputException() {
-        super("Group not found");
+        super("Input not valid!");
     }
 
     public IllegalInputException(String message) {

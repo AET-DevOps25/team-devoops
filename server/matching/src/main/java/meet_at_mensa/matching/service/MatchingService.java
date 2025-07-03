@@ -140,7 +140,7 @@ public class MatchingService {
 
                 // update request status to matched
                 for (MatchRequest request : solutionBlock.getRequests().getRequests()) {
-                    requestService.updateRequstStatus(request.getRequestID(), RequestStatus.MATCHED);
+                    requestService.updateRequestStatus(request.getRequestID(), RequestStatus.MATCHED);
                 }
 
                 // create a Group, Matches, and ConversationStarters
@@ -158,7 +158,7 @@ public class MatchingService {
 
                 // update request status to unmatchable
                 for (MatchRequest request : solutionBlock.getRequests().getRequests()) {
-                    requestService.updateRequstStatus(request.getRequestID(), RequestStatus.UNMATCHABLE);
+                    requestService.updateRequestStatus(request.getRequestID(), RequestStatus.UNMATCHABLE);
                 }
             }
         }
@@ -166,5 +166,4 @@ public class MatchingService {
         // return groups once completed
         return groups;
     }
-
 }
