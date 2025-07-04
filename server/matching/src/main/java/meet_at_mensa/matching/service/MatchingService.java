@@ -263,7 +263,8 @@ public class MatchingService {
 
         // Throws an exception if this function is triggered before 15:00
         if (LocalTime.now().isBefore(LocalTime.of(11, 0))){
-            throw new ScheduleException("Operation expireMatches() cannot be run before 11:00!");
+            // TODO: Figure out a better way to handle this edge case
+            //throw new ScheduleException("Operation expireMatches() cannot be run before 11:00!");
         }
 
         List<Group> groups;

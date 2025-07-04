@@ -323,7 +323,8 @@ public class MatchRequestService {
 
         // Throws an exception if this function is triggered before 15:00
         if (LocalTime.now().isBefore(LocalTime.of(11, 0))){
-            throw new ScheduleException("Operation expireRequests() cannot be run before 11:00!");
+            // TODO: Figure out a better way to handle this case
+            //throw new ScheduleException("Operation expireRequests() cannot be run before 11:00!");
         }
 
         // check all matchRequests

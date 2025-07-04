@@ -1,5 +1,6 @@
 package meet_at_mensa.matching.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -8,11 +9,17 @@ import meet_at_mensa.matching.exception.RequestNotFoundException;
 @Service
 public class SchedulingService {
 
+    @Autowired
+    private MatchingService matchingService;
+
+    @Autowired
+    private MatchRequestService requestService;
+
 
     /**
      * Sets the status of expired matches
      * 
-     * Runs at 15:00, just after the Mensa closes
+     * Runs at 11:00, just as the Mensa opens
      *
      * This only sets the status to Expired, and does not delete the entries from the tables
      * 
@@ -20,7 +27,11 @@ public class SchedulingService {
     @Scheduled(cron = "0 0 15 * * *", zone = "Europe/Berlin")
     public void scheduledExpiry(){
 
-        // TODO: Implement
+        // Expire all SENT but not responded to matches
+        matchingService.expireMatches();
+
+        // Expire all requests for TODAY or before
+        requestService.expireRequests();
 
     }
 
@@ -34,7 +45,11 @@ public class SchedulingService {
     @Scheduled(cron = "0 0 0 * * SUN", zone = "Europe/Berlin")
     public void scheduledCleanup(){
 
-        // TODO: Implement
+        // clean up expired groups and matches
+        matchingService.cleanupExpired();
+
+        // clean up expired requests
+        requestService.cleanupExpired();
 
     }
 
