@@ -7,30 +7,55 @@ import org.openapitools.client.ApiClient;
 import org.openapitools.client.Configuration;
 import org.openapitools.client.auth.*;
 import org.openapitools.client.api.UserApi;
-import org.openapitools.client.model.User;
 
+import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
 import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.RestException;
 
+/**
+ * User Client uses the generated java client to handle REST requests to the User-Microservice
+ * 
+ * WARNING: This class is currently non-functional due to complications with Auth0
+ *
+ * TODO: @AK - Implement Authentication
+ *
+ */
 @Service
 public class UserClient {
 
+    // API client object
     private ApiClient defaultClient;
 
+    // Constructor
     public UserClient() {
 
         // get default client
         this.defaultClient = Configuration.getDefaultApiClient();
 
         // set path
-        this.defaultClient.setBasePath("meetatmensa-user");
+        this.defaultClient.setBasePath("http://meetatmensa-user:80");
     }
 
-    private org.openapitools.model.User convertUser(User clientUser) {
 
-        return new org.openapitools.model.User(
+
+    /**
+     * Converts a Client-Style User object into a Server-Style User object.
+     * 
+     * Generated clients and servers are generated separatly, and each have their own version of model objects
+     * A user from org.openapitools.model.User and a user from org.openapitools.client.model.User have the same
+     * fields, but are distinct in a formal sense. 
+     *
+     * These conversion functions convert between client-type objects returned by generated client functions
+     * and server-type objects used by the rest of the application
+     *
+     * @param clientUser client-style user object (org.openapitools.client.model.User)
+     * @return serverUser server-style user object (org.openapitools.model.User)
+     */
+    private User convertClientUserToServerUser(org.openapitools.client.model.User clientUser) {
+
+        return new User(
                 clientUser.getUserID(),
                 clientUser.getEmail(), 
                 clientUser.getFirstname(), 
@@ -46,25 +71,47 @@ public class UserClient {
     }
 
     
-
-    public org.openapitools.model.User getUser(UUID userID) {
+    /**
+     * Uses the Generated client to send a REST request to user-service for a User object
+     * 
+     * WARNING: This currently fails due to missing authentication
+     * 
+     * TODO: @AK Figure out auth0
+     *
+     * @param userID userID of the user being fetched
+     * @return serverUser server-style user object (org.openapitools.model.User)
+     */
+    public User getUser(UUID userID) {
 
         // create instance of the API
         UserApi apiInstance = new UserApi(this.defaultClient);
 
         try {
 
+            org.openapitools.client.model.User userClient;
+
             // request user Object from user-service
-            User userClient = apiInstance.getApiV2UserUserID(userID);
+            userClient = apiInstance.getApiV2UserUserID(userID);
 
             // convert to server-type object and return
-            return convertUser(userClient);
+            return convertClientUserToServerUser(userClient);
 
         } catch (Exception e) {
-            throw new RestException();
+            throw new RestException(e.toString());
         }
     }
 
+
+    /**
+     * Uses the Generated client to send multiple REST requests to user-service for multiple User objects
+     * 
+     * WARNING: This currently fails due to missing authentication
+     * 
+     * TODO: @AK Figure out auth0
+     *
+     * @param userIDs userID of the user being fetched
+     * @return serverUserCollection server-style user object (org.openapitools.model.UserCollection)
+     */
     public UserCollection getUsers(List<UUID> userIDs) {
 
         // create empty UserCollection

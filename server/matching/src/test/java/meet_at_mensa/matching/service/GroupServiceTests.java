@@ -3,16 +3,13 @@ package meet_at_mensa.matching.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.openapitools.model.ConversationStarter;
 import org.openapitools.model.ConversationStarterCollection;
 import org.openapitools.model.Group;
-import org.openapitools.model.InviteStatus;
 import org.openapitools.model.Location;
 import org.openapitools.model.MatchStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import meet_at_mensa.matching.exception.GroupNotFoundException;
 import meet_at_mensa.matching.model.GroupEntity;
 import meet_at_mensa.matching.repository.GroupRepository;
 import meet_at_mensa.matching.util.Asserter;
@@ -94,6 +92,13 @@ class GroupServiceTests {
         assertEquals(timeslot, groupEntity.getTimeslot(), "The timeslots should match!");
         assertEquals(location, groupEntity.getLocation(), "The Locations should match!");
         assertEquals(groupID, groupEntity.getGroupID(), "The Group IDs should match!");
+
+
+        // -------
+        // Cleanup
+        // -------
+
+        groupRepository.deleteById(groupEntity.getGroupID());
 
     }
 
@@ -216,6 +221,204 @@ class GroupServiceTests {
             List.of(userID1, userID2),
             status
         );
+    }
+
+
+    @Test
+    void canGetGroupsOnDate(){
+        
+        // ----
+        // DATA
+        // ----
+
+        // basic template
+        LocalDate date = LocalDate.now();
+        Integer timeslot = 6;
+        Location location = Location.ARCISSTR;
+
+        // generate random userIDs
+        UUID userID1 = UUID.randomUUID();
+        UUID userID2 = UUID.randomUUID();
+
+        // create placeholder conversation starters
+        ConversationStarterCollection prompts = new ConversationStarterCollection();
+
+        prompts.addConversationsStartersItem(
+            new ConversationStarter("User 1 likes Cats")
+        );
+
+        prompts.addConversationsStartersItem(
+            new ConversationStarter("User 2 likes Dogs")
+        );
+
+        // ----
+        // PREP
+        // ----
+
+        // add partial group to database
+        UUID groupID = groupService.registerGroup(date, timeslot, location);
+
+        // add matches to database
+        matchService.registerMatch(userID1, groupID);
+        matchService.registerMatch(userID2, groupID);
+
+        // add Conversation Starters to database
+        conversationStarterService.registerPrompts(groupID, prompts);
+
+        // ----
+        // ACT
+        // ----
+
+        List<Group> groups = groupService.getGroupsOnDate(LocalDate.now());
+
+        // -----
+        // ASSERT
+        // -----
+
+        // Group is not null
+        assertNotNull(groups, "Group should not be Null");
+
+        // At least one element in group
+        assertTrue(groups.size() >= 1, "List of groups should not be empty");
+
+
+        for (Group group : groups) {
+            
+            assertEquals(LocalDate.now(), group.getDate(), "Group should take place today!");
+
+        }
+
+        
+    }
+
+
+    @Test
+    void canGetGroupsBeforeDate(){
+        
+        // ----
+        // DATA
+        // ----
+
+        // basic template
+        LocalDate date = LocalDate.now();
+        Integer timeslot = 6;
+        Location location = Location.ARCISSTR;
+
+        // generate random userIDs
+        UUID userID1 = UUID.randomUUID();
+        UUID userID2 = UUID.randomUUID();
+
+        // create placeholder conversation starters
+        ConversationStarterCollection prompts = new ConversationStarterCollection();
+
+        prompts.addConversationsStartersItem(
+            new ConversationStarter("User 1 likes Cats")
+        );
+
+        prompts.addConversationsStartersItem(
+            new ConversationStarter("User 2 likes Dogs")
+        );
+
+        // ----
+        // PREP
+        // ----
+
+        // add partial group to database
+        UUID groupID = groupService.registerGroup(date, timeslot, location);
+
+        // add matches to database
+        matchService.registerMatch(userID1, groupID);
+        matchService.registerMatch(userID2, groupID);
+
+        // add Conversation Starters to database
+        conversationStarterService.registerPrompts(groupID, prompts);
+
+        // ----
+        // ACT
+        // ----
+
+        // get all groups older than 1 day after today
+        List<Group> groups = groupService.getGroupsOlderThan(LocalDate.now().plusDays(1));
+
+        // -----
+        // ASSERT
+        // -----
+
+        // Group is not null
+        assertNotNull(groups, "Group should not be Null");
+
+        // At least one element in group
+        assertTrue(groups.size() >= 1, "List of groups should not be empty");
+
+
+        for (Group group : groups) {
+
+            assertTrue(group.getDate().isBefore(LocalDate.now().plusDays(1)), "Groups should be before Tomorrow!");
+
+        }
+
+        
+    }
+
+
+
+    @Test
+    void canRemoveGroup(){
+        
+        // ----
+        // DATA
+        // ----
+
+        // basic template
+        LocalDate date = LocalDate.now();
+        Integer timeslot = 6;
+        Location location = Location.ARCISSTR;
+
+        // generate random userIDs
+        UUID userID1 = UUID.randomUUID();
+        UUID userID2 = UUID.randomUUID();
+
+        // create placeholder conversation starters
+        ConversationStarterCollection prompts = new ConversationStarterCollection();
+
+        prompts.addConversationsStartersItem(
+            new ConversationStarter("User 1 likes Cats")
+        );
+
+        prompts.addConversationsStartersItem(
+            new ConversationStarter("User 2 likes Dogs")
+        );
+
+        // ----
+        // PREP
+        // ----
+
+        // add partial group to database
+        UUID groupID = groupService.registerGroup(date, timeslot, location);
+
+        // add matches to database
+        matchService.registerMatch(userID1, groupID);
+        matchService.registerMatch(userID2, groupID);
+
+        // add Conversation Starters to database
+        conversationStarterService.registerPrompts(groupID, prompts);
+
+        // ----
+        // ACT
+        // ----
+
+        // attempt to remove group
+        groupService.removeGroup(groupID);
+
+        // -----
+        // ASSERT
+        // -----
+
+        assertThrows(
+            GroupNotFoundException.class,
+            () -> groupService.getGroup(groupID)
+        );
+        
     }
 
 

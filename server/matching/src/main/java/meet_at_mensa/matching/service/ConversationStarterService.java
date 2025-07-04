@@ -9,7 +9,9 @@ import org.openapitools.model.UserCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import meet_at_mensa.matching.client.GenAiClient;
 import meet_at_mensa.matching.exception.GroupNotFoundException;
+import meet_at_mensa.matching.exception.RestException;
 import meet_at_mensa.matching.model.PromptEntity;
 import meet_at_mensa.matching.repository.PromptRepository;
 
@@ -21,32 +23,37 @@ public class ConversationStarterService {
 
     /**
      * Calls remote service to generate prompts for a given group
-     *
-     * This function only generates the propmts, to add them to the database registerPrompts must be called separately!
      * 
-     * TODO: This function is currently unimplemented, and returns placeholder values
+     * TODO: Currently this function catches the REST exceptions thrown by GenAiClient
+     * and substitutes placeholder values. This behavior is not desirable in production
      *
      * @param users UserCollection object with all users in a given group
      * @return generated ConversationStarterCollection
-     * @throws RestException if the call fails
+     * @throws RestException if the call fails (See TODO)
      */
     public ConversationStarterCollection generatePrompts(UserCollection users) {
 
-        // create empty Collection
-        ConversationStarterCollection collection = new ConversationStarterCollection();
+        // initialize genAI client
+        GenAiClient genAiClient = new GenAiClient();
 
-        // TODO: this is a dummy implementation. This should just the ConversationStarterCollection returned by the GenAi service
-        for (User user : users.getUsers()) {
+        ConversationStarterCollection prompts;
+
+        try {
+
+            // try to get conversation starters
+            prompts = genAiClient.getPrompts(users);
             
-            // new placeholder prompt
-            ConversationStarter prompt = new ConversationStarter("This is a placeholder, it should be fetched from the GenAi microservice");
+        } catch (RestException e) {
 
-            // add to collection
-            collection.addConversationsStartersItem(prompt);
+            System.out.println(e.toString());
+
+            // generate dummy prompts if REST call fails
+            prompts = generateDummyPrompts(users.getUsers().size());
+
         }
 
-        // return collection
-        return collection;
+        
+        return prompts;
 
     }
 
@@ -144,6 +151,32 @@ public class ConversationStarterService {
         registerPrompts(groupID, update);
 
         return getPrompts(groupID);
+
+    }
+
+
+    /**
+     * Generate "Dummy" placeholder prompts in case rest-service fails
+     *
+     *
+     * @param promptCount how many prompts to add to collection
+     * @return Placeholder prompts in a collection
+     */
+    private ConversationStarterCollection generateDummyPrompts(Integer promptCount) {
+
+        ConversationStarterCollection dummyPrompts = new ConversationStarterCollection();
+
+        for (int i = 0; i < promptCount; i++) {
+            
+            // add placeholder prompts
+            dummyPrompts.addConversationsStartersItem(
+                new ConversationStarter(
+                    "Failed to get prompt from GenAI microservice. This is a placeholder prompt."
+                )
+            );
+        }
+
+        return dummyPrompts;
 
     }
 
