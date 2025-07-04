@@ -51,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * Object representing a student user in the Meet@Mensa system.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T15:09:25.743002216Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-02T14:24:41.819283635Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class UserUpdate {
   public static final String SERIALIZED_NAME_EMAIL = "email";
   @SerializedName(SERIALIZED_NAME_EMAIL)

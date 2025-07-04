@@ -25,7 +25,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "UserUpdate", description = "Object representing a student user in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-01T15:09:16.142843555Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T14:24:32.343137422Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class UserUpdate {
 
   private @Nullable String email;

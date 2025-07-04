@@ -1,0 +1,44 @@
+# This workflow handles the Continuous Integration pipeline for MeetAtMensa
+name: Continuous Integration (CI)
+
+on:
+
+  # Callable by the CI/CD Action
+  workflow_call:
+
+  # Run on push to dev branches
+  push:
+    branches-ignore: [main]
+
+  # Run on PRs to main
+  pull_request: 
+    branches: [main]
+
+# Cancel running action if another is triggered on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+
+  # Run Update API Spec
+  update_api_spec:
+    name: Update API Spec
+    uses: ./.github/workflows/update_api_spec.yml
+
+  # TODO Add linting
+
+  # Run Java unit-tests
+  unit_tests:
+    name: Run Tests
+    uses: ./.github/workflows/java_tests.yml
+    needs: update_api_spec
+
+  # TODO Add Integration Testing
+
+  # Call the docker_build workflow to build and publish images
+  build:
+    name: Build & Publish Images
+    uses: ./.github/workflows/docker_build.yml
+    needs: unit_tests
