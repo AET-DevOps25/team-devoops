@@ -1,12 +1,14 @@
 package meet_at_mensa.matching.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.openapitools.model.MatchRequestCollection;
 import org.openapitools.model.RequestStatus;
+import org.openapitools.model.MatchCollection;
 import org.openapitools.model.Group;
 import org.openapitools.model.InviteStatus;
 import org.openapitools.model.Location;
@@ -16,12 +18,14 @@ import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import meet_at_mensa.matching.MatchingApplication;
 import meet_at_mensa.matching.algorithm.MatchingAlgorithm;
 import meet_at_mensa.matching.algorithm.MatchingSolution;
 import meet_at_mensa.matching.algorithm.MatchingSolutionBlock;
 import meet_at_mensa.matching.client.UserClient;
+import meet_at_mensa.matching.exception.GroupNotFoundException;
 import meet_at_mensa.matching.exception.IllegalInputException;
+import meet_at_mensa.matching.exception.ScheduleException;
 
 @Service
 public class MatchingService {
@@ -248,6 +252,82 @@ public class MatchingService {
 
     }
 
+    /**
+     * Sets any match statuses that are SENT to EXPIRED for groups meeting today
+     * 
+     * WARNING: This expires matches for TODAY, and throws an exception if it's run before the Mensa opens at 11:00
+     * 
+     * @throws ScheduleException if run before 11:00
+     */
+    protected void expireMatches() {
 
+        // Throws an exception if this function is triggered before 15:00
+        if (LocalTime.now().isBefore(LocalTime.of(11, 0))){
+            throw new ScheduleException("Operation expireMatches() cannot be run before 11:00!");
+        }
+
+        List<Group> groups;
+
+        
+        try { // get all groups from today
+
+            groups = groupService.getGroupsOnDate(LocalDate.now());
+        
+        } catch (GroupNotFoundException e) { // if no group is found today, return
+        
+            return;
+
+        }
+
+        
+        for (Group group : groups) {
+            
+            // get all matches for a the given group
+            MatchCollection matches = matchService.getMatchesByGroup(group.getGroupID());
+
+            for (Match match : matches.getMatches()) {
+                
+                // if a match has been sent but not responded to
+                if (match.getStatus() == InviteStatus.SENT) {
+
+                    // mark as expired
+                    matchService.updateStatus(match.getMatchID(), InviteStatus.EXPIRED);
+
+                }
+
+            }
+
+        }
+
+    }
+    
+    
+    /**
+     * Deletes Groups and Matches that are older than 7 days
+     * 
+     */
+    protected void cleanupExpired() {
+
+        // get all groups older than a week
+        List<Group> groups = groupService.getGroupsOlderThan(LocalDate.now().minusDays(7));
+
+        for (Group group : groups) {
+            
+            // get all matches
+            MatchCollection matches = matchService.getMatchesByGroup(group.getGroupID());
+
+            // Remove all matches
+            for (Match match : matches.getMatches()) {
+
+                matchService.removeMatch(match.getMatchID());
+
+            }
+
+            // Remove group and conversation starters
+            groupService.removeGroup(group.getGroupID());
+
+        }
+
+    }
 
 }
