@@ -451,6 +451,61 @@ class MatchingRequestServiceTests {
     }
 
 
+    @Test
+    void canExpireRequests() {
+
+        //-----
+        // DATA
+        //-----
+
+        UUID userID = UUID.randomUUID();
+
+        MatchRequestNew new1 = new MatchRequestNew(
+            userID, // userID
+            LocalDate.now().minusDays(1),
+            List.of(6,7,8,9), // timeslot
+            Location.GARCHING, // location
+            new MatchPreferences(true, false, false) // preference
+        );
+
+        MatchRequestNew new2 = new MatchRequestNew(
+            userID, // userID
+            LocalDate.now().minusDays(1),
+            List.of(10,11,12,13), // timeslot
+            Location.ARCISSTR, // location
+            new MatchPreferences(false, true, false) // preference
+        );
+
+        //-----
+        // PREP
+        //-----
+
+        // Register requests
+        MatchRequest request1 = matchRequestService.registerRequest(new1);
+        MatchRequest request2 = matchRequestService.registerRequest(new2);
+        
+
+        //----
+        // ACT
+        //----
+
+        matchRequestService.expireRequests();
+        MatchRequest expired1 = matchRequestService.getRequest(request1.getRequestID());
+        MatchRequest expired2 = matchRequestService.getRequest(request2.getRequestID());
+
+
+        //-------
+        // ASSERT
+        //-------
+
+        assertNotNull(expired1);
+        assertNotNull(expired2);
+
+        assertTrue(expired1.getStatus() == RequestStatus.EXPIRED);
+        assertTrue(expired2.getStatus() == RequestStatus.EXPIRED);
+    }
+
+
 
 
 }
