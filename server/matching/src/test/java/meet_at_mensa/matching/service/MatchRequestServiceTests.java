@@ -458,10 +458,8 @@ class MatchingRequestServiceTests {
         // DATA
         //-----
 
-        UUID userID = UUID.randomUUID();
-
         MatchRequestNew new1 = new MatchRequestNew(
-            userID, // userID
+            UUID.randomUUID(), // userID
             LocalDate.now().minusDays(1),
             List.of(6,7,8,9), // timeslot
             Location.GARCHING, // location
@@ -469,7 +467,7 @@ class MatchingRequestServiceTests {
         );
 
         MatchRequestNew new2 = new MatchRequestNew(
-            userID, // userID
+            UUID.randomUUID(), // userID
             LocalDate.now().minusDays(1),
             List.of(10,11,12,13), // timeslot
             Location.ARCISSTR, // location
