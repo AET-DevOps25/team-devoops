@@ -140,7 +140,7 @@ public class MatchingController implements MatchingApi {
         try {
             
             // attempt to register a new matchRequset
-            MatchRequest request = requestService.registerRequests(matchRequestNew);
+            MatchRequest request = requestService.registerRequest(matchRequestNew);
 
             // return 200 if successful
             return ResponseEntity.ok(request);

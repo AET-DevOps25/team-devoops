@@ -2,6 +2,8 @@ package meet_at_mensa.matching.model;
 
 // import persistence tags
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +46,7 @@ public class MatchRequestEntity {
 
     // date for the match
     @Column(name = "request_location")
+    @Enumerated(EnumType.STRING)
     private Location location;
 
     // Whether to prioritize students with the same degree
@@ -59,6 +62,7 @@ public class MatchRequestEntity {
     private Boolean genderPref;
 
     @Column(name = "request_status")
+    @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     // -------
