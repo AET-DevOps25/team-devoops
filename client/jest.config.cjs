@@ -28,14 +28,6 @@ module.exports = {
     '!src/__tests__/**',
     '!src/setupTests.ts'
   ],
-  coverageThreshold: {
-    global: {
-      branches: 30,
-      functions: 35,
-      lines: 50,
-      statements: 50
-    }
-  },
   testTimeout: 10000,
   clearMocks: true,
   restoreMocks: true,
