@@ -104,7 +104,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
         {/* User menu ganz rechts */}
         <Box sx={{ flexGrow: 0, pr: 2 }}>
           <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <IconButton data-testid="user-menu" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
                 src={user?.picture}
                 sx={{
@@ -136,7 +136,11 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting} onClick={() => handleMenuClick(setting)}>
+              <MenuItem
+                key={setting}
+                data-testid={`menu-item-${setting.toLowerCase()}`}
+                onClick={() => handleMenuClick(setting)}
+              >
                 <Typography textAlign="center">{setting}</Typography>
               </MenuItem>
             ))}
