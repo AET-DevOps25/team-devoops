@@ -13,7 +13,9 @@
     "preview": "vite preview",
     "test": "jest --config jest.config.cjs",
     "test:watch": "jest --config jest.config.cjs --watch",
-    "test:coverage": "jest --config jest.config.cjs --coverage"
+    "test:coverage": "jest --config jest.config.cjs --coverage",
+    "test:ci": "jest --config jest.config.cjs --ci --coverage --watchAll=false",
+    "test:debug": "jest --config jest.config.cjs --detectOpenHandles"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",

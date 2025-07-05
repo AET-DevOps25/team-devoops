@@ -9,13 +9,35 @@ module.exports = {
     '^@components/(.*)$': '<rootDir>/src/components/$1'
   },
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: {
+        jsx: 'react-jsx',
+      },
+    }],
   },
-  testMatch: ['**/__tests__/**/*.test.(ts|tsx)'],
+  testMatch: [
+    '**/__tests__/**/*.test.(ts|tsx)',
+    '**/*.test.(ts|tsx)'
+  ],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/main.tsx',
-    '!src/vite-env.d.ts'
-  ]
-} 
+    '!src/vite-env.d.ts',
+    '!src/__mocks__/**',
+    '!src/__tests__/**',
+    '!src/setupTests.ts'
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 60,
+      functions: 60,
+      lines: 60,
+      statements: 60
+    }
+  },
+  testTimeout: 10000,
+  clearMocks: true,
+  restoreMocks: true,
+  setupFiles: ['<rootDir>/src/__tests__/setup/jest.setup.js'],
+}; 
