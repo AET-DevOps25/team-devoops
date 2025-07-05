@@ -58,4 +58,16 @@ console.error = (...args) => {
     return;
   }
   originalError.call(console, ...args);
+};
+
+// Suppress React Router deprecation warnings
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  if (
+    typeof args[0] === 'string' &&
+    args[0].includes('React Router Future Flag Warning')
+  ) {
+    return;
+  }
+  originalWarn.call(console, ...args);
 }; 
