@@ -23,7 +23,7 @@ describe('MatchRequestCard.cy.tsx', () => {
 
     cy.get('[data-testid="match-location"]').should('contain', 'Mensa Arcisstraße');
     cy.get('[data-testid="match-date"]').should('contain', 'Wed, Dec 25');
-    cy.get('[data-testid="match-timeslots"]').should('contain', '12:00-12:15');
+    cy.get('[data-testid="match-timeslots"]').should('contain', '12:00-13:00');
     cy.get('[data-testid="match-status"]').should('contain', 'PENDING');
   });
 
