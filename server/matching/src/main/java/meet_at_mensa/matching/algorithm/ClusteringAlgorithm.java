@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.openapitools.model.MatchRequestCollection;
+import org.openapitools.model.RequestStatus;
 import org.openapitools.model.UserCollection;
 
 public class ClusteringAlgorithm extends MatchingAlgorithm {
@@ -30,16 +31,42 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
     @Override
     public MatchingSolution generateSolution() {
 
-        // Step 1 - Eliminate all dead clusters with fewer than 2 users
-        eliminateDeadClusters();
-        
-        // Step 2 - Select a "Critical User (least availability)"
-        determineCriticalCandidate();
+        // TODO: add separate runs per Mensa
 
-        // Step 3 - Create a "minimal-group" around the critical user. Remove users from candidates list
-            // Step 3.1 Create all possible minimal-groups for critical-user
-        // Step 4 - Repeat until all minimal groups exist
-        // Step 5 - Attempt to fit unmatcheable users into existing groups
+        List<CandidateGroup> candidateGroups = new ArrayList<>();
+
+        while (stillSolveable()) {
+
+            // Step 1 - Eliminate all dead clusters with fewer than 2 users
+            eliminateDeadClusters();
+            
+            // Step 2 - Select a "Critical User (least availability)"
+            Candidate criticalCandidate = determineCriticalCandidate();
+
+            // Step 3 - Create a "minimal-group" around the critical user. Remove users from candidates list
+            CandidateGroup idealGroup = determineIdealGroup(criticalCandidate.getUserID());
+
+            // Step 3.1 - Add group to list
+            candidateGroups.add(idealGroup);
+
+            // Step 4 - Remove users in the candidateGroup from clusters
+            for (Candidate candidate : idealGroup.getMembers()) {
+                
+                // move users to matched
+                userMatched(candidate.getUserID());
+
+                // removed entries from clusters
+                clusters.removeUser(candidate.getUserID());
+
+            }
+
+            // Step 5 - Repeat until no more matches are possible
+
+        }
+
+        // Step 6 - TODO: Attempt to fit unmatcheable users into existing groups
+
+        // Step 7 - TODO: Convert to MatchingSolutionBlocks and return
 
         return null;
 
@@ -214,6 +241,7 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
         return (Collections.max(clusters.candidatesPerCluster().values()) >= 3);
 
     }
+
 }
 
 
