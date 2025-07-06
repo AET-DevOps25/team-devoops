@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Typography,
   Paper,
@@ -11,7 +11,6 @@ import {
   Grid,
   Divider,
   Button,
-  Avatar,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -21,9 +20,6 @@ import {
   ListItemText,
   Snackbar,
 } from '@mui/material';
-import CheckIcon from '@mui/icons-material/Check';
-import HelpIcon from '@mui/icons-material/Help';
-import CloseIcon from '@mui/icons-material/Close';
 import { matchesService, MatchesServiceError } from '../services/matchesService';
 import { MatchesResponse, Match, MatchStatus, ConversationStarter } from '../types/matches';
 

@@ -1,4 +1,4 @@
-import { MatchesResponse, Match } from '../types/matches';
+import { MatchesResponse } from '../types/matches';
 
 const API_BASE_URL = 'https://meetatmensa.com/api/v2';
 
