@@ -96,6 +96,18 @@ public class CandidateClusters {
 
     }
 
+    public void removeUser(UUID userID) {
+
+        for (int i = 1; i < 17; i++) {
+
+            if(candidateInCluster(userID, i)){
+                removeEntry(userID, i);
+            }
+            
+        }
+
+    }
+
     public List<UUID> removeCluster(Integer clusterID) {
 
         List<UUID> removedUsers = new ArrayList<>();

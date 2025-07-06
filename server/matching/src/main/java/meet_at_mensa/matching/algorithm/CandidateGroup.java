@@ -30,6 +30,17 @@ public Integer GetMemberCount() {
 
 }
 
+public Integer getQuality() {
+
+    return quality;
+
+}
+
+public List<Candidate> getMembers() {
+
+    return members;
+
+}
 private List<Candidate> getOthers(UUID userID) {
 
     List<Candidate> others = new ArrayList<>();

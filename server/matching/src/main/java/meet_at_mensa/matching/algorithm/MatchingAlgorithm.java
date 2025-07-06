@@ -55,4 +55,22 @@ public abstract class MatchingAlgorithm {
 
     }
 
+    protected Boolean userMatched(UUID userID) {
+
+        for (Candidate candidate : unmatched) {
+            
+            if (candidate.getUserID() == userID) {
+
+                matched.add(candidate);
+                unmatched.remove(candidate);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
 }

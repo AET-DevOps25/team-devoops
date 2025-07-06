@@ -1,6 +1,8 @@
 package meet_at_mensa.matching.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -136,11 +138,80 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
         // for each start window
         for (Integer startTime : clusters.clustersWithCandidate(critUserID)) {
             
-            // TODO: Generate all possible groups
+            // get all possible combinations of users
+            List<List<Candidate>> combinations = getCandidateCombinationsWith(matched, critUserID);
 
-        }   
+            // create groups for all these combinations
+            for (List<Candidate> combination : combinations) {
+                
+                candidateGroups.add(new CandidateGroup(combination, startTime));
 
-        return null;
+            }
+
+        } 
+
+        CandidateGroup ideal = null;
+        Integer maxQuality = 0;
+
+        for (CandidateGroup candidateGroup : candidateGroups) {
+            
+            // if this is the first run
+            if(ideal == null ) {
+
+                ideal = candidateGroup;
+                maxQuality = candidateGroup.getQuality();
+
+            // if the current quality is higher than the previous max
+            } else if (maxQuality < candidateGroup.getQuality()) {
+
+                ideal = candidateGroup;
+                maxQuality = candidateGroup.getQuality();
+
+            }
+
+        }
+
+        
+        return ideal;
+
+    }
+
+    private List<List<Candidate>> getCandidateCombinationsWith(List<Candidate> candidates, UUID userID) {
+
+        List<List<Candidate>> combinations = new ArrayList<>();
+
+        Integer n = candidates.size();
+
+        // get all 3-candidate combinations
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = i + 1; j < n - 1; j++) {
+                for (int k = j + 1; k < n; k++) {
+
+                    // add to result
+                    List<Candidate> combination = Arrays.asList(candidates.get(i), candidates.get(j), candidates.get(k));
+                    
+                    // if the user is in this combination
+                    if(
+                        combination
+                            .stream()
+                            .map(Candidate::getUserID)
+                            .collect(Collectors.toSet())
+                            .contains(userID)
+                    ) {
+                        combinations.add(combination);
+                    }
+
+                }
+            }
+        }
+
+        return combinations;
+
+    }
+
+    private Boolean stillSolveable() {
+
+        return (Collections.max(clusters.candidatesPerCluster().values()) >= 3);
 
     }
 }
