@@ -19,6 +19,7 @@ import org.openapitools.model.UserCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import meet_at_mensa.matching.MatchingApplication;
+import meet_at_mensa.matching.algorithm.ClusteringAlgorithm;
 import meet_at_mensa.matching.algorithm.MatchingAlgorithm;
 import meet_at_mensa.matching.algorithm.MatchingSolution;
 import meet_at_mensa.matching.algorithm.MatchingSolutionBlock;
@@ -187,7 +188,7 @@ public class MatchingService {
         // --------------------
 
         // Prepare matching algorithm
-        MatchingAlgorithm algorithm = new MatchingAlgorithm(users, requests);
+        MatchingAlgorithm algorithm = new ClusteringAlgorithm(users, requests);
 
         // Generate solution
         MatchingSolution solution = algorithm.generateSolution();
