@@ -1,9 +1,16 @@
 package meet_at_mensa.matching.algorithm;
 
+import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.openapitools.model.Location;
+import org.openapitools.model.MatchRequestCollection;
+import org.openapitools.model.RequestStatus;
+import org.openapitools.model.UserCollection;
 
 public class CandidateGroup {
     
@@ -41,6 +48,40 @@ public List<Candidate> getMembers() {
     return members;
 
 }
+
+public MatchingSolutionBlock toSolutionBlock(RequestStatus status) {
+
+    // create new userCollection
+    UserCollection users = new UserCollection(
+        members.stream()
+            .map(Candidate::getUser)
+            .collect(Collectors.toList())
+    );
+
+    // Create new MatchRequestCollection
+    MatchRequestCollection requests = new MatchRequestCollection(
+        members.stream()
+            .map(Candidate::getRequest)
+            .collect(Collectors.toList())
+    );
+
+    LocalDate date = members.get(0).getDate();
+
+    Location location = members.get(0).getLocation();
+
+    MatchingSolutionBlock solutionBlock = new MatchingSolutionBlock(
+        users,
+        requests,
+        date,
+        timeslot,
+        location,
+        status
+    );
+
+    return solutionBlock;
+
+}
+
 private List<Candidate> getOthers(UUID userID) {
 
     List<Candidate> others = new ArrayList<>();
@@ -146,7 +187,6 @@ private Integer calculateQuality() {
     return quality;
 
 }
-
 
 
 }
