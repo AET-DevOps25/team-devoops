@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: go76taw-devops25
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 30s
+      evaluation_interval: 30s
+
+    scrape_configs:
+      - job_name: 'gateway'
+        static_configs:
+          - targets: ['meetatmensa-gateway:80']
+        metrics_path: '/actuator/prometheus'
+        scrape_interval: 30s
+        
+      - job_name: 'matching'
+        static_configs:
+          - targets: ['meetatmensa-matching:80']
+        metrics_path: '/actuator/prometheus'
+        scrape_interval: 30s
+        
+      - job_name: 'user'
+        static_configs:
+          - targets: ['meetatmensa-user:80']
+        metrics_path: '/actuator/prometheus'
+        scrape_interval: 30s
+        
+      - job_name: 'genai'
+        static_configs:
+          - targets: ['meetatmensa-genai:8000']
+        metrics_path: '/metrics'
+        scrape_interval: 30s
+        
+      - job_name: 'client'
+        static_configs:
+          - targets: ['meetatmensa-client:3000']
+        metrics_path: '/metrics'
+        scrape_interval: 30s

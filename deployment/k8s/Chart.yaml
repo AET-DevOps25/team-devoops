@@ -20,3 +20,6 @@ dependencies:
   - name: genai
     version: 1.0.0
     repository: file://charts/genai
+  - name: monitoring
+    version: 1.0.0
+    repository: file://charts/monitoring
