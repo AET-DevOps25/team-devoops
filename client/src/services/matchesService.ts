@@ -118,6 +118,14 @@ export const matchesService = {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500));
     
+    // Dynamic dates for upcoming meetings
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const dayAfterTomorrow = new Date(today);
+    dayAfterTomorrow.setDate(today.getDate() + 2);
+    const formatDate = (d: Date) => d.toISOString().split('T')[0];
+
     const mockData: MatchesResponse = {
       matches: [
         {
@@ -231,6 +239,48 @@ export const matchesService = {
                 {
                   prompt: "What's the best advice you've received as a student?"
                 }
+              ]
+            }
+          }
+        },
+        {
+          matchID: "upcoming-1",
+          userID: "2c3821b8-1cdb-4b77-bcd8-a1da701e46aa",
+          status: "CONFIRMED",
+          group: {
+            groupID: "upcoming-group-1",
+            date: formatDate(tomorrow),
+            time: 7,
+            location: "ARCISSTR",
+            userStatus: [
+              { userID: "2c3821b8-1cdb-4b77-bcd8-a1da701e46aa", status: "CONFIRMED" },
+              { userID: "other-user-1", status: "CONFIRMED" }
+            ],
+            conversationStarters: {
+              conversationsStarters: [
+                { prompt: "What's your favorite lunch dish?" },
+                { prompt: "Any fun plans for the weekend?" }
+              ]
+            }
+          }
+        },
+        {
+          matchID: "upcoming-2",
+          userID: "2c3821b8-1cdb-4b77-bcd8-a1da701e46aa",
+          status: "CONFIRMED",
+          group: {
+            groupID: "upcoming-group-2",
+            date: formatDate(dayAfterTomorrow),
+            time: 10,
+            location: "GARCHING",
+            userStatus: [
+              { userID: "2c3821b8-1cdb-4b77-bcd8-a1da701e46aa", status: "CONFIRMED" },
+              { userID: "other-user-2", status: "CONFIRMED" }
+            ],
+            conversationStarters: {
+              conversationsStarters: [
+                { prompt: "What do you like most about the mensa?" },
+                { prompt: "How do you spend your breaks?" }
               ]
             }
           }
