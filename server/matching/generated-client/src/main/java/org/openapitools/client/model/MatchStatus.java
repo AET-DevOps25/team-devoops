@@ -50,7 +50,7 @@ import org.openapitools.client.JSON;
 /**
  * MatchStatus
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-01T15:09:25.743002216Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-06T15:26:09.952734137Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchStatus {
   public static final String SERIALIZED_NAME_USER_I_D = "userID";
   @SerializedName(SERIALIZED_NAME_USER_I_D)
