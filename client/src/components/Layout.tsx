@@ -15,9 +15,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from './AppBar';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EventNoteIcon from '@mui/icons-material/EventNote';
-import MailIcon from '@mui/icons-material/Mail';
-import LunchDiningIcon from '@mui/icons-material/LunchDining';
-import ChatIcon from '@mui/icons-material/Chat';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
 
@@ -32,9 +30,7 @@ interface LayoutProps {
 export const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'Match Requests', icon: <EventNoteIcon />, path: '/preferences' },
-  { text: 'Invitations', icon: <MailIcon />, path: '/invitations' },
-  { text: 'Lunch Meetings', icon: <LunchDiningIcon />, path: '/meetings' },
-  { text: 'Chat', icon: <ChatIcon />, path: '/chat' },
+  { text: 'Matches', icon: <RestaurantIcon />, path: '/matches' },
 ];
 
 const Layout = ({ children, toggleColorMode, mode }: LayoutProps) => {
