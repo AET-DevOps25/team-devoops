@@ -15,7 +15,22 @@ jobs:
     strategy:
       matrix:
         # Add any future services relative paths from . here
-        service: [client, server/gateway, server/matching, server/user, server/genai, server/database/userdb, server/database/matchdb]
+        service: [client, gateway, matching, user, genai, userdb, matchdb]
+        include:
+          - service: client
+            context: client
+          - service: gateway
+            context: server/gateway
+          - service: matching
+            context: server/matching
+          - service: user
+            context: server/user
+          - service: genai
+            context: server/genai
+          - service: userdb
+            context: server/database/userdb
+          - service: matchdb
+            context: server/database/matchdb
     
     steps:
 
@@ -43,13 +58,14 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=pr
+            type=sha,format=short
 
       # Use a pre-existing action to build docker image
       - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          context: "{{ defaultContext }}:${{ matrix.service }}" # run in the subdirectory specified by matrix
+          context: "{{ defaultContext }}:${{ matrix.context }}"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
