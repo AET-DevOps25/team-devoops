@@ -5,8 +5,6 @@ import {
   Chip,
   Grid,
   CircularProgress,
-  IconButton,
-  Stack,
   Button,
   Dialog,
   DialogTitle,
@@ -21,7 +19,7 @@ import {
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { useEffect, useState, useMemo } from 'react';
-import { matchesService, MatchesServiceError } from '../services/matchesService';
+import { matchesService } from '../services/matchesService';
 import { getMatchRequests, MatchRequest } from '../services/matchRequestService';
 import { Match, MatchesResponse } from '../types/matches';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -44,7 +42,6 @@ const Dashboard = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
   const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up('md'));
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
