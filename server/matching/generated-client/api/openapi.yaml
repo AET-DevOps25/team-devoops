@@ -11,7 +11,7 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.2.0
+  version: 2.2.1
 servers:
 - description: ""
   url: https://meetatmensa.com
@@ -417,7 +417,8 @@ paths:
         "404":
           description: Not Found
       summary: Retrieve User based on AuthID
-      tags: []
+      tags:
+      - User
       x-stoplight:
         id: 3fke7st84x7x9
       x-accepts:
