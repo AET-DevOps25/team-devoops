@@ -1,6 +1,7 @@
 README.md
 pom.xml
 src/main/java/org/openapitools/api/ApiUtil.java
+src/main/java/org/openapitools/api/DefaultApi.java
 src/main/java/org/openapitools/api/GenAiApi.java
 src/main/java/org/openapitools/api/MatchingApi.java
 src/main/java/org/openapitools/api/UserApi.java

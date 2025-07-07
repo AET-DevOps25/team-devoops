@@ -7,6 +7,7 @@ build.gradle
 build.sbt
 docs/ConversationStarter.md
 docs/ConversationStarterCollection.md
+docs/DefaultApi.md
 docs/GenAiApi.md
 docs/Group.md
 docs/InviteStatus.md
@@ -48,6 +49,7 @@ src/main/java/org/openapitools/client/ProgressResponseBody.java
 src/main/java/org/openapitools/client/ServerConfiguration.java
 src/main/java/org/openapitools/client/ServerVariable.java
 src/main/java/org/openapitools/client/StringUtil.java
+src/main/java/org/openapitools/client/api/DefaultApi.java
 src/main/java/org/openapitools/client/api/GenAiApi.java
 src/main/java/org/openapitools/client/api/MatchingApi.java
 src/main/java/org/openapitools/client/api/UserApi.java
@@ -74,3 +76,4 @@ src/main/java/org/openapitools/client/model/User.java
 src/main/java/org/openapitools/client/model/UserCollection.java
 src/main/java/org/openapitools/client/model/UserNew.java
 src/main/java/org/openapitools/client/model/UserUpdate.java
+src/test/java/org/openapitools/client/api/DefaultApiTest.java

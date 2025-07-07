@@ -29,7 +29,7 @@ dependencies {
 }
 
 group = 'org.openapitools.client'
-version = '2.1.6'
+version = '2.2.0'
 description = 'openapi-client-gateway'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 

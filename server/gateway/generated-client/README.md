@@ -1,8 +1,8 @@
 # openapi-client-gateway
 
 MeetAtMensa
-- API version: 2.1.6
-  - Build date: 2025-07-02T14:24:59.086554916Z[Etc/UTC]
+- API version: 2.2.0
+  - Build date: 2025-07-07T11:39:43.249002446Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-gateway</artifactId>
-  <version>2.1.6</version>
+  <version>2.2.0</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-gateway:2.1.6"
+     implementation "org.openapitools.client:openapi-client-gateway:2.2.0"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-gateway-2.1.6.jar`
+* `target/openapi-client-gateway-2.2.0.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -88,7 +88,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
 import org.openapitools.client.auth.*;
 import org.openapitools.client.model.*;
-import org.openapitools.client.api.GenAiApi;
+import org.openapitools.client.api.DefaultApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -96,13 +96,13 @@ public class Example {
     defaultClient.setBasePath("https://meetatmensa.com");
     
 
-    GenAiApi apiInstance = new GenAiApi(defaultClient);
-    UserCollection userCollection = new UserCollection(); // UserCollection | Request Conversation starter for these users
+    DefaultApi apiInstance = new DefaultApi(defaultClient);
+    String authId = "authId_example"; // String | User's Auth0 sub ID
     try {
-      ConversationStarterCollection result = apiInstance.getApiV2GenaiConversationStarter(userCollection);
+      User result = apiInstance.getApiV2UserMeAuthId(authId);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling GenAiApi#getApiV2GenaiConversationStarter");
+      System.err.println("Exception when calling DefaultApi#getApiV2UserMeAuthId");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -119,6 +119,7 @@ All URIs are relative to *https://meetatmensa.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*DefaultApi* | [**getApiV2UserMeAuthId**](docs/DefaultApi.md#getApiV2UserMeAuthId) | **GET** /api/v2/user/me/{auth-id} | Retrieve User based on AuthID
 *GenAiApi* | [**getApiV2GenaiConversationStarter**](docs/GenAiApi.md#getApiV2GenaiConversationStarter) | **GET** /api/v2/genai/conversation-starter | Request conversation starter
 *MatchingApi* | [**deleteApiV2MatchingRequestRequestId**](docs/MatchingApi.md#deleteApiV2MatchingRequestRequestId) | **DELETE** /api/v2/matching/request/{request-id} | Delete MatchRequest with {request-id}
 *MatchingApi* | [**getApiV2MatchingMatchesUserID**](docs/MatchingApi.md#getApiV2MatchingMatchesUserID) | **GET** /api/v2/matching/matches/{user-id} | Retrieve all matches for a {user-id}

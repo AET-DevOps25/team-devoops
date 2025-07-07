@@ -5,7 +5,7 @@
     <artifactId>openapi-client-gateway</artifactId>
     <packaging>jar</packaging>
     <name>openapi-client-gateway</name>
-    <version>2.1.6</version>
+    <version>2.2.0</version>
     <url>https://github.com/openapitools/openapi-generator</url>
     <description>OpenAPI Java</description>
     <scm>
