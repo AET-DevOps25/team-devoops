@@ -1,12 +1,13 @@
 ## 1. 🧩 Functional Application (20 Points)
 
-| Criteria                                                                   | Points | Status | Responsible | Comment                                                 |
-| -------------------------------------------------------------------------- | ------ | ------ | ----------- | ------------------------------------------------------- |
-| End-to-end functionality between all components (client, server, database) | 6      | 60%    | All         |                                                         |
-| Smooth and usable user interface                                           | 4      | 80%?   | Enrico      |                                                         |
-| REST API is clearly defined and matches functional needs                   | 4      | 90%    | James       | Will need some expansion for Invite/RSVP by @Anastasiia |
-| Server Side has at least 3 microservices                                   | 4      | 100%   | All         |                                                         |
-| Application topic is appropriately chosen and fits project objectives      | 2      | 100%   | All         |                                                         |
+| Criteria                                                                   | Points | Status | Responsible | Comment                                                                                                                    |
+| -------------------------------------------------------------------------- | ------ | ------ | ----------- | -------------------------------------------------------------------------------------------------------------------------- |
+| End-to-end functionality between all components (client, server, database) | 6      | 60%    | All         |                                                                                                                            |
+| Smooth and usable user interface                                           | 4      | 70%    | Enrico      | Mock data needs to be removed once backend is fully ready. Dashboard and Profile page not pushed yet, but already finished |
+| REST API is clearly defined and matches functional needs                   | 4      | 90%    | James       | Will need some expansion for Invite/RSVP by @Anastasiia                                                                    |
+| Server Side has at least 3 microservices                                   | 4      | 100%   | All         |                                                                                                                            |
+| Application topic is appropriately chosen and fits project objectives      | 2      | 100%   | All         |                                                                                                                            |
+
 ## 2. 🤖 GenAI Integration (10 Points)
 
 | Criteria                                                              | Points | Status | Responsible | Comment |
@@ -28,21 +29,21 @@
 
 ## 4. 🔁 CI/CD & Deployment (20 Points)
 
-| Criteria                                                                                                                | Points | Status | Responsible                                                                                                      | Comment                                                                 |
-| ----------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| CI pipeline with build, test, and Docker image generation via GitHub Actions                                            | 8      | 80%    | James (6):<br>- Build,<br>- Publish<br>- Unit Testing<br><br>Open (2):<br>- Integration Testing<br>(Anastasiia?) | Missing integration testing<br>                                         |
-| CD pipeline set up to automatically deploy to Kubernetes on main merge                                                  | 6      | 90%*   | Anastasiia                                                                                                       | Needs work to match current implementation                              |
-| Deployment works on our infrastructure or Cloud, alternative Kubernetes environments (e.g., Minikube, TUM infra, Azure) | 6      | %?     | Enrico (AWS)                                                                                                     | It deploys to Kubernetes on Rancher, is that enough or do we need more? |
+| Criteria                                                                                                                | Points | Status | Responsible                                                                                                      | Comment                                                          |
+| ----------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| CI pipeline with build, test, and Docker image generation via GitHub Actions                                            | 8      | 80%    | James (6):<br>- Build,<br>- Publish<br>- Unit Testing<br><br>Open (2):<br>- Integration Testing<br>(Anastasiia?) | Missing integration testing<br>                                  |
+| CD pipeline set up to automatically deploy to Kubernetes on main merge                                                  | 6      | 90%\*  | Anastasiia                                                                                                       | Needs work to match current implementation                       |
+| Deployment works on our infrastructure or Cloud, alternative Kubernetes environments (e.g., Minikube, TUM infra, Azure) | 6      | 90%    | Enrico (AWS)                                                                                                     | AWS Compose file needs to be adapted to the final implementation |
 
 ---
 
 ## 5. 📊 Monitoring & Observability (10 Points)
 
-| Criteria                                                | Points | Status | Responsible | Comment |
-| ------------------------------------------------------- | ------ | ------ | ----------- | ------- |
-| Prometheus integrated and collecting meaningful metrics | 4      | %?     | Enrico      |         |
-| Grafana dashboards for system behavior visualization    | 4      | %?     | Enrico      |         |
-| At least one alert rule set up                          | 2      | %?     | Enrico      |         |
+| Criteria                                                | Points | Status | Responsible | Comment                                                                                                                                          |
+| ------------------------------------------------------- | ------ | ------ | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Prometheus integrated and collecting meaningful metrics | 4      | 50%    | Enrico      | Prometheus and Grafana are integrated in the Helm deployment; connection to the microservices will be done once they expose the metrics endpoint |
+| Grafana dashboards for system behavior visualization    | 4      | 0%     | Enrico      | Will be discussed in team meeting (07-07)                                                                                                        |
+| At least one alert rule set up                          | 2      | 0%     | Enrico      | Will be discussed in team meeting (07-07)                                                                                                        |
 
 ---
 
