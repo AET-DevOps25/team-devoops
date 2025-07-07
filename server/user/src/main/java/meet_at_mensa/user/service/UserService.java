@@ -32,6 +32,10 @@ public class UserService {
     @Autowired
     InterestRepository interestRepository;
 
+    // IdentityRepository manages Auth0 identity pairs
+    @Autowired
+    IdentityRepository identityRepository;
+
 
     /**
      * Searches the database for a user with id {userID}
@@ -70,6 +74,34 @@ public class UserService {
          return user;
     }
 
+
+
+    /**
+     * Searches the database for a user with id {userID}
+     *
+     * Generates a User object from the database entity abstractions
+     *
+     * @param userID UUID of the user being searched for
+     * @return User object if a user was found
+     * @throws UserNotFoundException if no user with id {userID} is found
+     */
+    public User getUserByAuthID(String authID) {
+
+        // search the database for a user
+        // throws a UserNotFoundException if no user is found
+        IdentityEntity identityEntity = identityRepository.findByAuthID(authID);
+            //.orElseThrow(() -> new UserNotFoundException(String.format("User with AuthID %s not found", authID)));
+
+        if (identityEntity == null) {
+            throw new UserNotFoundException(String.format("User with AuthID %s not found", authID));
+        }
+
+        // return
+        return getUser(identityEntity.getUserID());
+    }
+
+
+
     /**
      * Creates database entries for a new user based on a UserNew object
      *
@@ -96,18 +128,26 @@ public class UserService {
             userNew.getDegreeStart(), // degreeStart
             userNew.getBio() // bio
         );
+        
 
         try {
 
             // save user entity to database
             userEntity = userRepository.save(userEntity);
 
+            // construct new Identity entity
+            IdentityEntity identityEntity = new IdentityEntity(
+                userEntity.getUserID(),
+                userNew.getAuthID()
+            );
+
+            // save identity entity to database
+            identityEntity = identityRepository.save(identityEntity);
+
         // throw Exception if duplicate email
         } catch (DataIntegrityViolationException e) {
             throw new UserConflictException(e.toString());
-        }
-
-        
+        }        
 
         // register interests
         registerInterests(userEntity.getUserID(), userNew.getInterests());

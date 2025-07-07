@@ -133,4 +133,33 @@ public class UserController implements UserApi {
 
     }
 
+    // GET @ api/v2/user/{userID}
+    @Override
+    public ResponseEntity<User> getApiV2UserMeAuthId(String AuthID) {
+
+        // 200
+        try {
+        
+            // attempt to get user with the given ID
+            User user =  userService.getUserByAuthID(AuthID);
+
+            // return 200 with User
+            return ResponseEntity.ok(user);
+        
+        // 404
+        } catch (UserNotFoundException e) {
+            
+            // if user was not found, return 404
+            return ResponseEntity.notFound().build();
+
+        // 500
+        } catch (Exception e) {
+
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
+
+        }
+
+    }
+
 }

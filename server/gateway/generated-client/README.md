@@ -1,8 +1,8 @@
 # openapi-client-gateway
 
 MeetAtMensa
-- API version: 2.1.6
-  - Build date: 2025-07-02T14:24:59.086554916Z[Etc/UTC]
+- API version: 2.2.1
+  - Build date: 2025-07-07T12:54:21.325705197Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-gateway</artifactId>
-  <version>2.1.6</version>
+  <version>2.2.1</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-gateway:2.1.6"
+     implementation "org.openapitools.client:openapi-client-gateway:2.2.1"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-gateway-2.1.6.jar`
+* `target/openapi-client-gateway-2.2.1.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -128,6 +128,7 @@ Class | Method | HTTP request | Description
 *MatchingApi* | [**postApiV2MatchingRequestSubmit**](docs/MatchingApi.md#postApiV2MatchingRequestSubmit) | **POST** /api/v2/matching/request/submit | Submit matching Request
 *MatchingApi* | [**putApiV2MatchingRequestRequestId**](docs/MatchingApi.md#putApiV2MatchingRequestRequestId) | **PUT** /api/v2/matching/request/{request-id} | Update MatchRequest with {request-id}
 *UserApi* | [**deleteApiV2UserUserID**](docs/UserApi.md#deleteApiV2UserUserID) | **DELETE** /api/v2/user/{user-id} | Delete User with {user-id}
+*UserApi* | [**getApiV2UserMeAuthId**](docs/UserApi.md#getApiV2UserMeAuthId) | **GET** /api/v2/user/me/{auth-id} | Retrieve User based on AuthID
 *UserApi* | [**getApiV2UserUserID**](docs/UserApi.md#getApiV2UserUserID) | **GET** /api/v2/user/{user-id} | Retrieve User with {user-id}
 *UserApi* | [**postApiV2UserRegister**](docs/UserApi.md#postApiV2UserRegister) | **POST** /api/v2/user/register | Register new User
 *UserApi* | [**putApiV2UserUserID**](docs/UserApi.md#putApiV2UserUserID) | **PUT** /api/v2/user/{user-id} | Update User with {user-id}

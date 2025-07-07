@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T14:24:32.343137422Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-07T12:53:53.238650171Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "User", description = "Paths belonging to the User microservice")
 public interface UserApi {
@@ -81,6 +81,54 @@ public interface UserApi {
     default ResponseEntity<Void> deleteApiV2UserUserID(
         @Parameter(name = "user-id", description = "UUID associated with a given user", required = true, in = ParameterIn.PATH) @PathVariable("user-id") UUID userId
     ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /api/v2/user/me/{auth-id} : Retrieve User based on AuthID
+     *
+     * @param authId User&#39;s Auth0 sub ID (required)
+     * @return OK (status code 200)
+     *         or Bad Request (status code 400)
+     *         or Forbidden (status code 403)
+     *         or Not Found (status code 404)
+     */
+    @Operation(
+        operationId = "getApiV2UserMeAuthId",
+        summary = "Retrieve User based on AuthID",
+        tags = { "User" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "OK", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Bad Request"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "Not Found")
+        },
+        security = {
+            @SecurityRequirement(name = "auth0")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/v2/user/me/{auth-id}",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<User> getApiV2UserMeAuthId(
+        @Parameter(name = "auth-id", description = "User's Auth0 sub ID", required = true, in = ParameterIn.PATH) @PathVariable("auth-id") String authId
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ null, null ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

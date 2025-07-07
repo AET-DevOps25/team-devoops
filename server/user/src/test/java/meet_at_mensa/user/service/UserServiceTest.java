@@ -23,6 +23,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import meet_at_mensa.user.exception.UserConflictException;
 import meet_at_mensa.user.exception.UserMalformedException;
 import meet_at_mensa.user.exception.UserNotFoundException;
+import meet_at_mensa.user.model.IdentityEntity;
+import meet_at_mensa.user.repository.IdentityRepository;
 
 @SpringBootTest
 @Testcontainers
@@ -44,6 +46,9 @@ public class UserServiceTest {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    IdentityRepository identityRepository;
 
     
     
@@ -67,6 +72,7 @@ public class UserServiceTest {
             .bio("I am a Stegosaurus");
 
         UserNew userNew = new UserNew()
+            .authID("placeholder" + UUID.randomUUID().toString())
             .email(template.getEmail())
             .firstname(template.getFirstname())
             .lastname(template.getLastname())
@@ -124,6 +130,7 @@ public class UserServiceTest {
             .bio("I am a Stegosaurus");
 
         UserNew userNew = new UserNew()
+            .authID("placeholder" + UUID.randomUUID().toString())
             .email(template.getEmail())
             .firstname(template.getFirstname())
             .lastname(template.getLastname())
@@ -185,6 +192,7 @@ public class UserServiceTest {
             .bio("I am a Stegosaurus");
 
         UserNew userNew = new UserNew()
+            .authID("placeholder" + UUID.randomUUID().toString())
             .email(template.getEmail())
             .firstname(template.getFirstname())
             .lastname(template.getLastname())
@@ -258,6 +266,7 @@ public class UserServiceTest {
             .bio("I am a Stegosaurus");
 
         UserNew userNew = new UserNew()
+            .authID("placeholder" + UUID.randomUUID().toString())
             .email(template.getEmail())
             .firstname(template.getFirstname())
             .lastname(template.getLastname())
@@ -309,6 +318,7 @@ public class UserServiceTest {
             .bio("I am a Stegosaurus");
 
         UserNew userBadEmail = new UserNew()
+            .authID("placeholder" + UUID.randomUUID().toString())
             .email(template.getEmail())
             .firstname(template.getFirstname())
             .lastname(template.getLastname())
@@ -350,6 +360,7 @@ public class UserServiceTest {
             .bio("I am a Stegosaurus");
 
         UserNew user1 = new UserNew()
+            .authID("placeholder" + UUID.randomUUID().toString())
             .email(template.getEmail())
             .firstname(template.getFirstname())
             .lastname(template.getLastname())
@@ -361,6 +372,7 @@ public class UserServiceTest {
             .bio(template.getBio());
 
         UserNew user2 = new UserNew()
+            .authID("placeholder" + UUID.randomUUID().toString())
             .email(template.getEmail())
             .firstname(template.getFirstname())
             .lastname(template.getLastname())
@@ -385,6 +397,70 @@ public class UserServiceTest {
             UserConflictException.class,
             () -> userService.registerUser(user2)
         );
+
+    }
+
+
+    @Test
+    void canGetUserByAuthID() {
+
+        // -------
+        // PREPARE
+        // -------
+
+        User template = new User()
+            .email("max@authman.com")
+            .firstname("Max")
+            .lastname("Mustermann")
+            .birthday(LocalDate.of(1969, 6, 9))
+            .gender("male")
+            .degree("msc_informatics")
+            .degreeStart(2024)
+            .interests(List.of("dnd", "gaming"))
+            .bio("I am a Stegosaurus");
+
+        UserNew userNew = new UserNew()
+            .authID("placeholderAuth0_" + UUID.randomUUID().toString())
+            .email(template.getEmail())
+            .firstname(template.getFirstname())
+            .lastname(template.getLastname())
+            .birthday(template.getBirthday())
+            .gender(template.getGender())
+            .degree(template.getDegree())
+            .degreeStart(template.getDegreeStart())
+            .interests(template.getInterests())
+            .bio(template.getBio());
+
+        // -------
+        // Act
+        // -------
+
+        userService.registerUser(userNew);
+
+        User user = userService.getUserByAuthID(userNew.getAuthID());
+
+        IdentityEntity identityEntity = identityRepository.findByAuthID(userNew.getAuthID());
+
+        // ------
+        // ASSERT
+        // ------
+
+        // assert not null
+        assertNotNull(user, "return value should not be null");
+        assertNotNull(user.getUserID(), "user must have an ID");
+
+        // assert IdentityEntity works
+        assertEquals(userNew.getAuthID(), identityEntity.getAuthID(), "AuthIDs should match");
+        assertEquals(user.getUserID(), identityEntity.getUserID(), "UserIDs should match");
+
+        // assert returned user object is correct
+        assertEquals(template.getEmail(), user.getEmail(), "Email should match!");
+        assertEquals(template.getFirstname(), user.getFirstname(), "firstname should match!");
+        assertEquals(template.getLastname(), user.getLastname(), "lastname should match!");
+        assertEquals(template.getBirthday(), user.getBirthday(), "birthday should match!");
+        assertEquals(template.getGender(), user.getGender(), "gender should match!");
+        assertEquals(template.getDegree(), user.getDegree(), "degree should match!");
+        assertEquals(template.getDegreeStart(), user.getDegreeStart(), "degree start should match!");
 
     }
 

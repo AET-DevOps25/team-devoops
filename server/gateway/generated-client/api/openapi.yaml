@@ -11,7 +11,7 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.1.6
+  version: 2.2.1
 servers:
 - description: ""
   url: https://meetatmensa.com
@@ -398,6 +398,33 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
+  /api/v2/user/me/{auth-id}:
+    get:
+      operationId: get-api-v2-user-me-auth-id
+      parameters:
+      - $ref: "#/components/parameters/auth-id"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: OK
+        "400":
+          description: Bad Request
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Retrieve User based on AuthID
+      tags:
+      - User
+      x-stoplight:
+        id: 3fke7st84x7x9
+      x-accepts:
+      - application/json
+    parameters:
+    - $ref: "#/components/parameters/auth-id"
 components:
   parameters:
     user-id:
@@ -428,6 +455,15 @@ components:
       required: true
       schema:
         format: uuid
+        type: string
+      style: simple
+    auth-id:
+      description: User's Auth0 sub ID
+      explode: false
+      in: path
+      name: auth-id
+      required: true
+      schema:
         type: string
       style: simple
   responses:
@@ -1141,9 +1177,15 @@ components:
         interests:
         - null
         - null
+        authID: authID
         email: email
         lastname: Mustermann
       properties:
+        authID:
+          description: "Auth0 user.sub, used as a unique key\r\n"
+          type: string
+          x-stoplight:
+            id: gtbfgvrafpds9
         email:
           description: Users's e-mail
           format: email
@@ -1201,6 +1243,7 @@ components:
           x-stoplight:
             id: te54o833aixf0
       required:
+      - authID
       - bio
       - birthday
       - degree

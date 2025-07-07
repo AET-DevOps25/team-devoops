@@ -27,3 +27,13 @@ CREATE TABLE IF NOT EXISTS `user_interests` (
     user_id VARBINARY(16) NOT NULL,
     interest VARCHAR(255) NOT NULL
 );
+
+-- user-auth0 table
+-- contains pairs of user_IDs and their auth0 sub IDs
+    -- user_id: UUID of the given user
+    -- auth_id: Users's Auth0 ID
+CREATE TABLE IF NOT EXISTS `user_identity` (
+    pair_id VARBINARY(16) PRIMARY KEY,
+    user_id VARBINARY(16) UNIQUE NOT NULL,
+    auth_id VARCHAR(255) UNIQUE NOT NULL
+);
