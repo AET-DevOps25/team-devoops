@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.2.0
+  version: 2.2.1
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -1045,7 +1045,8 @@ paths:
       - $ref: '#/components/parameters/auth-id'
     get:
       summary: Retrieve User based on AuthID
-      tags: []
+      tags:
+        - User
       responses:
         '200':
           description: OK
