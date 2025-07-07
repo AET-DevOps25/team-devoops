@@ -16,6 +16,7 @@ public abstract class MatchingAlgorithm {
     protected List<Candidate> unmatched;
     protected List<Candidate> matched;
     protected List<Candidate> unmatchable;
+    protected List<Candidate> unmatchableFinal;
 
     // Constructor
     public MatchingAlgorithm(UserCollection users, MatchRequestCollection requests) {
@@ -45,6 +46,42 @@ public abstract class MatchingAlgorithm {
 
                 unmatchable.add(candidate);
                 unmatched.remove(candidate);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    protected Boolean userUnmatchableFinal(UUID userID) {
+
+        for (Candidate candidate : unmatchable) {
+            
+            if (candidate.getUserID() == userID) {
+
+                unmatchableFinal.add(candidate);
+                unmatchable.remove(candidate);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    protected Boolean userDochMatchable(UUID userID) {
+
+        for (Candidate candidate : unmatchable) {
+            
+            if (candidate.getUserID() == userID) {
+
+                matched.add(candidate);
+                unmatchable.remove(candidate);
                 return true;
 
             }

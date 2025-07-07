@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.openapitools.model.MatchRequestCollection;
 import org.openapitools.model.RequestStatus;
 import org.openapitools.model.UserCollection;
+import org.springframework.beans.factory.config.YamlProcessor.MatchStatus;
 
 public class ClusteringAlgorithm extends MatchingAlgorithm {
     
@@ -64,11 +65,19 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
         }
 
-        // Step 6 - TODO: Attempt to fit unmatcheable users into existing groups
+        // Step 6 - Attempt to fit unmatcheable users into existing groups
 
-        // Step 7 - TODO: Convert to MatchingSolutionBlocks and return
+        for (Candidate unmatchableCandidate : unmatchable) {
+         
+            candidateGroups = fitUnmatchable(candidateGroups, unmatchableCandidate);
 
-        return null;
+        }
+
+        // Step 7 - Convert to MatchingSolutionBlocks and return
+
+        List<MatchingSolutionBlock> solutionBlocks = convertToSolutionBlocks(candidateGroups, unmatchableFinal);
+
+        return new MatchingSolution(solutionBlocks);
 
     }
 
@@ -242,6 +251,99 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
     }
 
+    private List<CandidateGroup> fitUnmatchable(List<CandidateGroup> groups, Candidate candidate) {
+
+        // get empty list of potential groups
+        List<CandidateGroup> potentialGroups = new ArrayList<>();
+        List<CandidateGroup> replacesGroups = new ArrayList<>();;
+
+        // Check for any groups that the user may fit into
+        for (CandidateGroup group : groups) {
+            
+            // check if user shares a timeslot with group
+            if (candidate.getTimeslots().contains(group.getTimeslot())) {
+
+                // create a new group with added member
+                potentialGroups.add(group.addMember(candidate));
+
+                // remember the group it replaces
+                replacesGroups.add(group);
+
+            }
+
+        }
+
+        // if the user fits into at least one group
+        if (potentialGroups.iterator().hasNext()) {
+
+            CandidateGroup bestGroup = null;
+            CandidateGroup replacesGroup = null;
+            Integer bestQuality = 0;
+
+            // for each group
+            for (int i = 0; i < potentialGroups.size(); i++) {
+
+                // if this is the first run
+                if(bestGroup == null) {
+
+                    bestGroup = potentialGroups.get(i);
+                    replacesGroup = replacesGroups.get(i);
+                    bestQuality = bestGroup.getQuality();
+                    continue;
+
+                }
+                
+                // if the quality is better than the current best
+                if(potentialGroups.get(i).getQuality() > bestQuality) {
+
+                    bestGroup = potentialGroups.get(i);
+                    replacesGroup = replacesGroups.get(i);
+                    bestQuality = bestGroup.getQuality();
+
+                }
+
+                // remove replaced group
+                groups.remove(replacesGroup);
+
+                // add new group
+                groups.add(bestGroup);
+
+                userDochMatchable(candidate.getUserID());
+
+            }
+
+        // if user does not fit into any groups
+        } else {
+
+            userUnmatchableFinal(candidate.getUserID());
+
+        }
+
+        return groups;
+
+    }
+
+    private List<MatchingSolutionBlock> convertToSolutionBlocks(List<CandidateGroup> groups, List<Candidate> unmatchables) {
+        
+        List<MatchingSolutionBlock> solutionBlocks = new ArrayList<>();
+
+        // add all matched groups
+        for (CandidateGroup candidateGroup : groups) {
+            
+            // add each group to solution blocks
+            solutionBlocks.add(
+                candidateGroup.toSolutionBlock(RequestStatus.MATCHED)
+            );
+
+        }
+
+        // add unmatchable solution block
+        CandidateGroup unmatchableGroup = new CandidateGroup(unmatchableFinal, 0);
+        solutionBlocks.add(unmatchableGroup.toSolutionBlock(RequestStatus.UNMATCHABLE));
+
+        return solutionBlocks;
+
+    }
 }
 
 

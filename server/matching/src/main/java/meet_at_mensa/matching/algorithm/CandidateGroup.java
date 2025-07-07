@@ -49,6 +49,27 @@ public List<Candidate> getMembers() {
 
 }
 
+public Integer getTimeslot() {
+
+    return timeslot;
+
+}
+
+public CandidateGroup addMember(Candidate member) {
+
+    List<Candidate> newMembers = new ArrayList<>();
+    newMembers.addAll(members);
+    newMembers.add(member);
+
+    CandidateGroup newGroup = new CandidateGroup(
+        newMembers,
+        timeslot
+    );
+
+    return newGroup;
+
+}
+
 public MatchingSolutionBlock toSolutionBlock(RequestStatus status) {
 
     // create new userCollection
