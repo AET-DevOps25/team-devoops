@@ -1,6 +1,6 @@
 ## Info
 ### Version
-v2.1.4
+v2.1.5
 ### Date
 2025-07-01
 ### Autor
