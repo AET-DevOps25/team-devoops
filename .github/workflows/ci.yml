@@ -2,7 +2,6 @@
 name: Continuous Integration (CI)
 
 on:
-
   # Callable by the CI/CD Action
   workflow_call:
 
@@ -11,7 +10,7 @@ on:
     branches-ignore: [main]
 
   # Run on PRs to main
-  pull_request: 
+  pull_request:
     branches: [main]
 
 # Cancel running action if another is triggered on the same branch
@@ -19,9 +18,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-
 jobs:
-
   # Run Update API Spec
   update_api_spec:
     name: Update API Spec
@@ -35,10 +32,16 @@ jobs:
     uses: ./.github/workflows/java_tests.yml
     needs: update_api_spec
 
+  # Run UI tests (unit, integration, and e2e)
+  ui_tests:
+    name: Run UI Tests
+    uses: ./.github/workflows/ui_tests.yml
+    needs: update_api_spec
+
   # TODO Add Integration Testing
 
   # Call the docker_build workflow to build and publish images
   build:
     name: Build & Publish Images
     uses: ./.github/workflows/docker_build.yml
-    needs: unit_tests
+    needs: [unit_tests, ui_tests]
