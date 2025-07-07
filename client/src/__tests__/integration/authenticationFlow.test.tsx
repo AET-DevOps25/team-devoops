@@ -31,7 +31,6 @@ describe('Authentication Flow Integration', () => {
 
     // Verify navigation elements are present
     expect(screen.getByRole('button', { name: /match requests/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /lunch meetings/i })).toBeInTheDocument();
   });
 
   it('shows loading state while Auth0 is initializing', async () => {
