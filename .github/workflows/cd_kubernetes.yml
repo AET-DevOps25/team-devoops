@@ -14,6 +14,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    environment: 
+      name: Rancher
     steps:
 
     # Checkout git repo
