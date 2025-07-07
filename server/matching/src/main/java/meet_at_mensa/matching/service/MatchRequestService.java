@@ -128,7 +128,7 @@ public class MatchRequestService {
         for (MatchRequestEntity requestEntity : requestEntities) {
 
             // if the request is unmatched
-            if (requestEntity.getRequestStatus() != RequestStatus.MATCHED){
+            if (requestEntity.getRequestStatus() != RequestStatus.MATCHED && requestEntity.getRequestStatus() != RequestStatus.EXPIRED){
 
                 // create new MatchRequest Object
                 MatchRequest request = new MatchRequest(
@@ -160,7 +160,7 @@ public class MatchRequestService {
      * @return MatchRequest object of the registered request
      * @throws RequestOverlapException if a request already exists for this user on this date
      */
-    public MatchRequest registerRequests(MatchRequestNew requestNew) {
+    public MatchRequest registerRequest(MatchRequestNew requestNew) {
 
         // checks if user already has a request for this date. Throws an exeption if yes
         if (userHasRequestOn(requestNew.getDate(), requestNew.getUserID())) {
@@ -177,14 +177,14 @@ public class MatchRequestService {
             requestNew.getPreferences().getGenderPref() // gender pref
         );
 
+        // save to database
+        requestRepository.save(requestEntity);
+
         // register timeslots
         timeslotService.registerTimeslots(
             requestEntity.getRequestID(), // newly generated requestID
             requestNew.getTimeslot() // timeslots
         );
-
-        // save to database
-        requestRepository.save(requestEntity);
 
         // return newly generated request
         return getRequest(requestEntity.getRequestID());
@@ -289,7 +289,7 @@ public class MatchRequestService {
      * @return MatchRequest object fetched from database after the update
      * @throws RequestNotFoundException if no request is found
      */
-    public MatchRequest updateRequstStatus(UUID requestID, RequestStatus statusNew) {
+    public MatchRequest updateRequestStatus(UUID requestID, RequestStatus statusNew) {
 
         // find match request based on it's matchID
         // throws RequestNotFoundException if no request is found

@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import meet_at_mensa.matching.exception.IllegalInputException;
 import meet_at_mensa.matching.exception.RequestNotFoundException;
+import meet_at_mensa.matching.exception.TimeslotNotFoundException;
 import meet_at_mensa.matching.model.TimeslotEntity;
 import meet_at_mensa.matching.repository.TimeslotRepository;
 
@@ -22,7 +24,7 @@ public class TimeslotService {
      *
      * @param requestID UUID of the request being searched for
      * @return List of integer timeslots if found
-     * @throws RequestNotFoundException if no entries are found for request with id {requestID}
+     * @throws TimeslotNotFoundException if no entries are found for request with id {requestID}
      */
     public List<Integer> getTimeslots(UUID requestID) {
 
@@ -31,7 +33,7 @@ public class TimeslotService {
 
         // if list is empty, throw exception
         if (!timeslotEntities.iterator().hasNext()) {
-            throw new RequestNotFoundException();
+            throw new TimeslotNotFoundException();
         }
 
         // Extract integer values into a new list
@@ -49,11 +51,18 @@ public class TimeslotService {
      *
      * @param requestID UUID of the request being registered
      * @return List of integer timeslots to be registered
+     * @throws IllegalInputException if request is out of bounds 1-16
      */
     public List<Integer> registerTimeslots(UUID requestID, List<Integer> timeslots) {
 
         // Save each timeslot into the database
         for (Integer timeslot : timeslots) {
+
+            // check in bounds
+            if(timeslot < 1 || timeslot > 16){
+                throw new IllegalInputException("Timeslot out of bounds [1,16]");
+            }
+
             timeslotRepository.save(new TimeslotEntity(requestID, timeslot));
         }
 
@@ -76,7 +85,7 @@ public class TimeslotService {
 
         // if list is empty, throw exception
         if (!timeslotEntities.iterator().hasNext()) {
-            throw new RequestNotFoundException();
+            throw new TimeslotNotFoundException();
         }
 
         // Remove all entries from database

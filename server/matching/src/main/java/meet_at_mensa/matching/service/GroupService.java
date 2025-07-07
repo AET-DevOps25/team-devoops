@@ -89,7 +89,7 @@ public class GroupService {
      * @return List<MatchStatus> objects representing each users' status
      * @throws MatchNotFoundException if no user with id {userID} is found
      */
-    private List<MatchStatus> getGroupStatus(UUID groupID){
+    protected List<MatchStatus> getGroupStatus(UUID groupID){
 
         // get all matches in the system for a given group ID
         Iterable<MatchEntity> matchEntities = matchRepository.findByGroupID(groupID);
