@@ -8,6 +8,7 @@ Object representing a student user in the Meet@Mensa system.
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+|**authID** | **String** | Auth0 user.sub, used as a unique key   |  |
 |**email** | **String** | Users&#39;s e-mail |  |
 |**firstname** | **String** | User&#39;s given name |  |
 |**lastname** | **String** | User&#39;s surname |  |

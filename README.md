@@ -2,7 +2,7 @@
 
 ![Meet@Mensa logo](resources/img/meet@mensa.png "Meet@Mensa")
 
-[![Build & Test Meet@Mensa](https://github.com/AET-DevOps25/team-devoops/actions/workflows/build_application.yml/badge.svg)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/build_application.yml)
+[![Continuous Integration (CI)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml/badge.svg)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml)
 
 Many students at TUM, particularly in the larger study programs, report feeling lonely and isolated despite having countless peers. One of the places where this is especially noticeable is the Mensa during lunchtime. It's common for students that don't have a strong network of friends at university to eat alone or avoid eating at the Mensa entirely to not feel socially awkward.
 

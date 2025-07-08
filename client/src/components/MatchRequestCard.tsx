@@ -152,6 +152,7 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
           }}
         >
           <Chip
+            data-testid="match-status"
             label={matchRequest.status}
             color={getStatusColor(matchRequest.status)}
             size="small"
@@ -168,6 +169,7 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
         {/* Mensa name and date */}
         <Box sx={{ mb: 2 }}>
           <Typography
+            data-testid="match-location"
             variant="h6"
             sx={{
               fontWeight: 600,
@@ -178,6 +180,7 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
             {formatLocation(matchRequest.location)}
           </Typography>
           <Typography
+            data-testid="match-date"
             variant="body2"
             sx={{
               color: 'text.secondary',
@@ -201,6 +204,7 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
             Available times:
           </Typography>
           <Typography
+            data-testid="match-timeslots"
             variant="body2"
             sx={{
               color: 'primary.main',
@@ -226,6 +230,11 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             <Chip
+              data-testid={
+                matchRequest.preferences.degreePref
+                  ? 'preference-same-degree'
+                  : 'preference-any-degree'
+              }
               icon={matchRequest.preferences.degreePref ? <CheckCircleIcon /> : <CancelIcon />}
               label={matchRequest.preferences.degreePref ? 'Same Degree' : 'Any Degree'}
               color={matchRequest.preferences.degreePref ? 'primary' : 'default'}
@@ -234,6 +243,9 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
               sx={{ fontSize: '0.75rem' }}
             />
             <Chip
+              data-testid={
+                matchRequest.preferences.agePref ? 'preference-similar-age' : 'preference-any-age'
+              }
               icon={matchRequest.preferences.agePref ? <CheckCircleIcon /> : <CancelIcon />}
               label={matchRequest.preferences.agePref ? 'Similar Age' : 'Any Age'}
               color={matchRequest.preferences.agePref ? 'primary' : 'default'}
@@ -242,6 +254,11 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
               sx={{ fontSize: '0.75rem' }}
             />
             <Chip
+              data-testid={
+                matchRequest.preferences.genderPref
+                  ? 'preference-same-gender'
+                  : 'preference-any-gender'
+              }
               icon={matchRequest.preferences.genderPref ? <CheckCircleIcon /> : <CancelIcon />}
               label={matchRequest.preferences.genderPref ? 'Same Gender' : 'Any Gender'}
               color={matchRequest.preferences.genderPref ? 'primary' : 'default'}
@@ -254,6 +271,7 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
 
         {/* Cancel button */}
         <Button
+          data-testid="cancel-request-button"
           variant="outlined"
           color="error"
           size="small"
@@ -275,12 +293,19 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
       </Box>
 
       {/* Confirmation Dialog */}
-      <Dialog open={confirmOpen} onClose={handleCloseDialog}>
-        <DialogTitle>Cancel Match Request</DialogTitle>
+      <Dialog data-testid="confirm-dialog" open={confirmOpen} onClose={handleCloseDialog}>
+        <DialogTitle data-testid="confirm-dialog-title">Cancel Match Request</DialogTitle>
         <DialogContent>Are you sure you want to delete this match request?</DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog}>Close</Button>
-          <Button onClick={handleConfirmDelete} color="error" variant="contained">
+          <Button data-testid="close-dialog-button" onClick={handleCloseDialog}>
+            Close
+          </Button>
+          <Button
+            data-testid="confirm-delete-button"
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="contained"
+          >
             Confirm
           </Button>
         </DialogActions>

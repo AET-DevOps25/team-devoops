@@ -25,8 +25,10 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "UserNew", description = "Object representing a student user in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-02T14:24:37.245579181Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-07T12:53:58.417900077Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class UserNew {
+
+  private String authID;
 
   private String email;
 
@@ -55,7 +57,8 @@ public class UserNew {
   /**
    * Constructor with only required parameters
    */
-  public UserNew(String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, List<String> interests, String bio) {
+  public UserNew(String authID, String email, String firstname, String lastname, LocalDate birthday, String gender, String degree, Integer degreeStart, List<String> interests, String bio) {
+    this.authID = authID;
     this.email = email;
     this.firstname = firstname;
     this.lastname = lastname;
@@ -65,6 +68,26 @@ public class UserNew {
     this.degreeStart = degreeStart;
     this.interests = interests;
     this.bio = bio;
+  }
+
+  public UserNew authID(String authID) {
+    this.authID = authID;
+    return this;
+  }
+
+  /**
+   * Auth0 user.sub, used as a unique key  
+   * @return authID
+   */
+  @NotNull 
+  @Schema(name = "authID", description = "Auth0 user.sub, used as a unique key  ", requiredMode = Schema.RequiredMode.REQUIRED)
+  @JsonProperty("authID")
+  public String getAuthID() {
+    return authID;
+  }
+
+  public void setAuthID(String authID) {
+    this.authID = authID;
   }
 
   public UserNew email(String email) {
@@ -266,7 +289,8 @@ public class UserNew {
       return false;
     }
     UserNew userNew = (UserNew) o;
-    return Objects.equals(this.email, userNew.email) &&
+    return Objects.equals(this.authID, userNew.authID) &&
+        Objects.equals(this.email, userNew.email) &&
         Objects.equals(this.firstname, userNew.firstname) &&
         Objects.equals(this.lastname, userNew.lastname) &&
         Objects.equals(this.birthday, userNew.birthday) &&
@@ -279,13 +303,14 @@ public class UserNew {
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, firstname, lastname, birthday, gender, degree, degreeStart, interests, bio);
+    return Objects.hash(authID, email, firstname, lastname, birthday, gender, degree, degreeStart, interests, bio);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserNew {\n");
+    sb.append("    authID: ").append(toIndentedString(authID)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    firstname: ").append(toIndentedString(firstname)).append("\n");
     sb.append("    lastname: ").append(toIndentedString(lastname)).append("\n");
