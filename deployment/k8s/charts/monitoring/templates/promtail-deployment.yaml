@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promtail
+  namespace: go76taw-testing
+  labels:
+    app: promtail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: promtail
+  template:
+    metadata:
+      labels:
+        app: promtail
+    spec:
+      containers:
+        - name: promtail
+          image: grafana/promtail:2.9.2
+          args:
+            - -config.file=/etc/promtail/promtail.yaml
+          volumeMounts:
+            - name: promtail-config
+              mountPath: /etc/promtail/promtail.yaml
+              subPath: promtail.yaml
+            - name: varlog
+              mountPath: /var/log
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 50m
+            limits:
+              memory: 256Mi
+              cpu: 100m
+      volumes:
+        - name: promtail-config
+          configMap:
+            name: promtail-config
+        - name: varlog
+          hostPath:
+            path: /var/log

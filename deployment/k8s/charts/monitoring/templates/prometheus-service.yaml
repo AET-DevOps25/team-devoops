@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prometheus
-  namespace: go76taw-devops25
+  namespace: go76taw-testing
   labels:
     app: prometheus
 spec:

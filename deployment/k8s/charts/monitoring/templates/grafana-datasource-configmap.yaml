@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-datasources
-  namespace: go76taw-devops25
+  namespace: go76taw-testing
 data:
   prometheus.yaml: |
     apiVersion: 1
@@ -12,3 +12,8 @@ data:
       url: http://prometheus:9090
       access: proxy
       isDefault: true
+    - name: Loki
+      type: loki
+      url: http://loki:3100
+      access: proxy
+      isDefault: false
