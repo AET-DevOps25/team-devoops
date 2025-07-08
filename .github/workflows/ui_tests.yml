@@ -1,0 +1,73 @@
+# This workflow handles UI testing for the React client
+name: UI Tests
+
+# This workflow is triggered only when called by another workflow
+on:
+  workflow_call:
+
+jobs:
+  test:
+    name: Run UI tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Run unit tests
+        run: npm run test:ci
+        working-directory: client
+
+      - name: Build application
+        run: npm run build
+        working-directory: client
+
+      - name: Start application
+        run: npm run preview &
+        working-directory: client
+
+      - name: Wait for application to start
+        run: sleep 10
+
+      - name: Run Cypress e2e tests
+        run: npm run cypress:run:e2e
+        working-directory: client
+        env:
+          CYPRESS_baseUrl: http://localhost:4173
+
+      - name: Run Cypress component tests
+        run: npm run cypress:run:component
+        working-directory: client
+
+      # Upload test results as artifacts
+      - name: Upload test coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-coverage
+          path: client/coverage/
+
+      - name: Upload Cypress screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: client/cypress/screenshots/
+
+      - name: Upload Cypress videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: client/cypress/videos/

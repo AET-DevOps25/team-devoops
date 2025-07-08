@@ -214,6 +214,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v2/user/me/{auth-id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description User's Auth0 sub ID */
+                "auth-id": components["parameters"]["auth-id"];
+            };
+            cookie?: never;
+        };
+        /** Retrieve User based on AuthID */
+        get: operations["get-api-v2-user-me-auth-id"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -489,6 +509,9 @@ export interface components {
          * @description Object representing a student user in the Meet@Mensa system.
          */
         UserNew: {
+            /** @description Auth0 user.sub, used as a unique key
+             *      */
+            authID: string;
             /**
              * Format: email
              * @description Users's e-mail
@@ -614,6 +637,8 @@ export interface components {
         "request-id": string;
         /** @description UUID associated with a given match */
         "match-id": string;
+        /** @description User's Auth0 sub ID */
+        "auth-id": string;
     };
     requestBodies: never;
     headers: never;
@@ -1031,6 +1056,50 @@ export interface operations {
             404: components["responses"]["NotFoundError"];
             /** @description Internal Server Error */
             500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "get-api-v2-user-me-auth-id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description User's Auth0 sub ID */
+                "auth-id": components["parameters"]["auth-id"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

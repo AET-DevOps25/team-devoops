@@ -1,6 +1,7 @@
 package meet_at_mensa.matching.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 import org.openapitools.model.MatchRequest;
@@ -13,13 +14,12 @@ import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.exception.RequestOverlapException;
+import meet_at_mensa.matching.exception.ScheduleException;
 import meet_at_mensa.matching.model.MatchRequestEntity;
 import meet_at_mensa.matching.repository.MatchRequestRepository;
 
 @Service
 public class MatchRequestService {
-
-    // Remove Expired
 
     @Autowired
     private MatchRequestRepository requestRepository;
@@ -128,7 +128,7 @@ public class MatchRequestService {
         for (MatchRequestEntity requestEntity : requestEntities) {
 
             // if the request is unmatched
-            if (requestEntity.getRequestStatus() != RequestStatus.MATCHED){
+            if (requestEntity.getRequestStatus() != RequestStatus.MATCHED && requestEntity.getRequestStatus() != RequestStatus.EXPIRED){
 
                 // create new MatchRequest Object
                 MatchRequest request = new MatchRequest(
@@ -160,7 +160,7 @@ public class MatchRequestService {
      * @return MatchRequest object of the registered request
      * @throws RequestOverlapException if a request already exists for this user on this date
      */
-    public MatchRequest registerRequests(MatchRequestNew requestNew) {
+    public MatchRequest registerRequest(MatchRequestNew requestNew) {
 
         // checks if user already has a request for this date. Throws an exeption if yes
         if (userHasRequestOn(requestNew.getDate(), requestNew.getUserID())) {
@@ -177,14 +177,14 @@ public class MatchRequestService {
             requestNew.getPreferences().getGenderPref() // gender pref
         );
 
+        // save to database
+        requestRepository.save(requestEntity);
+
         // register timeslots
         timeslotService.registerTimeslots(
             requestEntity.getRequestID(), // newly generated requestID
             requestNew.getTimeslot() // timeslots
         );
-
-        // save to database
-        requestRepository.save(requestEntity);
 
         // return newly generated request
         return getRequest(requestEntity.getRequestID());
@@ -212,7 +212,7 @@ public class MatchRequestService {
 
 
     /**
-     * Remove a MatchRequest from the database
+     * Remove a MatchRequest from the database including it's timeslots
      *
      *
      * @param requestID the ID of the match request to remove
@@ -289,7 +289,7 @@ public class MatchRequestService {
      * @return MatchRequest object fetched from database after the update
      * @throws RequestNotFoundException if no request is found
      */
-    public MatchRequest updateRequstStatus(UUID requestID, RequestStatus statusNew) {
+    public MatchRequest updateRequestStatus(UUID requestID, RequestStatus statusNew) {
 
         // find match request based on it's matchID
         // throws RequestNotFoundException if no request is found
@@ -305,5 +305,63 @@ public class MatchRequestService {
         // fetch new request from database for return
         return getRequest(requestID);
 
+    }
+
+
+    /**
+     * Checks all requests for expiration and set their status accordingly
+     * 
+     * WARNING: This should only be triggered by a cron job AFTER performing the matches
+     * as it WILL set requests for TODAY as expired. It 11:00
+     * 
+     * @throws ScheduleException if it is triggered before 11:00 on a given day
+     */
+    protected void expireRequests() {
+
+        // get all request-entities
+        Iterable<MatchRequestEntity> requestEntities = requestRepository.findAll();
+
+        // Throws an exception if this function is triggered before 15:00
+        if (LocalTime.now().isBefore(LocalTime.of(11, 0))){
+            // TODO: Figure out a better way to handle this case
+            //throw new ScheduleException("Operation expireRequests() cannot be run before 11:00!");
+        }
+
+        // check all matchRequests
+        for (MatchRequestEntity requestEntity : requestEntities) {
+            
+            // if the request is for TODAY or BEFORE, then set it as expired
+            if (requestEntity.getDate().isBefore(LocalDate.now()) || requestEntity.getDate().isEqual(LocalDate.now())) {
+
+                // set request status to expired
+                updateRequestStatus(requestEntity.getRequestID(), RequestStatus.EXPIRED);
+
+            }
+
+        }
+
+    }
+
+    /**
+     * Removes all expired requests from the database
+     * 
+     * WARNING: This should only be triggered by a cron job
+     * 
+     */
+    protected void cleanupExpired() {
+
+        // get all request-entities
+        Iterable<MatchRequestEntity> requestEntities = requestRepository.findAll();
+
+        // check all matchRequests
+        for (MatchRequestEntity requestEntity : requestEntities) {
+            
+            // if the request is expired
+            if (requestEntity.getRequestStatus() == RequestStatus.EXPIRED) {
+
+                // remove the request and it's associated timetables
+                removeRequest(requestEntity.getRequestID());
+            }
+        }
     }
 }

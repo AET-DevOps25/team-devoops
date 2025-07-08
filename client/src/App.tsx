@@ -4,9 +4,7 @@ import Layout from './components/Layout';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import MatchRequests from './components/MatchRequests';
-import Invitations from './components/Invitations';
-import LunchMeetings from './components/LunchMeetings';
-import Chat from './components/Chat';
+import Matches from './components/Matches';
 import { useAuth0 } from '@auth0/auth0-react';
 import Profile from './components/Profile';
 
@@ -79,31 +77,11 @@ const App = ({ toggleColorMode, mode }: AppProps) => {
           }
         />
         <Route
-          path="/invitations"
+          path="/matches"
           element={
             <ProtectedRoute>
               <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <Invitations />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/meetings"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <LunchMeetings />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/chat"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <Chat />
+                <Matches />
               </Layout>
             </ProtectedRoute>
           }

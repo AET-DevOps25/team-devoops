@@ -1,15 +1,20 @@
 package meet_at_mensa.matching.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 import org.openapitools.model.InviteStatus;
 import org.openapitools.model.Match;
 import org.openapitools.model.MatchCollection;
+import org.openapitools.model.RequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.MatchNotFoundException;
+import meet_at_mensa.matching.exception.ScheduleException;
 import meet_at_mensa.matching.model.MatchEntity;
+import meet_at_mensa.matching.model.MatchRequestEntity;
 import meet_at_mensa.matching.repository.MatchRepository;
 
 @Service
@@ -66,6 +71,46 @@ public class MatchService {
 
         // get all matches in the system for a given group ID
         Iterable<MatchEntity> matchEntities = matchRepository.findByUserID(userID);
+
+        // if list is empty, throw exception
+        if (!matchEntities.iterator().hasNext()) {
+            throw new MatchNotFoundException();
+        }
+
+        // create empty matchcollection
+        MatchCollection matchCollection = new MatchCollection();
+
+        // add each match to the collection
+        for (MatchEntity matchEntity : matchEntities) {
+
+            // construct match object
+            Match match = new Match(
+                matchEntity.getMatchID(), 
+                matchEntity.getUserID(), 
+                matchEntity.getInviteStatus(), 
+                groupService.getGroup(matchEntity.getGroupID())
+            );
+
+            // add to list
+            matchCollection.addMatchesItem(match);
+        }
+
+        // return collection of matches
+        return matchCollection;
+    }
+
+    /**
+     * Retieves all matchs for a given groupID
+     *
+     *
+     * @param groupID
+     * @return MatchCollection object
+     * @throws MatchNotFoundException if no user with id {userID} is found
+     */
+    public MatchCollection getMatchesByGroup(UUID groupID) {
+
+        // get all matches in the system for a given group ID
+        Iterable<MatchEntity> matchEntities = matchRepository.findByGroupID(groupID);
 
         // if list is empty, throw exception
         if (!matchEntities.iterator().hasNext()) {

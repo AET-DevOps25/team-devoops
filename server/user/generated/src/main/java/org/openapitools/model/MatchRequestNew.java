@@ -29,7 +29,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchRequestNew", description = "Object representing a request for matching a given user on a given date in the Meet@Mensa system.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-06T15:26:00.172714145Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-07T12:53:53.238650171Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchRequestNew {
 
   private UUID userID;

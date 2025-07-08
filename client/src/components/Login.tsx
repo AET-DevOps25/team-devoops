@@ -27,6 +27,7 @@ const Login: React.FC = () => {
 
         {/* Login Button */}
         <Button
+          data-testid="login-button"
           onClick={() => loginWithRedirect()}
           variant="contained"
           size="large"

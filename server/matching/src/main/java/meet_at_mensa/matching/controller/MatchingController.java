@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
+import meet_at_mensa.matching.client.UserClient;
 import meet_at_mensa.matching.exception.MatchNotFoundException;
 import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.exception.RequestOverlapException;
@@ -17,6 +17,10 @@ import java.util.UUID;
 
 import org.openapitools.api.MatchingApi;
 import org.openapitools.model.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class MatchingController implements MatchingApi {
@@ -134,13 +138,13 @@ public class MatchingController implements MatchingApi {
 
     // POST @ api/v2/matching/request/submit
     @Override
-    public ResponseEntity<MatchRequest> postApiV2MatchingRequestSubmit(@Valid MatchRequestNew matchRequestNew) {
+    public ResponseEntity<MatchRequest> postApiV2MatchingRequestSubmit(MatchRequestNew matchRequestNew) {
 
         // 200
         try {
             
             // attempt to register a new matchRequset
-            MatchRequest request = requestService.registerRequests(matchRequestNew);
+            MatchRequest request = requestService.registerRequest(matchRequestNew);
 
             // return 200 if successful
             return ResponseEntity.ok(request);
@@ -162,7 +166,7 @@ public class MatchingController implements MatchingApi {
 
     // PUT @ api/v2/matching/request/{requestID}
     @Override
-    public ResponseEntity<MatchRequest> putApiV2MatchingRequestRequestId(UUID requestId, @Valid MatchRequestUpdate matchRequestUpdate) {
+    public ResponseEntity<MatchRequest> putApiV2MatchingRequestRequestId(UUID requestId, MatchRequestUpdate matchRequestUpdate) {
                 
         // 200
         try {

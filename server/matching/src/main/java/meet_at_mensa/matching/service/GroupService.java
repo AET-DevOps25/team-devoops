@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.GroupNotFoundException;
 import meet_at_mensa.matching.exception.MatchNotFoundException;
+import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.model.GroupEntity;
 import meet_at_mensa.matching.model.MatchEntity;
 import meet_at_mensa.matching.repository.GroupRepository;
@@ -57,6 +58,78 @@ public class GroupService {
 
     }
 
+
+    /**
+     * Gets all groups with events on a given date
+     * 
+     *
+     * @param date date of the group meeting
+     * @return List<Group> objects
+     * @throws groupNotFoundException if no groups are available on this date
+     */
+    public List<Group> getGroupsOnDate(LocalDate date) {
+
+        Iterable<GroupEntity> groupEntities = groupRepository.findByDate(date);
+
+        // if the list is empty, throw a GroupNotFound
+        if (!groupEntities.iterator().hasNext()) {
+            throw new GroupNotFoundException();
+        }
+
+        // create an empty liste
+        List<Group> groups = new ArrayList<Group>();
+
+        // collect all groups into a list
+        for (GroupEntity groupEntity : groupEntities) {
+            
+            groups.add(getGroup(groupEntity.getGroupID()));
+
+        }
+
+        // return list
+        return groups;
+
+    }
+
+
+    /**
+     * Gets all groups older than a given date
+     *
+     * @param date date of the group meeting
+     * @return List<Group> objects
+     * @throws groupNotFoundException if no groups are available on this date
+     */
+    public List<Group> getGroupsOlderThan(LocalDate date) {
+
+        Iterable<GroupEntity> groupEntities = groupRepository.findAll();
+
+        // if the list is empty, throw a GroupNotFound
+        if (!groupEntities.iterator().hasNext()) {
+            throw new GroupNotFoundException();
+        }
+
+        // create an empty liste
+        List<Group> groups = new ArrayList<Group>();
+
+        // collect all groups into a list
+        for (GroupEntity groupEntity : groupEntities) {
+
+            // adds to list if group is older than the date
+            if(groupEntity.getDate().isBefore(date)) {
+                groups.add(getGroup(groupEntity.getGroupID()));
+            }
+
+        }
+
+        // return list
+        return groups;
+
+    }
+
+
+
+
+
     /**
      * Registers a new group in the database
      * 
@@ -89,7 +162,7 @@ public class GroupService {
      * @return List<MatchStatus> objects representing each users' status
      * @throws MatchNotFoundException if no user with id {userID} is found
      */
-    private List<MatchStatus> getGroupStatus(UUID groupID){
+    protected List<MatchStatus> getGroupStatus(UUID groupID){
 
         // get all matches in the system for a given group ID
         Iterable<MatchEntity> matchEntities = matchRepository.findByGroupID(groupID);
@@ -116,4 +189,30 @@ public class GroupService {
         return groupStatus;
 
     }
+
+    /**
+     * Removes a group and it's conversation-starters from the database
+     *
+     *
+     * @param groupID UUID of the group to be removed
+     * @return true if group was removed
+     * @throws GroupNotFoundException if no group with groupID is found
+     */
+    protected Boolean removeGroup(UUID groupID) {
+
+        // check if group exists
+        groupRepository.findById(groupID)
+            .orElseThrow(() -> new GroupNotFoundException());
+
+        // delete entry from grouprepository
+        groupRepository.deleteById(groupID);
+
+        // remove group prompts
+        conversationStarterService.removePrompts(groupID);
+
+        // return true if deleted
+        return true;
+
+    }
+
 }

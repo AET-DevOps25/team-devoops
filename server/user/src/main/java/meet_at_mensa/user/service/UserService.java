@@ -20,9 +20,13 @@ import meet_at_mensa.user.model.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     // UserRepository manages the userdb database
     @Autowired
@@ -32,6 +36,9 @@ public class UserService {
     @Autowired
     InterestRepository interestRepository;
 
+    // IdentityRepository manages Auth0 identity pairs
+    @Autowired
+    IdentityRepository identityRepository;
 
     /**
      * Searches the database for a user with id {userID}
@@ -43,31 +50,57 @@ public class UserService {
      * @throws UserNotFoundException if no user with id {userID} is found
      */
     public User getUser(UUID userID) {
-
         // search the database for a user
         // throws a UserNotFoundException if no user is found
+        logger.debug("Attempting to retrieve user with ID: {}", userID);
         UserEntity userEntity = userRepository.findById(userID)
-            .orElseThrow(() -> new UserNotFoundException(String.format("User with ID %s not found", userID)));
-
+                .orElseThrow(() -> {
+                    logger.warn("User with ID {} not found", userID);
+                    return new UserNotFoundException(String.format("User with ID %s not found", userID));
+                });
         // seach the database for a user's interests
+        logger.info("User with ID {} retrieved successfully", userID);
         List<String> interests = getInterests(userID);
-
         // construct new User object
         User user = new User(
-            userEntity.getUserID(), // id
-            userEntity.getEmail(), // email
-            userEntity.getFirstname(), // firstname
-            userEntity.getLastname(), // lastname
-            userEntity.getBirthday(), // birthday
-            userEntity.getGender(), // gender
-            userEntity.getDegree(), // degree
-            userEntity.getDegreeStart(), // degreeStart
-            interests, // interests
-            userEntity.getBio() // bio
-         );
+                userEntity.getUserID(), // id
+                userEntity.getEmail(), // email
+                userEntity.getFirstname(), // firstname
+                userEntity.getLastname(), // lastname
+                userEntity.getBirthday(), // birthday
+                userEntity.getGender(), // gender
+                userEntity.getDegree(), // degree
+                userEntity.getDegreeStart(), // degreeStart
+                interests, // interests
+                userEntity.getBio() // bio
+        );
+        // return
+        return user;
+    }
 
-         // return
-         return user;
+    /**
+     * Searches the database for a user with id {userID}
+     *
+     * Generates a User object from the database entity abstractions
+     *
+     * @param userID UUID of the user being searched for
+     * @return User object if a user was found
+     * @throws UserNotFoundException if no user with id {userID} is found
+     */
+    public User getUserByAuthID(String authID) {
+        // search the database for a user
+        // throws a UserNotFoundException if no user is found
+        logger.debug("Attempting to retrieve user by AuthID: {}", authID);
+        IdentityEntity identityEntity = identityRepository.findByAuthID(authID);
+        // .orElseThrow(() -> new UserNotFoundException(String.format("User with AuthID
+        // %s not found", authID)));
+        if (identityEntity == null) {
+            logger.warn("User with AuthID {} not found", authID);
+            throw new UserNotFoundException(String.format("User with AuthID %s not found", authID));
+        }
+        // return
+        logger.info("User with AuthID {} found, retrieving user details", authID);
+        return getUser(identityEntity.getUserID());
     }
 
     /**
@@ -79,45 +112,48 @@ public class UserService {
      * @return User object of the user that has been created
      */
     public User registerUser(UserNew userNew) {
-
         // validate email
-        if(!isValidEmail(userNew.getEmail())) {
+        logger.info("Registering new user with email: {}", userNew.getEmail());
+        if (!isValidEmail(userNew.getEmail())) {
+            logger.warn("Invalid email provided: {}", userNew.getEmail());
             throw new UserMalformedException();
         }
-
         // construct new UserEntity object
         UserEntity userEntity = new UserEntity(
-            userNew.getEmail(), // email
-            userNew.getFirstname(), // firstname
-            userNew.getLastname(), // lastname
-            userNew.getBirthday(), // birthday
-            userNew.getGender(), // gender
-            userNew.getDegree(), // degree
-            userNew.getDegreeStart(), // degreeStart
-            userNew.getBio() // bio
+                userNew.getEmail(), // email
+                userNew.getFirstname(), // firstname
+                userNew.getLastname(), // lastname
+                userNew.getBirthday(), // birthday
+                userNew.getGender(), // gender
+                userNew.getDegree(), // degree
+                userNew.getDegreeStart(), // degreeStart
+                userNew.getBio() // bio
         );
-
         try {
-
             // save user entity to database
             userEntity = userRepository.save(userEntity);
-
-        // throw Exception if duplicate email
+            // construct new Identity entity
+            IdentityEntity identityEntity = new IdentityEntity(
+                    userEntity.getUserID(),
+                    userNew.getAuthID());
+            // save identity entity to database
+            identityEntity = identityRepository.save(identityEntity);
+            logger.info("User created successfully: {}", userEntity.getUserID());
+            // throw Exception if duplicate email
         } catch (DataIntegrityViolationException e) {
+            logger.error("User registration failed due to duplicate email: {}", userNew.getEmail());
             throw new UserConflictException(e.toString());
         }
-
-        
-
         // register interests
         registerInterests(userEntity.getUserID(), userNew.getInterests());
-
+        logger.debug("Registered interests for user: {}", userEntity.getUserID());
         // fetch User object and return
         return getUser(userEntity.getUserID());
     }
 
     /**
-     * Updates the database entries for a user with id {UserID} based on a UserUpdate object.
+     * Updates the database entries for a user with id {UserID} based on a
+     * UserUpdate object.
      *
      * Keeps old value if corresponding value in UserUpdate is null.
      * Overwrites previously existing values otherwise.
@@ -127,69 +163,59 @@ public class UserService {
      * @throws UserNotFoundException if no user with id {userID} is found
      */
     public User updateUser(UUID userID, UserUpdate userUpdate) {
-
         // search the database for a user
         // throws a UserNotFoundException if no user is found
+        logger.info("Updating user with ID: {}", userID);
         UserEntity userEntity = userRepository.findById(userID)
-            .orElseThrow(() -> new UserNotFoundException(String.format("User with ID %s not found", userID))); 
-        
+                .orElseThrow(() -> {
+                    logger.warn("User with ID {} not found for update", userID);
+                    return new UserNotFoundException(String.format("User with ID %s not found", userID));
+                });
         // update Email
-        if (userUpdate.getEmail() != null){
+        if (userUpdate.getEmail() != null) {
             userEntity.setEmail(userUpdate.getEmail());
         }
-
         // update Firstname
-        if (userUpdate.getFirstname() != null){
+        if (userUpdate.getFirstname() != null) {
             userEntity.setFirstname(userUpdate.getFirstname());
         }
-
         // update Lastname
-        if (userUpdate.getLastname() != null){
+        if (userUpdate.getLastname() != null) {
             userEntity.setLastname(userUpdate.getLastname());
         }
-
         // update Birthday
-        if (userUpdate.getBirthday() != null){
+        if (userUpdate.getBirthday() != null) {
             userEntity.setBirthday(userUpdate.getBirthday());
         }
-
         // update Gender
-        if (userUpdate.getGender() != null){
+        if (userUpdate.getGender() != null) {
             userEntity.setGender(userUpdate.getGender());
         }
-
         // update Degree
-        if (userUpdate.getDegree() != null){
+        if (userUpdate.getDegree() != null) {
             userEntity.setDegree(userUpdate.getDegree());
         }
-
         // update DegreeStart
-        if (userUpdate.getDegreeStart() != null){
+        if (userUpdate.getDegreeStart() != null) {
             userEntity.setDegreeStart(userUpdate.getDegreeStart());
         }
-
         // update Bio
-        if (userUpdate.getBio() != null){
+        if (userUpdate.getBio() != null) {
             userEntity.setBio(userUpdate.getBio());
         }
-
         // save changes to the database
         userRepository.save(userEntity);
-
+        logger.info("User with ID {} updated successfully", userID);
         // update Interests
-        if (userUpdate.getBio() != null){
-            
+        if (userUpdate.getBio() != null) {
             // remove old interests
+            logger.debug("Updating interests for user: {}", userID);
             deleteInterests(userID);
-
             // add new interest list
             registerInterests(userID, userUpdate.getInterests());
-
         }
-
         // return User object fetched new from the database
         return getUser(userID);
-
     }
 
     /**
@@ -200,21 +226,26 @@ public class UserService {
      * @throws UserNotFoundException if no user with id {userID} is found
      */
     public void deleteUser(UUID userID) {
-
         // Check that user exists
         // throws a UserNotFoundException if no user is found
+        logger.info("Deleting user with ID: {}", userID);
         userRepository.findById(userID)
-            .orElseThrow(() -> new UserNotFoundException(String.format("User with ID %s not found", userID)));
-        
+                .orElseThrow(() -> {
+                    logger.warn("User with ID {} not found for deletion", userID);
+                    return new UserNotFoundException(String.format("User with ID %s not found", userID));
+                });
         // delete userEntity from database
         userRepository.deleteById(userID);
-
+        logger.info("User with ID {} deleted from userRepository", userID);
         // delete corresponding interests
+        logger.debug("Deleting interests for user: {}", userID);
         deleteInterests(userID);
+        logger.debug("Deleted interests for user: {}", userID);
     }
 
     /**
-     * Searches the interests database for all interests corresponding to user with id {userID}
+     * Searches the interests database for all interests corresponding to user with
+     * id {userID}
      *
      * Generates a list of Strings to return
      *
@@ -222,18 +253,16 @@ public class UserService {
      * @return List of interests corresponding to that user
      */
     private List<String> getInterests(UUID userID) {
-
         // search the database for interestEntity entries
+        logger.debug("Fetching interests for user: {}", userID);
         Iterable<InterestEntity> interestEntities = interestRepository.findByUserID(userID);
-
         // create an empty list to store interests
         List<String> interests = new ArrayList<>();
-        
         // extract string values into new list
         for (InterestEntity interestEntity : interestEntities) {
             interests.add(interestEntity.getInterest());
         }
-
+        logger.debug("Found {} interests for user: {}", interests.size(), userID);
         // return
         return interests;
     }
@@ -244,38 +273,36 @@ public class UserService {
      * @param userID UUID of the user who's interests are being deleted
      */
     private void deleteInterests(UUID userID) {
-
         // search the database for interestEntity entries
+        logger.debug("Deleting interests for user: {}", userID);
         Iterable<InterestEntity> interestEntities = interestRepository.findByUserID(userID);
-
         // delete all entries from list
         for (InterestEntity interestEntity : interestEntities) {
             interestRepository.deleteById(interestEntity.getListID());
         }
-
+        logger.debug("All interests deleted for user: {}", userID);
     }
 
     /**
-     * Creates database entries for interests corresponding to a user with id {userID}
+     * Creates database entries for interests corresponding to a user with id
+     * {userID}
      *
      * Deletes all previous entries for that user and generates new ones
      *
-     * @param userID UUID of the user being searched for
+     * @param userID    UUID of the user being searched for
      * @param interests List<String> String values of the user's interests
      * @return The list of interests corresponding to the user after registering
      */
     private List<String> registerInterests(UUID userID, List<String> interests) {
-
         // for each interest
+        logger.debug("Registering {} interests for user: {}", interests.size(), userID);
         for (String interest : interests) {
-
             // create an entity object and add it to the database
             interestRepository.save(new InterestEntity(userID, interest));
         }
-
+        logger.debug("Interests registered for user: {}", userID);
         // return the interests for this userID
         return getInterests(userID);
-
     }
 
     /**
@@ -308,7 +335,7 @@ public class UserService {
      * @return List of all User objects in the database
      */
     public Iterable<User> debugGetAllUsers() {
-        
+
         // get list of userentities
         Iterable<UserEntity> allUserEntities = userRepository.findAll();
 
@@ -317,8 +344,7 @@ public class UserService {
         // generate User objects for each
         for (UserEntity userEntity : allUserEntities) {
             users.add(
-                getUser(userEntity.getUserID())
-            );
+                    getUser(userEntity.getUserID()));
         }
 
         return users;
@@ -331,11 +357,11 @@ public class UserService {
      * @param email to be checked
      * @return true if valid, false if not
      */
-    public Boolean isValidEmail(String email){
+    public Boolean isValidEmail(String email) {
 
         // Regex taken from https://www.baeldung.com/java-email-validation-regex
-        String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@" 
-        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+        String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
         return email.matches(emailRegex);
     }

@@ -1,0 +1,349 @@
+package meet_at_mensa.matching.algorithm;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.openapitools.model.MatchRequestCollection;
+import org.openapitools.model.RequestStatus;
+import org.openapitools.model.UserCollection;
+import org.springframework.beans.factory.config.YamlProcessor.MatchStatus;
+
+public class ClusteringAlgorithm extends MatchingAlgorithm {
+    
+    private CandidateClusters clusters;
+
+    public ClusteringAlgorithm(UserCollection users, MatchRequestCollection requests){
+        
+        // call parent constructor
+        super(users, requests);
+
+        // add candidates to clusters
+        this.clusters = new CandidateClusters(unmatched);
+
+    }
+
+
+
+    @Override
+    public MatchingSolution generateSolution() {
+
+        // TODO: add separate runs per Mensa
+
+        List<CandidateGroup> candidateGroups = new ArrayList<>();
+
+        while (stillSolveable()) {
+
+            // Step 1 - Eliminate all dead clusters with fewer than 2 users
+            eliminateDeadClusters();
+            
+            // Step 2 - Select a "Critical User (least availability)"
+            Candidate criticalCandidate = determineCriticalCandidate();
+
+            // Step 3 - Create a "minimal-group" around the critical user. Remove users from candidates list
+            CandidateGroup idealGroup = determineIdealGroup(criticalCandidate.getUserID());
+
+            // Step 3.1 - Add group to list
+            candidateGroups.add(idealGroup);
+
+            // Step 4 - Remove users in the candidateGroup from clusters
+            for (Candidate candidate : idealGroup.getMembers()) {
+                
+                // move users to matched
+                userMatched(candidate.getUserID());
+
+                // removed entries from clusters
+                clusters.removeUser(candidate.getUserID());
+
+            }
+
+            // Step 5 - Repeat until no more matches are possible
+
+        }
+
+        // Step 6 - Attempt to fit unmatcheable users into existing groups
+
+        for (Candidate unmatchableCandidate : unmatchable) {
+         
+            candidateGroups = fitUnmatchable(candidateGroups, unmatchableCandidate);
+
+        }
+
+        // Step 7 - Convert to MatchingSolutionBlocks and return
+
+        List<MatchingSolutionBlock> solutionBlocks = convertToSolutionBlocks(candidateGroups, unmatchableFinal);
+
+        return new MatchingSolution(solutionBlocks);
+
+    }
+
+
+    private void eliminateDeadClusters() {
+
+        Map<Integer, Integer> viability = clusters.candidatesPerCluster();
+
+        for (int i = 0; i < 17; i++) {
+            
+            // if the timeslot has no viable groups and hasn't been removed
+            if (viability.get(i) <= 2 && viability.get(i) != 0) {
+
+                // remove all entries in the cluster and return the userID of candidates whos entry got removed
+                List<UUID> cutIDs = clusters.removeCluster(i);
+
+                // check if any of the removed users are now unmatchable
+                for (UUID cutID : cutIDs) {
+                    
+                    checkCandidateViability(cutID);
+
+                }
+
+            }
+
+        }
+
+    }
+
+    private void checkCandidateViability(UUID userID) {
+
+        if(clusters.clustersWithCandidate(userID).size() == 0) {
+
+            // if user is no longer in any cluster, set it as unmatchable
+            userUnmatchable(userID);
+
+            System.out.println("User is unmatchable" + userID.toString());
+
+        }
+
+    }
+
+    private Candidate determineCriticalCandidate() {
+
+        Candidate mostCritical = null;
+        Integer leastAvailablity = 16;
+
+        for (Candidate candidate : unmatched) {
+
+            Integer availability = clusters
+                                    .clustersWithCandidate(candidate.getUserID())
+                                    .size();
+            
+
+            // if this is the first candidate
+            if (mostCritical == null) {
+
+                mostCritical = candidate;
+                leastAvailablity = availability;
+                continue;
+
+            // if the current candidate has more critical availabilty
+            } else if (availability < leastAvailablity) {
+
+                mostCritical = candidate;
+                leastAvailablity = availability;
+                continue;
+
+            // if the current candiate has the same availability
+            } else if (availability == leastAvailablity) {
+
+                // prioritize the most flexible candidate
+                if(candidate.getFlexibility() > mostCritical.getFlexibility()) {
+
+                    mostCritical = candidate;
+                    leastAvailablity = availability;
+                    continue;
+
+                }
+
+            }
+
+        }
+
+        return mostCritical;
+
+    }
+
+    private CandidateGroup determineIdealGroup(UUID critUserID) {
+
+        // create empty list of possible groups
+        List<CandidateGroup> candidateGroups = new ArrayList<>();
+
+        // for each start window
+        for (Integer startTime : clusters.clustersWithCandidate(critUserID)) {
+            
+            // get all possible combinations of users
+            List<List<Candidate>> combinations = getCandidateCombinationsWith(matched, critUserID);
+
+            // create groups for all these combinations
+            for (List<Candidate> combination : combinations) {
+                
+                candidateGroups.add(new CandidateGroup(combination, startTime));
+
+            }
+
+        } 
+
+        CandidateGroup ideal = null;
+        Integer maxQuality = 0;
+
+        for (CandidateGroup candidateGroup : candidateGroups) {
+            
+            // if this is the first run
+            if(ideal == null ) {
+
+                ideal = candidateGroup;
+                maxQuality = candidateGroup.getQuality();
+
+            // if the current quality is higher than the previous max
+            } else if (maxQuality < candidateGroup.getQuality()) {
+
+                ideal = candidateGroup;
+                maxQuality = candidateGroup.getQuality();
+
+            }
+
+        }
+
+        
+        return ideal;
+
+    }
+
+    private List<List<Candidate>> getCandidateCombinationsWith(List<Candidate> candidates, UUID userID) {
+
+        List<List<Candidate>> combinations = new ArrayList<>();
+
+        Integer n = candidates.size();
+
+        // get all 3-candidate combinations
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = i + 1; j < n - 1; j++) {
+                for (int k = j + 1; k < n; k++) {
+
+                    // add to result
+                    List<Candidate> combination = Arrays.asList(candidates.get(i), candidates.get(j), candidates.get(k));
+                    
+                    // if the user is in this combination
+                    if(
+                        combination
+                            .stream()
+                            .map(Candidate::getUserID)
+                            .collect(Collectors.toSet())
+                            .contains(userID)
+                    ) {
+                        combinations.add(combination);
+                    }
+
+                }
+            }
+        }
+
+        return combinations;
+
+    }
+
+    private Boolean stillSolveable() {
+
+        return (Collections.max(clusters.candidatesPerCluster().values()) >= 3);
+
+    }
+
+    private List<CandidateGroup> fitUnmatchable(List<CandidateGroup> groups, Candidate candidate) {
+
+        // get empty list of potential groups
+        List<CandidateGroup> potentialGroups = new ArrayList<>();
+        List<CandidateGroup> replacesGroups = new ArrayList<>();;
+
+        // Check for any groups that the user may fit into
+        for (CandidateGroup group : groups) {
+            
+            // check if user shares a timeslot with group
+            if (candidate.getTimeslots().contains(group.getTimeslot())) {
+
+                // create a new group with added member
+                potentialGroups.add(group.addMember(candidate));
+
+                // remember the group it replaces
+                replacesGroups.add(group);
+
+            }
+
+        }
+
+        // if the user fits into at least one group
+        if (potentialGroups.iterator().hasNext()) {
+
+            CandidateGroup bestGroup = null;
+            CandidateGroup replacesGroup = null;
+            Integer bestQuality = 0;
+
+            // for each group
+            for (int i = 0; i < potentialGroups.size(); i++) {
+
+                // if this is the first run
+                if(bestGroup == null) {
+
+                    bestGroup = potentialGroups.get(i);
+                    replacesGroup = replacesGroups.get(i);
+                    bestQuality = bestGroup.getQuality();
+                    continue;
+
+                }
+                
+                // if the quality is better than the current best
+                if(potentialGroups.get(i).getQuality() > bestQuality) {
+
+                    bestGroup = potentialGroups.get(i);
+                    replacesGroup = replacesGroups.get(i);
+                    bestQuality = bestGroup.getQuality();
+
+                }
+
+                // remove replaced group
+                groups.remove(replacesGroup);
+
+                // add new group
+                groups.add(bestGroup);
+
+                userDochMatchable(candidate.getUserID());
+
+            }
+
+        // if user does not fit into any groups
+        } else {
+
+            userUnmatchableFinal(candidate.getUserID());
+
+        }
+
+        return groups;
+
+    }
+
+    private List<MatchingSolutionBlock> convertToSolutionBlocks(List<CandidateGroup> groups, List<Candidate> unmatchables) {
+        
+        List<MatchingSolutionBlock> solutionBlocks = new ArrayList<>();
+
+        // add all matched groups
+        for (CandidateGroup candidateGroup : groups) {
+            
+            // add each group to solution blocks
+            solutionBlocks.add(
+                candidateGroup.toSolutionBlock(RequestStatus.MATCHED)
+            );
+
+        }
+
+        // add unmatchable solution block
+        CandidateGroup unmatchableGroup = new CandidateGroup(unmatchableFinal, 0);
+        solutionBlocks.add(unmatchableGroup.toSolutionBlock(RequestStatus.UNMATCHABLE));
+
+        return solutionBlocks;
+
+    }
+}
+
+
