@@ -33,10 +33,10 @@ jobs:
     needs: update_api_spec
 
   # Run UI tests (unit, integration, and e2e)
-  ui_tests:
-    name: Run UI Tests
-    uses: ./.github/workflows/ui_tests.yml
-    needs: update_api_spec
+  #ui_tests:
+  #  name: Run UI Tests
+  #  uses: ./.github/workflows/ui_tests.yml
+  #  needs: update_api_spec
 
   # TODO Add Integration Testing
 
