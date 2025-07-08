@@ -4,6 +4,7 @@ import org.openapitools.model.MatchRequestCollection;
 import org.openapitools.model.UserCollection;
 import org.openapitools.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +21,12 @@ public abstract class MatchingAlgorithm {
 
     // Constructor
     public MatchingAlgorithm(UserCollection users, MatchRequestCollection requests) {
+
+        // init the lists
+        unmatched = new ArrayList<>();
+        matched = new ArrayList<>();
+        unmatchable = new ArrayList<>();
+        unmatchableFinal = new ArrayList<>();
 
         // find the matching User-Request pair
         for (MatchRequest request : requests.getRequests()) {
