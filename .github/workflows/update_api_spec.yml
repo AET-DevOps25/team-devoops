@@ -1,0 +1,100 @@
+# This workflow should generate code based on the openapi.yaml and commit it to the branch.
+name: OpenAPI Codegen
+
+# This workflow is triggered only when called by another workflow
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+
+  update_openapi_generated:
+
+    name: Check & Generate
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Run version checker script.
+      # will store OK in steps.check.outputs.status if versions match
+      # will store UPDATE in steps.check.outputs.status if update is needed
+      - name: Check if API spec has been updated.
+        id: check
+        run: |
+          chmod +x api/scripts/check_version.sh
+          STATUS=$(api/scripts/check_version.sh)
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+
+      - name: Make Scripts Executable
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: |
+          chmod +x api/scripts/gen_client.sh
+          chmod +x api/scripts/gen_docs.sh
+          chmod +x api/scripts/gen_spring.sh
+          chmod +x api/scripts/gen_typescript.sh
+          chmod +x api/scripts/install_tools.sh
+          chmod +x api/scripts/lint.sh
+          chmod +x api/scripts/update_flag.sh
+        
+      - name: Install Tools
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: ./api/scripts/install_tools.sh
+        shell: bash
+
+      - name: Lint
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: ./api/scripts/lint.sh
+        shell: bash
+        
+      - name: Generate Docs
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: ./api/scripts/gen_docs.sh
+        shell: bash
+
+      - name: Generate Spring Code
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: ./api/scripts/gen_spring.sh
+        shell: bash
+
+      - name: Generate Client Code
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: ./api/scripts/gen_client.sh
+        shell: bash
+
+      - name: Generate api.ts
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: ./api/scripts/gen_typescript.sh
+        shell: bash
+
+      - name: Update flag
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: ./api/scripts/update_flag.sh
+        shell: bash
+
+      - name: Setup Git
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Stage Generated Code
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: |
+          git add server/matching/generated
+          git add server/user/generated
+          git add server/gateway/generated
+          git add server/matching/generated-client
+          git add server/user/generated-client
+          git add server/gateway/generated-client
+          git add client/src/api.ts
+          git add docs/api.html
+          git add api/flags/flags.yaml
+
+      - name: Commit & Push Generated Code
+        if: contains(steps.check.outputs.status, 'UPDATE')
+        run: | 
+          git commit -m "gen: generate code and documentation based on latest version of openapi.yaml"
+          git push

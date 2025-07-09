@@ -2,6 +2,8 @@
 
 ![Meet@Mensa logo](resources/img/meet@mensa.png "Meet@Mensa")
 
+[![Continuous Integration (CI)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml/badge.svg)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml)
+
 Many students at TUM, particularly in the larger study programs, report feeling lonely and isolated despite having countless peers. One of the places where this is especially noticeable is the Mensa during lunchtime. It's common for students that don't have a strong network of friends at university to eat alone or avoid eating at the Mensa entirely to not feel socially awkward.
 
 Our tool - *Meet@Mensa* - focuses on transforming the potentially uncomfortable situation of eating alone at the Mensa into an opportunity to meet fellow students and make new friends. In order to enable this, our tool offers the following features:
@@ -18,7 +20,7 @@ Users can also add preferences to their search by setting filters, e.g. if they 
 Nothing is worse than waiting for someone who won't show up, thus our tool asks users to RSVP to any invites they receive (with ```yes``` / ```no``` options, no tentatives). Once an invite is accepted, all users receive a confirmation email with a corresponding ```ics.``` file in the attachment. It is also possible to cancel the meetup.
 
 ### 🤸 - Meeting up
-The Mensa is a big place, and it can be hard to find someone you haven't seen yet. Therefore, our tool enables users to chat with one another in order to arrange a meeting place, or let each other know they may be running late. Students at the same table should also have something to talk about, so our system's GenAI component will suggest topics based on the students' common interests to help break the ice.
+Students at the same table should also have something to talk about, so our system's GenAI component will suggest topics based on the students' common interests to help break the ice.
 
 ## ⚙ System Overview
 
@@ -43,7 +45,7 @@ James is comfortable eating alone at the Mensa, but he'd like to meet some of hi
 
 On Monday, an hour before lunchtime, James receives a notification that he's been matched with a table of 3 other students for lunch at the Mensa. James accepts the invitation, letting the system know he plans on joining. He receives a confirmation email with an ```ics.``` file that he happily adds to his calendar, as he loves technology and keeping everything documented.
 
-At the agreed time, James arrives at the Mensa, but can't find the students he's supposed to meet with. Upon opening the chat function, he sees another user has sent a message saying they've arrived early, and already have a table. James gets his food and joins the other students at the table. Not knowing how where to begin, he checks the list of conversation starters and sees that several students are also taking the DevOps course this semester. With this in mind, James asks the other students about their projects and exchanges some jokes about Scrum masters.
+At the agreed time, James arrives at the Mensa, gets his food and joins the other students at the table. Not knowing how where to begin, he checks the list of conversation starters and sees that several students are also taking the DevOps course this semester. With this in mind, James asks the other students about their projects and exchanges some jokes about Scrum masters.
 
 After an hour of pleasant conversation, James has now met several new people and goes about his day feeling less lonely.
 
@@ -53,9 +55,7 @@ Anastasiia is also a first-semester M.Sc. Informatics student. She met a lot of 
 
 She fills out the information about her studies and hobbies, and specifies she would like to have lunch with other female students in their 1st semester. For this, she activates 2 filters in the search criteria: gender and current semester. One hour before her lunchtime on Friday, she receives a notification that she has been matched with 1 student. Anastasiia reviews her profile and notices they both have a lot of different hobbies they could tell each other about. For example, Anastasiia's match is passionate about horse riding, which Anastasiia herself always wanted to learn more about.
 
-Anastasiia loves diversity and meeting people from different backgrounds, so she happily accepts the invitation. After the other student confirms, they both receive a calendar invite via email. In the chat, they agree to meet at the entrance to the mensa. Unfortunately, at the very last moment, Anastasiia receives a message that the other student's train was cancelled and she can't make it to the Mensa that day. They agree to postpone their meetup for the next day.
-
-The following day, they finally meet up at the arranged time. Anastasiia deactivates her search on that day, since she already has a lunch partner. The meeting goes really well, and both students instantly click, so they agree to meet up for lunch again next week. The system has brilliantly fulfilled its purpose.
+Anastasiia loves diversity and meeting people from different backgrounds, so she happily accepts the invitation. After the other student confirms, they both receive a calendar invite via email. The meeting goes really well, and both students instantly click, so they agree to meet up for lunch again next week. The system has brilliantly fulfilled its purpose.
 
 ---
 ### Scenario 3
@@ -63,6 +63,6 @@ Enrico is a second-semester M.Sc. student in Informatics, and he's currently loo
 
 He signs into Meet@Mensa and indicates that he's particularly looking for people involved in the Interdisciplinary Project this semester. He selects lunchtime on Thursday and fills out his profile with relevant classes and hobbies, including his passion for design and urban mobility.
 
-Enrico is matched with 2 other students, all of them accept the invitation, so Enrico receives an email with a calendar event for the meetup. They agree on a spot via the built-in chat feature and meet at the Mensa as planned.
+Enrico is matched with 2 other students, all of them accept the invitation, so Enrico receives an email with a calendar event for the meetup.
 
 During lunch, one of the AI-generated conversation starters suggests discussing project ideas around sustainability, a topic all three are passionate about. The group ends up brainstorming potential concepts, and by the end of the meal, Enrico has found two highly motivated partners for his project—and a reason to look forward to more team lunches.

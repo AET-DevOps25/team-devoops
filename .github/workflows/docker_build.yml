@@ -1,19 +1,37 @@
-name: Build Docker Images # This workflow should build docker images every time something is pushed to the repository
+# This workflow should build docker images every time code is pushed to the repository
+name: Build and Publish Docker Images
 
-# Run when code is pushed to the repository
+# This workflow is triggered only when called by another workflow
 on:
-  push:
+  workflow_call:
 
-# List of jobs to be run
 jobs:
 
   build:
     name: Build Docker Images
     runs-on: ubuntu-latest
-    strategy: # Use a matrix strategy to run the build process for all our containers
+
+    # Use a matrix strategy to run the build process for all our containers
+    strategy:
       matrix:
         # Add any future services relative paths from . here
-        service: [client, server/chat, server/gateway, server/matching, server/user, genai]
+        service: [client, gateway, matching, user, genai, userdb, matchdb]
+        include:
+          - service: client
+            context: client
+          - service: gateway
+            context: server/gateway
+          - service: matching
+            context: server/matching
+          - service: user
+            context: server/user
+          - service: genai
+            context: server/genai
+          - service: userdb
+            context: server/database/userdb
+          - service: matchdb
+            context: server/database/matchdb
+    
     steps:
 
       # Use pre-existing action to login to GHCR.io
@@ -33,20 +51,21 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/AET-DevOps25/team-devoops/server/gateway
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/aet-devops25/team-devoops/server/gateway
           
           # Tags pushes to main with :latest, pushes to branches with ex :feature-github-actions-workflow, and PRs with ex :pr-42
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
             type=ref,event=pr
+            type=sha,format=short
 
       # Use a pre-existing action to build docker image
-      - name: Build Image
+      - name: Build and Push Image
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          context: "{{ defaultContext }}:${{ matrix.service }}" # run in the subdirectory specified by matrix
+          context: "{{ defaultContext }}:${{ matrix.context }}"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

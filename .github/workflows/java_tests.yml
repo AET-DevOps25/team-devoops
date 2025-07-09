@@ -1,0 +1,57 @@
+# This workflow should build docker images every time code is pushed to the repository
+name: Test Java Applications
+
+# This workflow is triggered only when called by another workflow
+on:
+  workflow_call:
+
+jobs:
+
+  test:
+    name: Run tests on java applications
+    runs-on: ubuntu-latest
+
+    # Use a matrix strategy to run the tests for all applications
+    strategy:
+      matrix:
+        # Add any future services relative paths from . here
+        service: [user, matching]
+    
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+        working-directory: server/${{ matrix.service }}
+
+      - name: Run tests
+        run: ./gradlew test --info
+        working-directory: server/${{ matrix.service }}
+
+        # Upload the junit reports as artifacts
+      - name: Upload JUnit test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.service }}-junit-test-results
+          path: |
+            server/${{ matrix.service }}/build/test-results
+            server/${{ matrix.service }}/build/reports/tests
+
+        # Add annotations to checks tab
+      - name: Report Tests
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: ${{ matrix.service }}
+          path: ./server/${{ matrix.service }}/build/test-results/**/*.xml
+          reporter: java-junit
+          token: ${{ secrets.GITHUB_TOKEN }}

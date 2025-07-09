@@ -382,7 +382,7 @@ sketch
 HELP.md
 .gradle
 build/
-!gradle/wrapper/gradle-wrapper.jar
+!**/gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -416,6 +416,8 @@ out/
 
 ### VS Code ###
 .vscode/
+package-lock.json
+package.json
 
 # Terraform
 **/.terraform/*

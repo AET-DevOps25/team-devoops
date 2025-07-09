@@ -7,10 +7,13 @@ Implementation details to follow.
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t meet_at_mensa/gateway .
+docker build -t ghcr.io/aet-devops25/team-devoops/server/gateway .
+
+# Push the image to GHCR (latest tag by default, access needed)
+docker push ghcr.io/aet-devops25/team-devoops/server/gateway
 
 # Run the Docker container on port 8080
-docker run --name gateway-service -p 8080:8080 meet_at_mensa/gateway
+docker run --name gateway-service -p 8080:80 ghcr.io/aet-devops25/team-devoops/server/gateway
 
 # List running containers (if needed) 
 docker ps
@@ -22,4 +25,4 @@ docker stop gateway-service
 docker remove gateway-service
 ```
 
-The application will be available at `http://localhost:8080`.
+The application will be available at `http://localhost:80`.
