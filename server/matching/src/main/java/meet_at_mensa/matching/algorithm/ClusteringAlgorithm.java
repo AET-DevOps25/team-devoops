@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import org.openapitools.model.MatchRequestCollection;
 import org.openapitools.model.RequestStatus;
 import org.openapitools.model.UserCollection;
-import org.springframework.beans.factory.config.YamlProcessor.MatchStatus;
 
 public class ClusteringAlgorithm extends MatchingAlgorithm {
     
@@ -36,10 +35,10 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
         List<CandidateGroup> candidateGroups = new ArrayList<>();
 
-        while (stillSolveable()) {
+        // Step 1 - Eliminate all dead clusters with fewer than 2 users
+        eliminateDeadClusters();
 
-            // Step 1 - Eliminate all dead clusters with fewer than 2 users
-            eliminateDeadClusters();
+        while (stillSolveable()) {
             
             // Step 2 - Select a "Critical User (least availability)"
             Candidate criticalCandidate = determineCriticalCandidate();
@@ -61,17 +60,16 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
             }
 
-            // Step 5 - Repeat until no more matches are possible
+            // Step 5 - Eliminate all dead clusters with fewer than 2 users
+            eliminateDeadClusters();
+
+            // Repeat until no more matches are possible
 
         }
 
         // Step 6 - Attempt to fit unmatcheable users into existing groups
 
-        for (Candidate unmatchableCandidate : unmatchable) {
-         
-            candidateGroups = fitUnmatchable(candidateGroups, unmatchableCandidate);
-
-        }
+        fitAllUnmatchable(candidateGroups);
 
         // Step 7 - Convert to MatchingSolutionBlocks and return
 
@@ -84,22 +82,26 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
     private void eliminateDeadClusters() {
 
+        // Get the number of users within a each cluster ("Viability")
         Map<Integer, Integer> viability = clusters.candidatesPerCluster();
 
-        for (int i = 0; i < 17; i++) {
-            
-            // if the timeslot has no viable groups and hasn't been removed
-            if (viability.get(i) <= 2 && viability.get(i) != 0) {
+        // Iterate over each cluster
+        for (int i = 1; i < 17; i++) {
+
+            // If a cluster already has 0 viability, skip it
+            if (viability.get(i) == 0) {
+
+                continue;
+
+            // If a cluster has less than 2 viability, remove all entries in it
+            } else if (viability.get(i) <= 2 ) {
 
                 // remove all entries in the cluster and return the userID of candidates whos entry got removed
-                List<UUID> cutIDs = clusters.removeCluster(i);
+                List<UUID> cutCandidateUUIDs = clusters.removeCluster(i);
 
                 // check if any of the removed users are now unmatchable
-                for (UUID cutID : cutIDs) {
-                    
-                    checkCandidateViability(cutID);
-
-                }
+                // if they are, move them to the unmatchable list
+                registerUnmatchable(cutCandidateUUIDs);
 
             }
 
@@ -107,14 +109,43 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
     }
 
-    private void checkCandidateViability(UUID userID) {
+    public List<UUID> registerUnmatchable(List<UUID> candidateIDs) {
 
-        if(clusters.clustersWithCandidate(userID).size() == 0) {
+        // Init return value
+        List<UUID> removed = new ArrayList<>();
 
-            // if user is no longer in any cluster, set it as unmatchable
-            userUnmatchable(userID);
+        for (UUID candidateID : candidateIDs) {
+            
+            // if a candidate is not matchable
+            if (!candidateMatchable(candidateID)){
 
-            System.out.println("User is unmatchable" + userID.toString());
+                // move it to this.unmatchable
+                userUnmatchable(candidateID);
+
+                // add it to return value
+                removed.add(candidateID);
+
+            }
+
+        }
+
+        // return list with all candidates found to be unmatchable
+        return removed;
+
+    }
+
+    public boolean candidateMatchable(UUID candidateID){
+
+        // Check if the candidate is still in any clusters
+        if(clusters.clustersWithCandidate(candidateID).size() == 0) {
+
+            // returns false if candidate is in no clusters (and therefore unmatchable)
+            return false;
+
+        } else {
+
+            // returns true if candidate is still in clusters (and therefore still matchable)
+            return true;
 
         }
 
@@ -175,7 +206,7 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
         for (Integer startTime : clusters.clustersWithCandidate(critUserID)) {
             
             // get all possible combinations of users
-            List<List<Candidate>> combinations = getCandidateCombinationsWith(matched, critUserID);
+            List<List<Candidate>> combinations = getCandidateCombinationsWith(clusters.getCluster(startTime), critUserID);
 
             // create groups for all these combinations
             for (List<Candidate> combination : combinations) {
@@ -187,7 +218,7 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
         } 
 
         CandidateGroup ideal = null;
-        Integer maxQuality = 0;
+        Float maxQuality = 0f;
 
         for (CandidateGroup candidateGroup : candidateGroups) {
             
@@ -251,17 +282,51 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
     }
 
-    private List<CandidateGroup> fitUnmatchable(List<CandidateGroup> groups, Candidate candidate) {
+
+    private void fitAllUnmatchable(List<CandidateGroup> candidateGroups) {
+
+        List<UUID> success = new ArrayList<>();
+        List<UUID> failure = new ArrayList<>();
+
+        for (Candidate unmatchableCandidate : unmatchable) {    
+
+            if (fitUnmatchable(candidateGroups, unmatchableCandidate)) {
+
+                success.add(unmatchableCandidate.getUserID());
+
+            } else {
+
+                failure.add(unmatchableCandidate.getUserID());
+
+            }
+
+        }
+
+        for (UUID failureID : failure) {
+            
+            userUnmatchableFinal(failureID);
+
+        }
+
+        for (UUID successID: success) {
+
+            userDochMatchable(successID);
+
+        }
+
+    }
+
+    private Boolean fitUnmatchable(List<CandidateGroup> groups, Candidate candidate) {
 
         // get empty list of potential groups
         List<CandidateGroup> potentialGroups = new ArrayList<>();
-        List<CandidateGroup> replacesGroups = new ArrayList<>();;
+        List<CandidateGroup> replacesGroups = new ArrayList<>();
 
         // Check for any groups that the user may fit into
         for (CandidateGroup group : groups) {
             
             // check if user shares a timeslot with group
-            if (candidate.getTimeslots().contains(group.getTimeslot())) {
+            if (candidate.getStartingTimes().contains(group.getTimeslot())) {
 
                 // create a new group with added member
                 potentialGroups.add(group.addMember(candidate));
@@ -278,7 +343,7 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
             CandidateGroup bestGroup = null;
             CandidateGroup replacesGroup = null;
-            Integer bestQuality = 0;
+            Float bestQuality = 0f;
 
             // for each group
             for (int i = 0; i < potentialGroups.size(); i++) {
@@ -302,24 +367,25 @@ public class ClusteringAlgorithm extends MatchingAlgorithm {
 
                 }
 
+            }
+
                 // remove replaced group
                 groups.remove(replacesGroup);
 
                 // add new group
                 groups.add(bestGroup);
 
-                userDochMatchable(candidate.getUserID());
+                // returns true if user was fit
+                return true;
 
-            }
 
         // if user does not fit into any groups
         } else {
 
-            userUnmatchableFinal(candidate.getUserID());
+            // returns false if user was not fit
+            return false;
 
         }
-
-        return groups;
 
     }
 

@@ -110,18 +110,17 @@ public class CandidateClusters {
 
     public List<UUID> removeCluster(Integer clusterID) {
 
-        List<UUID> removedUsers = new ArrayList<>();
+        // save the UUIDs that will be removed
+        List<UUID> removedIDs = clusters.get(clusterID)
+                                    .stream()
+                                    .map(Candidate::getUserID)
+                                    .collect(Collectors.toList());
 
-        for (Candidate candidate : clusters.get(clusterID)) {
+        // Remove entries from cluster
+        clusters.get(clusterID).removeAll(clusters.get(clusterID));
 
-            // remove entry and add the user ID to the list of removed users
-            if (removeEntry(candidate.getUserID(), clusterID)) {
-                removedUsers.add(candidate.getUserID());
-            }
-
-        }
-
-        return removedUsers;
+        // Return removed users
+        return removedIDs;
 
     }
 
