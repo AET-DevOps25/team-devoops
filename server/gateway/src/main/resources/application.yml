@@ -10,12 +10,12 @@ spring:
         - id: matching_route
           uri: http://meetatmensa-matching:80
           predicates:
-            - Path=/matching/**
+            - Path=/api/v2/matching/**
 
         - id: user_route
           uri: http://meetatmensa-user:80
           predicates:
-            - Path=/user/**
+            - Path=/api/v2/user/**
 
         - id: genai_route
           uri: http://meetatmensa-genai:80
