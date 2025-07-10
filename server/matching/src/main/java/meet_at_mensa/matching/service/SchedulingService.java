@@ -122,9 +122,27 @@ public class SchedulingService {
 
         System.out.println("Performing soft group health-check");
 
-        // runs a non-strict group health check for all groups today and tomorrow
-        matchingService.groupHealthCheck(LocalDate.now(), false);
-        matchingService.groupHealthCheck(LocalDate.now().plusDays(1), false);
+        try {
+
+            // runs a non-strict group health check for all groups today
+            matchingService.groupHealthCheck(LocalDate.now(), false);
+            
+        } catch (Exception e) {
+            
+            System.out.println("No groups scheduled for today");
+
+        }
+
+        try {
+
+            // runs a non-strict group health check for all groups tomorrow
+            matchingService.groupHealthCheck(LocalDate.now().plusDays(1), false);
+            
+        } catch (Exception e) {
+            
+            System.out.println("No groups scheduled for tomorrow");
+
+        }
 
     }
 
