@@ -1,11 +1,12 @@
 package meet_at_mensa.matching.service;
 
 import java.time.LocalDate;
-
 import org.openapitools.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import meet_at_mensa.matching.exception.RequestNotFoundException;
 
 @Service
 public class SchedulingService {
