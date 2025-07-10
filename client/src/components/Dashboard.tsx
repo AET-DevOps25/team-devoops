@@ -18,16 +18,17 @@ import {
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { matchesService } from '../services/matchesService';
 import { getMatchRequests, MatchRequest } from '../services/matchRequestService';
 import { Match, MatchesResponse } from '../types/matches';
 import { useAuth0 } from '@auth0/auth0-react';
+import RegisterProfileDialog from './RegisterProfileDialog';
+import { useAuthenticatedApi } from '../services/api';
 import { Link as RouterLink } from 'react-router-dom';
 
 const Dashboard = () => {
   const { user } = useAuth0();
-  const userId = user?.sub || '2c3821b8-1cdb-4b77-bcd8-a1da701e46aa'; // fallback to mock userId
 
   const [matches, setMatches] = useState<Match[]>([]);
   const [matchRequests, setMatchRequests] = useState<MatchRequest[]>([]);
@@ -41,24 +42,59 @@ const Dashboard = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
-  const theme = useTheme();
-  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const api = useAuthenticatedApi();
+  const apiRef = useRef(api);
+  apiRef.current = api;
+
+  const [userID, setUserID] = useState<string | null>(null);
+  const [showRegisterDialog, setShowRegisterDialog] = useState(false);
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!user?.sub || hasFetchedRef.current) return;
+
+      hasFetchedRef.current = true;
       setLoading(true);
       try {
-        // Use mock for now, replace with: await matchesService.getMatches(userId)
+        // First, get user ID
+        const userRes = await apiRef.current.get(`/api/v2/user/me/${user.sub}`);
+        const currentUserID = userRes.data.userID;
+        setUserID(currentUserID);
+        setShowRegisterDialog(false);
+        console.log('User ID:', userID);
+        console.log('Full user object:', user);
+        console.log('User email:', user?.email || 'No email found');
+
+        // Handle missing email
+        if (!user?.email) {
+          console.warn('User has no email address in Auth0 profile');
+        }
+
+        // Then fetch matches and requests
         const matchesRes: MatchesResponse = await matchesService.getMockMatches();
         setMatches(matchesRes.matches);
-        const requests = await getMatchRequests(userId);
-        setMatchRequests(requests);
+
+        if (currentUserID) {
+          const requests = await getMatchRequests(currentUserID);
+          setMatchRequests(requests);
+        }
+      } catch (err: any) {
+        if (err.response && err.response.status === 404) {
+          setShowRegisterDialog(true);
+        } else {
+          setUserID(null);
+        }
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
-  }, [userId]);
+  }, [user?.sub]); // Only depend on user.sub, not the entire user object
+
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
   // 1. Unanswered meetings (status SENT)
   const unansweredMatches = useMemo(() => matches.filter((m) => m.status === 'SENT'), [matches]);
@@ -183,6 +219,8 @@ const Dashboard = () => {
       </Box>
     );
   }
+
+  console.log(user);
 
   return (
     <Box>
@@ -615,6 +653,15 @@ const Dashboard = () => {
           </Grid>
         )}
       </Paper>
+      <RegisterProfileDialog
+        open={showRegisterDialog}
+        email={user?.email || ''}
+        authID={user?.sub || ''}
+        onSuccess={(newUserID) => {
+          setUserID(newUserID);
+          setShowRegisterDialog(false);
+        }}
+      />
     </Box>
   );
 };
