@@ -29,7 +29,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.client.entrypoints=websecure
-      - traefik.http.routers.client.rule=Host(`client.${EC2_PUBLIC_IP}.nip.io`)
+      - traefik.http.routers.client.rule=Host(`{EC2_PUBLIC_IP}.client.nip.io`)
       - traefik.http.routers.client.tls.certresolver=letsencrypt
       - traefik.http.services.client.loadbalancer.server.port=80
       - traefik.http.middlewares.client-compress.compress=true
