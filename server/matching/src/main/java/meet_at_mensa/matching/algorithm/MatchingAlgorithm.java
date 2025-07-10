@@ -2,23 +2,119 @@ package meet_at_mensa.matching.algorithm;
 
 import org.openapitools.model.MatchRequestCollection;
 import org.openapitools.model.UserCollection;
+import org.openapitools.model.User;
 
-public class MatchingAlgorithm {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.openapitools.model.MatchRequest;
+
+
+public abstract class MatchingAlgorithm {
     
-    private UserCollection users;
-    private MatchRequestCollection requests;
+    // List of Candidates
+    protected List<Candidate> unmatched;
+    protected List<Candidate> matched;
+    protected List<Candidate> unmatchable;
+    protected List<Candidate> unmatchableFinal;
 
+    // Constructor
     public MatchingAlgorithm(UserCollection users, MatchRequestCollection requests) {
-        this.users = users;
-        this.requests = requests;
+
+        // init the lists
+        unmatched = new ArrayList<>();
+        matched = new ArrayList<>();
+        unmatchable = new ArrayList<>();
+        unmatchableFinal = new ArrayList<>();
+
+        // find the matching User-Request pair
+        for (MatchRequest request : requests.getRequests()) {
+            for (User user : users.getUsers()) {
+
+                // Add matching User-Request pair to candidates
+                if (request.getUserID() == user.getUserID()){
+                    unmatched.add(new Candidate(user, request));
+                    break;
+                }
+            }
+        }
     }
 
-    public MatchingSolution generateSolution() {
 
-        // TODO: implement matching algorithim
-        return null;
-        
+    // Generate a matching solution for the list of candidates
+    public abstract MatchingSolution generateSolution();
+
+    protected Boolean userUnmatchable(UUID userID) {
+
+        for (Candidate candidate : unmatched) {
+            
+            if (candidate.getUserID() == userID) {
+
+                unmatchable.add(candidate);
+                unmatched.remove(candidate);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
     }
 
+    protected Boolean userUnmatchableFinal(UUID userID) {
+
+        for (Candidate candidate : unmatchable) {
+            
+            if (candidate.getUserID() == userID) {
+
+                unmatchableFinal.add(candidate);
+                unmatchable.remove(candidate);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    protected Boolean userDochMatchable(UUID userID) {
+
+        for (Candidate candidate : unmatchable) {
+            
+            if (candidate.getUserID() == userID) {
+
+                matched.add(candidate);
+                unmatchable.remove(candidate);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
+
+    protected Boolean userMatched(UUID userID) {
+
+        for (Candidate candidate : unmatched) {
+            
+            if (candidate.getUserID() == userID) {
+
+                matched.add(candidate);
+                unmatched.remove(candidate);
+                return true;
+
+            }
+
+        }
+
+        return false;
+
+    }
 
 }
