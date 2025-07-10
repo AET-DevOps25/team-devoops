@@ -7,26 +7,26 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  CircularProgress,
   SelectChangeEvent,
   Grid,
+  Alert,
+  Skeleton,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import {
-  getMatchRequests,
+  useMatchRequestService,
   MatchRequest,
-  deleteMatchRequest,
-  submitMatchRequest,
   SubmitMatchRequest,
 } from '../services/matchRequestService';
 import MatchRequestCard from './MatchRequestCard';
 import CreateMatchRequestDialog from './CreateMatchRequestDialog';
+import { useUserID } from '../contexts/UserIDContext';
 
 type SortOption = 'date' | 'status' | 'location';
 
-const DUMMY_USER_ID = 'dummy-user-id';
-
 const MatchRequests = () => {
+  const { getMatchRequests, deleteMatchRequest, submitMatchRequest } = useMatchRequestService();
+  const userID = useUserID();
   const [sortBy, setSortBy] = React.useState<SortOption>('date');
   const [matchRequests, setMatchRequests] = useState<MatchRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,9 +38,10 @@ const MatchRequests = () => {
   };
 
   const fetchMatchRequests = async () => {
+    if (!userID) return;
     try {
       setLoading(true);
-      const data = await getMatchRequests(DUMMY_USER_ID);
+      const data = await getMatchRequests(userID);
       setMatchRequests(data);
       setError(null);
     } catch (err) {
@@ -52,8 +53,8 @@ const MatchRequests = () => {
   };
 
   useEffect(() => {
-    fetchMatchRequests();
-  }, []);
+    if (userID) fetchMatchRequests();
+  }, [userID]);
 
   const handleDelete = async (requestId: string) => {
     try {
@@ -76,6 +77,47 @@ const MatchRequests = () => {
       console.error('Error creating match request:', err);
     }
   };
+
+  // Skeleton component for match request cards
+  const MatchRequestCardSkeleton = () => (
+    <Box
+      sx={{
+        border: 1,
+        borderColor: 'divider',
+        borderRadius: 2,
+        p: 2,
+        height: '200px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}
+    >
+      {/* Header with status chip */}
+      <Box
+        sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}
+      >
+        <Skeleton variant="text" width="40%" height={20} />
+        <Skeleton variant="rectangular" width={60} height={24} sx={{ borderRadius: 1 }} />
+      </Box>
+
+      {/* Date and time */}
+      <Box sx={{ mb: 2 }}>
+        <Skeleton variant="text" width="60%" height={16} sx={{ mb: 1 }} />
+        <Skeleton variant="text" width="50%" height={16} />
+      </Box>
+
+      {/* Location */}
+      <Box sx={{ mb: 2 }}>
+        <Skeleton variant="text" width="70%" height={16} />
+      </Box>
+
+      {/* Action buttons */}
+      <Box sx={{ display: 'flex', gap: 1, mt: 'auto' }}>
+        <Skeleton variant="rectangular" width="50%" height={32} sx={{ borderRadius: 1 }} />
+        <Skeleton variant="rectangular" width="50%" height={32} sx={{ borderRadius: 1 }} />
+      </Box>
+    </Box>
+  );
 
   const sortedMatchRequests = useMemo(() => {
     return [...matchRequests].sort((a, b) => {
@@ -132,13 +174,19 @@ const MatchRequests = () => {
       </Box>
 
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-          <CircularProgress />
-        </Box>
+        <Grid container spacing={3} justifyContent="flex-start">
+          {[1, 2, 3, 4, 5, 6].map((index) => (
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3} key={index}>
+              <MatchRequestCardSkeleton />
+            </Grid>
+          ))}
+        </Grid>
       ) : error ? (
-        <Typography color="error" sx={{ p: 2 }}>
-          {error}
-        </Typography>
+        <Box>
+          <Alert severity="error" sx={{ mt: 1 }}>
+            {error}
+          </Alert>
+        </Box>
       ) : matchRequests.length === 0 ? (
         <Typography sx={{ p: 2, textAlign: 'center' }}>
           No match requests found. Create your first match request to get started!

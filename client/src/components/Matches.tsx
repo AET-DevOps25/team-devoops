@@ -3,7 +3,6 @@ import {
   Typography,
   Paper,
   Box,
-  CircularProgress,
   Alert,
   Card,
   CardContent,
@@ -19,34 +18,60 @@ import {
   ListItem,
   ListItemText,
   Snackbar,
+  Skeleton,
 } from '@mui/material';
-import { matchesService, MatchesServiceError } from '../services/matchesService';
+import { useMatchesService, MatchesServiceError } from '../services/matchesService';
 import { MatchesResponse, Match, MatchStatus, ConversationStarter } from '../types/matches';
+import { useMatchActions } from '../hooks/useMatchActions';
+import MatchActionDialogs from './MatchActionDialogs';
+import { useUserID } from '../contexts/UserIDContext';
 
 const Matches = () => {
+  const { getMatches } = useMatchesService();
+  const userID = useUserID();
   const [matches, setMatches] = useState<MatchesResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedStarters, setSelectedStarters] = useState<ConversationStarter[]>([]);
-  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
-  const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null);
-  const [rejecting, setRejecting] = useState(false);
-  const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
-  const [accepting, setAccepting] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+  const {
+    openAcceptDialog,
+    openRejectDialog,
+    acceptDialogOpen,
+    rejectDialogOpen,
+    handleConfirmAccept,
+    handleConfirmReject,
+    handleCloseAcceptDialog,
+    handleCloseRejectDialog,
+    snackbarOpen,
+    snackbarMessage,
+    snackbarSeverity,
+    handleCloseSnackbar,
+    accepting,
+    rejecting,
+  } = useMatchActions({
+    onMatchStatusChange: (matchID, status) => {
+      setMatches((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          matches: prev.matches.map((m) => (m.matchID === matchID ? { ...m, status } : m)),
+        };
+      });
+    },
+  });
 
   useEffect(() => {
     const fetchMatches = async () => {
+      if (!userID) return;
+
       try {
         setLoading(true);
         setError(null);
 
-        // For development, use mock data
-        // In production, replace with: const data = await matchesService.getMatches(userId);
-        const data = await matchesService.getMockMatches();
+        // Fetch matches data
+        const data = await getMatches(userID);
         setMatches(data);
       } catch (err) {
         const serviceError = err as MatchesServiceError;
@@ -57,7 +82,7 @@ const Matches = () => {
     };
 
     fetchMatches();
-  }, []);
+  }, [userID]);
 
   const getStatusColor = (status: Match['status']) => {
     switch (status) {
@@ -112,98 +137,6 @@ const Matches = () => {
     return times[timeSlot - 1] || 'Unknown time';
   };
 
-  const handleAccept = (matchId: string) => {
-    setSelectedMatchId(matchId);
-    setAcceptDialogOpen(true);
-  };
-
-  const handleConfirmAccept = async () => {
-    if (!selectedMatchId) return;
-
-    try {
-      setAccepting(true);
-
-      // For development, simulate API call
-      // In production, replace with: await matchesService.acceptMatch(selectedMatchId);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
-
-      // Update local state to reflect the acceptance
-      if (matches) {
-        const updatedMatches = {
-          ...matches,
-          matches: matches.matches.map((match) =>
-            match.matchID === selectedMatchId ? { ...match, status: 'CONFIRMED' as const } : match
-          ),
-        };
-        setMatches(updatedMatches);
-      }
-
-      setSnackbarMessage('Match accepted successfully');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    } catch (err) {
-      const serviceError = err as MatchesServiceError;
-      setSnackbarMessage(serviceError.message || 'Failed to accept match');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    } finally {
-      setAccepting(false);
-      setAcceptDialogOpen(false);
-      setSelectedMatchId(null);
-    }
-  };
-
-  const handleCloseAcceptDialog = () => {
-    setAcceptDialogOpen(false);
-    setSelectedMatchId(null);
-  };
-
-  const handleReject = (matchId: string) => {
-    setSelectedMatchId(matchId);
-    setRejectDialogOpen(true);
-  };
-
-  const handleConfirmReject = async () => {
-    if (!selectedMatchId) return;
-
-    try {
-      setRejecting(true);
-
-      // For development, simulate API call
-      // In production, replace with: await matchesService.rejectMatch(selectedMatchId);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
-
-      // Update local state to reflect the rejection
-      if (matches) {
-        const updatedMatches = {
-          ...matches,
-          matches: matches.matches.map((match) =>
-            match.matchID === selectedMatchId ? { ...match, status: 'REJECTED' as const } : match
-          ),
-        };
-        setMatches(updatedMatches);
-      }
-
-      setSnackbarMessage('Match rejected successfully');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    } catch (err) {
-      const serviceError = err as MatchesServiceError;
-      setSnackbarMessage(serviceError.message || 'Failed to reject match');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    } finally {
-      setRejecting(false);
-      setRejectDialogOpen(false);
-      setSelectedMatchId(null);
-    }
-  };
-
-  const handleCloseRejectDialog = () => {
-    setRejectDialogOpen(false);
-    setSelectedMatchId(null);
-  };
-
   const handleViewAllStarters = (starters: ConversationStarter[]) => {
     setSelectedStarters(starters);
     setDialogOpen(true);
@@ -214,24 +147,49 @@ const Matches = () => {
     setSelectedStarters([]);
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
+  // Skeleton component for match cards
+  const MatchCardSkeleton = () => (
+    <Card sx={{ height: '280px', display: 'flex', flexDirection: 'column' }}>
+      <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={1.5}>
+          <Skeleton variant="text" width="60%" height={20} />
+          <Skeleton variant="rectangular" width={60} height={20} sx={{ borderRadius: 1 }} />
+        </Box>
 
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="300px">
-        <CircularProgress size="small" />
-      </Box>
-    );
-  }
+        {/* Accept/Reject buttons skeleton */}
+        <Box display="flex" gap={1.5} mb={1.5}>
+          <Skeleton variant="rectangular" width="50%" height={32} sx={{ borderRadius: 2 }} />
+          <Skeleton variant="rectangular" width="50%" height={32} sx={{ borderRadius: 2 }} />
+        </Box>
+
+        {/* Match details skeleton */}
+        <Box mb={1.5}>
+          <Skeleton variant="text" width="40%" height={16} sx={{ mb: 0.5 }} />
+          <Skeleton variant="text" width="50%" height={16} sx={{ mb: 0.5 }} />
+          <Box display="flex" alignItems="center" gap={1}>
+            <Skeleton variant="text" width="30%" height={16} />
+            <Skeleton variant="rectangular" width={80} height={18} sx={{ borderRadius: 1 }} />
+          </Box>
+        </Box>
+
+        <Divider sx={{ my: 1.5 }} />
+
+        {/* Conversation starters skeleton */}
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <Skeleton variant="text" width="50%" height={16} sx={{ mb: 1 }} />
+          <Box sx={{ flex: 1 }}>
+            <Skeleton variant="text" width="90%" height={16} sx={{ mb: 0.5 }} />
+            <Skeleton variant="text" width="85%" height={16} sx={{ mb: 0.5 }} />
+            <Skeleton variant="text" width="30%" height={16} />
+          </Box>
+        </Box>
+      </CardContent>
+    </Card>
+  );
 
   if (error) {
     return (
       <Box>
-        <Typography variant="h5" component="h1" gutterBottom>
-          Matches
-        </Typography>
         <Alert severity="error" sx={{ mt: 1 }}>
           {error}
         </Alert>
@@ -241,11 +199,15 @@ const Matches = () => {
 
   return (
     <Box>
-      <Typography variant="h5" component="h1" gutterBottom>
-        Matches
-      </Typography>
-
-      {matches?.matches.length === 0 ? (
+      {loading ? (
+        <Grid container spacing={2}>
+          {[1, 2, 3].map((index) => (
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <MatchCardSkeleton />
+            </Grid>
+          ))}
+        </Grid>
+      ) : matches?.matches.length === 0 ? (
         <Paper sx={{ p: 2, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
             No matches found. Check back later for new lunch opportunities!
@@ -283,7 +245,7 @@ const Matches = () => {
                     <Box display="flex" gap={1.5} mb={1.5}>
                       <Button
                         variant="outlined"
-                        onClick={() => handleReject(match.matchID)}
+                        onClick={() => openRejectDialog(match.matchID)}
                         size="small"
                         sx={{
                           borderRadius: '16px',
@@ -303,7 +265,7 @@ const Matches = () => {
                       </Button>
                       <Button
                         variant="outlined"
-                        onClick={() => handleAccept(match.matchID)}
+                        onClick={() => openAcceptDialog(match.matchID)}
                         size="small"
                         sx={{
                           borderRadius: '16px',
@@ -456,47 +418,16 @@ const Matches = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Accept Confirmation Dialog */}
-      <Dialog open={acceptDialogOpen} onClose={handleCloseAcceptDialog}>
-        <DialogTitle>Accept Match</DialogTitle>
-        <DialogContent>
-          Are you sure you want to accept this lunch match? This action cannot be undone.
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseAcceptDialog} disabled={accepting}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleConfirmAccept}
-            color="success"
-            variant="contained"
-            disabled={accepting}
-          >
-            {accepting ? <CircularProgress size={16} /> : 'Accept'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Reject Confirmation Dialog */}
-      <Dialog open={rejectDialogOpen} onClose={handleCloseRejectDialog}>
-        <DialogTitle>Reject Match</DialogTitle>
-        <DialogContent>
-          Are you sure you want to reject this lunch match? This action cannot be undone.
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseRejectDialog} disabled={rejecting}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleConfirmReject}
-            color="error"
-            variant="contained"
-            disabled={rejecting}
-          >
-            {rejecting ? <CircularProgress size={16} /> : 'Reject'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <MatchActionDialogs
+        acceptDialogOpen={acceptDialogOpen}
+        rejectDialogOpen={rejectDialogOpen}
+        handleConfirmAccept={handleConfirmAccept}
+        handleConfirmReject={handleConfirmReject}
+        handleCloseAcceptDialog={handleCloseAcceptDialog}
+        handleCloseRejectDialog={handleCloseRejectDialog}
+        accepting={accepting}
+        rejecting={rejecting}
+      />
 
       {/* Snackbar for notifications */}
       <Snackbar

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Button, Box } from '@mui/material';
+import { Button, Box, useTheme } from '@mui/material';
 import mensaLogo from '../assets/meet@mensa_transparent.svg';
 
 const Login: React.FC = () => {
   const { loginWithRedirect } = useAuth0();
+  const theme = useTheme();
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-800">
@@ -38,10 +39,10 @@ const Login: React.FC = () => {
             fontWeight: 600,
             textTransform: 'none',
             borderRadius: '8px',
-            backgroundColor: '#ffffff',
-            color: '#374151',
+            backgroundColor: theme.palette.mode === 'dark' ? '#374151' : '#f3f4f6',
+            color: theme.palette.mode === 'dark' ? '#ffffff' : '#374151',
             '&:hover': {
-              backgroundColor: '#f3f4f6',
+              backgroundColor: theme.palette.mode === 'dark' ? '#4b5563' : '#e5e7eb',
             },
           }}
         >

@@ -4,102 +4,98 @@ import {
   Box,
   Chip,
   Grid,
-  CircularProgress,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Snackbar,
   Alert,
   useTheme,
   useMediaQuery,
   Link,
+  Skeleton,
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useEffect, useState, useMemo, useRef } from 'react';
-import { matchesService } from '../services/matchesService';
-import { getMatchRequests, MatchRequest } from '../services/matchRequestService';
+import { useEffect, useState, useMemo } from 'react';
+import { useMatchesService } from '../services/matchesService';
+import { useMatchRequestService } from '../services/matchRequestService';
+import { MatchRequest } from '../services/matchRequestService';
 import { Match, MatchesResponse } from '../types/matches';
 import { useAuth0 } from '@auth0/auth0-react';
 import RegisterProfileDialog from './RegisterProfileDialog';
-import { useAuthenticatedApi } from '../services/api';
+import { useUserID } from '../contexts/UserIDContext';
 import { Link as RouterLink } from 'react-router-dom';
+import { useMatchActions } from '../hooks/useMatchActions';
+import MatchActionDialogs from './MatchActionDialogs';
 
 const Dashboard = () => {
   const { user } = useAuth0();
+  const userID = useUserID();
+  const { getMatchRequests } = useMatchRequestService();
+  const { getMatches } = useMatchesService();
 
   const [matches, setMatches] = useState<Match[]>([]);
   const [matchRequests, setMatchRequests] = useState<MatchRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
-  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
-  const [selectedMatchId, setSelectedMatchId] = useState<string | null>(null);
-  const [accepting, setAccepting] = useState(false);
-  const [rejecting, setRejecting] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-
-  const api = useAuthenticatedApi();
-  const apiRef = useRef(api);
-  apiRef.current = api;
-
-  const [userID, setUserID] = useState<string | null>(null);
   const [showRegisterDialog, setShowRegisterDialog] = useState(false);
-  const hasFetchedRef = useRef(false);
+
+  const {
+    openAcceptDialog,
+    openRejectDialog,
+    acceptDialogOpen,
+    rejectDialogOpen,
+    handleConfirmAccept,
+    handleConfirmReject,
+    handleCloseAcceptDialog,
+    handleCloseRejectDialog,
+    snackbarOpen,
+    snackbarMessage,
+    snackbarSeverity,
+    handleCloseSnackbar,
+    accepting,
+    rejecting,
+  } = useMatchActions({
+    onMatchStatusChange: (matchID, status) => {
+      setMatches((prev) => prev.map((m) => (m.matchID === matchID ? { ...m, status } : m)));
+    },
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!user?.sub || hasFetchedRef.current) return;
+      if (!userID) return;
 
-      hasFetchedRef.current = true;
       setLoading(true);
       try {
-        // First, get user ID
-        const userRes = await apiRef.current.get(`/api/v2/user/me/${user.sub}`);
-        const currentUserID = userRes.data.userID;
-        setUserID(currentUserID);
-        setShowRegisterDialog(false);
-        console.log('User ID:', userID);
-        console.log('Full user object:', user);
-        console.log('User email:', user?.email || 'No email found');
-
-        // Handle missing email
-        if (!user?.email) {
-          console.warn('User has no email address in Auth0 profile');
-        }
-
-        // Then fetch matches and requests
-        const matchesRes: MatchesResponse = await matchesService.getMockMatches();
+        // Fetch matches and requests
+        const matchesRes: MatchesResponse = await getMatches(userID);
         setMatches(matchesRes.matches);
 
-        if (currentUserID) {
-          const requests = await getMatchRequests(currentUserID);
-          setMatchRequests(requests);
-        }
+        const requests = await getMatchRequests(userID);
+        setMatchRequests(requests);
       } catch (err: any) {
-        if (err.response && err.response.status === 404) {
-          setShowRegisterDialog(true);
-        } else {
-          setUserID(null);
-        }
+        console.error('Error fetching data:', err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [user?.sub]); // Only depend on user.sub, not the entire user object
+  }, [userID]);
+
+  // Show register dialog when userID is null and user is authenticated
+  useEffect(() => {
+    if (user && !userID) {
+      setShowRegisterDialog(true);
+    } else {
+      setShowRegisterDialog(false);
+    }
+  }, [user, userID]);
 
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // 1. Unanswered meetings (status SENT)
+  // Unanswered meetings (status SENT)
   const unansweredMatches = useMemo(() => matches.filter((m) => m.status === 'SENT'), [matches]);
 
-  // 2. Upcoming meetings (status CONFIRMED, within next 2 days)
+  // Upcoming meetings (status CONFIRMED, within next 2 days)
   const upcomingMatches = useMemo(() => {
     const now = new Date();
     const in2Days = new Date(now);
@@ -111,10 +107,9 @@ const Dashboard = () => {
     });
   }, [matches]);
 
-  // 3. Last 5 pending match requests
+  // Last 5 match requests
   const last5PendingRequests = useMemo(() => {
     return matchRequests
-      .filter((r) => r.status === 'PENDING')
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, 5);
   }, [matchRequests]);
@@ -149,78 +144,79 @@ const Dashboard = () => {
     return times[timeSlot - 1] || 'Unknown time';
   };
 
-  // Accept/Reject logic
-  const handleAccept = (matchId: string) => {
-    setSelectedMatchId(matchId);
-    setAcceptDialogOpen(true);
-  };
-  const handleConfirmAccept = async () => {
-    if (!selectedMatchId) return;
-    try {
-      setAccepting(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-      setMatches((prev) =>
-        prev.map((m) => (m.matchID === selectedMatchId ? { ...m, status: 'CONFIRMED' } : m))
-      );
-      setSnackbarMessage('Match accepted successfully');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    } catch (err) {
-      setSnackbarMessage('Failed to accept match');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    } finally {
-      setAccepting(false);
-      setAcceptDialogOpen(false);
-      setSelectedMatchId(null);
-    }
-  };
-  const handleReject = (matchId: string) => {
-    setSelectedMatchId(matchId);
-    setRejectDialogOpen(true);
-  };
-  const handleConfirmReject = async () => {
-    if (!selectedMatchId) return;
-    try {
-      setRejecting(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-      setMatches((prev) =>
-        prev.map((m) => (m.matchID === selectedMatchId ? { ...m, status: 'REJECTED' } : m))
-      );
-      setSnackbarMessage('Match rejected successfully');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    } catch (err) {
-      setSnackbarMessage('Failed to reject match');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    } finally {
-      setRejecting(false);
-      setRejectDialogOpen(false);
-      setSelectedMatchId(null);
-    }
-  };
-  const handleCloseAcceptDialog = () => {
-    setAcceptDialogOpen(false);
-    setSelectedMatchId(null);
-  };
-  const handleCloseRejectDialog = () => {
-    setRejectDialogOpen(false);
-    setSelectedMatchId(null);
-  };
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
-
-  if (loading) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="300px">
-        <CircularProgress />
+  // Skeleton component for match boxes
+  const MatchBoxSkeleton = () => (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        p: 1.5,
+        borderRadius: 2,
+        bgcolor: 'background.paper',
+        minHeight: 130,
+        height: '100%',
+        boxShadow: 1,
+      }}
+    >
+      <Skeleton variant="text" width="60%" height={20} />
+      <Skeleton variant="text" width="40%" height={16} />
+      <Skeleton variant="text" width="50%" height={16} />
+      <Box sx={{ flexGrow: 1 }} />
+      <Box sx={{ display: 'flex', gap: 1, width: '100%', mt: 'auto' }}>
+        <Skeleton variant="rectangular" width="50%" height={32} sx={{ borderRadius: 1 }} />
+        <Skeleton variant="rectangular" width="50%" height={32} sx={{ borderRadius: 1 }} />
       </Box>
-    );
-  }
+    </Box>
+  );
 
-  console.log(user);
+  // Skeleton component for upcoming match boxes
+  const UpcomingMatchBoxSkeleton = () => (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: { xs: 'flex-start', md: 'center' },
+        justifyContent: 'space-between',
+        gap: 2,
+        p: 1.5,
+        borderRadius: 2,
+        bgcolor: 'background.paper',
+        height: '100%',
+        boxShadow: 1,
+      }}
+    >
+      <Skeleton variant="text" width="60%" height={20} />
+      <Skeleton variant="text" width="40%" height={16} />
+      <Skeleton variant="text" width="50%" height={16} />
+      <Skeleton variant="rectangular" width={80} height={24} sx={{ borderRadius: 1 }} />
+    </Box>
+  );
+
+  // Skeleton component for match request boxes
+  const MatchRequestBoxSkeleton = () => (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        p: 1.5,
+        borderRadius: 2,
+        bgcolor: 'background.paper',
+        minHeight: 110,
+        height: '100%',
+        boxShadow: 1,
+      }}
+    >
+      <Skeleton variant="text" width="60%" height={20} />
+      <Skeleton variant="text" width="40%" height={16} />
+      <Skeleton variant="text" width="50%" height={16} />
+      <Box sx={{ flexGrow: 1 }} />
+      <Skeleton variant="rectangular" width={60} height={20} sx={{ borderRadius: 1 }} />
+    </Box>
+  );
 
   return (
     <Box>
@@ -245,7 +241,15 @@ const Dashboard = () => {
                 View All Matches
               </Link>
             </Box>
-            {unansweredMatches.length === 0 ? (
+            {loading ? (
+              <Grid container spacing={2}>
+                {[1].map((index) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                    <MatchBoxSkeleton />
+                  </Grid>
+                ))}
+              </Grid>
+            ) : unansweredMatches.length === 0 ? (
               <Typography variant="body2">No unanswered meetings.</Typography>
             ) : (
               <Grid container spacing={2}>
@@ -259,7 +263,7 @@ const Dashboard = () => {
                         justifyContent: 'space-between',
                         p: 1.5,
                         borderRadius: 2,
-                        bgcolor: 'grey.100',
+                        bgcolor: 'background.paper',
                         minHeight: 130,
                         height: '100%',
                         boxShadow: 1,
@@ -289,7 +293,7 @@ const Dashboard = () => {
                           color="error"
                           size="small"
                           startIcon={<CancelIcon />}
-                          onClick={() => handleReject(match.matchID)}
+                          onClick={() => openRejectDialog(match.matchID)}
                           disabled={rejecting || accepting}
                           sx={{ minWidth: 70, flex: 1 }}
                         >
@@ -300,7 +304,7 @@ const Dashboard = () => {
                           color="success"
                           size="small"
                           startIcon={<CheckCircleIcon />}
-                          onClick={() => handleAccept(match.matchID)}
+                          onClick={() => openAcceptDialog(match.matchID)}
                           disabled={accepting || rejecting}
                           sx={{ minWidth: 70, flex: 1 }}
                         >
@@ -331,7 +335,15 @@ const Dashboard = () => {
                 View All Matches
               </Link>
             </Box>
-            {upcomingMatches.length === 0 ? (
+            {loading ? (
+              <Grid container spacing={2}>
+                {[1, 2].map((index) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                    <UpcomingMatchBoxSkeleton />
+                  </Grid>
+                ))}
+              </Grid>
+            ) : upcomingMatches.length === 0 ? (
               <Typography variant="body2">No upcoming meetings.</Typography>
             ) : (
               <Grid container spacing={2}>
@@ -346,7 +358,7 @@ const Dashboard = () => {
                         gap: 2,
                         p: 1.5,
                         borderRadius: 2,
-                        bgcolor: 'grey.100',
+                        bgcolor: 'background.paper',
                         minHeight: 110,
                         height: '100%',
                         boxShadow: 1,
@@ -409,7 +421,15 @@ const Dashboard = () => {
                   View All Matches
                 </Link>
               </Box>
-              {unansweredMatches.length === 0 ? (
+              {loading ? (
+                <Grid container spacing={2}>
+                  {[1].map((index) => (
+                    <Grid item xs={12} sm={6} md={12} lg={12} key={index}>
+                      <MatchBoxSkeleton />
+                    </Grid>
+                  ))}
+                </Grid>
+              ) : unansweredMatches.length === 0 ? (
                 <Typography variant="body2">No unanswered meetings.</Typography>
               ) : (
                 <Grid container spacing={2}>
@@ -423,7 +443,7 @@ const Dashboard = () => {
                           justifyContent: 'space-between',
                           p: 1.5,
                           borderRadius: 2,
-                          bgcolor: 'grey.100',
+                          bgcolor: 'background.paper',
                           minHeight: 130,
                           height: '100%',
                           boxShadow: 1,
@@ -453,7 +473,7 @@ const Dashboard = () => {
                             color="error"
                             size="small"
                             startIcon={<CancelIcon />}
-                            onClick={() => handleReject(match.matchID)}
+                            onClick={() => openRejectDialog(match.matchID)}
                             disabled={rejecting || accepting}
                             sx={{ minWidth: 70, flex: 1 }}
                           >
@@ -464,7 +484,7 @@ const Dashboard = () => {
                             color="success"
                             size="small"
                             startIcon={<CheckCircleIcon />}
-                            onClick={() => handleAccept(match.matchID)}
+                            onClick={() => openAcceptDialog(match.matchID)}
                             disabled={accepting || rejecting}
                             sx={{ minWidth: 70, flex: 1 }}
                           >
@@ -505,7 +525,15 @@ const Dashboard = () => {
                   View All Matches
                 </Link>
               </Box>
-              {upcomingMatches.length === 0 ? (
+              {loading ? (
+                <Grid container spacing={2}>
+                  {[1, 2].map((index) => (
+                    <Grid item xs={12} sm={6} md={12} lg={12} key={index}>
+                      <UpcomingMatchBoxSkeleton />
+                    </Grid>
+                  ))}
+                </Grid>
+              ) : upcomingMatches.length === 0 ? (
                 <Typography variant="body2">No upcoming meetings.</Typography>
               ) : (
                 <Grid container spacing={2}>
@@ -520,7 +548,7 @@ const Dashboard = () => {
                           gap: 2,
                           p: 1.5,
                           borderRadius: 2,
-                          bgcolor: 'grey.100',
+                          bgcolor: 'background.paper',
                           height: '100%',
                           boxShadow: 1,
                         }}
@@ -558,32 +586,16 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       )}
-      {/* Accept Dialog */}
-      <Dialog open={acceptDialogOpen} onClose={handleCloseAcceptDialog}>
-        <DialogTitle>Accept Match</DialogTitle>
-        <DialogContent>Are you sure you want to accept this match?</DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseAcceptDialog} disabled={accepting}>
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmAccept} color="success" disabled={accepting} autoFocus>
-            {accepting ? 'Accepting...' : 'Accept'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* Reject Dialog */}
-      <Dialog open={rejectDialogOpen} onClose={handleCloseRejectDialog}>
-        <DialogTitle>Reject Match</DialogTitle>
-        <DialogContent>Are you sure you want to reject this match?</DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseRejectDialog} disabled={rejecting}>
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmReject} color="error" disabled={rejecting} autoFocus>
-            {rejecting ? 'Rejecting...' : 'Reject'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <MatchActionDialogs
+        acceptDialogOpen={acceptDialogOpen}
+        rejectDialogOpen={rejectDialogOpen}
+        handleConfirmAccept={handleConfirmAccept}
+        handleConfirmReject={handleConfirmReject}
+        handleCloseAcceptDialog={handleCloseAcceptDialog}
+        handleCloseRejectDialog={handleCloseRejectDialog}
+        accepting={accepting}
+        rejecting={rejecting}
+      />
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
@@ -611,7 +623,15 @@ const Dashboard = () => {
             View All Match Requests
           </Link>
         </Box>
-        {last5PendingRequests.length === 0 ? (
+        {loading ? (
+          <Grid container spacing={2}>
+            {[1, 2, 3].map((index) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                <MatchRequestBoxSkeleton />
+              </Grid>
+            ))}
+          </Grid>
+        ) : last5PendingRequests.length === 0 ? (
           <Typography variant="body2">No pending match requests.</Typography>
         ) : (
           <Grid container spacing={2}>
@@ -625,7 +645,7 @@ const Dashboard = () => {
                     justifyContent: 'space-between',
                     p: 1.5,
                     borderRadius: 2,
-                    bgcolor: 'grey.100',
+                    bgcolor: 'background.paper',
                     minHeight: 110,
                     height: '100%',
                     boxShadow: 1,
@@ -657,8 +677,7 @@ const Dashboard = () => {
         open={showRegisterDialog}
         email={user?.email || ''}
         authID={user?.sub || ''}
-        onSuccess={(newUserID) => {
-          setUserID(newUserID);
+        onSuccess={() => {
           setShowRegisterDialog(false);
         }}
       />
