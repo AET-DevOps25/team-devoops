@@ -2,19 +2,19 @@
 # It defines the services, their images, build context, and ports.
 
 services:
-  gateway-service:
+  meetatmensa-gateway:
     build: ../../server/gateway
     container_name: meetatmensa-gateway
     ports:
       - "8080:80"
     depends_on:
-      - matching-service
-      - user-service
-      - genai-service
+      - meetatmensa-matching
+      - meetatmensa-user
+      - meetatmensa-genai
     networks:
       - backend
 
-  matching-service:
+  meetatmensa-matching:
     build: ../../server/matching
     container_name: meetatmensa-matching
     expose:
@@ -24,7 +24,7 @@ services:
     networks:
       - backend
 
-  user-service:
+  meetatmensa-user:
     build: ../../server/user
     container_name: meetatmensa-user
     expose:
@@ -34,7 +34,7 @@ services:
     networks:
       - backend
 
-  genai-service:
+  meetatmensa-genai:
     build: ../../server/genai
     container_name: meetatmensa-genai
     expose:
@@ -42,8 +42,11 @@ services:
     networks:
       - backend
 
-  client-service:
-    build: ../../client
+  meetatmensa-client:
+    build: 
+      context: ../../client
+      args:
+        VITE_API_BASE_URL: "http://localhost:8080"
     container_name: meetatmensa-client
     ports:
       - "80:80"
