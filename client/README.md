@@ -1,36 +1,62 @@
 # Meet@Mensa Client
 
-A React application built with Vite, featuring ESLint and Prettier for code quality, and Jest with React Testing Library for testing.
+This is the React frontend for the Meet@Mensa application.
 
-## Local Development
-
-1. Install dependencies:
+## Development
 
 ```bash
 npm install
-```
-
-2. Start the development server:
-
-```bash
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`
+The development server will start on port 3000.
 
-## Docker
+## Environment Configuration
 
-Build and run the application using Docker:
+### Local Development
 
-```
-# Build the image
-docker build -t ghcr.io/aet-devops25/team-devoops/client .
+Copy the example environment file and customize it:
 
-# Push the image to GHCR (latest tag by default, access needed)
-docker push ghcr.io/aet-devops25/team-devoops/client
-
-# Run the container
-docker run -p 80:80 ghcr.io/aet-devops25/team-devoops/client
+```bash
+cp env.example .env.local
 ```
 
-The application will be available at `http://localhost:80`
+Then edit `.env.local` with your local settings:
+
+```
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+### Docker Compose Deployment
+
+The API base URL is configured in `deployment/docker/compose.yml`:
+
+```yaml
+client-service:
+  build:
+    context: ../../client
+    args:
+      VITE_API_BASE_URL: 'http://localhost:8080'
+```
+
+### Kubernetes Deployment
+
+Environment variables are configured in `deployment/k8s/charts/client/values.yaml`:
+
+```yaml
+env:
+  VITE_API_BASE_URL: 'http://gateway-service:80'
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Testing
+
+```bash
+npm test
+npm run test:e2e
+```

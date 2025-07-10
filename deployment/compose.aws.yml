@@ -1,0 +1,118 @@
+services:
+  reverse-proxy:
+    image: traefik:v3.4
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@tum.de"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - backend
+
+  client:
+    image: ghcr.io/aet-devops25/team-devoops/client:latest
+    environment:
+      - PUBLIC_API_URL=https://api.${EC2_PUBLIC_IP}.nip.io
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.client.entrypoints=websecure
+      - traefik.http.routers.client.rule=Host(`client.${EC2_PUBLIC_IP}.nip.io`)
+      - traefik.http.routers.client.tls.certresolver=letsencrypt
+      - traefik.http.services.client.loadbalancer.server.port=80
+      - traefik.http.middlewares.client-compress.compress=true
+      - traefik.http.routers.client.middlewares=client-compress
+      - traefik.http.routers.client.priority=1
+    depends_on:
+      gateway-service:
+        condition: service_started
+        required: true
+    restart: unless-stopped
+    networks:
+      - backend
+
+  gateway-service:
+    image: ghcr.io/aet-devops25/team-devoops/server/gateway:latest
+    container_name: gateway-service
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.gateway.entrypoints=websecure
+      - traefik.http.routers.gateway.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`)
+      - traefik.http.routers.gateway.tls.certresolver=letsencrypt
+      - traefik.http.services.gateway.loadbalancer.server.port=8080
+    depends_on:
+      chat-service:
+        condition: service_started
+        required: true
+      matching-service:
+        condition: service_started
+        required: true
+      user-service:
+        condition: service_started
+        required: true
+    networks:
+      - backend
+
+  chat-service:
+    image: ghcr.io/aet-devops25/team-devoops/server/chat:latest
+    container_name: chat-service
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.chat.entrypoints=websecure
+      - traefik.http.routers.chat.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/chat`)
+      - traefik.http.routers.chat.tls.certresolver=letsencrypt
+      - traefik.http.services.chat.loadbalancer.server.port=80
+    networks:
+      - backend
+
+  matching-service:
+    image: ghcr.io/aet-devops25/team-devoops/server/matching:latest
+    container_name: matching-service
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.matching.entrypoints=websecure
+      - traefik.http.routers.matching.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/matching`)
+      - traefik.http.routers.matching.tls.certresolver=letsencrypt
+      - traefik.http.services.matching.loadbalancer.server.port=80
+    networks:
+      - backend
+
+  user-service:
+    image: ghcr.io/aet-devops25/team-devoops/server/user:latest
+    container_name: user-service
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.user.entrypoints=websecure
+      - traefik.http.routers.user.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/user`)
+      - traefik.http.routers.user.tls.certresolver=letsencrypt
+      - traefik.http.services.user.loadbalancer.server.port=80
+    networks:
+      - backend
+
+  genai-service:
+    image: ghcr.io/aet-devops25/team-devoops/genai:latest
+    container_name: genai-service
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.genai.entrypoints=websecure
+      - traefik.http.routers.genai.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/genai`)
+      - traefik.http.routers.genai.tls.certresolver=letsencrypt
+      - traefik.http.services.genai.loadbalancer.server.port=80
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
