@@ -87,6 +87,7 @@ function Main() {
       clientId={authConfig.clientId}
       authorizationParams={{
         redirect_uri: window.location.origin,
+        scope: 'openid profile email',
       }}
     >
       <ThemeProvider theme={theme}>

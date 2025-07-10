@@ -14,6 +14,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
+  userID: string | null;
+  setUserID: (id: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,6 +23,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [userID, setUserID] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -40,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       });
       setUser(response.data);
+      setUserID(response.data.id);
     } catch (error) {
       console.error('Error fetching user profile:', error);
       localStorage.removeItem('token');
@@ -54,6 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { token, user } = response.data;
       localStorage.setItem('token', token);
       setUser(user);
+      setUserID(user.id);
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -76,6 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       localStorage.removeItem('token');
       setUser(null);
+      setUserID(null);
     }
   };
 
@@ -85,6 +91,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { token, user } = response.data;
       localStorage.setItem('token', token);
       setUser(user);
+      setUserID(user.id);
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
@@ -98,6 +105,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     login,
     logout,
     register,
+    userID,
+    setUserID,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

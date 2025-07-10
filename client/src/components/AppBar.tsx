@@ -29,6 +29,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // menu for clicking on the user avatar
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -51,13 +52,6 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
     }
   };
 
-  // Helper to get initials from name
-  const getInitials = (name: string) => {
-    const [first, ...rest] = name.split(' ');
-    const last = rest.length > 0 ? rest[rest.length - 1] : '';
-    return `${first?.[0] || ''}${last?.[0] || ''}`.toUpperCase();
-  };
-
   return (
     <MuiAppBar
       position="fixed"
@@ -70,7 +64,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
       }}
     >
       <Toolbar disableGutters sx={{ px: 0, minHeight: 64 }}>
-        {/* Hamburger Button (nur mobil) */}
+        {/* Display hamburger button only on mobile */}
         {smDown && (
           <IconButton
             color="inherit"
@@ -84,7 +78,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
             />
           </IconButton>
         )}
-        {/* Logo ganz links */}
+        {/* Meet@Mensa logo on the left side of the AppBar */}
         <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', pl: 2 }}>
           <img
             src={mensaLogo}
@@ -101,7 +95,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
         {/* Spacer to push user menu to the right */}
         <Box sx={{ flexGrow: 1 }} />
 
-        {/* User menu ganz rechts */}
+        {/* User menu on the right side of the AppBar */}
         <Box sx={{ flexGrow: 0, pr: 2 }}>
           <Tooltip title="Open settings">
             <IconButton data-testid="user-menu" onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -114,9 +108,7 @@ const AppBar: React.FC<AppBarProps> = ({ onHamburgerClick }) => {
                       ? theme.palette.grey[800]
                       : theme.palette.grey[200],
                 }}
-              >
-                {user?.name ? getInitials(user.name) : 'U'}
-              </Avatar>
+              ></Avatar>
             </IconButton>
           </Tooltip>
           <Menu
