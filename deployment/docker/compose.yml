@@ -27,8 +27,8 @@ services:
   meetatmensa-user:
     build: ../../server/user
     container_name: meetatmensa-user
-    ports:
-      - "8081:80"
+    expose:
+      - "80"
     depends_on:
       - user-database
     networks:
