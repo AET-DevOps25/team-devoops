@@ -212,6 +212,28 @@ public class MatchRequestService {
 
 
     /**
+     * Check if a user has submitted a match request on a given day
+     *
+     *
+     * @param date LocalDate of the date
+     * @param userID UUID of the user
+     * @return MatchRequest for the user on the date
+     * @throws RequestNotFoundException if no request is found
+     */
+    public MatchRequest getUserRequestOn(LocalDate date, UUID userID) {
+
+        // get all entries for user on date
+        Iterable<MatchRequestEntity> requestEntities = requestRepository.findByDateAndUserID(date, userID);
+
+        if(!requestEntities.iterator().hasNext()) {
+            throw new RequestNotFoundException();
+        }
+    
+        return getRequest(requestEntities.iterator().next().getRequestID());
+    }
+
+
+    /**
      * Remove a MatchRequest from the database including it's timeslots
      *
      *
