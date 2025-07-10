@@ -3,19 +3,15 @@ package meet_at_mensa.matching.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
-import org.openapitools.model.ConversationStarter;
-import org.openapitools.model.ConversationStarterCollection;
 import org.openapitools.model.Group;
 import org.openapitools.model.InviteStatus;
 import org.openapitools.model.Location;
 import org.openapitools.model.Match;
-import org.openapitools.model.MatchStatus;
+import org.openapitools.model.MatchCollection;
 import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +23,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import meet_at_mensa.matching.exception.MatchNotFoundException;
-import meet_at_mensa.matching.model.GroupEntity;
 import meet_at_mensa.matching.model.MatchEntity;
-import meet_at_mensa.matching.repository.GroupRepository;
 import meet_at_mensa.matching.repository.MatchRepository;
 import meet_at_mensa.matching.util.Asserter;
 
@@ -195,6 +189,41 @@ class MatchServiceTests {
         assertEquals(InviteStatus.UNSENT, match.getStatus(), "MatchIDs should match");
 
         Asserter.assertGroupsAreIdentical(group, match.getGroup());
+
+    }
+
+    @Test
+    void canGetAllMatchsForGroup() {
+
+        //-----
+        // DATA
+        //-----
+
+        //-----
+        // PREP
+        //-----
+
+        // create a group entry including matches
+        Group group = registerTestGroup();
+
+        //-----
+        // ACT
+        //-----
+
+        MatchCollection matches = matchService.getMatchesByGroup(group.getGroupID());
+
+        //--------
+        // ASSERT
+        //--------
+
+        assertNotNull(matches, "Value should not be null");
+
+        assertTrue(matches.getMatches().size() == 3);
+
+        for (Match match : matches.getMatches()) {
+            
+            assertEquals(match.getGroup().getGroupID(), group.getGroupID(), "Match is not for the expected group");
+        }
 
     }
 

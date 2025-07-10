@@ -16,8 +16,12 @@ import org.openapitools.model.Group;
 import org.openapitools.model.InviteStatus;
 import org.openapitools.model.MatchRequest;
 import org.openapitools.model.MatchStatus;
+import org.openapitools.model.RequestStatus;
 import org.openapitools.model.User;
 import org.openapitools.model.UserCollection;
+
+import meet_at_mensa.matching.algorithm.MatchingSolution;
+import meet_at_mensa.matching.algorithm.MatchingSolutionBlock;
 
 public class Asserter {
     
@@ -155,5 +159,53 @@ public class Asserter {
 
     }
 
+    public static void assertSolutionIsValid(MatchingSolution solution) {
+
+
+        for (MatchingSolutionBlock solutionBlock : solution.getSolution()) {
+            
+            
+            // check group sizes if not Unmatchable
+            if (solutionBlock.getStatus() == RequestStatus.UNMATCHABLE) {
+
+                assertEquals(null, solutionBlock.getTime(), "Timeslot should be null for unmatched users");
+                assertEquals(null, solutionBlock.getDate(), "Date should be null for unmatched users");
+                assertEquals(null, solutionBlock.getLocation(), "Date should be null for unmatched users");
+                
+            } else if (solutionBlock.getStatus() == RequestStatus.MATCHED) {
+                
+                // Check Requests
+                for (MatchRequest matchRequest : solutionBlock.getRequests().getRequests()) {
+                    
+                    // Dates match
+                    assertEquals(solutionBlock.getDate(), matchRequest.getDate(), "Dates should match");
+    
+                    // Locations match
+                    assertEquals(solutionBlock.getLocation(), matchRequest.getLocation(), "Dates should match");
+    
+                    // Starttimes OK
+                    assertTrue(
+                        matchRequest.getTimeslot().contains(solutionBlock.getTime()),
+                        "Users should be available when they were matched"
+                    );
+    
+                    // Availability OK
+                    assertTrue(
+                        matchRequest.getTimeslot().contains(solutionBlock.getTime())
+                        && matchRequest.getTimeslot().contains(solutionBlock.getTime() + 1)
+                        && matchRequest.getTimeslot().contains(solutionBlock.getTime() + 2),
+                        "Users should be available for at least 45 minutes after the start time but: " +
+                        "Start time: " + solutionBlock.getTime() + " and User: " + matchRequest.getTimeslot().toString()
+                    );
+    
+                }
+
+                assertTrue(solutionBlock.getUsers().getUsers().size() <= 5, "Groups should have at most 5 users");
+
+            }
+            
+
+        }
+    }
 
 }
