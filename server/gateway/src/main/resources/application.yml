@@ -1,11 +1,29 @@
 # This configuration file defines the routing rules for the Spring Cloud Gateway
 # and specifies the backend services to which requests should be forwarded.
 server:
-  port: 80
+  port: 8080
 
 spring:
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+              allowedOrigins: 
+                - "http://localhost"
+                - "http://127.0.0.1"
+                - "http://localhost:80"
+                - "http://127.0.0.1:80"
+                - "http://localhost:8080"
+                - "http://127.0.0.1:8080"
+              allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - OPTIONS
+              allowedHeaders: 
+                - "*"
       routes:
         - id: matching_route
           uri: http://meetatmensa-matching:80
