@@ -2,9 +2,6 @@ import { useAuthenticatedApi } from './api';
 import { API_VERSION } from './api';
 import mockUsers from '../mocks/users.json';
 
-// Temporary testing configuration - REMOVE when using central gateway
-const USER_SERVICE_BASE_URL = 'http://localhost:8082';
-
 export interface UserProfile {
   userID: string;
   email: string;
@@ -43,7 +40,7 @@ export const useUserService = () => {
     }
 
     try {
-      const response = await api.get(`${USER_SERVICE_BASE_URL}${API_VERSION}/user/me/${authId}`);
+      const response = await api.get(`${API_VERSION}/user/me/${authId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching current user:', error);
@@ -64,7 +61,7 @@ export const useUserService = () => {
     }
 
     try {
-      const response = await api.get(`${USER_SERVICE_BASE_URL}${API_VERSION}/user/${userId}`);
+      const response = await api.get(`${API_VERSION}/user/${userId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching user profile:', error);
@@ -87,7 +84,7 @@ export const useUserService = () => {
     }
 
     try {
-      const response = await api.put(`${USER_SERVICE_BASE_URL}${API_VERSION}/user/${userId}`, data);
+      const response = await api.put(`${API_VERSION}/user/${userId}`, data);
       return response.data;
     } catch (error) {
       console.error('Error updating user profile:', error);

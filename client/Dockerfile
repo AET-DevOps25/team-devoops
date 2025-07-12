@@ -10,8 +10,9 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Hardcode API URL for Docker deployment
-ENV VITE_API_BASE_URL=http://localhost:8080
+# Add build arg and env for VITE_API_BASE_URL
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 RUN npm run build
 

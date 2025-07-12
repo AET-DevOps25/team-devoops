@@ -4,7 +4,7 @@ import { MatchesResponse } from '../types/matches';
 import mockMatches from '../mocks/matches.json';
 
 // Temporary testing configuration - REMOVE when using central gateway
-const MATCHING_SERVICE_BASE_URL = 'http://localhost:8081';
+//const MATCHING_SERVICE_BASE_URL = 'http://localhost:8081';
 
 export interface MatchesServiceError {
   message: string;
@@ -30,7 +30,7 @@ export const useMatchesService = () => {
     }
 
     try {
-      const response = await api.get(`${MATCHING_SERVICE_BASE_URL}${API_VERSION}/matching/matches/${userId}`);
+      const response = await api.get(`${API_VERSION}/matching/matches/${userId}`);
       return response.data;
     } catch (error) {
       if (error instanceof Error) {
@@ -53,7 +53,7 @@ export const useMatchesService = () => {
    */
   const rejectMatch = async (matchId: string): Promise<void> => {
     try {
-      await api.get(`${MATCHING_SERVICE_BASE_URL}${API_VERSION}/matching/rsvp/${matchId}/reject`);
+      await api.get(`${API_VERSION}/matching/rsvp/${matchId}/reject`);
     } catch (error) {
       if (error instanceof Error) {
         throw {
@@ -75,7 +75,7 @@ export const useMatchesService = () => {
    */
   const acceptMatch = async (matchId: string): Promise<void> => {
     try {
-      await api.get(`${MATCHING_SERVICE_BASE_URL}${API_VERSION}/matching/rsvp/${matchId}/accept`);
+      await api.get(`${API_VERSION}/matching/rsvp/${matchId}/accept`);
     } catch (error) {
       if (error instanceof Error) {
         throw {

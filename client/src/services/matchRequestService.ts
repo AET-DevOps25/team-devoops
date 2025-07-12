@@ -2,9 +2,6 @@ import { useAuthenticatedApi } from './api';
 import { API_VERSION } from './api';
 import mockMatchRequests from '../mocks/matchRequests.json';
 
-// Temporary testing configuration - REMOVE when using central gateway
-const MATCHING_SERVICE_BASE_URL = 'http://localhost:8081';
-
 export interface MatchPreferences {
   degreePref: boolean;
   agePref: boolean;
@@ -42,7 +39,7 @@ export const useMatchRequestService = () => {
     }
 
     try {
-      const response = await api.get(`${MATCHING_SERVICE_BASE_URL}${API_VERSION}/matching/requests/${userId}`);
+      const response = await api.get(`${API_VERSION}/matching/requests/${userId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching match requests:', error);
@@ -52,7 +49,7 @@ export const useMatchRequestService = () => {
 
   const deleteMatchRequest = async (requestId: string): Promise<void> => {
     try {
-      await api.delete(`${MATCHING_SERVICE_BASE_URL}${API_VERSION}/matching/request/${requestId}`);
+      await api.delete(`${API_VERSION}/matching/request/${requestId}`);
     } catch (error) {
       console.error('Error deleting match request:', error);
       throw error;
@@ -61,7 +58,7 @@ export const useMatchRequestService = () => {
 
   const submitMatchRequest = async (data: SubmitMatchRequest): Promise<void> => {
     try {
-      await api.post(`${MATCHING_SERVICE_BASE_URL}${API_VERSION}/matching/request/submit`, data);
+      await api.post(`${API_VERSION}/matching/request/submit`, data);
     } catch (error) {
       console.error('Error submitting match request:', error);
       throw error;
