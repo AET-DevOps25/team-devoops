@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "loki.fullname" . }}-config
+  labels:
+    {{- include "loki.labels" . | nindent 4 }}
+data:
+  loki.yaml: |
+    auth_enabled: {{ .Values.loki.config.auth_enabled }}
+    
+    server:
+      http_listen_port: {{ .Values.loki.config.server.http_listen_port }}
+    
+    ingester:
+      lifecycler:
+        address: {{ .Values.loki.config.ingester.lifecycler.address }}
+        ring:
+          kvstore:
+            store: {{ .Values.loki.config.ingester.lifecycler.ring.kvstore.store }}
+          replication_factor: {{ .Values.loki.config.ingester.lifecycler.ring.replication_factor }}
+        final_sleep: {{ .Values.loki.config.ingester.lifecycler.final_sleep }}
+      chunk_idle_period: {{ .Values.loki.config.ingester.chunk_idle_period }}
+      chunk_retain_period: {{ .Values.loki.config.ingester.chunk_retain_period }}
+    
+    schema_config:
+      configs:
+      {{- range .Values.loki.config.schema_config.configs }}
+        - from: {{ .from }}
+          store: {{ .store }}
+          object_store: {{ .object_store }}
+          schema: {{ .schema }}
+          index:
+            prefix: {{ .index.prefix }}
+            period: {{ .index.period }}
+      {{- end }}
+    
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: {{ .Values.loki.config.storage_config.boltdb_shipper.active_index_directory }}
+        cache_location: {{ .Values.loki.config.storage_config.boltdb_shipper.cache_location }}
+        cache_ttl: {{ .Values.loki.config.storage_config.boltdb_shipper.cache_ttl }}
+        shared_store: {{ .Values.loki.config.storage_config.boltdb_shipper.shared_store }}
+      filesystem:
+        directory: {{ .Values.loki.config.storage_config.filesystem.directory }}
+    
+    limits_config:
+      enforce_metric_name: {{ .Values.loki.config.limits_config.enforce_metric_name }}
+      reject_old_samples: {{ .Values.loki.config.limits_config.reject_old_samples }}
+      reject_old_samples_max_age: {{ .Values.loki.config.limits_config.reject_old_samples_max_age }}
+    
+    chunk_store_config:
+      max_look_back_period: {{ .Values.loki.config.chunk_store_config.max_look_back_period }}
+    
+    table_manager:
+      retention_deletes_enabled: {{ .Values.loki.config.table_manager.retention_deletes_enabled }}
+      retention_period: {{ .Values.loki.config.table_manager.retention_period }} 

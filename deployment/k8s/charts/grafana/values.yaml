@@ -1,0 +1,42 @@
+grafana:
+  enabled: true
+  image:
+    repository: grafana/grafana
+    tag: "10.0.0"
+    pullPolicy: IfNotPresent
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+  storage:
+    persistentVolumeClaim:
+      enabled: true
+      size: 5Gi
+      storageClass: ""
+
+  adminUser: admin
+  adminPassword: admin
+
+  datasources:
+    prometheus:
+      enabled: true
+      url: http://{{ .Release.Name }}-prometheus:9090
+      access: proxy
+      isDefault: true
+
+  dashboards:
+    default:
+      enabled: true
+      title: "Default Dashboard"
+      uid: "default"
+      panels: []

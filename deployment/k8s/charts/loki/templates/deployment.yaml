@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "loki.fullname" . }}
+  labels:
+    {{- include "loki.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "loki.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "loki.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        fsGroup: 10001
+      containers:
+        - name: loki
+          image: "{{ .Values.loki.image.repository }}:{{ .Values.loki.image.tag }}"
+          imagePullPolicy: {{ .Values.loki.image.pullPolicy }}
+          args:
+            - "-config.file=/etc/loki/loki.yaml"
+          ports:
+            - name: http
+              containerPort: 3100
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+            {{- toYaml .Values.loki.resources | nindent 12 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/loki
+            - name: storage-volume
+              mountPath: /tmp/loki
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "loki.fullname" . }}-config
+        {{- if .Values.loki.storage.persistentVolumeClaim.enabled }}
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: {{ include "loki.fullname" . }}-pvc
+        {{- else }}
+        - name: storage-volume
+          emptyDir: {}
+        {{- end }} 

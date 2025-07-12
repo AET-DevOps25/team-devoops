@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "prometheus.fullname" . }}-config
+  labels:
+    {{- include "prometheus.labels" . | nindent 4 }}
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: {{ .Values.prometheus.config.global.scrape_interval }}
+      evaluation_interval: {{ .Values.prometheus.config.global.evaluation_interval }}
+    
+    rule_files:
+    {{- range .Values.prometheus.config.rule_files }}
+      - {{ . }}
+    {{- end }}
+    
+    scrape_configs:
+    {{- range .Values.prometheus.config.scrape_configs }}
+      - job_name: '{{ .job_name }}'
+        {{- if .static_configs }}
+        static_configs:
+        {{- range .static_configs }}
+          - targets:
+          {{- range .targets }}
+            - {{ . | quote }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- if .kubernetes_sd_configs }}
+        kubernetes_sd_configs:
+        {{- range .kubernetes_sd_configs }}
+          - role: {{ .role }}
+        {{- end }}
+        {{- end }}
+        {{- if .relabel_configs }}
+        relabel_configs:
+        {{- range .relabel_configs }}
+          - {{- if .source_labels }}
+            source_labels:
+            {{- range .source_labels }}
+              - {{ . | quote }}
+            {{- end }}
+            {{- end }}
+            {{- if .action }}
+            action: {{ .action }}
+            {{- end }}
+            {{- if .regex }}
+            regex: {{ .regex | quote }}
+            {{- end }}
+            {{- if .replacement }}
+            replacement: {{ .replacement | quote }}
+            {{- end }}
+            {{- if .target_label }}
+            target_label: {{ .target_label | quote }}
+            {{- end }}
+        {{- end }}
+        {{- end }}
+    {{- end }} 

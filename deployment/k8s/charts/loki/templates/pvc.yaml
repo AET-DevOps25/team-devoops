@@ -1,0 +1,19 @@
+{{- if .Values.loki.storage.persistentVolumeClaim.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "loki.fullname" . }}-pvc
+  labels:
+    {{- include "loki.labels" . | nindent 4 }}
+  annotations:
+    pv.beta.kubernetes.io/gid: "10001"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.loki.storage.persistentVolumeClaim.size }}
+  {{- if .Values.loki.storage.persistentVolumeClaim.storageClass }}
+  storageClassName: {{ .Values.loki.storage.persistentVolumeClaim.storageClass }}
+  {{- end }}
+{{- end }} 

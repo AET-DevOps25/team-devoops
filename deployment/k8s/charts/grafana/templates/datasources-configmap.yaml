@@ -1,0 +1,17 @@
+{{- if .Values.grafana.datasources.prometheus.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "grafana.fullname" . }}-datasources
+  labels:
+    {{- include "grafana.labels" . | nindent 4 }}
+data:
+  prometheus.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: {{ .Values.grafana.datasources.prometheus.url }}
+        access: {{ .Values.grafana.datasources.prometheus.access }}
+        isDefault: {{ .Values.grafana.datasources.prometheus.isDefault }}
+{{- end }} 

@@ -1,0 +1,19 @@
+{{- if .Values.prometheus.storage.persistentVolumeClaim.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "prometheus.fullname" . }}-pvc
+  labels:
+    {{- include "prometheus.labels" . | nindent 4 }}
+  annotations:
+    pv.beta.kubernetes.io/gid: "65534"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.prometheus.storage.persistentVolumeClaim.size }}
+  {{- if .Values.prometheus.storage.persistentVolumeClaim.storageClass }}
+  storageClassName: {{ .Values.prometheus.storage.persistentVolumeClaim.storageClass }}
+  {{- end }}
+{{- end }} 

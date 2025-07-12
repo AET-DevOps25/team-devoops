@@ -1,0 +1,19 @@
+{{- if .Values.grafana.storage.persistentVolumeClaim.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "grafana.fullname" . }}-pvc
+  labels:
+    {{- include "grafana.labels" . | nindent 4 }}
+  annotations:
+    pv.beta.kubernetes.io/gid: "472"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.grafana.storage.persistentVolumeClaim.size }}
+  {{- if .Values.grafana.storage.persistentVolumeClaim.storageClass }}
+  storageClassName: {{ .Values.grafana.storage.persistentVolumeClaim.storageClass }}
+  {{- end }}
+{{- end }} 
