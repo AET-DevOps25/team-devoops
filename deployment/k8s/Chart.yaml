@@ -14,9 +14,15 @@ dependencies:
   - name: user
     version: 1.0.0
     repository: file://charts/user
+  # - name: userdb
+  #   version: 1.0.0
+  #   repository: file://charts/userdb
   - name: matching
     version: 1.0.0
     repository: file://charts/matching
+  - name: matchdb
+    version: 1.0.0
+    repository: file://charts/matchdb
   - name: genai
     version: 1.0.0
     repository: file://charts/genai
