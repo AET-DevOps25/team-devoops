@@ -14,9 +14,9 @@ dependencies:
   - name: user
     version: 1.0.0
     repository: file://charts/user
-  # - name: userdb
-  #   version: 1.0.0
-  #   repository: file://charts/userdb
+  - name: userdb
+    version: 1.0.0
+    repository: file://charts/userdb
   - name: matching
     version: 1.0.0
     repository: file://charts/matching
