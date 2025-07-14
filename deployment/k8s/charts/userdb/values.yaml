@@ -1,19 +1,47 @@
+# Default values for userdb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 # This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: ghcr.io/aet-devops25/team-devoops/user
+  repository: ghcr.io/aet-devops25/team-devoops/userdb
   # This sets the pull policy for images.
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: latest
+
+# This contains the Kubernetes secret name and password key for MySQL root access.
+mysqlRootPasswordSecret: user-db-secret
+mysqlRootPasswordKey: MYSQL_ROOT_PASSWORD
+
+# This is the name of the database to be created.
+database:
+  name: userdb
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 3306
+
+# This sections contains persistent volumne claim configuration.
+persistence:
+  enabled: true
+  # This sets the storage size for the PVC
+  size: 1Gi
+  # This sets the access modes for the PVC
+  accessModes:
+    - ReadWriteOnce
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: "meetatmensa-userdb"
+fullnameOverride: "meetatmensa-userdb"
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
@@ -44,13 +72,6 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
-# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
-service:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -100,17 +121,16 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+volumes:
+- name: userdb-pvc
+  persistentVolumeClaim:
+    claimName: meetatmensa-userdb-pvc
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+volumeMounts:
+- name: userdb-pvc
+  mountPath: "/var/lib/mysql"
+  readOnly: false
 
 nodeSelector: {}
 
