@@ -10,9 +10,11 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Add build arg and env for VITE_API_BASE_URL
+# Add build arg and env for VITE_API_BASE_URL and VITE_USE_MOCK_DATA
 ARG VITE_API_BASE_URL
+ARG VITE_USE_MOCK_DATA=false
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_USE_MOCK_DATA=$VITE_USE_MOCK_DATA
 
 RUN npm run build
 
