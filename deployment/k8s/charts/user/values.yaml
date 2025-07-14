@@ -117,3 +117,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+labels:
+  app: user
+  monitoring: "true"
