@@ -23,7 +23,7 @@ services:
       - backend
 
   client:
-    image: ghcr.io/aet-devops25/team-devoops/client
+    image: ghcr.io/aet-devops25/team-devoops/client:latest
     environment:
       - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.nip.io
     labels:
@@ -53,33 +53,23 @@ services:
       - traefik.http.routers.gateway.tls.certresolver=letsencrypt
       - traefik.http.services.gateway.loadbalancer.server.port=8080
     depends_on:
-      chat-service:
+      meetatmensa-matching:
         condition: service_started
         required: true
-      matching-service:
+      meetatmensa-user:
         condition: service_started
         required: true
-      user-service:
+      meetatmensa-genai:
         condition: service_started
         required: true
     networks:
       - backend
 
-  chat-service:
-    image: ghcr.io/aet-devops25/team-devoops/server/chat:latest
-    container_name: chat-service
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.chat.entrypoints=websecure
-      - traefik.http.routers.chat.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/chat`)
-      - traefik.http.routers.chat.tls.certresolver=letsencrypt
-      - traefik.http.services.chat.loadbalancer.server.port=80
-    networks:
-      - backend
 
-  matching-service:
+
+  meetatmensa-matching:
     image: ghcr.io/aet-devops25/team-devoops/server/matching:latest
-    container_name: matching-service
+    container_name: meetatmensa-matching
     labels:
       - traefik.enable=true
       - traefik.http.routers.matching.entrypoints=websecure
@@ -89,9 +79,9 @@ services:
     networks:
       - backend
 
-  user-service:
+  meetatmensa-user:
     image: ghcr.io/aet-devops25/team-devoops/server/user:latest
-    container_name: user-service
+    container_name: meetatmensa-user
     labels:
       - traefik.enable=true
       - traefik.http.routers.user.entrypoints=websecure
@@ -101,9 +91,9 @@ services:
     networks:
       - backend
 
-  genai-service:
+  meetatmensa-genai:
     image: ghcr.io/aet-devops25/team-devoops/genai:latest
-    container_name: genai-service
+    container_name: meetatmensa-genai
     labels:
       - traefik.enable=true
       - traefik.http.routers.genai.entrypoints=websecure
