@@ -23,7 +23,7 @@ services:
       - backend
 
   client:
-    image: ghcr.io/aet-devops25/team-devoops/client:latest
+    image: ghcr.io/aet-devops25/team-devoops/client:feature-aws-setup
     environment:
       - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.nip.io
     labels:
