@@ -56,17 +56,13 @@ resource "aws_instance" "app" {
   }
 }
 
-# Create an Elastic IP
-resource "aws_eip" "app" {
-  instance = aws_instance.app.id
-  domain   = "vpc"
-  
-  tags = {
-    Name = "app-eip"
+data "aws_eip" "meetatmensa" {
+  filter {
+    name   = "tag:Name"
+    values = ["meetatmensa-ip"]
   }
 }
 
-# Output the Elastic IP
 output "public_ip" {
-  value = aws_eip.app.public_ip
+  value = data.aws_eip.meetatmensa.public_ip
 }

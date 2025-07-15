@@ -25,7 +25,7 @@ services:
   client:
     image: ghcr.io/aet-devops25/team-devoops/client:latest
     environment:
-      - PUBLIC_API_URL=https://api.${EC2_PUBLIC_IP}.nip.io
+      - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.nip.io
     labels:
       - traefik.enable=true
       - traefik.http.routers.client.entrypoints=websecure
