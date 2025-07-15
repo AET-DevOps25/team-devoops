@@ -69,7 +69,7 @@ const App = ({ toggleColorMode, mode }: AppProps) => {
             }
           />
           <Route
-            path="/preferences"
+            path="/matchrequests"
             element={
               <ProtectedRoute>
                 <Layout toggleColorMode={toggleColorMode} mode={mode}>
