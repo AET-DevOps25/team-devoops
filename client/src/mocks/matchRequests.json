@@ -11,7 +11,7 @@
         "agePref": true,
         "genderPref": false
       },
-      "timeslots": [9, 10, 11, 12],
+      "timeslot": [9, 10, 11, 12],
       "status": "PENDING"
     },
     {
@@ -25,7 +25,7 @@
         "agePref": true,
         "genderPref": true
       },
-      "timeslots": [11, 12, 13, 14],
+      "timeslot": [11, 12, 13, 14],
       "status": "MATCHED"
     },
     {
@@ -39,7 +39,7 @@
         "agePref": false,
         "genderPref": true
       },
-      "timeslots": [8, 9, 10, 11, 12, 13],
+      "timeslot": [8, 9, 10, 11, 12, 13],
       "status": "UNMATCHABLE"
     },
     {
@@ -53,7 +53,7 @@
         "agePref": false,
         "genderPref": false
       },
-      "timeslots": [10, 11, 12],
+      "timeslot": [10, 11, 12],
       "status": "PENDING"
     },
     {
@@ -67,7 +67,7 @@
         "agePref": true,
         "genderPref": true
       },
-      "timeslots": [12, 13, 14, 15, 16],
+      "timeslot": [12, 13, 14, 15, 16],
       "status": "REMATCH"
     },
     {
@@ -81,7 +81,7 @@
         "agePref": false,
         "genderPref": true
       },
-      "timeslots": [9, 10, 11],
+      "timeslot": [9, 10, 11],
       "status": "EXPIRED"
     },
     {
@@ -95,7 +95,7 @@
         "agePref": true,
         "genderPref": false
       },
-      "timeslots": [10, 11, 12, 13, 14, 15],
+      "timeslot": [10, 11, 12, 13, 14, 15],
       "status": "PENDING"
     },
     {
@@ -109,7 +109,7 @@
         "agePref": true,
         "genderPref": true
       },
-      "timeslots": [11, 12, 13],
+      "timeslot": [11, 12, 13],
       "status": "MATCHED"
     },
     {
@@ -123,7 +123,7 @@
         "agePref": false,
         "genderPref": true
       },
-      "timeslots": [8, 9, 10, 11, 12],
+      "timeslot": [8, 9, 10, 11, 12],
       "status": "PENDING"
     },
     {
@@ -137,7 +137,7 @@
         "agePref": false,
         "genderPref": false
       },
-      "timeslots": [12, 13, 14, 15, 16],
+      "timeslot": [12, 13, 14, 15, 16],
       "status": "UNMATCHABLE"
     }
   ]

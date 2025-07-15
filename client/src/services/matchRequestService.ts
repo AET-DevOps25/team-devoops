@@ -2,6 +2,18 @@ import { useAuthenticatedApi } from './api';
 import { API_VERSION } from './api';
 import mockMatchRequests from '../mocks/matchRequests.json';
 
+function getUseMockDataEnv() {
+  if (typeof process !== 'undefined' && process.env && process.env.VITE_USE_MOCK_DATA !== undefined) {
+    return process.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_USE_MOCK_DATA !== undefined) {
+    // @ts-ignore
+    return import.meta.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  return false;
+}
+
 export interface MatchPreferences {
   degreePref: boolean;
   agePref: boolean;
@@ -15,14 +27,15 @@ export interface MatchRequest {
   date: string;
   location: string;
   preferences: MatchPreferences;
-  timeslots: number[];
+  timeslot: number[];
   status: 'PENDING' | 'UNMATCHABLE' | 'MATCHED' | 'REMATCH' | 'EXPIRED';
 }
 
 export interface SubmitMatchRequest {
+  userID: string;
   date: string;
   location: string;
-  timeslots: number[];
+  timeslot: number[];
   preferences: MatchPreferences;
 }
 
@@ -31,8 +44,7 @@ export const useMatchRequestService = () => {
   const api = useAuthenticatedApi();
 
   const getMatchRequests = async (userId: string): Promise<MatchRequest[]> => {
-    // Check if mock data should be used
-    if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
+    if (getUseMockDataEnv()) {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
       return mockMatchRequests.matches as MatchRequest[];
@@ -40,7 +52,7 @@ export const useMatchRequestService = () => {
 
     try {
       const response = await api.get(`${API_VERSION}/matching/requests/${userId}`);
-      return response.data;
+      return response.data.requests;
     } catch (error) {
       console.error('Error fetching match requests:', error);
       throw error;

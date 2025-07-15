@@ -2,6 +2,18 @@ import { useAuthenticatedApi } from './api';
 import { API_VERSION } from './api';
 import mockUsers from '../mocks/users.json';
 
+function getUseMockDataEnv() {
+  if (typeof process !== 'undefined' && process.env && process.env.VITE_USE_MOCK_DATA !== undefined) {
+    return process.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_USE_MOCK_DATA !== undefined) {
+    // @ts-ignore
+    return import.meta.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  return false;
+}
+
 export interface UserProfile {
   userID: string;
   email: string;
@@ -32,8 +44,7 @@ export const useUserService = () => {
   const api = useAuthenticatedApi();
 
   const getCurrentUser = async (authId: string): Promise<{ userID: string }> => {
-    // Check if mock data should be used
-    if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
+    if (getUseMockDataEnv()) {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 300));
       return mockUsers.currentUser as { userID: string };
@@ -49,8 +60,7 @@ export const useUserService = () => {
   };
 
   const getUserProfile = async (userId: string): Promise<UserProfile> => {
-    // Check if mock data should be used
-    if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
+    if (getUseMockDataEnv()) {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 300));
       const mockProfile = mockUsers.userProfiles.find(profile => profile.userID === userId);
@@ -70,8 +80,7 @@ export const useUserService = () => {
   };
 
   const updateUserProfile = async (userId: string, data: UpdateUserProfile): Promise<UserProfile> => {
-    // Check if mock data should be used
-    if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
+    if (getUseMockDataEnv()) {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 300));
       const mockProfile = mockUsers.userProfiles.find(profile => profile.userID === userId);
