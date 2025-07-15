@@ -11,7 +11,7 @@ RUN npm install
 COPY . .
 
 # Add build arg and env for VITE_API_BASE_URL and VITE_USE_MOCK_DATA
-ARG VITE_API_BASE_URL=http://meetatmensa-gateway:8080
+ARG VITE_API_BASE_URL=http://api.meetatmensa.com
 ARG VITE_USE_MOCK_DATA=false
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 ENV VITE_USE_MOCK_DATA=$VITE_USE_MOCK_DATA
