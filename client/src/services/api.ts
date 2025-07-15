@@ -10,7 +10,7 @@ export const useAuthenticatedApi = () => {
 
   // Create a new axios instance for authenticated requests
   const authenticatedApi = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL,
+    baseURL: window.RUNTIME_CONFIG?.API_BASE_URL,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -47,4 +47,12 @@ export const useAuthenticatedApi = () => {
   );
 
   return authenticatedApi;
-}; 
+};
+
+declare global {
+  interface Window {
+    RUNTIME_CONFIG?: {
+      API_BASE_URL?: string;
+    };
+  }
+} 
