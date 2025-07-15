@@ -18,8 +18,16 @@ docker images                   # Shows locally chached images
 
 ## Kubernetes Helm
 Prerequisites: 
-- you are already authenticated in a running Kubernetes cluster,
-- the microservice images are built and pushed to GHCR (see `README.md` in individual microservices). 
+- you are already authenticated in a running Kubernetes cluster (see Kubeconfig file),
+- the microservice images are built and pushed to GHCR (see `README.md` in individual microservices),
+- database access passwords already exist as secrets in the `devoops` namespace:
+```
+kubectl create secret generic <match/user>-db-secret \
+  --from-literal=MYSQL_ROOT_PASSWORD='<your-password>' \
+  --namespace devoops
+```
+
+Once the three requirements are fulfilled, you can run the application:
 ```
 helm install meetatmensa ./k8s -n devoops   # Installs the Helm chart and deploys it to devoops namespace
 kubectl get all -n devoops                  # Shows all Kubernetes resources deployed in devoops namespace

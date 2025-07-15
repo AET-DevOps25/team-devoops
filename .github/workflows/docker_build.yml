@@ -51,7 +51,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/aet-devops25/team-devoops/server/gateway
+          images: ghcr.io/${{ github.repository }}/${{ matrix.service }} # ex: ghcr.io/aet-devops25/team-devoops/gateway
           
           # Tags pushes to main with :latest, pushes to branches with ex :feature-github-actions-workflow, and PRs with ex :pr-42
           tags: |
