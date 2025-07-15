@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         # Add any future services relative paths from . here
-        service: [client, gateway, matching, user, genai, userdb, matchdb]
+        service: [client, gateway, matching, user, genai, userdb, matchdb, prometheus]
         include:
           - service: client
             context: client
@@ -31,6 +31,8 @@ jobs:
             context: server/database/userdb
           - service: matchdb
             context: server/database/matchdb
+          - service: prometheus
+            context: deployment/prometheus
     
     steps:
 

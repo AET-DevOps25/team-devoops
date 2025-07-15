@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: {{ .Values.prometheus.namespace }}
+  labels:
+    app: prometheus
+spec:
+  replicas: {{ .Values.prometheus.replicaCount }}
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: "{{ .Values.prometheus.image.repository }}:{{ .Values.prometheus.image.tag }}"
+          imagePullPolicy: {{ .Values.prometheus.image.pullPolicy }}
+          args:
+            {{- range .Values.prometheus.args }}
+            - {{ . | quote }}
+            {{- end }}
+          ports:
+            - containerPort: 9090
+          # volumeMounts:
+          #   - name: prometheus-volume
+          #     mountPath: /prometheus
+      # volumes:
+      #   - name: prometheus-volume
+      #     emptyDir: {} 
