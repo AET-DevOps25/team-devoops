@@ -108,7 +108,7 @@ services:
       - backend
 
   match-database:
-    image: ghcr.io/aet-devops25/team-devoops/server/database/matchdb:latest
+    image: ghcr.io/aet-devops25/team-devoops/matchdb:latest
     container_name: meetatmensa-matchdb
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -116,11 +116,17 @@ services:
       - matchdb_data:/var/lib/mysql
     expose:
       - "3306"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
     networks:
       - backend
 
   user-database:
-    image: ghcr.io/aet-devops25/team-devoops/server/database/userdb:latest
+    image: ghcr.io/aet-devops25/team-devoops/userdb:latest
     container_name: meetatmensa-userdb
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -128,6 +134,12 @@ services:
       - userdb_data:/var/lib/mysql
     expose:
       - "3306"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
     networks:
       - backend
 
