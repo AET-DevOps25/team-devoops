@@ -113,6 +113,34 @@ services:
     networks:
       - backend
 
+  match-database:
+    image: mysql:8.0
+    container_name: meetatmensa-matchdb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - matchdb_data:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - backend
+
+  user-database:
+    image: mysql:8.0
+    container_name: meetatmensa-userdb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - userdb_data:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
+
+volumes:
+  matchdb_data:
+  userdb_data:

@@ -89,10 +89,10 @@
         dest: "{{ deployment_dir }}/compose.aws.yml"
         mode: "0644"
 
-    - name: Create .env.prod file
+    - name: Create .env file for Docker Compose
       template:
         src: "{{ playbook_dir }}/../templates/env.prod.j2"
-        dest: "{{ app_dir }}/.env.prod"
+        dest: "{{ deployment_dir }}/.env"
         mode: "0644"
 
     - name: Start Docker Compose
@@ -105,4 +105,3 @@
         remove_orphans: yes
       environment:
         DOCKER_BUILDKIT: 1
-        EC2_PUBLIC_IP: "{{ ansible_host }}"
