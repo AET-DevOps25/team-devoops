@@ -20,7 +20,7 @@ import {
   Snackbar,
   Skeleton,
 } from '@mui/material';
-import { useMatchesService, MatchesServiceError } from '../services/matchesService';
+import { useMatchesService } from '../services/matchesService';
 import { MatchesResponse, Match, MatchStatus, ConversationStarter } from '../types/matches';
 import { useMatchActions } from '../hooks/useMatchActions';
 import MatchActionDialogs from './MatchActionDialogs';

@@ -1,6 +1,7 @@
 import { useAuthenticatedApi } from './api';
 import { API_VERSION } from './api';
 import mockMatches from '../mocks/matches.json';
+import type { Match, MatchesResponse } from '../types/matches';
 
 function getUseMockDataEnv() {
   // Use process.env for testability, fallback to import.meta.env for Vite
@@ -15,27 +16,6 @@ function getUseMockDataEnv() {
   return false;
 }
 
-export interface Match {
-  matchID: string;
-  status: 'SENT' | 'CONFIRMED' | 'REJECTED';
-  group: {
-    groupID: string;
-    date: string;
-    location: string;
-    timeslot: number[];
-  };
-  users: Array<{
-    userID: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-  }>;
-}
-
-export interface MatchesResponse {
-  matches: Match[];
-}
-
 export const useMatchesService = () => {
   const api = useAuthenticatedApi();
 
@@ -43,11 +23,39 @@ export const useMatchesService = () => {
     if (getUseMockDataEnv()) {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
-      return { matches: mockMatches.matches as Match[] };
+      // Map mock data to Match[] as defined in types/matches.ts
+      const matches: Match[] = (mockMatches.matches as any[]).map((m) => ({
+        matchID: m.matchID,
+        userID: m.userID ?? userId, // fallback if missing
+        status: m.status,
+        group: {
+          groupID: m.group?.groupID,
+          date: m.group?.date,
+          time: m.group?.time ?? (Array.isArray(m.group?.timeslot) ? m.group.timeslot[0] : undefined),
+          location: m.group?.location,
+          userStatus: m.group?.userStatus ?? [],
+          conversationStarters: m.group?.conversationStarters ?? { conversationsStarters: [] },
+        },
+      }));
+      return { matches };
     }
     try {
       const response = await api.get(`${API_VERSION}/matching/matches/${userId}`);
-      return response.data;
+      // Map API data to Match[] as defined in types/matches.ts
+      const matches: Match[] = (response.data.matches as any[]).map((m) => ({
+        matchID: m.matchID,
+        userID: m.userID ?? userId,
+        status: m.status,
+        group: {
+          groupID: m.group?.groupID,
+          date: m.group?.date,
+          time: m.group?.time ?? (Array.isArray(m.group?.timeslot) ? m.group.timeslot[0] : undefined),
+          location: m.group?.location,
+          userStatus: m.group?.userStatus ?? [],
+          conversationStarters: m.group?.conversationStarters ?? { conversationsStarters: [] },
+        },
+      }));
+      return { matches };
     } catch (error) {
       console.error('Error fetching matches:', error);
       throw error;
