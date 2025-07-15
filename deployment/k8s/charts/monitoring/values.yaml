@@ -15,27 +15,4 @@ kube-prometheus-stack:
       accessModes:
         - ReadWriteOnce
     additionalDataSources:
-      - name: Loki
-        type: loki
-        access: proxy
-        url: http://loki-gateway:80
-        jsonData:
-          httpHeaderName1: "X-Scope-OrgID"
-        secureJsonData:
-          httpHeaderValue1: "admin"
-loki:
-  singleBinary:
-    replicas: 1
-  persistence:
-    enabled: true
-    size: 10Gi
-    accessModes:
-      - ReadWriteOnce
-  storage:
-    type: 'filesystem'
-    filesystem:
-      directory: /var/loki/chunks
-promtail:
-  config:
-    clients:
-      - url: http://monitoring-loki:3100/loki/api/v1/push 
+      # Loki datasource removed 
