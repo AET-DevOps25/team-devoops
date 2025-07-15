@@ -18,6 +18,7 @@ spring:
                 - "http://127.0.0.1:8080"
                 - "https://app.meetatmensa.com"
                 - "http://app.meetatmensa.com"
+                - "https://client.34.193.74.92.nip.io"
               allowedMethods:
                 - GET
                 - POST
