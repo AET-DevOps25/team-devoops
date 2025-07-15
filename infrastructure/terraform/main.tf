@@ -63,6 +63,11 @@ data "aws_eip" "meetatmensa" {
   }
 }
 
+resource "aws_eip_association" "meetatmensa" {
+  instance_id   = aws_instance.app.id
+  allocation_id = data.aws_eip.meetatmensa.id
+}
+
 output "public_ip" {
   value = data.aws_eip.meetatmensa.public_ip
 }
