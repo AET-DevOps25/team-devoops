@@ -76,6 +76,8 @@ services:
       - traefik.http.routers.matching.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/matching`)
       - traefik.http.routers.matching.tls.certresolver=letsencrypt
       - traefik.http.services.matching.loadbalancer.server.port=80
+    depends_on:
+      - match-database
     networks:
       - backend
 
@@ -88,6 +90,8 @@ services:
       - traefik.http.routers.user.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/user`)
       - traefik.http.routers.user.tls.certresolver=letsencrypt
       - traefik.http.services.user.loadbalancer.server.port=80
+    depends_on:
+      - user-database
     networks:
       - backend
 
@@ -104,7 +108,7 @@ services:
       - backend
 
   match-database:
-    image: mysql:8.0
+    image: ghcr.io/aet-devops25/team-devoops/server/database/matchdb:latest
     container_name: meetatmensa-matchdb
     environment:
       - MYSQL_ROOT_PASSWORD=root
@@ -116,7 +120,7 @@ services:
       - backend
 
   user-database:
-    image: mysql:8.0
+    image: ghcr.io/aet-devops25/team-devoops/server/database/userdb:latest
     container_name: meetatmensa-userdb
     environment:
       - MYSQL_ROOT_PASSWORD=root
