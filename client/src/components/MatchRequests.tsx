@@ -31,6 +31,7 @@ const MatchRequests = () => {
   const [matchRequests, setMatchRequests] = useState<MatchRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorIs404, setErrorIs404] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const handleSortChange = (event: SelectChangeEvent<SortOption>) => {
@@ -41,12 +42,22 @@ const MatchRequests = () => {
     if (!userID) return;
     try {
       setLoading(true);
+      setError(null);
+      setErrorIs404(false);
       const data = await getMatchRequests(userID);
       setMatchRequests(data);
-      setError(null);
     } catch (err) {
-      setError('Failed to load match requests. Please try again later.');
-      console.error('Error loading match requests:', err);
+      const anyErr = err as any;
+      if (anyErr?.status === 404) {
+        setError(null);
+        setErrorIs404(true);
+        setMatchRequests([]);
+      } else {
+        setError(anyErr?.message || 'Failed to load match requests. Please try again later.');
+        setErrorIs404(false);
+        setMatchRequests([]);
+        console.error('Error loading match requests:', err);
+      }
     } finally {
       setLoading(false);
     }
@@ -181,6 +192,10 @@ const MatchRequests = () => {
             </Grid>
           ))}
         </Grid>
+      ) : errorIs404 ? (
+        <Typography sx={{ p: 2, textAlign: 'center' }}>
+          No match requests found. Create your first match request to get started!
+        </Typography>
       ) : error ? (
         <Box>
           <Alert severity="error" sx={{ mt: 1 }}>

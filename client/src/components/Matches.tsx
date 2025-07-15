@@ -32,6 +32,7 @@ const Matches = () => {
   const [matches, setMatches] = useState<MatchesResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorIs404, setErrorIs404] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedStarters, setSelectedStarters] = useState<ConversationStarter[]>([]);
 
@@ -69,13 +70,22 @@ const Matches = () => {
       try {
         setLoading(true);
         setError(null);
+        setErrorIs404(false);
 
         // Fetch matches data
         const data = await getMatches(userID);
         setMatches(data);
       } catch (err) {
-        const serviceError = err as MatchesServiceError;
-        setError(serviceError.message || 'Failed to load matches');
+        const anyErr = err as any;
+        console.log(anyErr);
+        if (anyErr?.status === 404) {
+          setError(null);
+          setErrorIs404(true);
+          setMatches({ matches: [] });
+        } else {
+          setError(anyErr?.message || 'Failed to load matches');
+          setErrorIs404(false);
+        }
       } finally {
         setLoading(false);
       }
@@ -186,6 +196,14 @@ const Matches = () => {
       </CardContent>
     </Card>
   );
+
+  if (errorIs404) {
+    return (
+      <Typography sx={{ p: 2, textAlign: 'center' }}>
+          No matches found. Check back later for new lunch opportunities!
+        </Typography>
+    );
+  }
 
   if (error) {
     return (

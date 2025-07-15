@@ -34,7 +34,12 @@ const Dashboard = () => {
 
   const [matches, setMatches] = useState<Match[]>([]);
   const [matchRequests, setMatchRequests] = useState<MatchRequest[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [matchesLoading, setMatchesLoading] = useState(true);
+  const [matchRequestsLoading, setMatchRequestsLoading] = useState(true);
+  const [matchesError, setMatchesError] = useState<string | null>(null);
+  const [matchesErrorIs404, setMatchesErrorIs404] = useState(false);
+  const [matchRequestsError, setMatchRequestsError] = useState<string | null>(null);
+  const [matchRequestsErrorIs404, setMatchRequestsErrorIs404] = useState(false);
   const [showRegisterDialog, setShowRegisterDialog] = useState(false);
 
   const {
@@ -59,25 +64,55 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!userID) return;
-
-      setLoading(true);
-      try {
-        // Fetch matches and requests
-        const matchesRes: MatchesResponse = await getMatches(userID);
+    if (!userID) return;
+    setMatchesLoading(true);
+    setMatchesError(null);
+    setMatchesErrorIs404(false);
+    getMatches(userID)
+      .then((matchesRes: MatchesResponse) => {
         setMatches(matchesRes.matches);
+        setMatchesError(null);
+        setMatchesErrorIs404(false);
+      })
+      .catch((err: any) => {
+        if (err?.status === 404) {
+          setMatchesError(null);
+          setMatchesErrorIs404(true);
+          setMatches([]);
+        } else {
+          setMatchesError('Failed to load matches.');
+          setMatchesErrorIs404(false);
+          setMatches([]);
+          console.error('Error fetching matches:', err);
+        }
+      })
+      .finally(() => setMatchesLoading(false));
+  }, [userID]);
 
-        const requests = await getMatchRequests(userID);
+  useEffect(() => {
+    if (!userID) return;
+    setMatchRequestsLoading(true);
+    setMatchRequestsError(null);
+    setMatchRequestsErrorIs404(false);
+    getMatchRequests(userID)
+      .then((requests) => {
         setMatchRequests(requests);
-      } catch (err: any) {
-        console.error('Error fetching data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+        setMatchRequestsError(null);
+        setMatchRequestsErrorIs404(false);
+      })
+      .catch((err: any) => {
+        if (err?.status === 404) {
+          setMatchRequestsError(null);
+          setMatchRequestsErrorIs404(true);
+          setMatchRequests([]);
+        } else {
+          setMatchRequestsError('Failed to load match requests.');
+          setMatchRequestsErrorIs404(false);
+          setMatchRequests([]);
+          console.error('Error fetching match requests:', err);
+        }
+      })
+      .finally(() => setMatchRequestsLoading(false));
   }, [userID]);
 
   // Show register dialog when userID is null and user is authenticated
@@ -241,7 +276,7 @@ const Dashboard = () => {
                 View All Matches
               </Link>
             </Box>
-            {loading ? (
+            {matchesLoading ? (
               <Grid container spacing={2}>
                 {[1].map((index) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -249,6 +284,10 @@ const Dashboard = () => {
                   </Grid>
                 ))}
               </Grid>
+            ) : matchesErrorIs404 ? (
+              <Typography variant="body2">No matches found.</Typography>
+            ) : matchesError ? (
+              <Typography variant="body2">{matchesError}</Typography>
             ) : unansweredMatches.length === 0 ? (
               <Typography variant="body2">No unanswered meetings.</Typography>
             ) : (
@@ -335,7 +374,7 @@ const Dashboard = () => {
                 View All Matches
               </Link>
             </Box>
-            {loading ? (
+            {matchesLoading ? (
               <Grid container spacing={2}>
                 {[1, 2].map((index) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -343,6 +382,10 @@ const Dashboard = () => {
                   </Grid>
                 ))}
               </Grid>
+            ) : matchesErrorIs404 ? (
+              <Typography variant="body2">No matches found.</Typography>
+            ) : matchesError ? (
+              <Typography variant="body2">{matchesError}</Typography>
             ) : upcomingMatches.length === 0 ? (
               <Typography variant="body2">No upcoming meetings.</Typography>
             ) : (
@@ -421,7 +464,7 @@ const Dashboard = () => {
                   View All Matches
                 </Link>
               </Box>
-              {loading ? (
+              {matchesLoading ? (
                 <Grid container spacing={2}>
                   {[1].map((index) => (
                     <Grid item xs={12} sm={6} md={12} lg={12} key={index}>
@@ -429,6 +472,10 @@ const Dashboard = () => {
                     </Grid>
                   ))}
                 </Grid>
+              ) : matchesErrorIs404 ? (
+                <Typography variant="body2">No matches found.</Typography>
+              ) : matchesError ? (
+                <Typography variant="body2">{matchesError}</Typography>
               ) : unansweredMatches.length === 0 ? (
                 <Typography variant="body2">No unanswered meetings.</Typography>
               ) : (
@@ -525,7 +572,7 @@ const Dashboard = () => {
                   View All Matches
                 </Link>
               </Box>
-              {loading ? (
+              {matchesLoading ? (
                 <Grid container spacing={2}>
                   {[1, 2].map((index) => (
                     <Grid item xs={12} sm={6} md={12} lg={12} key={index}>
@@ -533,6 +580,10 @@ const Dashboard = () => {
                     </Grid>
                   ))}
                 </Grid>
+              ) : matchesErrorIs404 ? (
+                <Typography variant="body2">No matches found.</Typography>
+              ) : matchesError ? (
+                <Typography variant="body2">{matchesError}</Typography>
               ) : upcomingMatches.length === 0 ? (
                 <Typography variant="body2">No upcoming meetings.</Typography>
               ) : (
@@ -614,7 +665,7 @@ const Dashboard = () => {
           </Typography>
           <Link
             component={RouterLink}
-            to="/preferences"
+            to="/matchrequests"
             variant="body2"
             color="primary"
             underline="hover"
@@ -623,7 +674,7 @@ const Dashboard = () => {
             View All Match Requests
           </Link>
         </Box>
-        {loading ? (
+        {matchRequestsLoading ? (
           <Grid container spacing={2}>
             {[1, 2, 3].map((index) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
@@ -631,6 +682,10 @@ const Dashboard = () => {
               </Grid>
             ))}
           </Grid>
+        ) : matchRequestsErrorIs404 ? (
+          <Typography variant="body2">No match requests found.</Typography>
+        ) : matchRequestsError ? (
+          <Typography variant="body2">{matchRequestsError}</Typography>
         ) : last5PendingRequests.length === 0 ? (
           <Typography variant="body2">No pending match requests.</Typography>
         ) : (
@@ -655,7 +710,7 @@ const Dashboard = () => {
                     {formatDate(req.date)}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
-                    {formatTime(req.timeslots?.[0])}
+                    {req.timeslot && req.timeslot.length > 0 ? formatTime(req.timeslot[0]) : 'No timeslot'}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                     {req.location}

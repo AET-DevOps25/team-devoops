@@ -30,7 +30,7 @@ interface LayoutProps {
 
 export const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-  { text: 'Match Requests', icon: <EventNoteIcon />, path: '/preferences' },
+  { text: 'Match Requests', icon: <EventNoteIcon />, path: '/matchrequests' },
   { text: 'Matches', icon: <RestaurantIcon />, path: '/matches' },
 ];
 
