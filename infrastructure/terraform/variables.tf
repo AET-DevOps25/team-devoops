@@ -31,7 +31,7 @@ variable "ami_id" {
 variable "instance_type" {
   description = "Instance type for the EC2 instance"
   type        = string
-  default     = "t2.small"
+  default     = "t3.small"
 }
 
 variable "aws_ec2_private_key" {
