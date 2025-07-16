@@ -61,6 +61,30 @@ client:
       - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.nip.io
 ```
 
+---
+
+## Local Deployment with Docker
+
+```
+# Build and tag the Docker image
+docker build -t ghcr.io/aet-devops25/team-devoops/client .
+
+# Push the image to GHCR (latest tag by default, access needed)
+docker push ghcr.io/aet-devops25/team-devoops/client
+
+# Run the Docker container on port 80
+docker run --name client-service -p 80:80 ghcr.io/aet-devops25/team-devoops/client
+
+# List running containers (if needed)
+docker ps
+
+# Stop the container
+docker stop client-service
+
+# Remove the container
+docker rm client-service
+```
+
 ## Build
 
 ```bash
