@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: AWS
-      url: "https://client.${{ steps.terraform.outputs.public_ip }}.nip.io"
+      url: "https://client.${{ steps.terraform.outputs.public_ip }}.sslip.io"
 
     steps:
       - name: Checkout Code
