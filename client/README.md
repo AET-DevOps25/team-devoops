@@ -25,7 +25,9 @@ Then edit `.env.local` with your local settings:
 
 ```
 VITE_API_BASE_URL=http://localhost:8080
+VITE_USE_MOCK_DATA=false
 ```
+If mock data usage is set to true, no requests will be sent to the Gateway. 
 
 ### Docker Compose Deployment
 
@@ -46,6 +48,17 @@ Environment variables are configured in `deployment/k8s/charts/client/values.yam
 ```yaml
 env:
   VITE_API_BASE_URL: 'http://gateway-service:80'
+```
+
+### AWS Deployment
+
+Environment variables are configured in `deployment/compose.aws.yml`
+
+```yaml
+client:
+    image: ghcr.io/aet-devops25/team-devoops/client:latest
+    environment:
+      - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.nip.io
 ```
 
 ## Build
