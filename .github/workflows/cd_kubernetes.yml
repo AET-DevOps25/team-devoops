@@ -22,6 +22,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    # Get current commit hash
+    - name: Get Tag
+      id: tag
+      run: echo "SHORT_SHA=sha-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
     # Use Azure's kubectl installation action
     - name: Install Kubectl
       uses: azure/setup-kubectl@v4
@@ -43,4 +48,5 @@ jobs:
     # Run helm upgrade to upgrade deployment
     - name: Upgrade Deployment with Helm
       run: |
-        helm upgrade --install meetatmensa ./deployment/k8s -n devoops
+        helm upgrade --install meetatmensa ./deployment/k8s -n devoops \
+          --set image.tag=${SHORT_SHA}
