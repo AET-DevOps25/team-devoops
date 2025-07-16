@@ -7,7 +7,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "refactor-ui-cleanup"
+  tag: "feature-networking"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -54,18 +54,18 @@ service:
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: true
-  className: ""
-  annotations:
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+  #enabled: true
+  #className: ""
+  #annotations:
+  #  kubernetes.io/ingress.class: traefik
+  #  traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: api.meetatmensa.com
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
+  #hosts:
+  #  - host: api.meetatmensa.com
+  #    paths:
+  #      - path: /
+  #        pathType: Prefix
+  #tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
