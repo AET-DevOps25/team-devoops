@@ -49,4 +49,10 @@ jobs:
     - name: Upgrade Deployment with Helm
       run: |
         helm upgrade --install meetatmensa ./deployment/k8s -n devoops \
-          --set image.tag=${SHORT_SHA}
+          --set client.image.tag=${SHORT_SHA} \
+          --set gateway.image.tag=${SHORT_SHA} \
+          --set genai.image.tag=${SHORT_SHA} \
+          --set matchdb.image.tag=${SHORT_SHA} \
+          --set matching.image.tag=${SHORT_SHA} \
+          --set user.image.tag=${SHORT_SHA} \
+          --set userdb.image.tag=${SHORT_SHA}
