@@ -25,11 +25,11 @@ services:
   client:
     image: ghcr.io/aet-devops25/team-devoops/client:latest
     environment:
-      - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.nip.io
+      - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.sslip.io
     labels:
       - traefik.enable=true
       - traefik.http.routers.client.entrypoints=websecure
-      - traefik.http.routers.client.rule=Host(`client.${EC2_PUBLIC_IP}.nip.io`)
+      - traefik.http.routers.client.rule=Host(`client.${EC2_PUBLIC_IP}.sslip.io`)
       - traefik.http.routers.client.tls.certresolver=letsencrypt
       - traefik.http.services.client.loadbalancer.server.port=80
       - traefik.http.middlewares.client-compress.compress=true
@@ -50,7 +50,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.gateway.entrypoints=websecure
-      - traefik.http.routers.gateway.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`)
+      - traefik.http.routers.gateway.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`)
       - traefik.http.routers.gateway.tls.certresolver=letsencrypt
       - traefik.http.services.gateway.loadbalancer.server.port=8080
     depends_on:
@@ -74,7 +74,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.matching.entrypoints=websecure
-      - traefik.http.routers.matching.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/matching`)
+      - traefik.http.routers.matching.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`) && PathPrefix(`/matching`)
       - traefik.http.routers.matching.tls.certresolver=letsencrypt
       - traefik.http.services.matching.loadbalancer.server.port=80
     depends_on:
@@ -88,7 +88,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.user.entrypoints=websecure
-      - traefik.http.routers.user.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/user`)
+      - traefik.http.routers.user.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`) && PathPrefix(`/user`)
       - traefik.http.routers.user.tls.certresolver=letsencrypt
       - traefik.http.services.user.loadbalancer.server.port=80
     depends_on:
@@ -102,7 +102,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.genai.entrypoints=websecure
-      - traefik.http.routers.genai.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/genai`)
+      - traefik.http.routers.genai.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`) && PathPrefix(`/genai`)
       - traefik.http.routers.genai.tls.certresolver=letsencrypt
       - traefik.http.services.genai.loadbalancer.server.port=80
     networks:
