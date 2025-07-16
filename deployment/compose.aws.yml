@@ -46,6 +46,7 @@ services:
   gateway-service:
     image: ghcr.io/aet-devops25/team-devoops/server/gateway:latest
     container_name: gateway-service
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.gateway.entrypoints=websecure
@@ -140,6 +141,27 @@ services:
       timeout: 20s
       retries: 10
       start_period: 30s
+    networks:
+      - backend
+
+  # Simple health check service
+  health-check:
+    image: curlimages/curl:latest
+    container_name: health-check
+    restart: unless-stopped
+    command: >
+      sh -c "
+      while true; do
+        echo 'Checking services...'
+        curl -f http://gateway-service:8080/ || echo 'Gateway down'
+        curl -f http://meetatmensa-matching:80/ || echo 'Matching down'
+        curl -f http://meetatmensa-user:80/ || echo 'User down'
+        sleep 30
+      done"
+    depends_on:
+      - gateway-service
+      - meetatmensa-matching
+      - meetatmensa-user
     networks:
       - backend
 
