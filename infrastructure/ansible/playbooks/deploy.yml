@@ -89,7 +89,7 @@
         dest: "{{ deployment_dir }}/compose.aws.yml"
         mode: "0644"
 
-    - name: Create .env.prod file
+    - name: Create .env.prod file 
       template:
         src: "{{ playbook_dir }}/../templates/env.prod.j2"
         dest: "{{ app_dir }}/.env.prod"
