@@ -103,8 +103,11 @@ const RegisterProfileDialog: React.FC<RegisterProfileDialogProps> = ({
 
   return (
     <Dialog open={open} maxWidth="sm" fullWidth>
-      <DialogTitle>Complete Your Profile</DialogTitle>
+      <DialogTitle>Welcome to Meet@Mensa!</DialogTitle>
       <DialogContent>
+        <Typography variant="body1">
+          Please fill in the following information to complete your profile.
+        </Typography>
         <Box display="flex" flexDirection="column" gap={2} mt={1}>
           <TextField
             label="Email"

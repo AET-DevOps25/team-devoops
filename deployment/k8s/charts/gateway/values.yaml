@@ -50,21 +50,22 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  port: 8080
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
+  #enabled: true
+  #className: ""
+  #annotations:
+  #  kubernetes.io/ingress.class: traefik
+  #  traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
+  #hosts:
+  #  - host: api.meetatmensa.com
+  #    paths:
+  #      - path: /
+  #        pathType: Prefix
+  #tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local

@@ -25,11 +25,11 @@ services:
   client:
     image: ghcr.io/aet-devops25/team-devoops/client:latest
     environment:
-      - PUBLIC_API_URL=https://api.${EC2_PUBLIC_IP}.nip.io
+      - API_BASE_URL=https://api.${EC2_PUBLIC_IP}.sslip.io
     labels:
       - traefik.enable=true
       - traefik.http.routers.client.entrypoints=websecure
-      - traefik.http.routers.client.rule=Host(`client.${EC2_PUBLIC_IP}.nip.io`)
+      - traefik.http.routers.client.rule=Host(`client.${EC2_PUBLIC_IP}.sslip.io`)
       - traefik.http.routers.client.tls.certresolver=letsencrypt
       - traefik.http.services.client.loadbalancer.server.port=80
       - traefik.http.middlewares.client-compress.compress=true
@@ -46,73 +46,129 @@ services:
   gateway-service:
     image: ghcr.io/aet-devops25/team-devoops/server/gateway:latest
     container_name: gateway-service
+    restart: unless-stopped
     labels:
       - traefik.enable=true
       - traefik.http.routers.gateway.entrypoints=websecure
-      - traefik.http.routers.gateway.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`)
+      - traefik.http.routers.gateway.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`)
       - traefik.http.routers.gateway.tls.certresolver=letsencrypt
       - traefik.http.services.gateway.loadbalancer.server.port=8080
     depends_on:
-      chat-service:
+      meetatmensa-matching:
         condition: service_started
         required: true
-      matching-service:
+      meetatmensa-user:
         condition: service_started
         required: true
-      user-service:
+      meetatmensa-genai:
         condition: service_started
         required: true
     networks:
       - backend
 
-  chat-service:
-    image: ghcr.io/aet-devops25/team-devoops/server/chat:latest
-    container_name: chat-service
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.chat.entrypoints=websecure
-      - traefik.http.routers.chat.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/chat`)
-      - traefik.http.routers.chat.tls.certresolver=letsencrypt
-      - traefik.http.services.chat.loadbalancer.server.port=80
-    networks:
-      - backend
 
-  matching-service:
+
+  meetatmensa-matching:
     image: ghcr.io/aet-devops25/team-devoops/server/matching:latest
-    container_name: matching-service
+    container_name: meetatmensa-matching
     labels:
       - traefik.enable=true
       - traefik.http.routers.matching.entrypoints=websecure
-      - traefik.http.routers.matching.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/matching`)
+      - traefik.http.routers.matching.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`) && PathPrefix(`/matching`)
       - traefik.http.routers.matching.tls.certresolver=letsencrypt
       - traefik.http.services.matching.loadbalancer.server.port=80
+    depends_on:
+      - match-database
     networks:
       - backend
 
-  user-service:
+  meetatmensa-user:
     image: ghcr.io/aet-devops25/team-devoops/server/user:latest
-    container_name: user-service
+    container_name: meetatmensa-user
     labels:
       - traefik.enable=true
       - traefik.http.routers.user.entrypoints=websecure
-      - traefik.http.routers.user.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/user`)
+      - traefik.http.routers.user.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`) && PathPrefix(`/user`)
       - traefik.http.routers.user.tls.certresolver=letsencrypt
       - traefik.http.services.user.loadbalancer.server.port=80
+    depends_on:
+      - user-database
     networks:
       - backend
 
-  genai-service:
+  meetatmensa-genai:
     image: ghcr.io/aet-devops25/team-devoops/genai:latest
-    container_name: genai-service
+    container_name: meetatmensa-genai
     labels:
       - traefik.enable=true
       - traefik.http.routers.genai.entrypoints=websecure
-      - traefik.http.routers.genai.rule=Host(`api.${EC2_PUBLIC_IP}.nip.io`) && PathPrefix(`/genai`)
+      - traefik.http.routers.genai.rule=Host(`api.${EC2_PUBLIC_IP}.sslip.io`) && PathPrefix(`/genai`)
       - traefik.http.routers.genai.tls.certresolver=letsencrypt
       - traefik.http.services.genai.loadbalancer.server.port=80
+    networks:
+      - backend
+
+  match-database:
+    image: ghcr.io/aet-devops25/team-devoops/matchdb:latest
+    container_name: meetatmensa-matchdb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - matchdb_data:/var/lib/mysql
+    expose:
+      - "3306"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+    networks:
+      - backend
+
+  user-database:
+    image: ghcr.io/aet-devops25/team-devoops/userdb:latest
+    container_name: meetatmensa-userdb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - userdb_data:/var/lib/mysql
+    expose:
+      - "3306"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+    networks:
+      - backend
+
+  # Simple health check service
+  health-check:
+    image: curlimages/curl:latest
+    container_name: health-check
+    restart: unless-stopped
+    command: >
+      sh -c "
+      while true; do
+        echo 'Checking services...'
+        curl -f http://gateway-service:8080/ || echo 'Gateway down'
+        curl -f http://meetatmensa-matching:80/ || echo 'Matching down'
+        curl -f http://meetatmensa-user:80/ || echo 'User down'
+        sleep 30
+      done"
+    depends_on:
+      - gateway-service
+      - meetatmensa-matching
+      - meetatmensa-user
     networks:
       - backend
 
 networks:
   backend:
     driver: bridge
+
+volumes:
+  matchdb_data:
+  userdb_data:

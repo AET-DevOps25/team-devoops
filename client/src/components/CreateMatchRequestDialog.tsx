@@ -20,6 +20,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { de as deLocale } from 'date-fns/locale';
 import { isSameDay, isBefore } from 'date-fns';
+import { useUserID } from '../contexts/UserIDContext';
 
 // Location options
 const LOCATION_OPTIONS = [
@@ -61,6 +62,7 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
   onClose,
   onSubmit,
 }) => {
+  const userID = useUserID();
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeslots, setSelectedTimeslots] = useState<number[]>([]);
@@ -69,6 +71,7 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
     agePref: false,
     genderPref: false,
   });
+
 
   const handleTimeslotToggle = (timeslot: number) => {
     setSelectedTimeslots((prev) =>
@@ -124,13 +127,14 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
   };
 
   const handleSubmit = () => {
-    if (!selectedLocation || !selectedDate || !areTimeslotsConsecutive(selectedTimeslots)) {
+    if (!selectedLocation || !selectedDate || !areTimeslotsConsecutive(selectedTimeslots) || !userID) {
       return;
     }
 
     const formattedDate = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD format
 
     onSubmit({
+      userID: userID,
       date: formattedDate,
       timeslot: selectedTimeslots,
       location: selectedLocation.toUpperCase(),
