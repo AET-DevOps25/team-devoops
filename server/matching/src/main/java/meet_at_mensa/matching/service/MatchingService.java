@@ -5,8 +5,11 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.openapitools.model.MatchRequestCollection;
+import org.openapitools.model.MatchStatus;
 import org.openapitools.model.RequestStatus;
 import org.openapitools.model.MatchCollection;
 import org.openapitools.model.Group;
@@ -160,19 +163,149 @@ public class MatchingService {
 
 
     /**
+     * Perform a group Health Check.
+     * 
+     * Forces a rematch if a group is no longer viable
+     * 
+     * @param date date of groups to health-check
+     * @param strict 
+     * False: check if there are too many rejections
+     * True: check if there are not enough confirmations
+     *
+     */
+    public void groupHealthCheck(LocalDate date, Boolean strict) {
+
+        // check all groups on a given date
+        for (Group group : groupService.getGroupsOnDate(date)) {
+
+            int rejected = 0;
+            int confirmed = 0;
+
+            for (MatchStatus userStatus : groupService.getGroupStatus(group.getGroupID())) {
+                
+                if(userStatus.getStatus() == InviteStatus.CONFIRMED) {
+
+                    confirmed++;
+
+                } else if (userStatus.getStatus() == InviteStatus.REJECTED) {
+
+                    rejected++;
+
+                }
+
+            }
+
+            // if the strict flag is set
+            if (strict) {
+
+                // Rematch if less than 2 people have confirmed
+                if (confirmed <= 2) {
+
+                    rematchGroup(group.getGroupID(), strict);
+
+                }
+
+            } else {
+
+                // Rematch if so many have rejected that a group is not possible
+                if (group.getUserStatus().size() - rejected <= 2) {
+
+                    rematchGroup(group.getGroupID(), strict);
+
+                }
+            }
+
+        }
+
+    }
+
+
+
+    /**
+     * Dissolves a group and forces a rematch
+     * 
+     * 
+     * @param groupID UUID of the group to rematch
+     * @param strict 
+     * False: rematch CONFIRMED and SENT requests, expire REJECTED
+     * True: rematch CONFIRMED, expire SENT and REJECTED
+     *
+     */
+    public void rematchGroup(UUID groupID, Boolean strict) {
+
+        Group group = groupService.getGroup(groupID);
+
+        // get all matches for a the given group
+        MatchCollection matches = matchService.getMatchesByGroup(group.getGroupID());
+
+        for (Match match : matches.getMatches()) {
+
+            // mark the match as expired
+            matchService.updateStatus(match.getMatchID(), InviteStatus.EXPIRED);
+                
+            // if a match has been sent but not responded to
+            if (match.getStatus() == InviteStatus.CONFIRMED) {
+
+                // TODO send out Email informing of change
+
+                // update Request status to REMATCH
+                requestService.updateRequestStatus(
+                    requestService.getUserRequestOn(group.getDate(), match.getUserID()).getRequestID(),
+                    RequestStatus.REMATCH
+                );
+
+            } else if (match.getStatus() == InviteStatus.SENT) {
+
+                // if strict then expire SENT requests
+                if (strict) {
+
+                    // TODO send out Email informing of change
+
+                    requestService.updateRequestStatus(
+                        requestService.getUserRequestOn(group.getDate(), match.getUserID()).getRequestID(),
+                        RequestStatus.EXPIRED
+                    );
+
+                // if not strict rematch SENT requests
+                } else {
+
+                    // TODO send out Email informing of change
+
+                    requestService.updateRequestStatus(
+                        requestService.getUserRequestOn(group.getDate(), match.getUserID()).getRequestID(),
+                        RequestStatus.REMATCH
+                    );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    /**
      * Runs the matching algorithm and generates groups
      * 
      * @param date the date for which to run the algorithm
      * @return List of all matched groups
      */
-    public List<Group> match(LocalDate date){
+    public List<Group> match(LocalDate date, Location location){
 
         // --------------------
         // Part 1: Prepare Data
         // --------------------
 
         // get all unmatched requests for today's date
-        MatchRequestCollection requests = requestService.getUnmatchedRequests(date);
+        MatchRequestCollection allRequests = requestService.getUnmatchedRequests(date);
+
+        // filter out requests by Mensa
+        MatchRequestCollection requests = new MatchRequestCollection(
+            allRequests.getRequests().stream()
+                .filter(filterRequest -> filterRequest.getLocation() == location)
+                .collect(Collectors.toList())
+        );
 
         // get list of all user UUIDs
         List<UUID> userIDs = new ArrayList<>();

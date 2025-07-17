@@ -18,6 +18,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
+import devoopsLogo from '../assets/devoops_logo.png';
 
 export const drawerWidth = 240;
 
@@ -29,7 +30,7 @@ interface LayoutProps {
 
 export const menuItems = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-  { text: 'Match Requests', icon: <EventNoteIcon />, path: '/preferences' },
+  { text: 'Match Requests', icon: <EventNoteIcon />, path: '/matchrequests' },
   { text: 'Matches', icon: <RestaurantIcon />, path: '/matches' },
 ];
 
@@ -68,6 +69,12 @@ const Layout = ({ children, toggleColorMode, mode }: LayoutProps) => {
           </ListItem>
         ))}
       </List>
+      <img
+        src={devoopsLogo}
+        alt="devoops"
+        style={{ width: '30%', margin: 'auto' }}
+        onClick={() => navigate('/')}
+      />
       <Divider />
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 2 }}>
         <Box

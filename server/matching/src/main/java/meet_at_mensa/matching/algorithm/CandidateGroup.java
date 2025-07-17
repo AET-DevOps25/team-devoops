@@ -1,7 +1,6 @@
 package meet_at_mensa.matching.algorithm;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +14,7 @@ import org.openapitools.model.UserCollection;
 public class CandidateGroup {
     
 private List<Candidate> members;
-private Integer quality;
+private Float quality;
 private Integer timeslot;
 
 
@@ -37,7 +36,7 @@ public Integer GetMemberCount() {
 
 }
 
-public Integer getQuality() {
+public Float getQuality() {
 
     return quality;
 
@@ -86,18 +85,35 @@ public MatchingSolutionBlock toSolutionBlock(RequestStatus status) {
             .collect(Collectors.toList())
     );
 
-    LocalDate date = members.get(0).getDate();
+    MatchingSolutionBlock solutionBlock;
 
-    Location location = members.get(0).getLocation();
+    if(members.size() == 0 || status == RequestStatus.UNMATCHABLE) {
 
-    MatchingSolutionBlock solutionBlock = new MatchingSolutionBlock(
-        users,
-        requests,
-        date,
-        timeslot,
-        location,
-        status
-    );
+        solutionBlock = new MatchingSolutionBlock(
+            users,
+            requests,
+            null,
+            null,
+            null,
+            status
+        );
+
+    } else {
+
+        LocalDate date = members.get(0).getDate();
+
+        Location location = members.get(0).getLocation();
+
+        solutionBlock = new MatchingSolutionBlock(
+            users,
+            requests,
+            date,
+            timeslot,
+            location,
+            status
+        );
+
+    }
 
     return solutionBlock;
 
@@ -121,15 +137,16 @@ private List<Candidate> getOthers(UUID userID) {
 
 
 
-private Integer calculateQuality() {
+private Float calculateQuality() {
 
-    Integer quality = 0;
+    Float quality = 0f;
 
     for (Candidate candidate : members) {
 
         // ---------------------
         // Check Age Preferences
         // ---------------------
+        // up to + (memberCount - 1)
         
         // if candidate has an age preference
         if (candidate.getAgePref()) {
@@ -158,6 +175,7 @@ private Integer calculateQuality() {
         // ------------------------
         // Check Degree Preferences
         // ------------------------
+        // up to + (memberCount - 1)
 
         // if candidate has a degree preference
         if (candidate.getDegreePref()) {
@@ -182,6 +200,7 @@ private Integer calculateQuality() {
         // ------------------------
         // Check Gender Preferences
         // ------------------------
+        // up to + (memberCount - 1)
 
         // if candidate has a gender preference
         if (candidate.getGenderPref()) {
@@ -204,6 +223,10 @@ private Integer calculateQuality() {
         }
 
     }
+
+    // normalize quality
+    // memberCount * ( 3 * (memberCount - 1) )
+    quality = quality / (members.size() * (members.size() - 1) * 3);
 
     return quality;
 

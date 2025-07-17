@@ -1,11 +1,12 @@
 package meet_at_mensa.matching;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableScheduling
@@ -21,14 +22,14 @@ public class MatchingApplication {
 		SpringApplication.run(MatchingApplication.class, args);
 	}
 
-    // Wait 30s to ensure that databases have started
+    // Wait 60s to ensure that databases have started
     private static void wait_for_database_startup() {
 
         System.out.println("Waiting for databases to start...");
 
         try {
 
-            TimeUnit.SECONDS.sleep(30);
+            TimeUnit.SECONDS.sleep(60);
 
         } catch (InterruptedException e) {
 

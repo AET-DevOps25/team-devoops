@@ -20,6 +20,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { de as deLocale } from 'date-fns/locale';
 import { isSameDay, isBefore } from 'date-fns';
+import { useUserID } from '../contexts/UserIDContext';
 
 // Location options
 const LOCATION_OPTIONS = [
@@ -47,6 +48,9 @@ const TIMESLOT_OPTIONS = [
   { value: 16, label: '13:45-14:00' },
 ];
 
+// Filter to show only timeslots from 11:00 onwards, because Mensa opens at 11:00
+const DISPLAYED_TIMESLOTS = TIMESLOT_OPTIONS.filter((timeslot) => timeslot.value >= 5);
+
 interface CreateMatchRequestDialogProps {
   open: boolean;
   onClose: () => void;
@@ -58,6 +62,7 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
   onClose,
   onSubmit,
 }) => {
+  const userID = useUserID();
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeslots, setSelectedTimeslots] = useState<number[]>([]);
@@ -67,6 +72,7 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
     genderPref: false,
   });
 
+
   const handleTimeslotToggle = (timeslot: number) => {
     setSelectedTimeslots((prev) =>
       prev.includes(timeslot)
@@ -75,16 +81,13 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
     );
   };
 
+  // Helper function to disable timeslots that are in the past (for requests on the same day)
   const getDisabledTimeslots = (selectedDate: Date | null) => {
     if (!selectedDate) return [];
     const now = new Date();
     if (!isSameDay(selectedDate, now)) return [];
     // Map of timeslot end times
     const slotEndTimes = [
-      '10:15',
-      '10:30',
-      '10:45',
-      '11:00',
       '11:15',
       '11:30',
       '11:45',
@@ -106,18 +109,35 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
     }).map((timeslot) => timeslot.value);
   };
 
+  // Helper function to check if three timeslots are consecutive
+  const areTimeslotsConsecutive = (timeslots: number[]): boolean => {
+    if (timeslots.length < 3) return false;
+
+    // Sort timeslots and check if they are consecutive
+    const sortedTimeslots = [...timeslots].sort((a, b) => a - b);
+    for (let i = 0; i < sortedTimeslots.length - 2; i++) {
+      if (
+        sortedTimeslots[i + 1] === sortedTimeslots[i] + 1 &&
+        sortedTimeslots[i + 2] === sortedTimeslots[i] + 2
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const handleSubmit = () => {
-    if (!selectedLocation || !selectedDate || selectedTimeslots.length === 0) {
-      // TODO: Add proper validation
+    if (!selectedLocation || !selectedDate || !areTimeslotsConsecutive(selectedTimeslots) || !userID) {
       return;
     }
 
     const formattedDate = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD format
 
     onSubmit({
-      location: selectedLocation,
+      userID: userID,
       date: formattedDate,
-      timeslots: selectedTimeslots,
+      timeslot: selectedTimeslots,
+      location: selectedLocation.toUpperCase(),
       preferences,
     });
   };
@@ -155,10 +175,10 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
 
           <Box>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Available Timeslots (select at least 3)
+              Available Timeslots (select 3 consecutive timeslots)
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              {TIMESLOT_OPTIONS.map((timeslot) => (
+              {DISPLAYED_TIMESLOTS.map((timeslot) => (
                 <Chip
                   key={timeslot.value}
                   label={timeslot.label}
@@ -217,7 +237,9 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
         <Button
           onClick={handleSubmit}
           variant="contained"
-          disabled={!selectedLocation || !selectedDate || selectedTimeslots.length < 3}
+          disabled={
+            !selectedLocation || !selectedDate || !areTimeslotsConsecutive(selectedTimeslots)
+          }
         >
           Create
         </Button>

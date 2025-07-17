@@ -25,67 +25,50 @@ import InterestsIcon from '@mui/icons-material/Interests';
 import InfoIcon from '@mui/icons-material/Info';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
-import { useAuth0 } from '@auth0/auth0-react';
-
-interface UserProfile {
-  userID: string;
-  email: string;
-  name: string;
-  birthday: string;
-  gender: string;
-  degree: string;
-  interests: string[];
-  bio: string;
-}
-
-const USE_PROFILE_MOCK = true;
-
-const mockProfile: UserProfile = {
-  userID: '123e4567-e89b-12d3-a456-426614174000',
-  email: 'jane.doe@example.com',
-  name: 'Jane Doe',
-  birthday: '1995-06-15',
-  gender: 'Female',
-  degree: 'Computer Science',
-  interests: ['AI', 'Cooking', 'Travel'],
-  bio: 'Hi! I am Jane and I love learning new things and meeting new people at the Mensa.',
-};
+import { useUserService, UserProfile, UpdateUserProfile } from '../services/userService';
+import { useUserID } from '../contexts/UserIDContext';
 
 const Profile: React.FC = () => {
-  const { user } = useAuth0();
+  const userID = useUserID();
+  const { getUserProfile, updateUserProfile } = useUserService();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
-  const [editData, setEditData] = useState<Partial<UserProfile>>({});
+  const [editData, setEditData] = useState<Partial<UpdateUserProfile>>({});
   const [saving, setSaving] = useState(false);
   const [interestInput, setInterestInput] = useState('');
 
+  // Fetch the profile using the userID from context
   useEffect(() => {
-    if (USE_PROFILE_MOCK) {
-      setProfile(mockProfile);
-      setEditData(mockProfile);
+    if (!userID) {
       setLoading(false);
       return;
     }
-    if (user?.sub) {
-      setLoading(true);
-      axios
-        .get(`https://meetatmensa.com/api/v1/user/${user.sub}`)
-        .then((res) => {
-          setProfile(res.data);
-          setEditData(res.data);
-        })
-        .catch(() => setProfile(null))
-        .finally(() => setLoading(false));
-    }
-  }, [user]);
+    setLoading(true);
+    getUserProfile(userID)
+      .then((res) => {
+        setProfile(res);
+        setEditData(res);
+      })
+      .catch(() => setProfile(null))
+      .finally(() => setLoading(false));
+  }, [userID]);
 
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="300px">
         <CircularProgress />
       </Box>
+    );
+  }
+
+  if (!userID) {
+    return (
+      <Paper sx={{ p: 3 }}>
+        <Typography variant="h6">
+          No userID available. Please log in and complete registration.
+        </Typography>
+      </Paper>
     );
   }
 
@@ -98,10 +81,10 @@ const Profile: React.FC = () => {
   }
 
   // Avatar initials: first letter of first and last name
-  const getInitials = (name: string) => {
-    const [first, ...rest] = name.split(' ');
-    const last = rest.length > 0 ? rest[rest.length - 1] : '';
-    return `${first?.[0] || ''}${last?.[0] || ''}`.toUpperCase();
+  const getInitials = (firstname: string, lastname: string) => {
+    const first = firstname?.charAt(0)?.toUpperCase() || '';
+    const last = lastname?.charAt(0)?.toUpperCase() || '';
+    return first + last;
   };
 
   // Handlers for editing
@@ -116,20 +99,24 @@ const Profile: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      if (USE_PROFILE_MOCK) {
-        setProfile((prev) => ({ ...prev!, ...editData }) as UserProfile);
-        setEditMode(false);
-        setSaving(false);
-        return;
-      }
-      // Send all required fields
-      const { email, name, birthday, gender, degree, interests, bio } = {
-        ...profile,
-        ...editData,
+      const { email, firstname, lastname, birthday, gender, degree, degreeStart, interests, bio } =
+        {
+          ...profile,
+          ...editData,
+        };
+      const updated = {
+        email,
+        firstname,
+        lastname,
+        birthday,
+        gender,
+        degree,
+        degreeStart,
+        interests,
+        bio,
       };
-      const updated = { email, name, birthday, gender, degree, interests, bio };
-      await axios.put(`https://meetatmensa.com/api/v1/user/${user?.sub}`, updated);
-      setProfile((prev) => ({ ...prev!, ...updated }) as UserProfile);
+      const updatedProfile = await updateUserProfile(userID!, updated);
+      setProfile(updatedProfile);
       setEditMode(false);
     } catch (e) {
       // handle error
@@ -170,12 +157,13 @@ const Profile: React.FC = () => {
           </IconButton>
         )}
         {/* Avatar */}
+
         <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
-          <Avatar src={user?.picture} sx={{ width: 80, height: 80, mb: 1, fontSize: 36 }}>
-            {getInitials(profile.name)}
+          <Avatar sx={{ width: 80, height: 80, mb: 1, fontSize: 36 }}>
+            {getInitials(profile.firstname, profile.lastname)}
           </Avatar>
           <Typography variant="h5" fontWeight={600} align="center">
-            {profile.name}
+            {profile.firstname} {profile.lastname}
           </Typography>
         </Box>
         <Stack spacing={2} mt={2}>

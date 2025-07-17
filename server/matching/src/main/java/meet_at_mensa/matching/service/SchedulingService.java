@@ -1,5 +1,7 @@
 package meet_at_mensa.matching.service;
 
+import java.time.LocalDate;
+import org.openapitools.model.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ public class SchedulingService {
     @Scheduled(cron = "0 0 15 * * *", zone = "Europe/Berlin")
     public void scheduledExpiry(){
 
+        System.out.println("Checking for expired content");
+
         // Expire all SENT but not responded to matches
         matchingService.expireMatches();
 
@@ -45,6 +49,8 @@ public class SchedulingService {
     @Scheduled(cron = "0 0 0 * * SUN", zone = "Europe/Berlin")
     public void scheduledCleanup(){
 
+        System.out.println("Performing cleanup of expired content");
+
         // clean up expired groups and matches
         matchingService.cleanupExpired();
 
@@ -58,17 +64,45 @@ public class SchedulingService {
     /**
      * Runs a scheduled round of matching
      * 
-     * Runs the day before at 22:00, and the day of at 10:00
+     * Runs the day before at 22:00
      *
      *
      * The 22:00 round is intended to serve as the intended matching run for a given day
      * with the 10:00 round serving to REMATCH any groups that failed a health-check
      * 
      */
-    @Scheduled(cron = "0 0 22,10 * * *", zone = "Europe/Berlin")
-    public void scheduledMatching(){
+    @Scheduled(cron = "0 0 22 * * *", zone = "Europe/Berlin")
+    public void scheduledMatchingEvening(){
 
-        // TODO: Implement
+        System.out.println("Performing matching for tommorow");
+
+        // run at 22:00h to attempt to match for tomorrow
+        matchingService.match(LocalDate.now().plusDays(1), Location.GARCHING);
+        matchingService.match(LocalDate.now().plusDays(1), Location.ARCISSTR);
+
+    }
+
+    /**
+     * Runs the Morning scheduled round of matching (Last Chance)
+     * 
+     * Runs the day before at 10:00
+     *
+     * The 10:00 round serving to REMATCH any groups that failed a health-check
+     * 
+     */
+    @Scheduled(cron = "0 0 10 * * *", zone = "Europe/Berlin")
+    public void scheduledMatchingMorning(){
+
+        System.out.println("Performing strict group health-check");
+
+        // run a strict groupHealthCheck, forcing rematch on all groups without enough RSVPs
+        matchingService.groupHealthCheck(LocalDate.now(), true);
+
+        System.out.println("Performing matching for today");
+
+        // run at 10:00 to attempt to match for today
+        matchingService.match(LocalDate.now(), Location.GARCHING);
+        matchingService.match(LocalDate.now(), Location.ARCISSTR);
 
     }
 
@@ -85,9 +119,31 @@ public class SchedulingService {
      * 
      */
     @Scheduled(cron = "0 0/10 * * * *", zone = "Europe/Berlin")
-    public void groupHealthCheck(){
+    public void groupHealthCheckSoft(){
 
-        // TODO: Implement
+        System.out.println("Performing soft group health-check");
+
+        try {
+
+            // runs a non-strict group health check for all groups today
+            matchingService.groupHealthCheck(LocalDate.now(), false);
+            
+        } catch (Exception e) {
+            
+            System.out.println("No groups scheduled for today");
+
+        }
+
+        try {
+
+            // runs a non-strict group health check for all groups tomorrow
+            matchingService.groupHealthCheck(LocalDate.now().plusDays(1), false);
+            
+        } catch (Exception e) {
+            
+            System.out.println("No groups scheduled for tomorrow");
+
+        }
 
     }
 

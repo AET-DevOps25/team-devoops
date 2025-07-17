@@ -1,21 +1,21 @@
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 
-// Create axios instance with base configuration
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+// API version to be used for all endpoint construction
+export const API_VERSION = '/api/v2'; // Update this when bumping API version
 
 // Custom hook for authenticated API calls
 export const useAuthenticatedApi = () => {
   const { getAccessTokenSilently } = useAuth0();
 
+  const apiBaseUrl =
+    window.RUNTIME_CONFIG?.API_BASE_URL ||
+    import.meta.env.VITE_API_BASE_URL ||
+    'http://localhost:8080';
+
   // Create a new axios instance for authenticated requests
   const authenticatedApi = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
+    baseURL: apiBaseUrl,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -54,51 +54,10 @@ export const useAuthenticatedApi = () => {
   return authenticatedApi;
 };
 
-// Global axios instance with auth interceptor (for use outside of React components)
-let globalApi: typeof api | null = null;
-
-export const getAuthenticatedApi = async () => {
-  if (!globalApi) {
-    globalApi = axios.create({
-      baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    // Add request interceptor
-    globalApi.interceptors.request.use(
-      async (config) => {
-        // This will need to be called from within a React component context
-        // where useAuth0 is available
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+declare global {
+  interface Window {
+    RUNTIME_CONFIG?: {
+      API_BASE_URL?: string;
+    };
   }
-  return globalApi;
-};
-
-// Helper function to add auth token to any axios instance
-export const addAuthToken = async (axiosInstance: typeof api, getToken: () => Promise<string>) => {
-  axiosInstance.interceptors.request.use(
-    async (config) => {
-      try {
-        const token = await getToken();
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-      } catch (error) {
-        console.error('Error getting access token:', error);
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-};
-
-export default api; 
+} 

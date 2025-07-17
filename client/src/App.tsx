@@ -7,6 +7,7 @@ import MatchRequests from './components/MatchRequests';
 import Matches from './components/Matches';
 import { useAuth0 } from '@auth0/auth0-react';
 import Profile from './components/Profile';
+import { UserIDProvider } from './contexts/UserIDContext';
 
 interface AppProps {
   toggleColorMode: () => void;
@@ -40,79 +41,81 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const App = ({ toggleColorMode, mode }: AppProps) => {
   return (
-    <Router>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
+    <UserIDProvider>
+      <Router>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Protected routes - all require authentication */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <Dashboard />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <Dashboard />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/preferences"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <MatchRequests />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/matches"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <Matches />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <Profile />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
+          {/* Protected routes - all require authentication */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout toggleColorMode={toggleColorMode} mode={mode}>
+                  <Dashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Layout toggleColorMode={toggleColorMode} mode={mode}>
+                  <Dashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/matchrequests"
+            element={
+              <ProtectedRoute>
+                <Layout toggleColorMode={toggleColorMode} mode={mode}>
+                  <MatchRequests />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/matches"
+            element={
+              <ProtectedRoute>
+                <Layout toggleColorMode={toggleColorMode} mode={mode}>
+                  <Matches />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Layout toggleColorMode={toggleColorMode} mode={mode}>
+                  <Profile />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Account settings route */}
-        <Route
-          path="/account"
-          element={
-            <ProtectedRoute>
-              <Layout toggleColorMode={toggleColorMode} mode={mode}>
-                <div>Account Settings (Coming Soon)</div>
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
+          {/* Account settings route */}
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute>
+                <Layout toggleColorMode={toggleColorMode} mode={mode}>
+                  <div>Account Settings (Coming Soon)</div>
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Catch all route */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Router>
+          {/* Catch all route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </UserIDProvider>
   );
 };
 
