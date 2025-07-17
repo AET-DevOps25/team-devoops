@@ -8,9 +8,14 @@ export const API_VERSION = '/api/v2'; // Update this when bumping API version
 export const useAuthenticatedApi = () => {
   const { getAccessTokenSilently } = useAuth0();
 
+  const apiBaseUrl =
+    window.RUNTIME_CONFIG?.API_BASE_URL ||
+    import.meta.env.VITE_API_BASE_URL ||
+    'http://localhost:8080';
+
   // Create a new axios instance for authenticated requests
   const authenticatedApi = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL,
+    baseURL: apiBaseUrl,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -47,4 +52,12 @@ export const useAuthenticatedApi = () => {
   );
 
   return authenticatedApi;
-}; 
+};
+
+declare global {
+  interface Window {
+    RUNTIME_CONFIG?: {
+      API_BASE_URL?: string;
+    };
+  }
+} 

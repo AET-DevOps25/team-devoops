@@ -1,97 +1,88 @@
 import { useAuthenticatedApi } from './api';
 import { API_VERSION } from './api';
-import { MatchesResponse } from '../types/matches';
 import mockMatches from '../mocks/matches.json';
+import type { Match, MatchesResponse } from '../types/matches';
 
-// Temporary testing configuration - REMOVE when using central gateway
-//const MATCHING_SERVICE_BASE_URL = 'http://localhost:8081';
-
-export interface MatchesServiceError {
-  message: string;
-  status?: number;
+function getUseMockDataEnv() {
+  // Use process.env for testability, fallback to import.meta.env for Vite
+  if (typeof process !== 'undefined' && process.env && process.env.VITE_USE_MOCK_DATA !== undefined) {
+    return process.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_USE_MOCK_DATA !== undefined) {
+    // @ts-ignore
+    return import.meta.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  return false;
 }
 
-// Hook for authenticated matches operations
 export const useMatchesService = () => {
   const api = useAuthenticatedApi();
 
-  /**
-   * Fetch all matches for a specific user
-   * @param userId - The unique ID of the user
-   * @returns Promise<MatchesResponse> - The matches data
-   * @throws MatchesServiceError - If the request fails
-   */
   const getMatches = async (userId: string): Promise<MatchesResponse> => {
-    // Check if mock data should be used
-    if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
+    if (getUseMockDataEnv()) {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
-      return mockMatches as MatchesResponse;
+      // Map mock data to Match[] as defined in types/matches.ts
+      const matches: Match[] = (mockMatches.matches as any[]).map((m) => ({
+        matchID: m.matchID,
+        userID: m.userID ?? userId, // fallback if missing
+        status: m.status,
+        group: {
+          groupID: m.group?.groupID,
+          date: m.group?.date,
+          time: m.group?.time ?? (Array.isArray(m.group?.timeslot) ? m.group.timeslot[0] : undefined),
+          location: m.group?.location,
+          userStatus: m.group?.userStatus ?? [],
+          conversationStarters: m.group?.conversationStarters ?? { conversationsStarters: [] },
+        },
+      }));
+      return { matches };
     }
-
     try {
       const response = await api.get(`${API_VERSION}/matching/matches/${userId}`);
-      return response.data;
+      // Map API data to Match[] as defined in types/matches.ts
+      const matches: Match[] = (response.data.matches as any[]).map((m) => ({
+        matchID: m.matchID,
+        userID: m.userID ?? userId,
+        status: m.status,
+        group: {
+          groupID: m.group?.groupID,
+          date: m.group?.date,
+          time: m.group?.time ?? (Array.isArray(m.group?.timeslot) ? m.group.timeslot[0] : undefined),
+          location: m.group?.location,
+          userStatus: m.group?.userStatus ?? [],
+          conversationStarters: m.group?.conversationStarters ?? { conversationsStarters: [] },
+        },
+      }));
+      return { matches };
     } catch (error) {
-      if (error instanceof Error) {
-        throw {
-          message: `Failed to fetch matches: ${error.message}`,
-          status: error instanceof Response ? error.status : undefined,
-        } as MatchesServiceError;
-      }
-      throw {
-        message: 'An unexpected error occurred while fetching matches',
-      } as MatchesServiceError;
+      console.error('Error fetching matches:', error);
+      throw error;
     }
   };
 
-  /**
-   * Reject a match
-   * @param matchId - The unique ID of the match to reject
-   * @returns Promise<void> - Success response
-   * @throws MatchesServiceError - If the request fails
-   */
-  const rejectMatch = async (matchId: string): Promise<void> => {
-    try {
-      await api.get(`${API_VERSION}/matching/rsvp/${matchId}/reject`);
-    } catch (error) {
-      if (error instanceof Error) {
-        throw {
-          message: `Failed to reject match: ${error.message}`,
-          status: error instanceof Response ? error.status : undefined,
-        } as MatchesServiceError;
-      }
-      throw {
-        message: 'An unexpected error occurred while rejecting the match',
-      } as MatchesServiceError;
-    }
-  };
-
-  /**
-   * Accept a match
-   * @param matchId - The unique ID of the match to accept
-   * @returns Promise<void> - Success response
-   * @throws MatchesServiceError - If the request fails
-   */
   const acceptMatch = async (matchId: string): Promise<void> => {
     try {
-      await api.get(`${API_VERSION}/matching/rsvp/${matchId}/accept`);
+      await api.post(`${API_VERSION}/matching/match/${matchId}/accept`);
     } catch (error) {
-      if (error instanceof Error) {
-        throw {
-          message: `Failed to accept match: ${error.message}`,
-          status: error instanceof Response ? error.status : undefined,
-        } as MatchesServiceError;
-      }
-      throw {
-        message: 'An unexpected error occurred while accepting the match',
-      } as MatchesServiceError;
+      console.error('Error accepting match:', error);
+      throw error;
+    }
+  };
+
+  const rejectMatch = async (matchId: string): Promise<void> => {
+    try {
+      await api.post(`${API_VERSION}/matching/match/${matchId}/reject`);
+    } catch (error) {
+      console.error('Error rejecting match:', error);
+      throw error;
     }
   };
 
   return {
     getMatches,
-    rejectMatch,
     acceptMatch,
+    rejectMatch,
   };
 };

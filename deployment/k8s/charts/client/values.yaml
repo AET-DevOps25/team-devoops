@@ -118,3 +118,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Add runtime environment variable for API base URL
+env:
+  - name: API_BASE_URL
+    value: "https://api.meetatmensa.com"

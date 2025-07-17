@@ -4,13 +4,13 @@ export const mockMatchRequest = {
   userID: 'user1',
   groupID: 'group1',
   date: '2024-01-15',
-  location: 'garching',
+  location: 'GARCHING',
   preferences: {
     degreePref: true,
     agePref: false,
     genderPref: true,
   },
-  timeslots: [9, 10, 11],
+  timeslot: [9, 10, 11],
   status: 'PENDING' as const,
 };
 
@@ -25,7 +25,7 @@ export const mockMatchRequests = [
   {
     ...mockMatchRequest,
     requestID: '124',
-    location: 'arcisstr',
+    location: 'ARCISSTR',
     status: 'MATCHED' as const,
   },
 ];
