@@ -42,6 +42,7 @@ interface TestMatchRequest {
 }
 
 interface TestSubmitRequest {
+  userID: string;
   location: string;
   date: string;
   timeslots: number[];
@@ -94,6 +95,7 @@ const TestComponent = () => {
       <button
         onClick={() =>
           createRequest({
+            userID: 'test-user',
             location: 'garching',
             date: '2024-02-15',
             timeslots: [9, 10, 11],
@@ -192,6 +194,7 @@ describe('Service Integration Tests', () => {
     // Verify service was called
     await waitFor(() => {
       expect(mockSubmitMatchRequest).toHaveBeenCalledWith({
+        userID: 'test-user',
         location: 'garching',
         date: '2024-02-15',
         timeslots: [9, 10, 11],

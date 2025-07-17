@@ -8,6 +8,7 @@ This directory contains the end-to-end (E2E) and component tests for the Meet@Me
 cypress/
 ├── e2e/                    # End-to-end tests
 │   ├── authentication.cy.ts
+│   ├── basic.cy.ts
 │   ├── match-requests.cy.ts
 │   └── navigation.cy.ts
 ├── component/              # Component tests
