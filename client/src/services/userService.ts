@@ -51,7 +51,8 @@ export const useUserService = () => {
     }
 
     try {
-      const response = await api.get(`${API_VERSION}/user/me/${authId}`);
+      const encodedAuthId = encodeURIComponent(authId);
+      const response = await api.get(`${API_VERSION}/user/me/${encodedAuthId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching current user:', error);

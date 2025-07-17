@@ -28,6 +28,8 @@ import MatchActionDialogs from './MatchActionDialogs';
 
 const Dashboard = () => {
   const { user } = useAuth0();
+  // Track loading state for userID
+  const [userIDLoading, setUserIDLoading] = useState(true);
   const userID = useUserID();
   const { getMatchRequests } = useMatchRequestService();
   const { getMatches } = useMatchesService();
@@ -63,8 +65,24 @@ const Dashboard = () => {
     },
   });
 
+  // Track userID loading state
   useEffect(() => {
-    if (!userID) return;
+    // If userID is undefined/null, we don't know if it's loading or just not present
+    // So, set loading to true on mount, and set to false after a short delay (simulate fetch)
+    setUserIDLoading(true);
+    // If userID is not null, loading is done
+    if (userID !== null) {
+      setUserIDLoading(false);
+      return;
+    }
+    // If user is authenticated but userID is null, wait for a short time to allow fetch
+    const timeout = setTimeout(() => setUserIDLoading(false), 500);
+    return () => clearTimeout(timeout);
+  }, [userID]);
+
+  // Fetch matches and match requests only when userID is available and not loading
+  useEffect(() => {
+    if (!userID || userIDLoading) return;
     setMatchesLoading(true);
     setMatchesError(null);
     setMatchesErrorIs404(false);
@@ -87,10 +105,10 @@ const Dashboard = () => {
         }
       })
       .finally(() => setMatchesLoading(false));
-  }, [userID]);
+  }, [userID, userIDLoading]);
 
   useEffect(() => {
-    if (!userID) return;
+    if (!userID || userIDLoading) return;
     setMatchRequestsLoading(true);
     setMatchRequestsError(null);
     setMatchRequestsErrorIs404(false);
@@ -113,16 +131,16 @@ const Dashboard = () => {
         }
       })
       .finally(() => setMatchRequestsLoading(false));
-  }, [userID]);
+  }, [userID, userIDLoading]);
 
-  // Show register dialog when userID is null and user is authenticated
+  // Show register dialog only after userID loading is done and userID is null
   useEffect(() => {
-    if (user && !userID) {
+    if (user && !userID && !userIDLoading) {
       setShowRegisterDialog(true);
     } else {
       setShowRegisterDialog(false);
     }
-  }, [user, userID]);
+  }, [user, userID, userIDLoading]);
 
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
@@ -734,6 +752,8 @@ const Dashboard = () => {
         authID={user?.sub || ''}
         onSuccess={() => {
           setShowRegisterDialog(false);
+          // After registration, reload the page to trigger userID refetch and data reload
+          window.location.reload();
         }}
       />
     </Box>
