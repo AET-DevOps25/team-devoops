@@ -31,7 +31,7 @@ const formatDate = (dateString: string) => {
 };
 
 const formatLocation = (location: string) => {
-  return location === 'garching' ? 'Mensa Garching' : 'Mensa Arcisstraße';
+  return location === 'GARCHING' ? 'Mensa Garching' : 'Mensa Arcisstraße';
 };
 
 const TIMESLOT_MAP: { [key: number]: { start: string; end: string } } = {
@@ -94,8 +94,8 @@ const getStatusColor = (status: string) => {
 };
 
 const getMensaImage = (location: string) => {
-  if (location === 'garching') return mensaGarching;
-  if (location === 'arcisstr') return mensaArcisstr;
+  if (location === 'GARCHING') return mensaGarching;
+  if (location === 'ARCISSTR') return mensaArcisstr;
   return undefined;
 };
 
@@ -212,7 +212,7 @@ const MatchRequestCard: React.FC<MatchRequestCardProps> = ({ matchRequest, onDel
               fontSize: '0.875rem',
             }}
           >
-            {formatTimeslots(matchRequest.timeslots)}
+            {formatTimeslots(matchRequest.timeslot)}
           </Typography>
         </Box>
 

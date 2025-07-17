@@ -1,0 +1,43 @@
+{
+  "currentUser": {
+    "userID": "user-123"
+  },
+  "userProfiles": [
+    {
+      "userID": "user-123",
+      "email": "john.doe@example.com",
+      "firstname": "John",
+      "lastname": "Doe",
+      "birthday": "1995-03-15",
+      "gender": "male",
+      "degree": "Computer Science",
+      "degreeStart": 2020,
+      "interests": ["Programming", "AI", "Machine Learning", "Web Development"],
+      "bio": "Passionate about technology and always eager to learn new things. Love discussing the latest trends in software development."
+    },
+    {
+      "userID": "user-456",
+      "email": "jane.smith@example.com",
+      "firstname": "Jane",
+      "lastname": "Smith",
+      "birthday": "1998-07-22",
+      "gender": "female",
+      "degree": "Data Science",
+      "degreeStart": 2021,
+      "interests": ["Data Analysis", "Statistics", "Python", "Visualization"],
+      "bio": "Data enthusiast with a love for turning complex information into meaningful insights. Always up for a good conversation about data trends."
+    },
+    {
+      "userID": "user-789",
+      "email": "mike.wilson@example.com",
+      "firstname": "Mike",
+      "lastname": "Wilson",
+      "birthday": "1993-11-08",
+      "gender": "male",
+      "degree": "Business Administration",
+      "degreeStart": 2019,
+      "interests": ["Entrepreneurship", "Marketing", "Finance", "Networking"],
+      "bio": "Business-minded individual with a passion for innovation and growth. Love connecting with people and sharing ideas."
+    }
+  ]
+} 

@@ -1,8 +1,18 @@
 import { useAuthenticatedApi } from './api';
-import mockData from '../mocks/matchRequests.json';
+import { API_VERSION } from './api';
+import mockMatchRequests from '../mocks/matchRequests.json';
 
-// Use mock data during development
-const USE_MOCK_DATA = true;
+function getUseMockDataEnv() {
+  if (typeof process !== 'undefined' && process.env && process.env.VITE_USE_MOCK_DATA !== undefined) {
+    return process.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  // @ts-ignore
+  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_USE_MOCK_DATA !== undefined) {
+    // @ts-ignore
+    return import.meta.env.VITE_USE_MOCK_DATA === 'true';
+  }
+  return false;
+}
 
 export interface MatchPreferences {
   degreePref: boolean;
@@ -17,37 +27,32 @@ export interface MatchRequest {
   date: string;
   location: string;
   preferences: MatchPreferences;
-  timeslots: number[];
+  timeslot: number[];
   status: 'PENDING' | 'UNMATCHABLE' | 'MATCHED' | 'REMATCH' | 'EXPIRED';
 }
 
 export interface SubmitMatchRequest {
+  userID: string;
   date: string;
   location: string;
-  timeslots: number[];
+  timeslot: number[];
   preferences: MatchPreferences;
 }
-
-const API_BASE_URL = '/api/v1/matching/requests';
 
 // Hook for authenticated match request operations
 export const useMatchRequestService = () => {
   const api = useAuthenticatedApi();
 
   const getMatchRequests = async (userId: string): Promise<MatchRequest[]> => {
-    if (USE_MOCK_DATA) {
-      // Simulate network delay
+    if (getUseMockDataEnv()) {
+      // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
-      // Cast status to the correct union type
-      return mockData.matches.map((m: any) => ({
-        ...m,
-        status: m.status as MatchRequest['status'],
-      }));
+      return mockMatchRequests.matches as MatchRequest[];
     }
 
     try {
-      const response = await api.get(`${API_BASE_URL}/${userId}`);
-      return response.data;
+      const response = await api.get(`${API_VERSION}/matching/requests/${userId}`);
+      return response.data.requests;
     } catch (error) {
       console.error('Error fetching match requests:', error);
       throw error;
@@ -55,14 +60,8 @@ export const useMatchRequestService = () => {
   };
 
   const deleteMatchRequest = async (requestId: string): Promise<void> => {
-    if (USE_MOCK_DATA) {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-      return;
-    }
-
     try {
-      await api.delete(`/api/v1/matching/request/${requestId}`);
+      await api.delete(`${API_VERSION}/matching/request/${requestId}`);
     } catch (error) {
       console.error('Error deleting match request:', error);
       throw error;
@@ -70,13 +69,8 @@ export const useMatchRequestService = () => {
   };
 
   const submitMatchRequest = async (data: SubmitMatchRequest): Promise<void> => {
-    if (USE_MOCK_DATA) {
-      // Simulate network delay and success
-      await new Promise(resolve => setTimeout(resolve, 500));
-      return;
-    }
     try {
-      await api.post('/api/v1/matching/request/submit', data);
+      await api.post(`${API_VERSION}/matching/request/submit`, data);
     } catch (error) {
       console.error('Error submitting match request:', error);
       throw error;
@@ -88,62 +82,4 @@ export const useMatchRequestService = () => {
     deleteMatchRequest,
     submitMatchRequest,
   };
-};
-
-// Legacy functions for backward compatibility (without authentication)
-export const getMatchRequests = async (userId: string): Promise<MatchRequest[]> => {
-  if (USE_MOCK_DATA) {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    // Cast status to the correct union type
-    return mockData.matches.map((m: any) => ({
-      ...m,
-      status: m.status as MatchRequest['status'],
-    }));
-  }
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/${userId}`);
-    return response.json();
-  } catch (error) {
-    console.error('Error fetching match requests:', error);
-    throw error;
-  }
-};
-
-export const deleteMatchRequest = async (requestId: string): Promise<void> => {
-  if (USE_MOCK_DATA) {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return;
-  }
-
-  try {
-    await fetch(`/api/v1/matching/request/${requestId}`, {
-      method: 'DELETE',
-    });
-  } catch (error) {
-    console.error('Error deleting match request:', error);
-    throw error;
-  }
-};
-
-export const submitMatchRequest = async (data: SubmitMatchRequest): Promise<void> => {
-  if (USE_MOCK_DATA) {
-    // Simulate network delay and success
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return;
-  }
-  try {
-    await fetch('/api/v1/matching/request/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-  } catch (error) {
-    console.error('Error submitting match request:', error);
-    throw error;
-  }
 }; 

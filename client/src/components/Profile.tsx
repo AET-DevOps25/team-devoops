@@ -25,72 +25,30 @@ import InterestsIcon from '@mui/icons-material/Interests';
 import InfoIcon from '@mui/icons-material/Info';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import { useAuth0 } from '@auth0/auth0-react';
-import { useAuthenticatedApi } from '../services/api';
-
-interface UserProfile {
-  userID: string;
-  email: string;
-  firstname: string;
-  lastname: string;
-  birthday: string;
-  gender: string;
-  degree: string;
-  degreeStart: number;
-  interests: string[];
-  bio: string;
-}
-
-// const USE_PROFILE_MOCK = true;
-
-// const mockProfile: UserProfile = {
-//   userID: '123e4567-e89b-12d3-a456-426614174000',
-//   email: 'jane.doe@example.com',
-//   name: 'Jane Doe',
-//   birthday: '1995-06-15',
-//   gender: 'Female',
-//   degree: 'Computer Science',
-//   interests: ['AI', 'Cooking', 'Travel'],
-//   bio: 'Hi! I am Jane and I love learning new things and meeting new people at the Mensa.',
-// };
+import { useUserService, UserProfile, UpdateUserProfile } from '../services/userService';
+import { useUserID } from '../contexts/UserIDContext';
 
 const Profile: React.FC = () => {
-  const { user } = useAuth0();
-  const api = useAuthenticatedApi();
-  const [userID, setUserID] = useState<string | null>(null);
+  const userID = useUserID();
+  const { getUserProfile, updateUserProfile } = useUserService();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
-  const [editData, setEditData] = useState<Partial<UserProfile>>({});
+  const [editData, setEditData] = useState<Partial<UpdateUserProfile>>({});
   const [saving, setSaving] = useState(false);
   const [interestInput, setInterestInput] = useState('');
-  // const [showRegisterDialog, setShowRegisterDialog] = useState(false);
 
-  // First, get the userID from the /me endpoint
-  useEffect(() => {
-    if (!user?.sub) return;
-    api
-      .get(`/api/v2/user/me/${user.sub}`)
-      .then((res) => {
-        setUserID(res.data.userID);
-      })
-      .catch(() => {
-        setUserID(null);
-      });
-  }, [user?.sub]); // Only depend on user.sub, not the entire user object
-
-  // Then, fetch the profile using the userID
+  // Fetch the profile using the userID from context
   useEffect(() => {
     if (!userID) {
       setLoading(false);
       return;
     }
     setLoading(true);
-    api
-      .get(`/api/v2/user/${userID}`)
+    getUserProfile(userID)
       .then((res) => {
-        setProfile(res.data);
-        setEditData(res.data);
+        setProfile(res);
+        setEditData(res);
       })
       .catch(() => setProfile(null))
       .finally(() => setLoading(false));
@@ -157,8 +115,8 @@ const Profile: React.FC = () => {
         interests,
         bio,
       };
-      await api.put(`/api/v2/user/${userID}`, updated);
-      setProfile((prev) => ({ ...prev!, ...updated }) as UserProfile);
+      const updatedProfile = await updateUserProfile(userID!, updated);
+      setProfile(updatedProfile);
       setEditMode(false);
     } catch (e) {
       // handle error
