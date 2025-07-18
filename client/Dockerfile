@@ -23,6 +23,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY public/config.template.js /usr/share/nginx/html/config.template.js
 COPY entrypoint.sh /entrypoint.sh
+COPY nginx.conf /etc/nginx/nginx.conf
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
