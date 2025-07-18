@@ -25,6 +25,7 @@ import { useUserID } from '../contexts/UserIDContext';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMatchActions } from '../hooks/useMatchActions';
 import MatchActionDialogs from './MatchActionDialogs';
+import { formatTimeslots } from '../utils/formatting';
 
 const Dashboard = () => {
   const { user } = useAuth0();
@@ -728,7 +729,7 @@ const Dashboard = () => {
                     {formatDate(req.date)}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
-                    {req.timeslot && req.timeslot.length > 0 ? formatTime(req.timeslot[0]) : 'No timeslot'}
+                    {req.timeslot && req.timeslot.length > 0 ? formatTimeslots(req.timeslot) : 'No timeslot'}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                     {req.location}
