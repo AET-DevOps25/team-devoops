@@ -13,8 +13,13 @@ module.exports = {
       tsconfig: {
         jsx: 'react-jsx',
       },
+      useESM: false,
     }],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(.*\\.mjs$))'
+  ],
+  extensionsToTreatAsEsm: [],
   testMatch: [
     '**/__tests__/**/*.test.(ts|tsx)',
     '**/*.test.(ts|tsx)'

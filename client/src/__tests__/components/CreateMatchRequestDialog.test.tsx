@@ -4,11 +4,16 @@ import userEvent from '@testing-library/user-event';
 import { render } from '../utils/test-utils';
 import CreateMatchRequestDialog from '../../components/CreateMatchRequestDialog';
 import { mockOnSubmit, mockOnClose } from '../utils/mocks';
+import { useUserID } from '../../contexts/UserIDContext';
 
 // Mock date-fns to control date behavior in tests
 jest.mock('date-fns', () => ({
   isSameDay: jest.fn(() => false),
   isBefore: jest.fn(() => false),
+}));
+
+jest.mock('../../contexts/UserIDContext', () => ({
+  useUserID: () => 'test-user-id',
 }));
 
 describe('CreateMatchRequestDialog', () => {
@@ -67,9 +72,10 @@ describe('CreateMatchRequestDialog', () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalledWith({
-        location: 'garching',
-        date: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/), // Any valid date format
-        timeslots: [9, 10, 11], // These correspond to the selected timeslots
+        userID: 'test-user-id',
+        location: 'GARCHING',
+        date: expect.stringMatching(/^[\d]{4}-[\d]{2}-[\d]{2}$/), // Any valid date format
+        timeslot: [9, 10, 11], // These correspond to the selected timeslots
         preferences: {
           degreePref: true,
           agePref: false,
@@ -108,5 +114,15 @@ describe('CreateMatchRequestDialog', () => {
     }
 
     expect(submitButton).toBeDisabled();
+  });
+
+  it('closes dialog when close button is clicked', async () => {
+    const user = userEvent.setup();
+    render(<CreateMatchRequestDialog open={true} onClose={mockOnClose} onSubmit={mockOnSubmit} />);
+
+    const closeButton = screen.getByText('Cancel');
+    await user.click(closeButton);
+
+    expect(mockOnClose).toHaveBeenCalled();
   });
 });

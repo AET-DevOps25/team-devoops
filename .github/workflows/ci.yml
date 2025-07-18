@@ -34,10 +34,10 @@ jobs:
 
   # Run UI tests (unit, integration, and e2e)
 
-  #ui_tests:
-  #  name: Run UI Tests
-  #  uses: ./.github/workflows/ui_tests.yml
-  #  needs: update_api_spec
+  ui_tests:
+    name: Run UI Tests
+    uses: ./.github/workflows/ui_tests.yml
+    needs: update_api_spec
 
   # TODO Add Integration Testing
 
@@ -45,4 +45,4 @@ jobs:
   build:
     name: Build & Publish Images
     uses: ./.github/workflows/docker_build.yml
-    needs: [unit_tests]
+    needs: [unit_tests, ui_tests]
