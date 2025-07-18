@@ -1,6 +1,6 @@
 # k8s/values.yaml
 ingress:
-  enabled: true
+  enabled: false
   gatewayServiceName: meetatmensa-gateway
   gatewayHost: api.meetatmensa.com
   clientServiceName: meetatmensa-client

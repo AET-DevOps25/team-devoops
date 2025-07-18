@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: grafana-pvc
-  namespace: go76taw-testing
+  namespace: monitoring-test
 spec:
   accessModes:
     - ReadWriteOnce

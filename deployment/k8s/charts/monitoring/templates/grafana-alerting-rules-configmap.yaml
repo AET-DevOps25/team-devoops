@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-alerting-rules
+  namespace: monitoring-test
+data:
+  prometheus-alerts.yaml: |
+    apiVersion: 1
+    groups:
+      - name: example
+        folder: Provisioned Alerts
+        interval: 1m
+        rules:
+          - uid: "up-alert"
+            title: "Prometheus Target Down"
+            condition: "A"
+            data:
+              - refId: A
+                queryType: "timeSeriesQuery"
+                relativeTimeRange:
+                  from: 600
+                  to: 0
+                datasourceUid: "Prometheus"
+                model:
+                  expr: "up == 0"
+                  interval: ""
+                  datasource:
+                    type: "prometheus"
+                    uid: "Prometheus"
+            noDataState: "NoData"
+            execErrState: "Error"
+            for: 5m
+            annotations:
+              summary: "A Prometheus target is down"
+            labels:
+              severity: "critical" 

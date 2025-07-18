@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring-test
+data:
+  alertmanager.yml: |
+    route:
+      receiver: 'telegram-notifications'
+    receivers:
+      - name: 'telegram-notifications'
+        telegram_configs:
+          - bot_token: '7501998830:AAHQxS2sHnL9wgYIVKx05VbHWBwgZMpqwgg'
+            chat_id: -4843405053
+            message: |
+              [{{ .Status }}] Alert(s) triggered:
+              {{ range .Alerts }}
+              *Alert:* {{ .Labels.alertname }}
+              *Status:* {{ .Status }}
+              *Description:* {{ .Annotations.description }}
+              {{ end }}
+            parse_mode: 'HTML'
+            send_resolved: true 

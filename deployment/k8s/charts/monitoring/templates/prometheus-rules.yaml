@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: monitoring-test
+data:
+  microservice-pod-alerts.yaml: |
+    groups:
+      - name: microservice-pod-alerts
+        rules:
+          - alert: GatewayPodDown
+            expr: kube_pod_status_ready{namespace="monitoring-test", pod=~"meetatmensa-gateway.*"} == 0
+            for: 10s
+            labels:
+              severity: critical
+            annotations:
+              summary: "Gateway pod is down"
+              description: "No ready Gateway pod in monitoring-test namespace for more than 1 minute."
+          - alert: MatchingPodDown
+            expr: kube_pod_status_ready{namespace="monitoring-test", pod=~"meetatmensa-matching.*"} == 0
+            for: 10s
+            labels:
+              severity: critical
+            annotations:
+              summary: "Matching pod is down"
+              description: "No ready Matching pod in monitoring-test namespace for more than 1 minute."
+          - alert: UserPodDown
+            expr: kube_pod_status_ready{namespace="monitoring-test", pod=~"meetatmensa-user.*"} == 0
+            for: 10s
+            labels:
+              severity: critical
+            annotations:
+              summary: "User pod is down"
+              description: "No ready User pod in monitoring-test namespace for more than 1 minute."
+          - alert: GenAIPodDown
+            expr: kube_pod_status_ready{namespace="monitoring-test", pod=~"meetatmensa-genai.*"} == 0
+            for: 10s
+            labels:
+              severity: critical
+            annotations:
+              summary: "GenAI pod is down"
+              description: "No ready GenAI pod in monitoring-test namespace for more than 1 minute."
+          - alert: ClientPodDown
+            expr: kube_pod_status_ready{namespace="monitoring-test", pod=~"meetatmensa-client.*"} == 0
+            for: 10s
+            labels:
+              severity: critical
+            annotations:
+              summary: "Client pod is down"
+              description: "No ready Client pod in monitoring-test namespace for more than 1 minute." 
+          - alert: TestAlert
+            expr: vector(1)
+            for: 10s
+            labels:
+              severity: critical
+            annotations:
+              description: "This is a test alert from Prometheus." 

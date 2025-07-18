@@ -1,0 +1,32 @@
+# Exclude version control
+.git/
+
+# Exclude OS files
+.DS_Store
+Thumbs.db
+
+# Exclude documentation and markdown
+*.md
+docs/
+resources/
+
+# Exclude archives and compressed files
+*.tgz
+*.tar.gz
+*.zip
+
+# Exclude test and example data
+test/
+examples/
+
+# Exclude node modules and build artifacts
+node_modules/
+build/
+dist/
+
+# Exclude images and diagrams
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.gif 

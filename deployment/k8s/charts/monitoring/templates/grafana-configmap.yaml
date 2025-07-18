@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-config
-  namespace: go76taw-testing
+  namespace: monitoring-test
 data:
   grafana.ini: |
     [server]
