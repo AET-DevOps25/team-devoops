@@ -13,6 +13,8 @@ services:
       - meetatmensa-genai
     networks:
       - backend
+    environment:
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "https://dev-noniz4lq6jsgl8r6.us-5.auth0.com/"
 
   meetatmensa-matching:
     build: ../../server/matching
@@ -23,6 +25,8 @@ services:
       - match-database
     networks:
       - backend
+    environment:
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "https://dev-noniz4lq6jsgl8r6.us-5.auth0.com/"
 
   meetatmensa-user:
     build: ../../server/user
@@ -33,6 +37,8 @@ services:
       - user-database
     networks:
       - backend
+    environment:
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "https://dev-noniz4lq6jsgl8r6.us-5.auth0.com/"
 
   meetatmensa-genai:
     build: ../../server/genai

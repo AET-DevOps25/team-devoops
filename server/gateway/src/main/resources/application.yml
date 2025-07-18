@@ -4,6 +4,11 @@ server:
   port: 8080
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-noniz4lq6jsgl8r6.us-5.auth0.com/
   cloud:
     gateway:
       globalcors:
