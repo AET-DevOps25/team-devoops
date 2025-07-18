@@ -19,6 +19,13 @@ spec:
         runAsNonRoot: true
         runAsUser: 472
         fsGroup: 472
+      initContainers:
+        - name: wipe-grafana-data
+          image: busybox
+          command: ["sh", "-c", "rm -rf /var/lib/grafana/*"]
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /var/lib/grafana
       containers:
         - name: grafana
           image: grafana/grafana:10.2.0
@@ -45,6 +52,10 @@ spec:
               mountPath: /var/lib/grafana
             - name: grafana-alerting-rules
               mountPath: /etc/grafana/provisioning/alerting
+            - name: grafana-contact-points
+              mountPath: /etc/grafana/provisioning/contact-points
+            - name: grafana-notification-policies
+              mountPath: /etc/grafana/provisioning/notification-policies
           resources:
             requests:
               memory: 256Mi
@@ -71,3 +82,9 @@ spec:
         - name: grafana-alerting-rules
           configMap:
             name: grafana-alerting-rules
+        - name: grafana-contact-points
+          configMap:
+            name: grafana-contact-points
+        - name: grafana-notification-policies
+          configMap:
+            name: grafana-notification-policies

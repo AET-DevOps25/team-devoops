@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-contact-points
+  namespace: monitoring-test
+data:
+  contact-points.yaml: |
+    apiVersion: 1
+    contactPoints:
+      - orgId: 1
+        name: alertmanager
+        type: prometheus-alertmanager
+        settings:
+          url: http://alertmanager.monitoring-test:9093 

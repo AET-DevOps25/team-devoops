@@ -4,15 +4,15 @@ metadata:
   name: grafana-alerting-rules
   namespace: monitoring-test
 data:
-  prometheus-alerts.yaml: |
+  microservices-up-alerts.yaml: |
     apiVersion: 1
     groups:
-      - name: example
+      - name: microservices-up
         folder: Provisioned Alerts
         interval: 1m
         rules:
-          - uid: "up-alert"
-            title: "Prometheus Target Down"
+          - uid: "microservices-up-alert"
+            title: "Microservice Down"
             condition: "A"
             data:
               - refId: A
@@ -22,15 +22,18 @@ data:
                   to: 0
                 datasourceUid: "Prometheus"
                 model:
-                  expr: "up == 0"
+                  expr: sum(up{instance=~"meetatmensa-gateway:8080|meetatmensa-genai:80|meetatmensa-matching:80|meetatmensa-user:80"}) < 4
                   interval: ""
                   datasource:
                     type: "prometheus"
                     uid: "Prometheus"
-            noDataState: "NoData"
+            noDataState: "Alerting"
             execErrState: "Error"
-            for: 5m
+            for: 1s
             annotations:
-              summary: "A Prometheus target is down"
+              summary: "A monitored microservice is down"
+              description: "At least one of the main microservices (gateway, matching, user, genai) is not up."
             labels:
-              severity: "critical" 
+              severity: "critical"
+            notifications:
+              - name: "alertmanager" 

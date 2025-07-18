@@ -21,7 +21,7 @@ spec:
         fsGroup: 65534
       containers:
         - name: prometheus
-          image: prom/prometheus:v2.48.0
+          image: prom/prometheus:v2.37.0
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus"
@@ -36,8 +36,6 @@ spec:
               mountPath: /etc/prometheus/
             - name: prometheus-storage-volume
               mountPath: /prometheus
-            - name: prometheus-rules-volume
-              mountPath: /etc/prometheus/rules
           resources:
             requests:
               memory: 512Mi
@@ -53,6 +51,3 @@ spec:
         - name: prometheus-storage-volume
           persistentVolumeClaim:
             claimName: prometheus-pvc
-        - name: prometheus-rules-volume
-          configMap:
-            name: prometheus-rules
