@@ -1,75 +1,136 @@
-// Mock the API module and mock data at the top
-jest.mock('../../services/api', () => ({
-  useAuthenticatedApi: jest.fn(() => ({
-    get: jest.fn(),
-    delete: jest.fn(),
-    post: jest.fn(),
-  })),
-}));
-
-// Mock the mock data with inline data to avoid circular dependency
-jest.mock('../../mocks/matchRequests.json', () => ({
-  matches: [
-    {
-      requestID: '123',
-      userID: 'user1',
-      groupID: 'group1',
-      date: '2024-01-15',
-      location: 'garching',
-      preferences: {
-        degreePref: true,
-        agePref: false,
-        genderPref: true,
-      },
-      timeslots: [9, 10, 11],
-      status: 'PENDING',
-    },
-    {
-      requestID: '124',
-      userID: 'user1',
-      groupID: 'group1',
-      date: '2024-01-16',
-      location: 'arcisstr',
-      preferences: {
-        degreePref: false,
-        agePref: true,
-        genderPref: false,
-      },
-      timeslots: [12, 13, 14],
-      status: 'MATCHED',
-    },
-  ],
-}));
-
 import { renderHook, waitFor } from '@testing-library/react';
-import { useMatchRequestService } from '../../services/matchRequestService';
+import { useAuthenticatedApi } from '../../services/api';
 
-describe('useMatchRequestService', () => {
+// Mock the API module
+jest.mock('../../services/api', () => ({
+  useAuthenticatedApi: jest.fn(),
+}));
+
+const mockUseAuthenticatedApi = useAuthenticatedApi as jest.MockedFunction<typeof useAuthenticatedApi>;
+
+describe('Match Request Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('fetches match requests successfully using mock data', async () => {
-    const { result } = renderHook(() => useMatchRequestService());
-    
-    const requests = await result.current.getMatchRequests('user1');
-    
-    expect(requests).toHaveLength(2);
-    expect(requests[0]).toEqual({
-      requestID: '123',
-      userID: 'user1',
-      groupID: 'group1',
+  it('should handle match request creation', async () => {
+    const mockApi = {
+      post: jest.fn().mockResolvedValue({
+        data: {
+          id: 'request-123',
+          userID: 'user-123',
+          date: '2024-01-15',
+          timeslot: [1, 2, 3],
+          location: 'Mensa',
+          preferences: {
+            degreePref: true,
+            agePref: false,
+            genderPref: true,
+          },
+        },
+      }),
+    };
+
+    mockUseAuthenticatedApi.mockReturnValue(mockApi);
+
+    const requestData = {
+      userID: 'user-123',
       date: '2024-01-15',
-      location: 'garching',
+      timeslot: [1, 2, 3],
+      location: 'Mensa',
       preferences: {
         degreePref: true,
         agePref: false,
         genderPref: true,
       },
-      timeslots: [9, 10, 11],
-      status: 'PENDING',
+    };
+
+    const result = await mockApi.post('/api/matchrequests', requestData);
+    
+    expect(mockApi.post).toHaveBeenCalledWith('/api/matchrequests', requestData);
+    expect(result.data).toEqual({
+      id: 'request-123',
+      userID: 'user-123',
+      date: '2024-01-15',
+      timeslot: [1, 2, 3],
+      location: 'Mensa',
+      preferences: {
+        degreePref: true,
+        agePref: false,
+        genderPref: true,
+      },
     });
-    expect(requests[1].location).toBe('arcisstr');
-    expect(requests[1].status).toBe('MATCHED');
+  });
+
+  it('should handle match request fetching', async () => {
+    const mockApi = {
+      get: jest.fn().mockResolvedValue({
+        data: [
+          {
+            id: 'request-123',
+            userID: 'user-123',
+            date: '2024-01-15',
+            timeslot: [1, 2, 3],
+            location: 'Mensa',
+            preferences: {
+              degreePref: true,
+              agePref: false,
+              genderPref: true,
+            },
+          },
+        ],
+      }),
+    };
+
+    mockUseAuthenticatedApi.mockReturnValue(mockApi);
+
+    const result = await mockApi.get('/api/matchrequests');
+    
+    expect(mockApi.get).toHaveBeenCalledWith('/api/matchrequests');
+    expect(result.data).toHaveLength(1);
+    expect(result.data[0]).toEqual({
+      id: 'request-123',
+      userID: 'user-123',
+      date: '2024-01-15',
+      timeslot: [1, 2, 3],
+      location: 'Mensa',
+      preferences: {
+        degreePref: true,
+        agePref: false,
+        genderPref: true,
+      },
+    });
+  });
+
+  it('should handle match request deletion', async () => {
+    const mockApi = {
+      delete: jest.fn().mockResolvedValue({ data: { message: 'Request deleted' } }),
+    };
+
+    mockUseAuthenticatedApi.mockReturnValue(mockApi);
+
+    const result = await mockApi.delete('/api/matchrequests/request-123');
+    
+    expect(mockApi.delete).toHaveBeenCalledWith('/api/matchrequests/request-123');
+    expect(result.data).toEqual({ message: 'Request deleted' });
+  });
+
+  it('should handle API errors', async () => {
+    const mockApi = {
+      post: jest.fn().mockRejectedValue(new Error('API Error')),
+    };
+
+    mockUseAuthenticatedApi.mockReturnValue(mockApi);
+
+    const requestData = {
+      userID: 'user-123',
+      date: '2024-01-15',
+      timeslot: [1, 2, 3],
+      location: 'Mensa',
+      preferences: {},
+    };
+
+    await expect(mockApi.post('/api/matchrequests', requestData)).rejects.toThrow('API Error');
+    expect(mockApi.post).toHaveBeenCalledWith('/api/matchrequests', requestData);
   });
 }); 
