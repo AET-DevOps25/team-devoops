@@ -5,6 +5,7 @@
  */
 package org.openapitools.api;
 
+import org.openapitools.model.Group;
 import org.openapitools.model.MatchCollection;
 import org.openapitools.model.MatchRequest;
 import org.openapitools.model.MatchRequestCollection;
@@ -39,7 +40,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T14:23:18.405894260Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T16:54:18.581060591Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -263,6 +264,55 @@ public interface MatchingApi {
     default ResponseEntity<Void> getApiV2MatchingRsvpMatchIdReject(
         @Parameter(name = "match-id", description = "UUID associated with a given match", required = true, in = ParameterIn.PATH) @PathVariable("match-id") UUID matchId
     ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /api/v2/matching/demo : Create demo request
+     * Submit a match request which will be immediately matched with a group of demo users.
+     *
+     * @param matchRequestNew  (optional)
+     * @return OK (status code 200)
+     *         or User already has a meeting on this day! (status code 409)
+     *         or Internal Server Error (status code 500)
+     */
+    @Operation(
+        operationId = "postApiV2MatchingDemo",
+        summary = "Create demo request",
+        description = "Submit a match request which will be immediately matched with a group of demo users.",
+        tags = { "Matching" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "OK", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Group.class))
+            }),
+            @ApiResponse(responseCode = "409", description = "User already has a meeting on this day!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        },
+        security = {
+            @SecurityRequirement(name = "jwt-bearer")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/api/v2/matching/demo",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<Group> postApiV2MatchingDemo(
+        @Parameter(name = "MatchRequestNew", description = "") @Valid @RequestBody(required = false) @Nullable MatchRequestNew matchRequestNew
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"date\" : \"2000-01-23\", \"userStatus\" : [ { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ], \"groupID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"location\" : \"GARCHING\", \"conversationStarters\" : { \"conversationsStarters\" : [ { \"prompt\" : \"prompt\" }, { \"prompt\" : \"prompt\" } ] }, \"time\" : 2 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

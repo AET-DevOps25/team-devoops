@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Enumerator representing a mensa at which a meet can happen  | Value | Description | ---------|----------| | GARCHING | The Mensa at the TUM Garching Campus | | ARCISSTR | The Mensa at the TUM Innenstadt Campus (Arcisstr. 21) | 
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T14:22:56.459080914Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T16:53:54.581009086Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public enum Location {
   
   GARCHING("GARCHING"),
