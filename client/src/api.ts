@@ -224,7 +224,10 @@ export interface paths {
             };
             cookie?: never;
         };
-        /** Retrieve User based on AuthID */
+        /**
+         * Retrieve User based on AuthID
+         * @description Retrieve a user object based on an Auth0 sub ID
+         */
         get: operations["get-api-v2-user-me-auth-id"];
         put?: never;
         post?: never;

@@ -11,12 +11,12 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.2.1
+  version: 2.2.2
 servers:
 - description: ""
-  url: https://meetatmensa.com
+  url: api.meetatmensa.com
 security:
-- auth0: []
+- jwt-bearer: []
 tags:
 - description: Paths belonging to the GenAI microservice
   name: GenAI
@@ -69,8 +69,6 @@ paths:
           $ref: "#/components/responses/NotFoundError"
         "500":
           description: Internal Server Error
-      security:
-      - auth0: []
       summary: "Retrieve User with {user-id}"
       tags:
       - User
@@ -400,6 +398,7 @@ paths:
       - application/json
   /api/v2/user/me/{auth-id}:
     get:
+      description: Retrieve a user object based on an Auth0 sub ID
       operationId: get-api-v2-user-me-auth-id
       parameters:
       - $ref: "#/components/parameters/auth-id"
@@ -1338,9 +1337,10 @@ components:
       x-stoplight:
         id: qlawgs207p4xu
   securitySchemes:
-    auth0:
-      openIdConnectUrl: https://meetatmensa.eu.auth0.com/
-      type: openIdConnect
+    jwt-bearer:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
 x-stoplight:
   id: ceylawji1yc2t
 

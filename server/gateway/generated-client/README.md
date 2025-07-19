@@ -1,8 +1,8 @@
 # openapi-client-gateway
 
 MeetAtMensa
-- API version: 2.2.1
-  - Build date: 2025-07-07T12:54:21.325705197Z[Etc/UTC]
+- API version: 2.2.2
+  - Build date: 2025-07-19T14:23:43.639048386Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-gateway</artifactId>
-  <version>2.2.1</version>
+  <version>2.2.2</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-gateway:2.2.1"
+     implementation "org.openapitools.client:openapi-client-gateway:2.2.2"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-gateway-2.2.1.jar`
+* `target/openapi-client-gateway-2.2.2.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -93,8 +93,11 @@ import org.openapitools.client.api.GenAiApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     GenAiApi apiInstance = new GenAiApi(defaultClient);
     UserCollection userCollection = new UserCollection(); // UserCollection | Request Conversation starter for these users
@@ -115,7 +118,7 @@ public class Example {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://meetatmensa.com*
+All URIs are relative to *http://api.meetatmensa.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -161,9 +164,10 @@ Class | Method | HTTP request | Description
 
 
 Authentication schemes defined for the API:
-<a id="auth0"></a>
-### auth0
+<a id="jwt-bearer"></a>
+### jwt-bearer
 
+- **Type**: HTTP Bearer Token authentication (JWT)
 
 
 ## Recommendation

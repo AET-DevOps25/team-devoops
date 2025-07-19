@@ -1,6 +1,6 @@
 # GenAiApi
 
-All URIs are relative to *https://meetatmensa.com*
+All URIs are relative to *http://api.meetatmensa.com*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -28,8 +28,11 @@ import org.openapitools.client.api.GenAiApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     GenAiApi apiInstance = new GenAiApi(defaultClient);
     UserCollection userCollection = new UserCollection(); // UserCollection | Request Conversation starter for these users
@@ -59,7 +62,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
