@@ -16,6 +16,7 @@ spec:
     - hosts:
         - {{ .Values.ingress.gatewayHost }}
         - {{ .Values.ingress.clientHost }}
+        - {{ .Values.ingress.monitoringHost }}
       secretName: meetatmensa-tls
 #      secretName: meetatmensa-tls
   rules:
@@ -39,4 +40,14 @@ spec:
                 name: {{ .Values.ingress.clientServiceName }}
                 port:
                   number: {{ .Values.client.service.port }}
+    - host: {{ .Values.ingress.monitoringHost }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.ingress.monitoringServiceName }}
+                port:
+                  number: {{ .Values.monitoring.service.port }}
 {{- end }}
