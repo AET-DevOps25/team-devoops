@@ -142,9 +142,7 @@ public class UserClient {
             org.openapitools.client.model.UserCollection userCollectionClient;
 
             // request user Object from user-service
-            // TODO: Uncomment after API update
-            // userCollectionClient = apiInstance.getApiV2UsersDemo();
-            userCollectionClient = null;
+            userCollectionClient = apiInstance.getApiV2UsersDemo();
 
             // Convert to server users and add to list
             for (org.openapitools.client.model.User userClient : userCollectionClient.getUsers()) {
