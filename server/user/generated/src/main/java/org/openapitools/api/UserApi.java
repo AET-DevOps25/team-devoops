@@ -7,6 +7,7 @@ package org.openapitools.api;
 
 import java.util.UUID;
 import org.openapitools.model.User;
+import org.openapitools.model.UserCollection;
 import org.openapitools.model.UserNew;
 import org.openapitools.model.UserUpdate;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -37,7 +38,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T16:54:18.581060591Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T17:32:50.525825320Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "User", description = "Paths belonging to the User microservice")
 public interface UserApi {
@@ -178,6 +179,51 @@ public interface UserApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ null, null ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /api/v2/users/demo : Get demo users
+     * Return 3 demo-users in a UserCollection
+     *
+     * @return OK (status code 200)
+     *         or Internal Server Error (status code 500)
+     */
+    @Operation(
+        operationId = "getApiV2UsersDemo",
+        summary = "Get demo users",
+        description = "Return 3 demo-users in a UserCollection",
+        tags = { "User" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "OK", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = UserCollection.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+        },
+        security = {
+            @SecurityRequirement(name = "jwt-bearer")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/v2/users/demo",
+        produces = { "application/json" }
+    )
+    
+    default ResponseEntity<UserCollection> getApiV2UsersDemo(
+        
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"users\" : [ { \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ null, null ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" }, { \"birthday\" : \"2000-01-23\", \"firstname\" : \"Max\", \"degreeStart\" : 2024, \"gender\" : \"other\", \"degree\" : \"msc_informatics\", \"bio\" : \"bio\", \"interests\" : [ null, null ], \"userID\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"email\" : \"email\", \"lastname\" : \"Mustermann\" } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

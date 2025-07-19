@@ -11,7 +11,7 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.3.0
+  version: 2.3.1
 servers:
 - description: ""
   url: api.meetatmensa.com
@@ -471,7 +471,7 @@ paths:
       - User
       x-stoplight:
         id: fq2onjttsvxxa
-      x-internal: true
+      x-internal: false
       x-accepts:
       - application/json
 components:

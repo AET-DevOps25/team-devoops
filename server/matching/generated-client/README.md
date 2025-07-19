@@ -1,8 +1,8 @@
 # openapi-client-matching
 
 MeetAtMensa
-- API version: 2.3.0
-  - Build date: 2025-07-19T16:54:28.079782265Z[Etc/UTC]
+- API version: 2.3.1
+  - Build date: 2025-07-19T17:32:59.660946776Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-matching</artifactId>
-  <version>2.3.0</version>
+  <version>2.3.1</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-matching:2.3.0"
+     implementation "org.openapitools.client:openapi-client-matching:2.3.1"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-matching-2.3.0.jar`
+* `target/openapi-client-matching-2.3.1.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -134,6 +134,7 @@ Class | Method | HTTP request | Description
 *UserApi* | [**deleteApiV2UserUserID**](docs/UserApi.md#deleteApiV2UserUserID) | **DELETE** /api/v2/user/{user-id} | Delete User with {user-id}
 *UserApi* | [**getApiV2UserMeAuthId**](docs/UserApi.md#getApiV2UserMeAuthId) | **GET** /api/v2/user/me/{auth-id} | Retrieve User based on AuthID
 *UserApi* | [**getApiV2UserUserID**](docs/UserApi.md#getApiV2UserUserID) | **GET** /api/v2/user/{user-id} | Retrieve User with {user-id}
+*UserApi* | [**getApiV2UsersDemo**](docs/UserApi.md#getApiV2UsersDemo) | **GET** /api/v2/users/demo | Get demo users
 *UserApi* | [**postApiV2UserRegister**](docs/UserApi.md#postApiV2UserRegister) | **POST** /api/v2/user/register | Register new User
 *UserApi* | [**putApiV2UserUserID**](docs/UserApi.md#putApiV2UserUserID) | **PUT** /api/v2/user/{user-id} | Update User with {user-id}
 
