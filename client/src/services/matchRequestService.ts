@@ -77,9 +77,19 @@ export const useMatchRequestService = () => {
     }
   };
 
+  const submitDemoMatchRequest = async (data: SubmitMatchRequest): Promise<void> => {
+    try {
+      await api.post(`${API_VERSION}/matching/demo`, data);
+    } catch (error) {
+      console.error('Error submitting demo match request:', error);
+      throw error;
+    }
+  };
+
   return {
     getMatchRequests,
     deleteMatchRequest,
     submitMatchRequest,
+    submitDemoMatchRequest,
   };
 }; 

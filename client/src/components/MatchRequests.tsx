@@ -25,7 +25,7 @@ import { useUserID } from '../contexts/UserIDContext';
 type SortOption = 'date' | 'status' | 'location';
 
 const MatchRequests = () => {
-  const { getMatchRequests, deleteMatchRequest, submitMatchRequest } = useMatchRequestService();
+  const { getMatchRequests, deleteMatchRequest, submitMatchRequest, submitDemoMatchRequest } = useMatchRequestService();
   const userID = useUserID();
   const [sortBy, setSortBy] = React.useState<SortOption>('date');
   const [matchRequests, setMatchRequests] = useState<MatchRequest[]>([]);
@@ -86,6 +86,18 @@ const MatchRequests = () => {
     } catch (err) {
       setError('Failed to create match request. Please try again later.');
       console.error('Error creating match request:', err);
+    }
+  };
+
+  const handleDemoMatchRequest = async (matchRequestData: SubmitMatchRequest) => {
+    try {
+      await submitDemoMatchRequest(matchRequestData);
+      setIsCreateDialogOpen(false);
+      // Note: Demo requests might not appear in the regular list, so we don't refresh
+      // You might want to show a success message instead
+    } catch (err) {
+      setError('Failed to create demo match request. Please try again later.');
+      console.error('Error creating demo match request:', err);
     }
   };
 
@@ -220,6 +232,7 @@ const MatchRequests = () => {
         open={isCreateDialogOpen}
         onClose={() => setIsCreateDialogOpen(false)}
         onSubmit={handleCreateMatchRequest}
+        onDemoSubmit={handleDemoMatchRequest}
       />
     </Box>
   );
