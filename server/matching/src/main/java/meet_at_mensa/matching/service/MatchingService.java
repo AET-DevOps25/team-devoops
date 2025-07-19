@@ -485,8 +485,7 @@ public class MatchingService {
         MatchRequest thisRequest = requestService.registerRequest(demoRequest);
 
         // get demo users from UserService
-        // TODO: This is a placeholder, Implement after API update.
-        UserCollection demoUsers = new UserCollection();
+        UserCollection demoUsers = userClient.getDemoUsers();
 
         // Create a collection of demo requests
         MatchRequestCollection demoUserRequests = new MatchRequestCollection();

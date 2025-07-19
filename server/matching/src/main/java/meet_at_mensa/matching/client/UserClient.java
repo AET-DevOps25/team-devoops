@@ -132,15 +132,35 @@ public class UserClient {
     public UserCollection getDemoUsers() {
 
         // create empty UserCollection
-        UserCollection users = new UserCollection();
+        UserCollection demoUsers = new UserCollection();
 
-        // get each user individually
-        for (String authID : List.of("TestUser001", "TestUser002", "TestUser003")) {
-            users.addUsersItem(getUserByAuthID(authID));
+        // create instance of the API
+        UserApi apiInstance = new UserApi(this.defaultClient);
+
+        try {
+
+            org.openapitools.client.model.UserCollection userCollectionClient;
+
+            // request user Object from user-service
+            // TODO: Uncomment after API update
+            // userCollectionClient = apiInstance.getApiV2UsersDemo();
+            userCollectionClient = null;
+
+            // Convert to server users and add to list
+            for (org.openapitools.client.model.User userClient : userCollectionClient.getUsers()) {
+                
+                demoUsers.addUsersItem(
+                    convertClientUserToServerUser(userClient)
+                );
+
+            }
+
+            // convert to server-type object and return
+            return demoUsers;
+
+        } catch (Exception e) {
+            throw new RestException(e.toString());
         }
-
-        // return userCollection
-        return users;
 
     }
 
