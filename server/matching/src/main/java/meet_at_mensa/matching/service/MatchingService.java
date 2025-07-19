@@ -12,6 +12,7 @@ import org.openapitools.model.MatchRequestCollection;
 import org.openapitools.model.MatchStatus;
 import org.openapitools.model.RequestStatus;
 import org.openapitools.model.MatchCollection;
+import org.openapitools.model.MatchRequestNew;
 import org.openapitools.model.Group;
 import org.openapitools.model.InviteStatus;
 import org.openapitools.model.Location;
@@ -462,6 +463,70 @@ public class MatchingService {
             groupService.removeGroup(group.getGroupID());
 
         }
+
+    }
+
+
+    /**
+     * Generate a Demo-Match with placeholder users
+     * 
+     * @param groupID UUID of the group to rematch
+     * @param strict 
+     * False: rematch CONFIRMED and SENT requests, expire REJECTED
+     * True: rematch CONFIRMED, expire SENT and REJECTED
+     *
+     */
+    public Group createDemoMatch(MatchRequestNew demoRequest) {
+
+        // get this user and demo users from UserService
+        User thisUser = userClient.getUser(demoRequest.getUserID());
+
+        // add database entries for the request
+        MatchRequest thisRequest = requestService.registerRequest(demoRequest);
+
+        // get demo users from UserService
+        // TODO: This is a placeholder, Implement after API update.
+        UserCollection demoUsers = new UserCollection();
+
+        // Create a collection of demo requests
+        MatchRequestCollection demoUserRequests = new MatchRequestCollection();
+        for (User demoUser : demoUsers.getUsers()) {
+            
+            // register a request identical to demoRequest but from one of the demoUsers
+            MatchRequest demoUserRequest = requestService.registerRequest(
+                new MatchRequestNew(
+                    demoUser.getUserID(),
+                    demoRequest.getDate(),
+                    demoRequest.getTimeslot(),
+                    demoRequest.getLocation(),
+                    demoRequest.getPreferences()
+                )  
+            );
+
+            // add generated request to list
+            demoUserRequests.addRequestsItem(demoUserRequest);
+
+        }
+
+        // add real user to collections
+        demoUsers.addUsersItem(thisUser);
+        demoUserRequests.addRequestsItem(thisRequest);
+
+        // Create Solution block
+        MatchingSolutionBlock demoSolution = new MatchingSolutionBlock(
+            demoUsers,
+            demoUserRequests,
+            demoRequest.getDate(),
+            demoRequest.getTimeslot().get(0),
+            demoRequest.getLocation(),
+            RequestStatus.MATCHED
+        );
+
+        // implement solution
+        Group demoGroup = implementSolution(demoSolution);
+
+        // return group object that was just created
+        return demoGroup;
 
     }
 
