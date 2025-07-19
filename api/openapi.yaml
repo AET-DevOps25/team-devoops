@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.3.0
+  version: 2.3.1
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -1106,7 +1106,7 @@ paths:
       x-stoplight:
         id: fq2onjttsvxxa
       description: Return 3 demo-users in a UserCollection
-      x-internal: true
+      x-internal: false
 tags:
   - name: GenAI
     description: Paths belonging to the GenAI microservice

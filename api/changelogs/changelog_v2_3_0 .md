@@ -18,7 +18,7 @@ James Stark
 + Add new POST operation with a MatchRequestNew payload
 # Generates a match fitting this MatchRequest with placeholder users
 
-@@ POST @ /api/v2/users/demo @@
+@@ Get @ /api/v2/users/demo @@
 + Add new GET operation with no payload that returns demo users
 # Returns 3 pre-made demo-users
 
