@@ -1,8 +1,8 @@
 # openapi-client-matching
 
 MeetAtMensa
-- API version: 2.2.2
-  - Build date: 2025-07-19T14:23:27.573776005Z[Etc/UTC]
+- API version: 2.3.1
+  - Build date: 2025-07-19T17:32:59.660946776Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-matching</artifactId>
-  <version>2.2.2</version>
+  <version>2.3.1</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-matching:2.2.2"
+     implementation "org.openapitools.client:openapi-client-matching:2.3.1"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-matching-2.2.2.jar`
+* `target/openapi-client-matching-2.3.1.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -128,11 +128,13 @@ Class | Method | HTTP request | Description
 *MatchingApi* | [**getApiV2MatchingRequestsUserID**](docs/MatchingApi.md#getApiV2MatchingRequestsUserID) | **GET** /api/v2/matching/requests/{user-id} | Retrieve all MatchRequests for a {user-id}
 *MatchingApi* | [**getApiV2MatchingRsvpMatchIdAccept**](docs/MatchingApi.md#getApiV2MatchingRsvpMatchIdAccept) | **GET** /api/v2/matching/rsvp/{match-id}/accept | Accept invitation to a given match
 *MatchingApi* | [**getApiV2MatchingRsvpMatchIdReject**](docs/MatchingApi.md#getApiV2MatchingRsvpMatchIdReject) | **GET** /api/v2/matching/rsvp/{match-id}/reject | Reject invitation to a given match
+*MatchingApi* | [**postApiV2MatchingDemo**](docs/MatchingApi.md#postApiV2MatchingDemo) | **POST** /api/v2/matching/demo | Create demo request
 *MatchingApi* | [**postApiV2MatchingRequestSubmit**](docs/MatchingApi.md#postApiV2MatchingRequestSubmit) | **POST** /api/v2/matching/request/submit | Submit matching Request
 *MatchingApi* | [**putApiV2MatchingRequestRequestId**](docs/MatchingApi.md#putApiV2MatchingRequestRequestId) | **PUT** /api/v2/matching/request/{request-id} | Update MatchRequest with {request-id}
 *UserApi* | [**deleteApiV2UserUserID**](docs/UserApi.md#deleteApiV2UserUserID) | **DELETE** /api/v2/user/{user-id} | Delete User with {user-id}
 *UserApi* | [**getApiV2UserMeAuthId**](docs/UserApi.md#getApiV2UserMeAuthId) | **GET** /api/v2/user/me/{auth-id} | Retrieve User based on AuthID
 *UserApi* | [**getApiV2UserUserID**](docs/UserApi.md#getApiV2UserUserID) | **GET** /api/v2/user/{user-id} | Retrieve User with {user-id}
+*UserApi* | [**getApiV2UsersDemo**](docs/UserApi.md#getApiV2UsersDemo) | **GET** /api/v2/users/demo | Get demo users
 *UserApi* | [**postApiV2UserRegister**](docs/UserApi.md#postApiV2UserRegister) | **POST** /api/v2/user/register | Register new User
 *UserApi* | [**putApiV2UserUserID**](docs/UserApi.md#putApiV2UserUserID) | **PUT** /api/v2/user/{user-id} | Update User with {user-id}
 

@@ -7,6 +7,7 @@ All URIs are relative to *http://api.meetatmensa.com*
 | [**deleteApiV2UserUserID**](UserApi.md#deleteApiV2UserUserID) | **DELETE** /api/v2/user/{user-id} | Delete User with {user-id} |
 | [**getApiV2UserMeAuthId**](UserApi.md#getApiV2UserMeAuthId) | **GET** /api/v2/user/me/{auth-id} | Retrieve User based on AuthID |
 | [**getApiV2UserUserID**](UserApi.md#getApiV2UserUserID) | **GET** /api/v2/user/{user-id} | Retrieve User with {user-id} |
+| [**getApiV2UsersDemo**](UserApi.md#getApiV2UsersDemo) | **GET** /api/v2/users/demo | Get demo users |
 | [**postApiV2UserRegister**](UserApi.md#postApiV2UserRegister) | **POST** /api/v2/user/register | Register new User |
 | [**putApiV2UserUserID**](UserApi.md#putApiV2UserUserID) | **PUT** /api/v2/user/{user-id} | Update User with {user-id} |
 
@@ -220,6 +221,70 @@ public class Example {
 | **400** | The request was malformed or contained invalid parameters.  |  -  |
 | **401** | Authentication failed due to missing or invalid OAuth2 token.  |  -  |
 | **404** | The requested resource was not found.  |  -  |
+| **500** | Internal Server Error |  -  |
+
+<a id="getApiV2UsersDemo"></a>
+# **getApiV2UsersDemo**
+> UserCollection getApiV2UsersDemo()
+
+Get demo users
+
+Return 3 demo-users in a UserCollection
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.UserApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://api.meetatmensa.com");
+    
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
+
+    UserApi apiInstance = new UserApi(defaultClient);
+    try {
+      UserCollection result = apiInstance.getApiV2UsersDemo();
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling UserApi#getApiV2UsersDemo");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**UserCollection**](UserCollection.md)
+
+### Authorization
+
+[jwt-bearer](../README.md#jwt-bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
 | **500** | Internal Server Error |  -  |
 
 <a id="postApiV2UserRegister"></a>

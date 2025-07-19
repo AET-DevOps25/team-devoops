@@ -17,9 +17,6 @@ import meet_at_mensa.matching.exception.RestException;
 /**
  * User Client uses the generated java client to handle REST requests to the User-Microservice
  * 
- * WARNING: This class is currently non-functional due to complications with Auth0
- *
- * TODO: @AK - Implement Authentication
  *
  */
 @Service
@@ -74,9 +71,6 @@ public class UserClient {
     /**
      * Uses the Generated client to send a REST request to user-service for a User object
      * 
-     * WARNING: This currently fails due to missing authentication
-     * 
-     * TODO: @AK Figure out auth0
      *
      * @param userID userID of the user being fetched
      * @return serverUser server-style user object (org.openapitools.model.User)
@@ -101,13 +95,76 @@ public class UserClient {
         }
     }
 
+    /**
+     * Uses the Generated client to send a REST request to user-service for a User object
+     * 
+     * This method fetches users by their AuthID, and is not designed for external use
+     *
+     * @param authID userID of the user being fetched
+     * @return serverUser server-style user object (org.openapitools.model.User)
+     */
+    private User getUserByAuthID(String authID) {
+
+        // create instance of the API
+        UserApi apiInstance = new UserApi(this.defaultClient);
+
+        try {
+
+            org.openapitools.client.model.User userClient;
+
+            // request user Object from user-service
+            userClient = apiInstance.getApiV2UserMeAuthId(authID);
+
+            // convert to server-type object and return
+            return convertClientUserToServerUser(userClient);
+
+        } catch (Exception e) {
+            throw new RestException(e.toString());
+        }
+    }
+
+
+    /**
+     * Uses the Generated client to send multiple REST requests to user-service for the 3 demo-users
+     *
+     * @return serverUserCollection server-style user object (org.openapitools.model.UserCollection)
+     */
+    public UserCollection getDemoUsers() {
+
+        // create empty UserCollection
+        UserCollection demoUsers = new UserCollection();
+
+        // create instance of the API
+        UserApi apiInstance = new UserApi(this.defaultClient);
+
+        try {
+
+            org.openapitools.client.model.UserCollection userCollectionClient;
+
+            // request user Object from user-service
+            userCollectionClient = apiInstance.getApiV2UsersDemo();
+
+            // Convert to server users and add to list
+            for (org.openapitools.client.model.User userClient : userCollectionClient.getUsers()) {
+                
+                demoUsers.addUsersItem(
+                    convertClientUserToServerUser(userClient)
+                );
+
+            }
+
+            // convert to server-type object and return
+            return demoUsers;
+
+        } catch (Exception e) {
+            throw new RestException(e.toString());
+        }
+
+    }
 
     /**
      * Uses the Generated client to send multiple REST requests to user-service for multiple User objects
      * 
-     * WARNING: This currently fails due to missing authentication
-     * 
-     * TODO: @AK Figure out auth0
      *
      * @param userIDs userID of the user being fetched
      * @return serverUserCollection server-style user object (org.openapitools.model.UserCollection)

@@ -20,7 +20,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "ConversationStarter", description = "Object representing a conversation starter in the meet@mensa system")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T14:22:56.459080914Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T17:32:28.473615668Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class ConversationStarter {
 
   private String prompt;

@@ -9,6 +9,7 @@ import meet_at_mensa.user.service.UserService;
 
 import org.openapitools.api.UserApi;
 import org.openapitools.model.User;
+import org.openapitools.model.UserCollection;
 import org.openapitools.model.UserNew;
 import org.openapitools.model.UserUpdate;
 
@@ -161,5 +162,29 @@ public class UserController implements UserApi {
         }
 
     }
+
+    // GET @ api/v2/users/demo
+    @Override
+    public ResponseEntity<UserCollection> getApiV2UsersDemo() {
+
+        // 200
+        try {
+
+            // Create users
+            UserCollection demoUsers = userService.createDemoUsers();
+
+            // return 200 with User
+            return ResponseEntity.ok(demoUsers);
+        
+
+        } catch (Exception e) {
+
+            // if some other exception occurs
+            return ResponseEntity.internalServerError().build();
+
+        }
+
+    }
+
 
 }
