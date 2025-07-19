@@ -7,16 +7,18 @@ data:
   alertmanager.yml: |
     route:
       receiver: 'telegram-notifications'
+      group_by: ['alertname']
+      routes:
+        - matchers:
+            - alertname="TestAlert"
+          receiver: 'telegram-notifications'
+
     receivers:
       - name: 'telegram-notifications'
         telegram_configs:
-          - bot_token: '7501998830:AAHQxS2sHnL9wgYIVKx05VbHWBwgZMpqwgg'
+          - bot_token: "{{ .Values.telegramBotToken }}"
             chat_id: -4843405053
+            parse_mode: 'HTML'
+            send_resolved: true
             message: |
-              **ALERT TEMPLATE TEST**
-              {{ range .Alerts }}
-              Alert: {{ .Labels.alertname }}
-              Summary: {{ .Annotations.summary }}
-              {{ end }}
-            parse_mode: 'Markdown'
-            send_resolved: true 
+              ALERT TEMPLATE TEST | {{ range .Alerts }}Alert: {{ .Labels.alertname | html }} - {{ .Annotations.summary | html }}; {{ end }}
