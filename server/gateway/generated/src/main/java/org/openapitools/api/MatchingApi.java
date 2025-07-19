@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-07T12:53:58.417900077Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T14:23:23.164650054Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 @Validated
 @Tag(name = "Matching", description = "Paths belonging to the Matching microservice")
 public interface MatchingApi {
@@ -72,7 +72,7 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
-            @SecurityRequirement(name = "auth0")
+            @SecurityRequirement(name = "jwt-bearer")
         }
     )
     @RequestMapping(
@@ -114,7 +114,7 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
-            @SecurityRequirement(name = "auth0")
+            @SecurityRequirement(name = "jwt-bearer")
         }
     )
     @RequestMapping(
@@ -166,7 +166,7 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
-            @SecurityRequirement(name = "auth0")
+            @SecurityRequirement(name = "jwt-bearer")
         }
     )
     @RequestMapping(
@@ -214,7 +214,7 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
-            @SecurityRequirement(name = "auth0")
+            @SecurityRequirement(name = "jwt-bearer")
         }
     )
     @RequestMapping(
@@ -252,7 +252,7 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
-            @SecurityRequirement(name = "auth0")
+            @SecurityRequirement(name = "jwt-bearer")
         }
     )
     @RequestMapping(
@@ -294,7 +294,7 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
-            @SecurityRequirement(name = "auth0")
+            @SecurityRequirement(name = "jwt-bearer")
         }
     )
     @RequestMapping(
@@ -350,7 +350,7 @@ public interface MatchingApi {
             @ApiResponse(responseCode = "500", description = "Internal Server Error")
         },
         security = {
-            @SecurityRequirement(name = "auth0")
+            @SecurityRequirement(name = "jwt-bearer")
         }
     )
     @RequestMapping(

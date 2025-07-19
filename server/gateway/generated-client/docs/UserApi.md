@@ -1,6 +1,6 @@
 # UserApi
 
-All URIs are relative to *https://meetatmensa.com*
+All URIs are relative to *http://api.meetatmensa.com*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -32,8 +32,11 @@ import org.openapitools.client.api.UserApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     UserApi apiInstance = new UserApi(defaultClient);
     UUID userId = UUID.randomUUID(); // UUID | UUID associated with a given user
@@ -62,7 +65,7 @@ null (empty response body)
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -84,6 +87,8 @@ null (empty response body)
 
 Retrieve User based on AuthID
 
+Retrieve a user object based on an Auth0 sub ID
+
 ### Example
 ```java
 // Import classes:
@@ -97,8 +102,11 @@ import org.openapitools.client.api.UserApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     UserApi apiInstance = new UserApi(defaultClient);
     String authId = "authId_example"; // String | User's Auth0 sub ID
@@ -128,7 +136,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -164,8 +172,11 @@ import org.openapitools.client.api.UserApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     UserApi apiInstance = new UserApi(defaultClient);
     UUID userId = UUID.randomUUID(); // UUID | UUID associated with a given user
@@ -195,7 +206,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -232,8 +243,11 @@ import org.openapitools.client.api.UserApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     UserApi apiInstance = new UserApi(defaultClient);
     UserNew userNew = new UserNew(); // UserNew | 
@@ -263,7 +277,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -300,8 +314,11 @@ import org.openapitools.client.api.UserApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     UserApi apiInstance = new UserApi(defaultClient);
     UUID userId = UUID.randomUUID(); // UUID | UUID associated with a given user
@@ -333,7 +350,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 

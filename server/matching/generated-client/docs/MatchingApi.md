@@ -1,6 +1,6 @@
 # MatchingApi
 
-All URIs are relative to *https://meetatmensa.com*
+All URIs are relative to *http://api.meetatmensa.com*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -34,8 +34,11 @@ import org.openapitools.client.api.MatchingApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     UUID requestId = UUID.randomUUID(); // UUID | UUID associated with a given match request
@@ -64,7 +67,7 @@ null (empty response body)
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -101,8 +104,11 @@ import org.openapitools.client.api.MatchingApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     UUID userId = UUID.randomUUID(); // UUID | UUID associated with a given user
@@ -132,7 +138,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -169,8 +175,11 @@ import org.openapitools.client.api.MatchingApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     UUID userId = UUID.randomUUID(); // UUID | UUID associated with a given user
@@ -200,7 +209,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -237,8 +246,11 @@ import org.openapitools.client.api.MatchingApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     UUID matchId = UUID.randomUUID(); // UUID | UUID associated with a given match
@@ -267,7 +279,7 @@ null (empty response body)
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -303,8 +315,11 @@ import org.openapitools.client.api.MatchingApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     UUID matchId = UUID.randomUUID(); // UUID | UUID associated with a given match
@@ -333,7 +348,7 @@ null (empty response body)
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -369,8 +384,11 @@ import org.openapitools.client.api.MatchingApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     MatchRequestNew matchRequestNew = new MatchRequestNew(); // MatchRequestNew | 
@@ -400,7 +418,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
@@ -437,8 +455,11 @@ import org.openapitools.client.api.MatchingApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://meetatmensa.com");
+    defaultClient.setBasePath("http://api.meetatmensa.com");
     
+    // Configure HTTP bearer authorization: jwt-bearer
+    HttpBearerAuth jwt-bearer = (HttpBearerAuth) defaultClient.getAuthentication("jwt-bearer");
+    jwt-bearer.setBearerToken("BEARER TOKEN");
 
     MatchingApi apiInstance = new MatchingApi(defaultClient);
     UUID requestId = UUID.randomUUID(); // UUID | UUID associated with a given match request
@@ -470,7 +491,7 @@ public class Example {
 
 ### Authorization
 
-[auth0](../README.md#auth0)
+[jwt-bearer](../README.md#jwt-bearer)
 
 ### HTTP request headers
 
