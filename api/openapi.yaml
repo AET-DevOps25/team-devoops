@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.2.2
+  version: 2.3.0
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -1063,6 +1063,50 @@ paths:
       x-stoplight:
         id: 3fke7st84x7x9
       description: Retrieve a user object based on an Auth0 sub ID
+  /api/v2/matching/demo:
+    post:
+      summary: Create demo request
+      tags:
+        - Matching
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '409':
+          description: User already has a meeting on this day!
+        '500':
+          description: Internal Server Error
+      operationId: post-api-v2-matching-demo
+      x-stoplight:
+        id: nz0sz8ks59ugw
+      description: Submit a match request which will be immediately matched with a group of demo users.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchRequestNew'
+  /api/v2/users/demo:
+    get:
+      summary: Get demo users
+      tags:
+        - User
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+        '500':
+          description: Internal Server Error
+      operationId: get-api-v2-users-demo
+      x-stoplight:
+        id: fq2onjttsvxxa
+      description: Return 3 demo-users in a UserCollection
+      x-internal: true
 tags:
   - name: GenAI
     description: Paths belonging to the GenAI microservice
