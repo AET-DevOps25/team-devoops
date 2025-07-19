@@ -50,8 +50,7 @@ spec:
               mountPath: /var/lib/grafana/dashboards
             - name: grafana-storage
               mountPath: /var/lib/grafana
-            - name: grafana-alerting-rules
-              mountPath: /etc/grafana/provisioning/alerting
+
             - name: grafana-contact-points
               mountPath: /etc/grafana/provisioning/contact-points
             - name: grafana-notification-policies
@@ -79,9 +78,7 @@ spec:
         - name: grafana-storage
           persistentVolumeClaim:
             claimName: grafana-pvc
-        - name: grafana-alerting-rules
-          configMap:
-            name: grafana-alerting-rules
+
         - name: grafana-contact-points
           configMap:
             name: grafana-contact-points

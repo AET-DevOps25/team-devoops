@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-rules
+  namespace: monitoring-test
+data:
+  microservices-alerts.yaml: |
+    groups:
+      - name: microservices
+        rules:
+          - alert: MicroserviceDown
+            expr: sum(up{instance=~"meetatmensa-gateway:8080|meetatmensa-genai:80|meetatmensa-matching:80|meetatmensa-user:80"}) < 4
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "A monitored microservice is down"
+              description: "At least one of the main microservices (gateway, matching, user, genai) is not up."
+              
+          - alert: TestAlert
+            expr: vector(1)
+            for: 0s
+            labels:
+              severity: info
+              test: "true"
+            annotations:
+              summary: "Test alert is firing"
+              description: "This is a test alert to verify the alerting system is working correctly." 

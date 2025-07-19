@@ -34,6 +34,8 @@ spec:
           volumeMounts:
             - name: prometheus-config-volume
               mountPath: /etc/prometheus/
+            - name: prometheus-rules-volume
+              mountPath: /etc/prometheus/rules
             - name: prometheus-storage-volume
               mountPath: /prometheus
           resources:
@@ -48,6 +50,10 @@ spec:
           configMap:
             defaultMode: 420
             name: prometheus-config
+        - name: prometheus-rules-volume
+          configMap:
+            defaultMode: 420
+            name: prometheus-rules
         - name: prometheus-storage-volume
           persistentVolumeClaim:
             claimName: prometheus-pvc

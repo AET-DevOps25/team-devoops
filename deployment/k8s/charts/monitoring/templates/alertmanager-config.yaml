@@ -13,11 +13,10 @@ data:
           - bot_token: '7501998830:AAHQxS2sHnL9wgYIVKx05VbHWBwgZMpqwgg'
             chat_id: -4843405053
             message: |
-              [{{ .Status }}] Alert(s) triggered:
+              **ALERT TEMPLATE TEST**
               {{ range .Alerts }}
-              *Alert:* {{ .Labels.alertname }}
-              *Status:* {{ .Status }}
-              *Description:* {{ .Annotations.description }}
+              Alert: {{ .Labels.alertname }}
+              Summary: {{ .Annotations.summary }}
               {{ end }}
-            parse_mode: 'HTML'
+            parse_mode: 'Markdown'
             send_resolved: true 
