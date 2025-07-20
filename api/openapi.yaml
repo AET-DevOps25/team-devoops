@@ -3,7 +3,7 @@ x-stoplight:
   id: ceylawji1yc2t
 info:
   title: MeetAtMensa
-  version: 2.3.1
+  version: 2.3.2
   description: |-
     This OpenAPI specification defines the endpoints, schemas, and security mechanisms
     for the Meet@Mensa User micro-service. 
@@ -1009,10 +1009,9 @@ paths:
     parameters:
       - $ref: '#/components/parameters/match-id'
   /api/v2/genai/conversation-starter:
-    get:
-      summary: Request conversation starter
-      x-stoplight:
-        id: 2gb78xli5e55w
+    parameters: []
+    post:
+      summary: Request Conversation Starter
       tags:
         - GenAI
       responses:
@@ -1023,22 +1022,23 @@ paths:
               schema:
                 $ref: '#/components/schemas/ConversationStarterCollection'
         '400':
-          $ref: '#/components/responses/BadRequestError'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
+          description: Bad Request
+        '403':
+          description: Forbidden
         '404':
-          $ref: '#/components/responses/NotFoundError'
+          description: Not Found
         '500':
           description: Internal Server Error
-      operationId: get-api-v2-genai-conversation-starter
+      operationId: post-api-v2-genai-conversation-starter
+      x-stoplight:
+        id: dhdc3v3wiauk8
+      description: Request a series of conversation starter prompts from the GenAI microservice. Provide infomation about users on request.
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UserCollection'
-        description: Request Conversation starter for these users
-      description: Request a series of conversation starter prompts from the GenAI microservice. Provide infomation about users on request.
-    parameters: []
+        description: ''
   '/api/v2/user/me/{auth-id}':
     parameters:
       - $ref: '#/components/parameters/auth-id'
