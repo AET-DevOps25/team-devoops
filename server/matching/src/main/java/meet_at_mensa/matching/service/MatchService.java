@@ -156,7 +156,7 @@ public class MatchService {
         MatchEntity matchEntity = new MatchEntity(
             userID,
             groupID,
-            InviteStatus.UNSENT
+            InviteStatus.SENT // TODO: Update this when RSVP / Email Service works
         );
         
         // add it to the database
