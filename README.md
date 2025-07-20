@@ -34,6 +34,10 @@ Show up, have lunch, make friends. Simple as that!
 ### Break the Ice
 Talking to new people can be hard at the start, so meet@mensa takes advantage of modern GenAi to help break the ice! Check your match for custom conversation starters for you and the people you'll be meeting!
 
+## 🚀 Installation and Deployment
+
+Instructions for deploying with Docker-Compose and Kubernetes  are available [here](deployment/README.md)
+
 ## 🔭 Repository Overview
 
 ```
