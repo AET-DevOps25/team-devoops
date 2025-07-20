@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
 
 import org.openapitools.model.User;
+import org.openapitools.model.UserCollection;
 import org.openapitools.model.UserNew;
 import org.openapitools.model.UserUpdate;
 
@@ -17,6 +18,7 @@ import meet_at_mensa.user.exception.UserMalformedException;
 import meet_at_mensa.user.exception.UserNotFoundException;
 import meet_at_mensa.user.model.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -318,6 +320,85 @@ public class UserService {
         logger.debug("Interests registered for user: {}", userID);
         // return the interests for this userID
         return getInterests(userID);
+    }
+
+    /**
+     * Creates database entries for 3 "Test Users" used to showcase Meet@Mensa functionality
+     *
+     * Checks if users already exist before creating them.
+     *
+     * @return UserCollection of the Demo Users
+     */
+    public UserCollection createDemoUsers() {
+
+        // create empty return collection
+        UserCollection demoUsers = new UserCollection();
+
+        // If users are in database, return them
+        try {
+
+            getUserByAuthID("TestUser001");
+            getUserByAuthID("TestUser002");
+            getUserByAuthID("TestUser003");            
+            
+        // If users are not it database, create them
+        } catch (UserNotFoundException e) {
+
+            registerUser(
+                new UserNew(
+                    "TestUser001",
+                    "max.mustermann@meetatmensa.com",
+                    "Max",
+                    "Mustermann",
+                    LocalDate.of(1999, 9, 6),
+                    "male",
+                    "msc_informatics",
+                    2024,
+                    List.of("Cats", "Rock Climbing", "Magic the Gathering"),
+                    "Just a student that loves chilling with fluffy kitties. I'm also a bit more into magic the gathering than I'd like to admint, hahaha."
+                )
+            );
+
+            registerUser(
+                new UserNew(
+                    "TestUser002",
+                    "maria.musterfrau@meetatmensa.com",
+                    "Maria",
+                    "Musterfrau",
+                    LocalDate.of(2000, 4, 20),
+                    "female",
+                    "msc_informatics",
+                    2025,
+                    List.of("Dogs", "Boardgames", "Plants"),
+                    "Heyyy there! I'm Maria and my favorite thing is taking my dog to the park or meeting friends for a good boardgame."
+                )
+            );
+
+            registerUser(
+                new UserNew(
+                    "TestUser003",
+                    "daniel.musterdivers@meetatmensa.com",
+                    "Daniel",
+                    "Musterdivers",
+                    LocalDate.of(2001, 8, 27),
+                    "other",
+                    "bsc_informatics",
+                    2022,
+                    List.of("Astronomy", "Video Games", "Tabletop RPGs"),
+                    "Daniel here, but all my friends call me Dani. I look at pictures of stars during the day, and pretend to be a wizard at night."
+                )
+            );
+            
+        }
+
+        // add demo users to return object
+        demoUsers.addUsersItem(getUserByAuthID("TestUser001"));
+        demoUsers.addUsersItem(getUserByAuthID("TestUser002"));
+        demoUsers.addUsersItem(getUserByAuthID("TestUser003"));
+
+        // return demo users
+        return demoUsers;
+
     }
 
     /**

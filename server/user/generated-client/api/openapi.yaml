@@ -11,7 +11,7 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.2.2
+  version: 2.3.1
 servers:
 - description: ""
   url: api.meetatmensa.com
@@ -424,6 +424,56 @@ paths:
       - application/json
     parameters:
     - $ref: "#/components/parameters/auth-id"
+  /api/v2/matching/demo:
+    post:
+      description: Submit a match request which will be immediately matched with a
+        group of demo users.
+      operationId: post-api-v2-matching-demo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchRequestNew"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+          description: OK
+        "409":
+          description: User already has a meeting on this day!
+        "500":
+          description: Internal Server Error
+      summary: Create demo request
+      tags:
+      - Matching
+      x-stoplight:
+        id: nz0sz8ks59ugw
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/v2/users/demo:
+    get:
+      description: Return 3 demo-users in a UserCollection
+      operationId: get-api-v2-users-demo
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserCollection"
+          description: OK
+        "500":
+          description: Internal Server Error
+      summary: Get demo users
+      tags:
+      - User
+      x-stoplight:
+        id: fq2onjttsvxxa
+      x-internal: false
+      x-accepts:
+      - application/json
 components:
   parameters:
     user-id:
