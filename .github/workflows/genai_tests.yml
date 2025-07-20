@@ -24,5 +24,4 @@ jobs:
           pip install pytest
 
       - name: Run GenAI tests
-        run: |
-          pytest server/genai/test
+        run: PYTHONPATH=server/genai pytest -v
