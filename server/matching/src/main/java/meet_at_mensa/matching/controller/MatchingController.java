@@ -1,6 +1,7 @@
 package meet_at_mensa.matching.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlProcessor.MatchStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -121,14 +122,35 @@ public class MatchingController implements MatchingApi {
     // GET @ api/v2/matching/rsvp/{matchID}/accept
     @Override
     public ResponseEntity<Void> getApiV2MatchingRsvpMatchIdAccept(UUID matchId) {
-        // TODO: Handle RSVP accept
+
+        try {
+
+            matchingService.respondInvite(matchId, InviteStatus.CONFIRMED);
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.internalServerError().build();
+            
+        }
+
         return ResponseEntity.ok().build();
     }
 
     // GET @ api/v2/matching/rsvp/{matchID}/reject
     @Override
     public ResponseEntity<Void> getApiV2MatchingRsvpMatchIdReject(UUID matchId) {
-        // TODO: Handle RSVP reject
+        
+        try {
+
+            matchingService.respondInvite(matchId, InviteStatus.REJECTED);
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.internalServerError().build();
+            
+        }
+        
+
         return ResponseEntity.ok().build();
     }
 
