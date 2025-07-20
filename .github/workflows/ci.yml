@@ -37,6 +37,8 @@ jobs:
     name: Run GenAI Tests
     uses: ./.github/workflows/genai_tests.yml
     needs: update_api_spec
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
   # Run UI tests (unit, integration, and e2e)
   ui_tests:

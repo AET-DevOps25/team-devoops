@@ -62,6 +62,8 @@ def test_get_conversation_starters():
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
     )
+    print(f"Response status code: {response.status_code}")
+    print(f"Response content: {response.content.decode()}")
 
     assert response.status_code == 200
     data = response.json()
