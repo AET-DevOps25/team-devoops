@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from abc import ABC, abstractmethod
 from typing import List
 from langchain_community.chat_models import ChatOpenAI
@@ -14,7 +15,7 @@ class AbstractLLMClient(ABC):
 class OpenAIClient(AbstractLLMClient):
     def __init__(self, openai_api_key: str):
         if not openai_api_key:
-            raise RuntimeError("OPENAI_API_KEY environment variable is missing or empty!")
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="OPENAI_API_KEY environment variable is missing or empty!")
         self.client = ChatOpenAI(openai_api_key=openai_api_key)
 
     async def generate(self, prompts: List[str]) -> str:
