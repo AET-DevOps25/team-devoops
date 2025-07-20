@@ -103,3 +103,10 @@ This model contains information about the objects handled by the Meet@Mensa API.
 This model contains information about Meet@Mensa's use-cases.
 
 ![Use-Case Diagram](resources/diagrams/meetatmensa_uml_use_case.png "Meet@Mensa Use-Case Diagram")
+
+# 💜 More Documentation
+
+There's much more to see, check it out!
+- [API Spec](https://aet-devops25.github.io/team-devoops/api.html)
+- [CI/CD Pipeline Documentation]() # TODO Add
+- [The Meet@Mensa Algorithm]() # TODO Add
