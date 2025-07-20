@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from uuid import uuid4
 import json
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, get_settings
 
 from service.main import app
 
