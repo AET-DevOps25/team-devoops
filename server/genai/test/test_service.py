@@ -2,9 +2,9 @@ from fastapi.testclient import TestClient
 from uuid import uuid4
 import json
 import pytest
-from unittest.mock import patch, get_settings
+from unittest.mock import patch
 
-from service.main import app
+from service.main import app, get_settings
 
 client = TestClient(app)
 
