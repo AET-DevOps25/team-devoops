@@ -109,7 +109,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "users_created_total{job=\"meetatmensa-user\"}",
+          "expr": "users_total",
           "legendFormat": "Total Users Created",
           "range": true,
           "refId": "A"
@@ -205,7 +205,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "match_requests_created_total{job=\"meetatmensa-matching\"}",
+          "expr": "match_requests_total",
           "legendFormat": "Total Match Requests Created",
           "range": true,
           "refId": "A"
@@ -397,7 +397,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "rate(users_created_total{job=\"meetatmensa-user\"}[5m])",
+          "expr": "rate(users_total{job=\"meetatmensa-user\"}[5m])",
           "legendFormat": "User Registration Rate",
           "range": true,
           "refId": "A"
@@ -407,7 +407,7 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
-          "expr": "rate(match_requests_created_total{job=\"meetatmensa-matching\"}[5m])",
+          "expr": "rate(match_requests_total{job=\"meetatmensa-matching\"}[5m])",
           "legendFormat": "Match Request Creation Rate",
           "range": true,
           "refId": "B"
