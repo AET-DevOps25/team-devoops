@@ -173,6 +173,9 @@ const MatchRequests = () => {
 
   return (
     <Box>
+      <Alert severity="info" sx={{ mb: 2 }}>
+        You can only create <b>one match request per day</b>. It is not possible to create two match requests for the same day.
+      </Alert>
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
