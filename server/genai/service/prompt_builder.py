@@ -9,10 +9,7 @@ class PromptBuilder:
 
         user_descriptions = []
         for user in users:
-            interests_str = (
-                ", ".join(interest.name for interest in user.interests)
-                if user.interests else "no interests listed"
-            )
+            interests_str = ", ".join(user.interests) if user.interests else "no interests listed"
             desc = (
                 f"{user.firstname} {user.lastname} "
                 f"({user.gender}, born {user.birthday.isoformat()}), "
