@@ -26,14 +26,19 @@ jobs:
 
   # TODO Add linting
 
-  # Run Java unit-tests
+  # Run Java unit tests
   unit_tests:
     name: Run Tests
     uses: ./.github/workflows/java_tests.yml
     needs: update_api_spec
 
-  # Run UI tests (unit, integration, and e2e)
+  # Run GenAI module tests
+  genai_tests:
+    name: Run GenAI Tests
+    uses: ./.github/workflows/genai_tests.yml
+    needs: update_api_spec
 
+  # Run UI tests (unit, integration, and e2e)
   ui_tests:
     name: Run UI Tests
     uses: ./.github/workflows/ui_tests.yml
