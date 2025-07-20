@@ -223,6 +223,12 @@ public class MatchingController implements MatchingApi {
             // return 200 with MatchRequestCollection if found
             return ResponseEntity.ok(demoGroup);
 
+        // 409
+        } catch (RequestOverlapException e) {
+            
+            // return 409 if user already has a request on that day
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
         // 500
         } catch (Exception e) {
 
