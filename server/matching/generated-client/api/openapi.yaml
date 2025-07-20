@@ -11,7 +11,7 @@ info:
     url: https://mit-license.org/
   termsOfService: ""
   title: MeetAtMensa
-  version: 2.3.1
+  version: 2.3.2
 servers:
 - description: ""
   url: api.meetatmensa.com
@@ -363,16 +363,16 @@ paths:
     parameters:
     - $ref: "#/components/parameters/match-id"
   /api/v2/genai/conversation-starter:
-    get:
+    post:
       description: Request a series of conversation starter prompts from the GenAI
         microservice. Provide infomation about users on request.
-      operationId: get-api-v2-genai-conversation-starter
+      operationId: post-api-v2-genai-conversation-starter
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UserCollection"
-        description: Request Conversation starter for these users
+        description: ""
       responses:
         "200":
           content:
@@ -381,18 +381,18 @@ paths:
                 $ref: "#/components/schemas/ConversationStarterCollection"
           description: OK
         "400":
-          $ref: "#/components/responses/BadRequestError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
+          description: Bad Request
+        "403":
+          description: Forbidden
         "404":
-          $ref: "#/components/responses/NotFoundError"
+          description: Not Found
         "500":
           description: Internal Server Error
-      summary: Request conversation starter
+      summary: Request Conversation Starter
       tags:
       - GenAI
       x-stoplight:
-        id: 2gb78xli5e55w
+        id: dhdc3v3wiauk8
       x-content-type: application/json
       x-accepts:
       - application/json

@@ -201,13 +201,13 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        get?: never;
+        put?: never;
         /**
-         * Request conversation starter
+         * Request Conversation Starter
          * @description Request a series of conversation starter prompts from the GenAI microservice. Provide infomation about users on request.
          */
-        get: operations["get-api-v2-genai-conversation-starter"];
-        put?: never;
-        post?: never;
+        post: operations["post-api-v2-genai-conversation-starter"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1071,14 +1071,13 @@ export interface operations {
             };
         };
     };
-    "get-api-v2-genai-conversation-starter": {
+    "post-api-v2-genai-conversation-starter": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description Request Conversation starter for these users */
         requestBody?: {
             content: {
                 "application/json": components["schemas"]["UserCollection"];
@@ -1094,9 +1093,27 @@ export interface operations {
                     "application/json": components["schemas"]["ConversationStarterCollection"];
                 };
             };
-            400: components["responses"]["BadRequestError"];
-            401: components["responses"]["UnauthorizedError"];
-            404: components["responses"]["NotFoundError"];
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             /** @description Internal Server Error */
             500: {
                 headers: {
