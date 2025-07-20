@@ -18,6 +18,10 @@ import meet_at_mensa.matching.exception.ScheduleException;
 import meet_at_mensa.matching.model.MatchRequestEntity;
 import meet_at_mensa.matching.repository.MatchRequestRepository;
 
+// Add Micrometer imports for Prometheus metrics
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Service
 public class MatchRequestService {
 
@@ -26,6 +30,16 @@ public class MatchRequestService {
 
     @Autowired
     private TimeslotService timeslotService;
+
+    // Prometheus metrics
+    private final Counter matchRequestsCreatedCounter;
+
+    public MatchRequestService(MeterRegistry meterRegistry) {
+        // Initialize custom metrics
+        this.matchRequestsCreatedCounter = Counter.builder("match_requests_created_total")
+                .description("Total number of match requests created")
+                .register(meterRegistry);
+    }
 
     /**
      * Fetch a single MatchRequest based on its requestID
@@ -185,6 +199,9 @@ public class MatchRequestService {
             requestEntity.getRequestID(), // newly generated requestID
             requestNew.getTimeslot() // timeslots
         );
+
+        // Increment the counter for match request creation
+        matchRequestsCreatedCounter.increment();
 
         // return newly generated request
         return getRequest(requestEntity.getRequestID());
@@ -385,5 +402,14 @@ public class MatchRequestService {
                 removeRequest(requestEntity.getRequestID());
             }
         }
+    }
+
+    /**
+     * Gets the current count of match requests created (for testing/debugging purposes)
+     *
+     * @return current count of match requests created
+     */
+    public double getMatchRequestsCreatedCount() {
+        return matchRequestsCreatedCounter.count();
     }
 }

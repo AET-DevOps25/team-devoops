@@ -25,6 +25,10 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// Add Micrometer imports for Prometheus metrics
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Service
 public class UserService {
 
@@ -41,6 +45,16 @@ public class UserService {
     // IdentityRepository manages Auth0 identity pairs
     @Autowired
     IdentityRepository identityRepository;
+
+    // Prometheus metrics
+    private final Counter usersCreatedCounter;
+
+    public UserService(MeterRegistry meterRegistry) {
+        // Initialize custom metrics
+        this.usersCreatedCounter = Counter.builder("users_created_total")
+                .description("Total number of users created")
+                .register(meterRegistry);
+    }
 
     /**
      * Searches the database for a user with id {userID}
@@ -142,6 +156,7 @@ public class UserService {
             identityEntity = identityRepository.save(identityEntity);
             logger.info("User created successfully: {}", userEntity.getUserID());
             // throw Exception if duplicate email
+            usersCreatedCounter.increment(); // Increment the counter for user creation
         } catch (DataIntegrityViolationException e) {
             logger.error("User registration failed due to duplicate email: {}", userNew.getEmail());
             throw new UserConflictException(e.toString());
@@ -445,6 +460,15 @@ public class UserService {
                 + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
         return email.matches(emailRegex);
+    }
+
+    /**
+     * Gets the current count of users created (for testing/debugging purposes)
+     *
+     * @return current count of users created
+     */
+    public double getUsersCreatedCount() {
+        return usersCreatedCounter.count();
     }
 
 }

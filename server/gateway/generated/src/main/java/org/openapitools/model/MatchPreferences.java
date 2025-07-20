@@ -20,7 +20,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "MatchPreferences", description = "Object Representing a set of user preferences")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-19T17:32:55.138161399Z[Etc/UTC]", comments = "Generator version: 7.14.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-07-20T16:11:42.083596854Z[Etc/UTC]", comments = "Generator version: 7.14.0")
 public class MatchPreferences {
 
   private Boolean degreePref;

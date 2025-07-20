@@ -4,8 +4,6 @@ import java.util.UUID;
 import java.util.List;
 
 import org.openapitools.client.ApiClient;
-import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
 import org.openapitools.client.api.UserApi;
 
 import org.openapitools.model.User;
@@ -28,8 +26,8 @@ public class UserClient {
     // Constructor
     public UserClient() {
 
-        // get default client
-        this.defaultClient = Configuration.getDefaultApiClient();
+        // get new client
+        this.defaultClient = new ApiClient();
 
         // set path
         this.defaultClient.setBasePath("http://meetatmensa-user:80");

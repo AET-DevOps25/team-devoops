@@ -1,0 +1,149 @@
+apiVersion: 1
+
+groups:
+  - name: meetatmensa-availability
+    rules:
+      - alert: ServiceDown
+        expr: up{job=~".*meetatmensa.*"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Service {{ $labels.job }} has been down for more than 1 minute"
+
+      - alert: HighErrorRate
+        expr: sum(rate(http_server_requests_seconds_count{job=~".*meetatmensa.*", status=~"5.."}[5m])) by (job) / sum(rate(http_server_requests_seconds_count{job=~".*meetatmensa.*"}[5m])) by (job) * 100 > 5
+        for: 5m
+        labels:
+          severity: warning
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "High error rate for {{ $labels.job }}"
+          description: "Error rate is {{ $value }}% for {{ $labels.job }} (threshold: 5%)"
+
+      - alert: CriticalErrorRate
+        expr: sum(rate(http_server_requests_seconds_count{job=~".*meetatmensa.*", status=~"5.."}[5m])) by (job) / sum(rate(http_server_requests_seconds_count{job=~".*meetatmensa.*"}[5m])) by (job) * 100 > 10
+        for: 3m
+        labels:
+          severity: critical
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "Critical error rate for {{ $labels.job }}"
+          description: "Error rate is {{ $value }}% for {{ $labels.job }} (threshold: 10%)"
+
+  - name: meetatmensa-performance
+    rules:
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job=~".*meetatmensa.*"}[5m])) by (job, le)) * 1000 > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "High response time for {{ $labels.job }}"
+          description: "95th percentile response time is {{ $value }}ms for {{ $labels.job }} (threshold: 1000ms)"
+
+      - alert: CriticalResponseTime
+        expr: histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job=~".*meetatmensa.*"}[5m])) by (job, le)) * 1000 > 2000
+        for: 3m
+        labels:
+          severity: critical
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "Critical response time for {{ $labels.job }}"
+          description: "95th percentile response time is {{ $value }}ms for {{ $labels.job }} (threshold: 2000ms)"
+
+      - alert: HighMemoryUsage
+        expr: jvm_memory_used_bytes{job=~".*meetatmensa.*"} / jvm_memory_max_bytes{job=~".*meetatmensa.*"} * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "High memory usage for {{ $labels.job }}"
+          description: "Memory usage is {{ $value }}% for {{ $labels.job }} (threshold: 80%)"
+
+      - alert: CriticalMemoryUsage
+        expr: jvm_memory_used_bytes{job=~".*meetatmensa.*"} / jvm_memory_max_bytes{job=~".*meetatmensa.*"} * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "Critical memory usage for {{ $labels.job }}"
+          description: "Memory usage is {{ $value }}% for {{ $labels.job }} (threshold: 90%)"
+
+  - name: meetatmensa-database
+    rules:
+      - alert: DatabaseConnectionPoolExhausted
+        expr: hikaricp_connections_active{job=~".*meetatmensa.*"} / hikaricp_connections_max{job=~".*meetatmensa.*"} * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "Database connection pool nearly exhausted for {{ $labels.job }}"
+          description: "Database connection pool usage is {{ $value }}% for {{ $labels.job }} (threshold: 80%)"
+
+      - alert: DatabaseConnectionPoolFull
+        expr: hikaricp_connections_active{job=~".*meetatmensa.*"} / hikaricp_connections_max{job=~".*meetatmensa.*"} * 100 > 95
+        for: 2m
+        labels:
+          severity: critical
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "Database connection pool full for {{ $labels.job }}"
+          description: "Database connection pool usage is {{ $value }}% for {{ $labels.job }} (threshold: 95%)"
+
+  - name: meetatmensa-business
+    rules:
+      - alert: LowRequestRate
+        expr: sum(rate(http_server_requests_seconds_count{job=~".*meetatmensa.*"}[5m])) by (job) < 0.1
+        for: 10m
+        labels:
+          severity: warning
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "Low request rate for {{ $labels.job }}"
+          description: "Request rate is {{ $value }} req/sec for {{ $labels.job }} (threshold: 0.1 req/sec)"
+
+      - alert: HighActiveRequests
+        expr: http_server_requests_active_seconds_max{job=~".*meetatmensa.*"} > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: "{{ $labels.job }}"
+        annotations:
+          summary: "High number of active requests for {{ $labels.job }}"
+          description: "Active requests: {{ $value }} for {{ $labels.job }} (threshold: 100)"
+
+  - name: meetatmensa-system
+    rules:
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage is {{ $value }}% for last 10 minutes (threshold: 80%)"
+
+      - alert: HighSystemMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.instance }}"
+          description: "Memory usage is {{ $value }}% for last 15 minutes (threshold: 85%)"
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 10
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space on {{ $labels.instance }}"
+          description: "Disk space usage is {{ $value }}% (threshold: 90%)"
