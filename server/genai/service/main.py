@@ -26,16 +26,16 @@ async def metrics():
     return PlainTextResponse(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
-@app.get(
+@app.post(
     "/api/v2/genai/conversation-starter",
     response_model=ConversationStarterCollection,
     tags=["GenAI"],
-    operation_id="get-api-v2-genai-conversation-starter",
+    operation_id="post-api-v2-genai-conversation-starter",
     summary="Request conversation starter",
 )
 async def get_conversation_starter(
     request: Request,
-    users: UserCollection = Body(...),  # FastAPI supports body with GET but it's nonstandard
+    users: UserCollection = Body(...),
     settings: Settings = Depends(get_settings),
 ):
     REQUEST_COUNT.labels(endpoint=str(request.url.path)).inc()

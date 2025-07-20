@@ -36,7 +36,7 @@ def test_get_conversation_starters():
     }
 
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -54,7 +54,7 @@ def test_get_conversation_starters():
 def test_empty_user_list_returns_400():
     payload = {"users": []}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -66,7 +66,7 @@ def test_empty_user_list_returns_400():
 def test_missing_users_key_returns_422():
     payload = {}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -81,7 +81,7 @@ def test_user_missing_required_field_returns_422():
     del user["email"]  # Required field missing
     payload = {"users": [user]}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -94,7 +94,7 @@ def test_invalid_uuid_returns_422():
     user = valid_user({"userID": "not-a-uuid"})
     payload = {"users": [user]}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -107,7 +107,7 @@ def test_invalid_date_format_returns_422():
     user = valid_user({"birthday": "01.01.2000"})  # Wrong format
     payload = {"users": [user]}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -120,7 +120,7 @@ def test_interests_as_non_list_returns_422():
     user = valid_user({"interests": "not-a-list"})
     payload = {"users": [user]}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -132,7 +132,7 @@ def test_interests_as_non_list_returns_422():
 def test_no_content_type_header_returns_200():
     payload = {"users": [valid_user()]}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         # No Content-Type header
@@ -143,7 +143,7 @@ def test_no_content_type_header_returns_200():
 
 def test_empty_payload_returns_422():
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data="",  # Empty body
         headers={"Content-Type": "application/json"},
@@ -153,7 +153,7 @@ def test_empty_payload_returns_422():
 
 def test_invalid_json_returns_422():
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data="{bad json}",
         headers={"Content-Type": "application/json"},
@@ -171,7 +171,7 @@ def test_missing_openai_key_raises_500():
 
     payload = {"users": [valid_user()]}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
@@ -205,7 +205,7 @@ def test_llm_response_processing(mock_agenerate):
 
     payload = {"users": [valid_user()]}
     response = client.request(
-        method="GET",
+        method="POST",
         url="/api/v2/genai/conversation-starter",
         data=json.dumps(payload),
         headers={"Content-Type": "application/json"},
