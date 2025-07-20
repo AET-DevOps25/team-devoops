@@ -6,8 +6,6 @@ on:
 jobs:
   genai-tests:
     runs-on: ubuntu-latest
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,4 +22,6 @@ jobs:
           pip install pytest
 
       - name: Run GenAI tests
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: PYTHONPATH=server/genai pytest -v

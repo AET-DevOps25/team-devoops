@@ -47,6 +47,10 @@ async def get_conversation_starter(
                 detail="User list is empty",
             )
         
+        # Validate OpenAI API key
+        if not settings.openai_api_key:
+            raise RuntimeError("OPENAI_API_KEY environment variable is missing or empty!")
+
         # Build detailed prompt about users and their interests
         # Build rich user descriptions for the LLM prompt
         user_descriptions: list[str] = []
@@ -76,7 +80,6 @@ async def get_conversation_starter(
         print(f"Generated prompt:\n{prompt}")  # Debugging output
 
         # Create a messages list for LangChain ChatOpenAI
-        print(f"OPENAI_API_KEY length: {len(settings.openai_api_key)}")
         llm = ChatOpenAI(openai_api_key=settings.openai_api_key)
         print("HERE 1")
         messages = [[HumanMessage(content=prompt)]]
