@@ -161,8 +161,6 @@ def test_invalid_json_returns_422():
     assert response.status_code == 422
 
 
-@patch("service.main.get_settings")
-@patch("langchain_community.chat_models.ChatOpenAI.agenerate")
 def test_missing_openai_key_raises_500():
     # Simulate missing OPENAI_API_KEY in settings
     class DummySettings:
