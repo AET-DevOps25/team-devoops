@@ -76,6 +76,7 @@ async def get_conversation_starter(
         print(f"Generated prompt:\n{prompt}")  # Debugging output
 
         # Create a messages list for LangChain ChatOpenAI
+        print(f"OPENAI_API_KEY length: {len(settings.openai_api_key)}")
         llm = ChatOpenAI(openai_api_key=settings.openai_api_key)
         print("HERE 1")
         messages = [[HumanMessage(content=prompt)]]
