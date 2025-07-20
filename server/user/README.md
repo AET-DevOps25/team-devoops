@@ -12,13 +12,13 @@ Diagram showing the basic class structure for the User Microservice
 ## Local Deployment with Docker
 ```
 # Build and tag the Docker image
-docker build -t ghcr.io/aet-devops25/team-devoops/server/user .
+docker build -t ghcr.io/aet-devops25/team-devoops/user .
 
 # Push the image to GHCR (latest tag by default, access needed)
-docker push ghcr.io/aet-devops25/team-devoops/server/user
+docker push ghcr.io/aet-devops25/team-devoops/user
 
 # Run the Docker container on port 8083
-docker run --name user-service -p 8083:80 ghcr.io/aet-devops25/team-devoops/server/user
+docker run --name user-service -p 8083:80 ghcr.io/aet-devops25/team-devoops/user
 
 # List running containers (if needed) 
 docker ps
