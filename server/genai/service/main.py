@@ -26,16 +26,16 @@ async def metrics():
     return PlainTextResponse(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 
-@app.get(
+@app.post(
     "/api/v2/genai/conversation-starter",
     response_model=ConversationStarterCollection,
     tags=["GenAI"],
-    operation_id="get-api-v2-genai-conversation-starter",
+    operation_id="post-api-v2-genai-conversation-starter",
     summary="Request conversation starter",
 )
 async def get_conversation_starter(
     request: Request,
-    users: UserCollection = Body(...),  # FastAPI supports body with GET but it's nonstandard
+    users: UserCollection = Body(...),
     settings: Settings = Depends(get_settings),
 ):
     REQUEST_COUNT.labels(endpoint=str(request.url.path)).inc()
@@ -47,6 +47,10 @@ async def get_conversation_starter(
                 detail="User list is empty",
             )
         
+        # Validate OpenAI API key
+        if not settings.openai_api_key:
+            raise RuntimeError("OPENAI_API_KEY environment variable is missing or empty!")
+
         # Build detailed prompt about users and their interests
         # Build rich user descriptions for the LLM prompt
         user_descriptions: list[str] = []
@@ -100,6 +104,8 @@ async def get_conversation_starter(
         # Return in FastAPI-compatible response model
         return ConversationStarterCollection(conversationsStarters=conversation_starters)
 
+    except HTTPException as exc:
+        raise exc
     except ValidationError as ve:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
     except Exception as e:
