@@ -42,7 +42,7 @@ public class GenAiApiTest {
     @Test
     public void getApiV2GenaiConversationStarterTest() throws ApiException {
         UserCollection userCollection = null;
-        ConversationStarterCollection response = api.getApiV2GenaiConversationStarter(userCollection);
+        ConversationStarterCollection response = api.postApiV2GenaiConversationStarter(userCollection);
         // TODO: test validations
     }
 
