@@ -109,6 +109,7 @@ This model contains information about Meet@Mensa's use-cases.
 There's much more to see, check it out!
 - [API Spec](https://aet-devops25.github.io/team-devoops/api.html)
 - [Problem Statement](docs/problem_statement.md)
+- [Grading Table & Student Responsabilities](docs/grading_table.md)
 - [Grafana Dashboards]() # TODO Add
 - [CI/CD Pipeline]() # TODO Add
 - [Matching Algorithm](server/matching/README.md)
