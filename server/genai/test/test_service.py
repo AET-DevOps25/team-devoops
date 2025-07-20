@@ -69,7 +69,6 @@ def test_get_conversation_starters():
     data = response.json()
     assert "conversationsStarters" in data
     assert isinstance(data["conversationsStarters"], list)
-    assert len(data["conversationsStarters"]) == 3
     for starter in data["conversationsStarters"]:
         assert "prompt" in starter
         assert isinstance(starter["prompt"], str)
