@@ -22,3 +22,8 @@ jobs:
     uses: ./.github/workflows/cd_kubernetes.yml
     secrets: # Pass KUBECONFIG to called workflow
       KUBECONFIG: ${{ secrets.KUBECONFIG }}
+  
+  integration_tests:
+    name: Integration Tests
+    needs: cd_kubernetes # wait for deployment to complete before running
+    uses: ./.github/workflows/integration_tests.yml
