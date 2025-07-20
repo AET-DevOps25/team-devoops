@@ -98,6 +98,8 @@ services:
 
   meetatmensa-genai:
     image: ghcr.io/aet-devops25/team-devoops/genai:latest
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     container_name: meetatmensa-genai
     labels:
       - traefik.enable=true

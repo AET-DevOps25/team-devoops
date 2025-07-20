@@ -4,14 +4,14 @@ All URIs are relative to *http://api.meetatmensa.com*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**getApiV2GenaiConversationStarter**](GenAiApi.md#getApiV2GenaiConversationStarter) | **GET** /api/v2/genai/conversation-starter | Request conversation starter |
+| [**postApiV2GenaiConversationStarter**](GenAiApi.md#postApiV2GenaiConversationStarter) | **POST** /api/v2/genai/conversation-starter | Request Conversation Starter |
 
 
-<a id="getApiV2GenaiConversationStarter"></a>
-# **getApiV2GenaiConversationStarter**
-> ConversationStarterCollection getApiV2GenaiConversationStarter(userCollection)
+<a id="postApiV2GenaiConversationStarter"></a>
+# **postApiV2GenaiConversationStarter**
+> ConversationStarterCollection postApiV2GenaiConversationStarter(userCollection)
 
-Request conversation starter
+Request Conversation Starter
 
 Request a series of conversation starter prompts from the GenAI microservice. Provide infomation about users on request.
 
@@ -35,12 +35,12 @@ public class Example {
     jwt-bearer.setBearerToken("BEARER TOKEN");
 
     GenAiApi apiInstance = new GenAiApi(defaultClient);
-    UserCollection userCollection = new UserCollection(); // UserCollection | Request Conversation starter for these users
+    UserCollection userCollection = new UserCollection(); // UserCollection | 
     try {
-      ConversationStarterCollection result = apiInstance.getApiV2GenaiConversationStarter(userCollection);
+      ConversationStarterCollection result = apiInstance.postApiV2GenaiConversationStarter(userCollection);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling GenAiApi#getApiV2GenaiConversationStarter");
+      System.err.println("Exception when calling GenAiApi#postApiV2GenaiConversationStarter");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -54,7 +54,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **userCollection** | [**UserCollection**](UserCollection.md)| Request Conversation starter for these users | [optional] |
+| **userCollection** | [**UserCollection**](UserCollection.md)|  | [optional] |
 
 ### Return type
 
@@ -73,8 +73,8 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
-| **400** | The request was malformed or contained invalid parameters.  |  -  |
-| **401** | Authentication failed due to missing or invalid OAuth2 token.  |  -  |
-| **404** | The requested resource was not found.  |  -  |
+| **400** | Bad Request |  -  |
+| **403** | Forbidden |  -  |
+| **404** | Not Found |  -  |
 | **500** | Internal Server Error |  -  |
 

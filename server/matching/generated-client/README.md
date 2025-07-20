@@ -1,8 +1,8 @@
 # openapi-client-matching
 
 MeetAtMensa
-- API version: 2.3.1
-  - Build date: 2025-07-19T17:32:59.660946776Z[Etc/UTC]
+- API version: 2.3.2
+  - Build date: 2025-07-20T16:11:46.558010698Z[Etc/UTC]
   - Generator version: 7.14.0
 
 This OpenAPI specification defines the endpoints, schemas, and security mechanisms
@@ -43,7 +43,7 @@ Add this dependency to your project's POM:
 <dependency>
   <groupId>org.openapitools.client</groupId>
   <artifactId>openapi-client-matching</artifactId>
-  <version>2.3.1</version>
+  <version>2.3.2</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -59,7 +59,7 @@ Add this dependency to your project's build file:
   }
 
   dependencies {
-     implementation "org.openapitools.client:openapi-client-matching:2.3.1"
+     implementation "org.openapitools.client:openapi-client-matching:2.3.2"
   }
 ```
 
@@ -73,7 +73,7 @@ mvn clean package
 
 Then manually install the following JARs:
 
-* `target/openapi-client-matching-2.3.1.jar`
+* `target/openapi-client-matching-2.3.2.jar`
 * `target/lib/*.jar`
 
 ## Getting Started
@@ -100,12 +100,12 @@ public class Example {
     jwt-bearer.setBearerToken("BEARER TOKEN");
 
     GenAiApi apiInstance = new GenAiApi(defaultClient);
-    UserCollection userCollection = new UserCollection(); // UserCollection | Request Conversation starter for these users
+    UserCollection userCollection = new UserCollection(); // UserCollection | 
     try {
-      ConversationStarterCollection result = apiInstance.getApiV2GenaiConversationStarter(userCollection);
+      ConversationStarterCollection result = apiInstance.postApiV2GenaiConversationStarter(userCollection);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling GenAiApi#getApiV2GenaiConversationStarter");
+      System.err.println("Exception when calling GenAiApi#postApiV2GenaiConversationStarter");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -122,7 +122,7 @@ All URIs are relative to *http://api.meetatmensa.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*GenAiApi* | [**getApiV2GenaiConversationStarter**](docs/GenAiApi.md#getApiV2GenaiConversationStarter) | **GET** /api/v2/genai/conversation-starter | Request conversation starter
+*GenAiApi* | [**postApiV2GenaiConversationStarter**](docs/GenAiApi.md#postApiV2GenaiConversationStarter) | **POST** /api/v2/genai/conversation-starter | Request Conversation Starter
 *MatchingApi* | [**deleteApiV2MatchingRequestRequestId**](docs/MatchingApi.md#deleteApiV2MatchingRequestRequestId) | **DELETE** /api/v2/matching/request/{request-id} | Delete MatchRequest with {request-id}
 *MatchingApi* | [**getApiV2MatchingMatchesUserID**](docs/MatchingApi.md#getApiV2MatchingMatchesUserID) | **GET** /api/v2/matching/matches/{user-id} | Retrieve all matches for a {user-id}
 *MatchingApi* | [**getApiV2MatchingRequestsUserID**](docs/MatchingApi.md#getApiV2MatchingRequestsUserID) | **GET** /api/v2/matching/requests/{user-id} | Retrieve all MatchRequests for a {user-id}

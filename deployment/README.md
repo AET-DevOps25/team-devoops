@@ -4,6 +4,9 @@ The `deployment` directory contains necessary files for the deployment of Meet@M
 To deploy the system manually on your local machine, follow the guides below. Automated deployment workflows in GitHub Actions can be found under `../.github/workflows`.
 
 ## Docker Compose
+Prerequisites:
+- a `.env` file is located in `/docker` directory and contains the `OPENAI_API_KEY` secret for the GenAI service (in AWS deployment, a GitHub secret is used instead)
+
 Use the following commands to start / stop / inspect the project using Docker Compose:
 ```
 cd docker                       # Move to docker directory
@@ -24,6 +27,12 @@ Prerequisites:
 ```
 kubectl create secret generic <match/user>-db-secret \
   --from-literal=MYSQL_ROOT_PASSWORD='<your-password>' \
+  --namespace devoops
+```
+- OpenAI API key is saved as secret in the `devoops` namespace:
+```
+kubectl create secret generic genai-secret \
+  --from-literal=OPENAI_API_KEY=sk-... \
   --namespace devoops
 ```
 
