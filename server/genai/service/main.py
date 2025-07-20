@@ -104,6 +104,8 @@ async def get_conversation_starter(
         # Return in FastAPI-compatible response model
         return ConversationStarterCollection(conversationsStarters=conversation_starters)
 
+    except HTTPException as exc:
+        raise exc
     except ValidationError as ve:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
     except Exception as e:
