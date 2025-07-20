@@ -33,7 +33,7 @@ public abstract class MatchingAlgorithm {
             for (User user : users.getUsers()) {
 
                 // Add matching User-Request pair to candidates
-                if (request.getUserID() == user.getUserID()){
+                if (request.getUserID().equals(user.getUserID())){
                     unmatched.add(new Candidate(user, request));
                     break;
                 }
