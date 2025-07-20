@@ -1,12 +1,9 @@
 package meet_at_mensa.matching.client;
 
-import org.openapitools.client.Configuration;
 import org.openapitools.client.api.GenAiApi;
 import org.springframework.stereotype.Service;
 
 import meet_at_mensa.matching.exception.RestException;
-import meet_at_mensa.matching.repository.GroupRepository;
-import meet_at_mensa.matching.service.ConversationStarterService;
 
 import org.openapitools.client.ApiClient;
 
@@ -15,14 +12,8 @@ import org.openapitools.model.UserCollection;
 import org.openapitools.model.ConversationStarter;
 import org.openapitools.model.ConversationStarterCollection;
 
-import org.openapitools.client.auth.*;
-
 /**
  * GenAiClient uses the generated java client to handle REST requests to the GenAi-Microservice
- * 
- * WARNING: This class is currently non-functional due to complications with Auth0
- *
- * TODO: @AK - Implement Authentication
  *
  */
 @Service
@@ -32,8 +23,8 @@ public class GenAiClient {
 
     public GenAiClient() {
 
-        // get default client
-        this.defaultClient = Configuration.getDefaultApiClient();
+        // get new client
+        this.defaultClient = new ApiClient();
 
         // set path
         this.defaultClient.setBasePath("http://meetatmensa-genai:80");
@@ -44,9 +35,6 @@ public class GenAiClient {
     /**
      * Uses a Generated client to a REST request to genai-service for a ConverationStarterCollection object
      * 
-     * WARNING: This currently fails due to missing authentication!
-     * 
-     * TODO: @AK Figure out auth0
      *
      * @param users server-style UserCollection object of the user being fetched
      * @return server-style ConversationStarterCollection object (org.openapitools.model.ConversationStarterCollection)
@@ -55,6 +43,8 @@ public class GenAiClient {
 
         // create instance of the API
         GenAiApi apiInstance = new GenAiApi(this.defaultClient);
+
+        System.out.println("Users being sent:" + users.toString());
 
         try {
 
