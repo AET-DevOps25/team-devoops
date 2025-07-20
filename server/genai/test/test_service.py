@@ -18,7 +18,7 @@ def valid_user(overrides=None):
         "gender": "female",
         "degree": "bsc_physics",
         "degreeStart": 2019,
-        "interests": [{"name": "quantum mechanics"}, {"name": "astrophysics"}],
+        "interests": ["quantum mechanics", "astrophysics"],
         "bio": "Curious explorer of nature and equations."
     }
     if overrides:
