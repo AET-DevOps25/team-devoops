@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from uuid import uuid4
+import json
 
 from service.main import app
 
@@ -55,7 +56,12 @@ def test_get_conversation_starters():
         ]
     }
 
-    response = client.get("/api/v2/genai/conversation-starter", json=payload)
+    response = client.request(
+        method="GET",
+        url="/api/v2/genai/conversation-starter",
+        data=json.dumps(payload),
+        headers={"Content-Type": "application/json"},
+    )
 
     assert response.status_code == 200
     data = response.json()
