@@ -77,7 +77,9 @@ async def get_conversation_starter(
 
         # Create a messages list for LangChain ChatOpenAI
         llm = ChatOpenAI(openai_api_key=settings.openai_api_key)
+        print("HERE 1")
         messages = [[HumanMessage(content=prompt)]]
+        print("HERE 2")
         response = await llm.agenerate(messages)
 
         print("Response from LLM:")   # Debugging output
