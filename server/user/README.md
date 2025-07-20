@@ -2,7 +2,9 @@
 
 A Spring Boot application built with Gradle supporting the user-related features and database interaction in the Meet@Mensa app.
 
-Implementation details to follow.
+## Class Diagram
+Diagram showing the basic class structure for the User Microservice
+![Class Diagram](../../resources/diagrams/meetatmensa_uml_class_user.png)
 
 ## Local Deployment with Docker
 ```

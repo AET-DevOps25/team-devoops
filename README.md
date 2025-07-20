@@ -96,7 +96,7 @@ This model contains information about Meet@Mensa's architecture. Each component'
 ![Component Diagram](resources/diagrams/meetatmensa_uml_component.png "Meet@Mensa Component Diagram")
 
 ### Class Diagram (analysis object model)
-This model contains information about the objects handled by the Meet@Mensa API. Detailed class diagrams for User and Matching services are available in their respective README.md files.
+This model contains information about the objects handled by the Meet@Mensa API. Detailed class diagrams for User and Matching services are available in their respective README.md files ([User](server/user/README.md), [Matching](server/matching/README.md)).
 ![Class Diagram](resources/diagrams/meetatmensa_uml_class_object.png "Meet@Mensa Model Class Diagram")
 
 ### Use Case Diagram
