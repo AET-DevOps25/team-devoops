@@ -44,8 +44,6 @@ public class GenAiClient {
         // create instance of the API
         GenAiApi apiInstance = new GenAiApi(this.defaultClient);
 
-        System.out.println("Users being sent:" + users.toString());
-
         try {
 
             // initiate object
