@@ -55,12 +55,14 @@ interface CreateMatchRequestDialogProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (matchRequestData: any) => void; // TODO: Define proper type
+  onDemoSubmit?: (matchRequestData: any) => void; // Optional demo submission handler
 }
 
 const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
   open,
   onClose,
   onSubmit,
+  onDemoSubmit,
 }) => {
   const userID = useUserID();
   const [selectedLocation, setSelectedLocation] = useState('');
@@ -143,6 +145,29 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
       location: selectedLocation.toUpperCase(),
       preferences,
     });
+  };
+
+  const handleDemoSubmit = () => {
+    if (!selectedLocation || !selectedDate || !areTimeslotsConsecutive(selectedTimeslots) || !userID) {
+      return;
+    }
+
+    const formattedDate = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+    const demoData = {
+      userID: userID,
+      date: formattedDate,
+      timeslot: selectedTimeslots,
+      location: selectedLocation.toUpperCase(),
+      preferences,
+    };
+
+    if (onDemoSubmit) {
+      onDemoSubmit(demoData);
+    } else {
+      // Fallback to regular submit if no demo handler provided
+      onSubmit(demoData);
+    }
   };
 
   const disabledTimeslots = getDisabledTimeslots(selectedDate);
@@ -237,6 +262,16 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
+        <Button
+          onClick={handleDemoSubmit}
+          variant="outlined"
+          color="secondary"
+          disabled={
+            !selectedLocation || !selectedDate || !areTimeslotsConsecutive(selectedTimeslots)
+          }
+        >
+          Demo
+        </Button>
         <Button
           onClick={handleSubmit}
           variant="contained"

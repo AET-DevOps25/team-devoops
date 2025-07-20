@@ -125,4 +125,126 @@ describe('CreateMatchRequestDialog', () => {
 
     expect(mockOnClose).toHaveBeenCalled();
   });
+
+  it('submits demo form with valid data when demo button is clicked', async () => {
+    const user = userEvent.setup();
+    const mockOnDemoSubmit = jest.fn();
+
+    render(
+      <CreateMatchRequestDialog 
+        open={true} 
+        onClose={mockOnClose} 
+        onSubmit={mockOnSubmit} 
+        onDemoSubmit={mockOnDemoSubmit}
+      />
+    );
+
+    // Fill in location
+    const locationSelect = screen.getByRole('combobox');
+    await user.click(locationSelect);
+    await user.click(screen.getByText('Mensa Garching'));
+
+    // Set date
+    const datePickerButton = screen.getByRole('button', { name: /choose date/i });
+    await user.click(datePickerButton);
+    await user.keyboard('{Enter}');
+
+    // Select timeslots
+    const timeslotButtons = screen
+      .getAllByRole('button')
+      .filter(
+        (button) =>
+          button.textContent?.includes('12:00-12:15') ||
+          button.textContent?.includes('12:15-12:30') ||
+          button.textContent?.includes('12:30-12:45')
+      );
+
+    for (const button of timeslotButtons.slice(0, 3)) {
+      await user.click(button);
+    }
+
+    // Wait for demo button to be enabled
+    await waitFor(
+      () => {
+        const demoButton = screen.getByRole('button', { name: /demo/i });
+        expect(demoButton).not.toBeDisabled();
+      },
+      { timeout: 5000 }
+    );
+
+    // Click demo button
+    const demoButton = screen.getByRole('button', { name: /demo/i });
+    await user.click(demoButton);
+
+    await waitFor(() => {
+      expect(mockOnDemoSubmit).toHaveBeenCalledWith({
+        userID: 'test-user-id',
+        location: 'GARCHING',
+        date: expect.stringMatching(/^[\d]{4}-[\d]{2}-[\d]{2}$/),
+        timeslot: [9, 10, 11],
+        preferences: {
+          degreePref: false,
+          agePref: false,
+          genderPref: false,
+        },
+      });
+    });
+  });
+
+  it('falls back to regular submit when demo handler is not provided', async () => {
+    const user = userEvent.setup();
+
+    render(<CreateMatchRequestDialog open={true} onClose={mockOnClose} onSubmit={mockOnSubmit} />);
+
+    // Fill in location
+    const locationSelect = screen.getByRole('combobox');
+    await user.click(locationSelect);
+    await user.click(screen.getByText('Mensa Garching'));
+
+    // Set date
+    const datePickerButton = screen.getByRole('button', { name: /choose date/i });
+    await user.click(datePickerButton);
+    await user.keyboard('{Enter}');
+
+    // Select timeslots
+    const timeslotButtons = screen
+      .getAllByRole('button')
+      .filter(
+        (button) =>
+          button.textContent?.includes('12:00-12:15') ||
+          button.textContent?.includes('12:15-12:30') ||
+          button.textContent?.includes('12:30-12:45')
+      );
+
+    for (const button of timeslotButtons.slice(0, 3)) {
+      await user.click(button);
+    }
+
+    // Wait for demo button to be enabled
+    await waitFor(
+      () => {
+        const demoButton = screen.getByRole('button', { name: /demo/i });
+        expect(demoButton).not.toBeDisabled();
+      },
+      { timeout: 5000 }
+    );
+
+    // Click demo button (should fall back to regular submit)
+    const demoButton = screen.getByRole('button', { name: /demo/i });
+    await user.click(demoButton);
+
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalledWith({
+        userID: 'test-user-id',
+        location: 'GARCHING',
+        date: expect.stringMatching(/^[\d]{4}-[\d]{2}-[\d]{2}$/),
+        timeslot: [9, 10, 11],
+        preferences: {
+          degreePref: false,
+          agePref: false,
+          genderPref: false,
+        },
+      });
+    });
+  });
 });

@@ -1,11 +1,11 @@
 package meet_at_mensa.matching.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.YamlProcessor.MatchStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import meet_at_mensa.matching.client.UserClient;
 import meet_at_mensa.matching.exception.MatchNotFoundException;
 import meet_at_mensa.matching.exception.RequestNotFoundException;
 import meet_at_mensa.matching.exception.RequestOverlapException;
@@ -17,9 +17,6 @@ import java.util.UUID;
 
 import org.openapitools.api.MatchingApi;
 import org.openapitools.model.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -125,14 +122,35 @@ public class MatchingController implements MatchingApi {
     // GET @ api/v2/matching/rsvp/{matchID}/accept
     @Override
     public ResponseEntity<Void> getApiV2MatchingRsvpMatchIdAccept(UUID matchId) {
-        // TODO: Handle RSVP accept
+
+        try {
+
+            matchingService.respondInvite(matchId, InviteStatus.CONFIRMED);
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.internalServerError().build();
+            
+        }
+
         return ResponseEntity.ok().build();
     }
 
     // GET @ api/v2/matching/rsvp/{matchID}/reject
     @Override
     public ResponseEntity<Void> getApiV2MatchingRsvpMatchIdReject(UUID matchId) {
-        // TODO: Handle RSVP reject
+        
+        try {
+
+            matchingService.respondInvite(matchId, InviteStatus.REJECTED);
+
+        } catch (Exception e) {
+            
+            return ResponseEntity.internalServerError().build();
+            
+        }
+        
+
         return ResponseEntity.ok().build();
     }
 
@@ -182,6 +200,34 @@ public class MatchingController implements MatchingApi {
             
             // return 404 if no MatchRequests are found
             return ResponseEntity.notFound().build();
+
+        // 500
+        } catch (Exception e) {
+
+            // return 500 if another exception occurs
+            return ResponseEntity.internalServerError().build();
+
+        }
+    }
+
+    // POST @ api/v2/matching/demo
+    @Override
+    public ResponseEntity<Group> postApiV2MatchingDemo(MatchRequestNew matchRequestNew) {
+                
+        // 200
+        try {
+
+            // Attempt to create a demo group
+            Group demoGroup = matchingService.createDemoMatch(matchRequestNew);
+            
+            // return 200 with MatchRequestCollection if found
+            return ResponseEntity.ok(demoGroup);
+
+        // 409
+        } catch (RequestOverlapException e) {
+            
+            // return 409 if user already has a request on that day
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         // 500
         } catch (Exception e) {
