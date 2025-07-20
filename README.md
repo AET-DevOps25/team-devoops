@@ -10,22 +10,22 @@ Our tool - *Meet@Mensa* - focuses on transforming the potentially uncomfortable 
 
 # 🥘 Features
 
-### Sign up
+## Sign up
 Create an account and meet@mensa will store your basic information for next time!
 
-### Request Matches
+## Request Matches
 Let us know who you'd like to meet and when you're available by submitting a Match Request!
 
-### Get Matched
+## Get Matched
 Every night at 22:00 CET, our algorithm will run and try to find the best group for you! Group bailed on you or you're just feeling spontaneous? We'll try matching you again at 10:00am CET. 
 
-### RSVP
+## RSVP
 Got matched? Let us know if you can make it by clicking the RSVP button!
 
-### Meet People
+## Meet People
 Show up, have lunch, make friends. Simple as that!
 
-### Break the Ice
+## Break the Ice
 Talking to new people can be hard at the start, so meet@mensa takes advantage of modern GenAi to help break the ice! Check your match for custom conversation starters for you and the people you'll be meeting!
 
 # 🚀 Installation and Deployment
