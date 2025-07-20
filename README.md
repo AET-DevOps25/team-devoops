@@ -87,17 +87,14 @@ meet@mensa/
 
 ## ⚙ System Overview
 
-### Class Diagram (analysis object model)
-
-![Class Diagram](resources/diagrams/meetatmensa_uml_class.png "Meet@Mensa Class Diagram")
-
-### Use Case Diagram
-
-![Use-Case Diagram](resources/diagrams/meetatmensa_uml_use_case.png "Meet@Mensa Use-Case Diagram")
-
 ### Component Diagram (top-level architecture)
-
+This model contains information about Meet@Mensa's architecture. Each component's color indicates the student responsible for it.
 ![Component Diagram](resources/diagrams/meetatmensa_uml_component.png "Meet@Mensa Component Diagram")
 
-## 🎭 Use Case Scenarios
+### Class Diagram (analysis object model)
+This model contains information about the objects handled by the Meet@Mensa API. Detailed class diagrams for User and Matching services are available in their respective README.md files.
+![Class Diagram](resources/diagrams/meetatmensa_uml_class_object.png "Meet@Mensa Model Class Diagram")
 
+### Use Case Diagram
+This model contains information about Meet@Mensa's use-cases.
+![Use-Case Diagram](resources/diagrams/meetatmensa_uml_use_case.png "Meet@Mensa Use-Case Diagram")
