@@ -52,7 +52,7 @@ public class GenAiClient {
             org.openapitools.client.model.ConversationStarterCollection clientCollection;
 
             // try to fetch prompts from ConversationStarter
-            clientCollection = apiInstance.getApiV2GenaiConversationStarter(
+            clientCollection = apiInstance.postApiV2GenaiConversationStarter(
 
                 // convert from server-type to client-type
                 convertServerUserCollectionToClientUserCollection(users)
