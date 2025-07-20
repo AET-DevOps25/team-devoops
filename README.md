@@ -34,6 +34,57 @@ Show up, have lunch, make friends. Simple as that!
 ### Break the Ice
 Talking to new people can be hard at the start, so meet@mensa takes advantage of modern GenAi to help break the ice! Check your match for custom conversation starters for you and the people you'll be meeting!
 
+## 🔭 Repository Overview
+
+```
+meet@mensa/
+├── api/
+│   ├── changelogs/ # All updates to the API spec       # All changes to our API, documented
+│   ├── scripts/ # Scripts for generating API code      # Scripts for generating code based on API spec
+│   └── openapi.yaml                                    # The API definition itself
+│                                    
+├── client/                                             # Our React-based client
+│ 
+├── deployment/                                         
+│   ├── docker/                                         # Deploy meet@mensa locally!
+│   ├── docker-debug/                                   # Deploy meet@mensa locally with exposed backend services
+│   ├── k8s/                                            # Deploy meet@mensa to TUM's Kubernetes Cluster
+│   └── compose.aws.yml                                 # Deploy meet@mensa to AWS
+│ 
+├── docs/
+│   ├── api.html                                        # API spec (https://aet-devops25.github.io/team-devoops/api.html)
+│   └── problem_statement.md                            # Meet@Mensa problem statement
+│ 
+├── infrastructure/                                     # Terraform scripts for AWS deployment
+│ 
+├── resources/                                          # Images and Diagrams used elsewhere
+│ 
+├── server/                                             # Our back-end
+│   ├── database/
+│   │   ├── matchdb/                                    # Databases for matching-data
+│   │   └── userdb/                                     # Databases for user-data
+│   │
+│   ├── gateway/                                        # Routes traffic to our API
+│   │
+│   ├── genai/                                          # Provides conversation starters
+│   │
+│   ├── matching/                                       # Manages matching requests
+│   │   ├── src/                                        # Spring-Boot Application
+│   │   ├── generated/                                  # Server API interface generated with openapi-generate-cli
+│   │   └── generated-client/                           # Client API interface generated with openapi-generate-cli
+│   │
+│   └── user/                                           # Manages users
+│       ├── src/                                        # Spring-Boot Application
+│       ├── generated/                                  # Server API interface generated with openapi-generate-cli
+│       └── generated-client/                           # Client API interface generated with openapi-generate-cli
+│ 
+├── README.md                                           # You're reading it ;)
+├── CONTRIBUTING.md                                     # Join us
+└── LICENSE                                             # MIT
+```
+
+
+
 ## ⚙ System Overview
 
 ### Class Diagram (analysis object model)
