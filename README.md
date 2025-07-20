@@ -1,5 +1,3 @@
-# 🍲 Meet@Mensa
-
 ![Meet@Mensa logo](resources/img/meet@mensa.png "Meet@Mensa")
 
 [![Continuous Integration](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml/badge.svg)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml)
@@ -10,11 +8,11 @@ Many students at TUM, particularly in the larger study programs, report feeling 
 
 Our tool - *Meet@Mensa* - focuses on transforming the potentially uncomfortable situation of eating alone at the Mensa into an opportunity to meet fellow students and make new friends.
 
-## 📺 Live Demo
+# 📺 Live Demo
 
 Check it out for yourself at [app.meetatmensa.com](https://app.meetatmensa.com)!
 
-## 🥘 Features
+# 🥘 Features
 
 ### Sign up
 Create an account and meet@mensa will store your basic information for next time!
@@ -34,11 +32,11 @@ Show up, have lunch, make friends. Simple as that!
 ### Break the Ice
 Talking to new people can be hard at the start, so meet@mensa takes advantage of modern GenAi to help break the ice! Check your match for custom conversation starters for you and the people you'll be meeting!
 
-## 🚀 Installation and Deployment
+# 🚀 Installation and Deployment
 
 Instructions for deploying with Docker-Compose and Kubernetes  are available [here](deployment/README.md)
 
-## 🔭 Repository Overview
+# 🔭 Repository Overview
 
 ```
 meet@mensa/
@@ -89,16 +87,19 @@ meet@mensa/
 
 
 
-## ⚙ System Overview
+# ⚙ System Overview
 
 ### Component Diagram (top-level architecture)
 This model contains information about Meet@Mensa's architecture. Each component's color indicates the student responsible for it.
+
 ![Component Diagram](resources/diagrams/meetatmensa_uml_component.png "Meet@Mensa Component Diagram")
 
 ### Class Diagram (analysis object model)
 This model contains information about the objects handled by the Meet@Mensa API. Detailed class diagrams for User and Matching services are available in their respective README.md files ([User](server/user/README.md), [Matching](server/matching/README.md)).
+
 ![Class Diagram](resources/diagrams/meetatmensa_uml_class_object.png "Meet@Mensa Model Class Diagram")
 
 ### Use Case Diagram
 This model contains information about Meet@Mensa's use-cases.
+
 ![Use-Case Diagram](resources/diagrams/meetatmensa_uml_use_case.png "Meet@Mensa Use-Case Diagram")
