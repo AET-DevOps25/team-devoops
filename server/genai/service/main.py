@@ -47,6 +47,10 @@ async def get_conversation_starter(
                 detail="User list is empty",
             )
         
+        # Validate OpenAI API key
+        if not settings.openai_api_key:
+            raise RuntimeError("OPENAI_API_KEY environment variable is missing or empty!")
+
         # Build detailed prompt about users and their interests
         # Build rich user descriptions for the LLM prompt
         user_descriptions: list[str] = []
