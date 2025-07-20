@@ -19,6 +19,8 @@ docker compose pull             # Pulls the images of all services
 docker images                   # Shows locally chached images
 ```
 
+If the client container is crashing with this error 'exec /entrypoint.sh: no such file or directory', change CRLF to LF
+
 ## Kubernetes Helm
 Prerequisites: 
 - you are already authenticated in a running Kubernetes cluster (see Kubeconfig file),
