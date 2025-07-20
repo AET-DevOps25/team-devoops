@@ -1,68 +1,115 @@
-# 🍲 Meet@Mensa
-
 ![Meet@Mensa logo](resources/img/meet@mensa.png "Meet@Mensa")
 
-[![Continuous Integration (CI)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml/badge.svg)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml)
+[![Continuous Integration](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml/badge.svg)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci.yml)
+
+[![Continuous Deployment](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci_cd.yml/badge.svg)](https://github.com/AET-DevOps25/team-devoops/actions/workflows/ci_cd.yml)
 
 Many students at TUM, particularly in the larger study programs, report feeling lonely and isolated despite having countless peers. One of the places where this is especially noticeable is the Mensa during lunchtime. It's common for students that don't have a strong network of friends at university to eat alone or avoid eating at the Mensa entirely to not feel socially awkward.
 
-Our tool - *Meet@Mensa* - focuses on transforming the potentially uncomfortable situation of eating alone at the Mensa into an opportunity to meet fellow students and make new friends. In order to enable this, our tool offers the following features:
+Our tool - *Meet@Mensa* - focuses on transforming the potentially uncomfortable situation of eating alone at the Mensa into an opportunity to meet fellow students and make new friends.
 
-### 📝 - Signing Up
-In order to match students, our tool needs to gather some basic information about them first. In order to do this, users can specify what times they plan to have lunch and at which Mensa, as well as some personal data, such as their name, age, language, gender, study program, current semester, courses they are taking, and hobbies they enjoy. All personal data fields are optional. 
+# 🥘 Features
 
-### ✨ - Matching
-Our system randomly matches students into groups of 4 exactly 1 hour before their common lunchtime, and invites them to share a table. If the number of requests for a certain time slot is not divisible by 4, an additional group of 2-3 students is formed. If only 1 student is left out, they are added on top of a 4-student group. 
+## Sign up
+Create an account and meet@mensa will store your basic information for next time!
 
-Users can also add preferences to their search by setting filters, e.g. if they are willing to meet up with people from the same degree. However, setting filters does not guarantee a 100% match - our system prioritises assigning everyone to a group one way or another over meeting everyone's preferences.
+## Request Matches
+Let us know who you'd like to meet and when you're available by submitting a Match Request!
 
-### 🤝 - RSVP-ing
-Nothing is worse than waiting for someone who won't show up, thus our tool asks users to RSVP to any invites they receive (with ```yes``` / ```no``` options, no tentatives). Once an invite is accepted, all users receive a confirmation email with a corresponding ```ics.``` file in the attachment. It is also possible to cancel the meetup.
+## Get Matched
+Every night at 22:00 CET, our algorithm will run and try to find the best group for you! Group bailed on you or you're just feeling spontaneous? We'll try matching you again at 10:00am CET. 
 
-### 🤸 - Meeting up
-Students at the same table should also have something to talk about, so our system's GenAI component will suggest topics based on the students' common interests to help break the ice.
+## RSVP
+Got matched? Let us know if you can make it by clicking the RSVP button!
 
-## ⚙ System Overview
+## Meet People
+Show up, have lunch, make friends. Simple as that!
 
-### Class Diagram (analysis object model)
+## Break the Ice
+Talking to new people can be hard at the start, so meet@mensa takes advantage of modern GenAi to help break the ice! Check your match for custom conversation starters for you and the people you'll be meeting!
 
-![Class Diagram](resources/diagrams/meetatmensa_uml_class.png "Meet@Mensa Class Diagram")
+# 🚀 Installation and Deployment
 
-### Use Case Diagram
+## Live Demo
+Check it out for yourself at [app.meetatmensa.com](https://app.meetatmensa.com)!
 
-![Use-Case Diagram](resources/diagrams/meetatmensa_uml_use_case.png "Meet@Mensa Use-Case Diagram")
+## Deploy it Yourself
+Instructions for deploying with Docker-Compose and Kubernetes  are available [here](deployment/README.md)
+
+# 🔭 Repository Overview
+
+```
+meet@mensa/
+├── api/
+│   ├── changelogs/ # All updates to the API spec       # All changes to our API, documented
+│   ├── scripts/ # Scripts for generating API code      # Scripts for generating code based on API spec
+│   └── openapi.yaml                                    # The API definition itself
+│                                    
+├── client/                                             # Our React-based client
+│ 
+├── deployment/                                         
+│   ├── docker/                                         # Deploy meet@mensa locally!
+│   ├── docker-debug/                                   # Deploy meet@mensa locally with exposed backend services
+│   ├── k8s/                                            # Deploy meet@mensa to TUM's Kubernetes Cluster
+│   └── compose.aws.yml                                 # Deploy meet@mensa to AWS
+│ 
+├── docs/
+│   ├── api.html                                        # API spec (https://aet-devops25.github.io/team-devoops/api.html)
+│   └── problem_statement.md                            # Meet@Mensa problem statement
+│ 
+├── infrastructure/                                     # Terraform scripts for AWS deployment
+│ 
+├── resources/                                          # Images and Diagrams used elsewhere
+│ 
+├── server/                                             # Our back-end
+│   ├── database/
+│   │   ├── matchdb/                                    # Databases for matching-data
+│   │   └── userdb/                                     # Databases for user-data
+│   │
+│   ├── gateway/                                        # Routes traffic to our API
+│   │
+│   ├── genai/                                          # Provides conversation starters
+│   │
+│   ├── matching/                                       # Manages matching requests
+│   │   ├── src/                                        # Spring-Boot Application
+│   │   ├── generated/                                  # Server API interface generated with openapi-generate-cli
+│   │   └── generated-client/                           # Client API interface generated with openapi-generate-cli
+│   │
+│   └── user/                                           # Manages users
+│       ├── src/                                        # Spring-Boot Application
+│       ├── generated/                                  # Server API interface generated with openapi-generate-cli
+│       └── generated-client/                           # Client API interface generated with openapi-generate-cli
+│ 
+├── README.md                                           # You're reading it ;)
+├── CONTRIBUTING.md                                     # Join us
+└── LICENSE                                             # MIT
+```
+
+
+
+# ⚙ System Overview
 
 ### Component Diagram (top-level architecture)
+This model contains information about Meet@Mensa's architecture. Each component's color indicates the student responsible for it.
 
 ![Component Diagram](resources/diagrams/meetatmensa_uml_component.png "Meet@Mensa Component Diagram")
 
-## 🎭 Use Case Scenarios
+### Class Diagram (analysis object model)
+This model contains information about the objects handled by the Meet@Mensa API. Detailed class diagrams for User and Matching services are available in their respective README.md files ([User](server/user/README.md), [Matching](server/matching/README.md)).
 
-### Scenario 1
-James is a first-semester M.Sc. Informatics student. Unfortunately, he wasn't able to be in Munich for the SET in the first few weeks and thus hasn't really made any friends.
+![Class Diagram](resources/diagrams/meetatmensa_uml_class_object.png "Meet@Mensa Model Class Diagram")
 
-James is comfortable eating alone at the Mensa, but he'd like to meet some of his fellow students, so he logs onto Meet@Mensa and inputs the times he plans to have lunch at the Garching Mensa, what degree he is studying, what classes he's taking, and what his hobbies are outside of university. James doesn't have any preferences on whom to meet, so he sets no search criteria and leaves it to chance.
+### Use Case Diagram
+This model contains information about Meet@Mensa's use-cases.
 
-On Monday, an hour before lunchtime, James receives a notification that he's been matched with a table of 3 other students for lunch at the Mensa. James accepts the invitation, letting the system know he plans on joining. He receives a confirmation email with an ```ics.``` file that he happily adds to his calendar, as he loves technology and keeping everything documented.
+![Use-Case Diagram](resources/diagrams/meetatmensa_uml_use_case.png "Meet@Mensa Use-Case Diagram")
 
-At the agreed time, James arrives at the Mensa, gets his food and joins the other students at the table. Not knowing how where to begin, he checks the list of conversation starters and sees that several students are also taking the DevOps course this semester. With this in mind, James asks the other students about their projects and exchanges some jokes about Scrum masters.
+# 💜 More Documentation
 
-After an hour of pleasant conversation, James has now met several new people and goes about his day feeling less lonely.
-
----
-### Scenario 2
-Anastasiia is also a first-semester M.Sc. Informatics student. She met a lot of wonderful people during the orientation week but noticed there were barely any female students in her degree. Being new to Munich and wanting to connect with other women in Computer Science, Anastasiia signs up for Meet@Mensa.
-
-She fills out the information about her studies and hobbies, and specifies she would like to have lunch with other female students in their 1st semester. For this, she activates 2 filters in the search criteria: gender and current semester. One hour before her lunchtime on Friday, she receives a notification that she has been matched with 1 student. Anastasiia reviews her profile and notices they both have a lot of different hobbies they could tell each other about. For example, Anastasiia's match is passionate about horse riding, which Anastasiia herself always wanted to learn more about.
-
-Anastasiia loves diversity and meeting people from different backgrounds, so she happily accepts the invitation. After the other student confirms, they both receive a calendar invite via email. The meeting goes really well, and both students instantly click, so they agree to meet up for lunch again next week. The system has brilliantly fulfilled its purpose.
-
----
-### Scenario 3
-Enrico is a second-semester M.Sc. student in Informatics, and he's currently looking for group members for his Interdisciplinary Project. While most of his classmates are in Computer Science, he's interested in meeting students from other departments to bring diverse perspectives to the project.
-
-He signs into Meet@Mensa and indicates that he's particularly looking for people involved in the Interdisciplinary Project this semester. He selects lunchtime on Thursday and fills out his profile with relevant classes and hobbies, including his passion for design and urban mobility.
-
-Enrico is matched with 2 other students, all of them accept the invitation, so Enrico receives an email with a calendar event for the meetup.
-
-During lunch, one of the AI-generated conversation starters suggests discussing project ideas around sustainability, a topic all three are passionate about. The group ends up brainstorming potential concepts, and by the end of the meal, Enrico has found two highly motivated partners for his project—and a reason to look forward to more team lunches.
+There's much more to see, check it out!
+- [API Spec](https://aet-devops25.github.io/team-devoops/api.html)
+- [Problem Statement](docs/problem_statement.md)
+- [Grading Table & Student Responsabilities](docs/grading_table.md)
+- [Grafana Dashboards](deployment/README.md)
+- [CI/CD Pipeline](docs/ci-cd.md)
+- [Matching Algorithm](server/matching/README.md)

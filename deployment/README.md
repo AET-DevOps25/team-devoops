@@ -19,7 +19,7 @@ docker compose pull             # Pulls the images of all services
 docker images                   # Shows locally chached images
 ```
 
-If the client container is crashing with this error 'exec /entrypoint.sh: no such file or directory', change CRLF to LF
+If the client container is crashing with this error 'exec /entrypoint.sh: no such file or directory', this may be caused by line-endings differing in Windows and Linux. To fix this switch between CRLF (Windows) to LF (Linux).
 
 ## Kubernetes Helm
 Prerequisites: 
