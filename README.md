@@ -8,10 +8,6 @@ Many students at TUM, particularly in the larger study programs, report feeling 
 
 Our tool - *Meet@Mensa* - focuses on transforming the potentially uncomfortable situation of eating alone at the Mensa into an opportunity to meet fellow students and make new friends.
 
-# 📺 Live Demo
-
-Check it out for yourself at [app.meetatmensa.com](https://app.meetatmensa.com)!
-
 # 🥘 Features
 
 ### Sign up
@@ -34,6 +30,10 @@ Talking to new people can be hard at the start, so meet@mensa takes advantage of
 
 # 🚀 Installation and Deployment
 
+## Live Demo
+Check it out for yourself at [app.meetatmensa.com](https://app.meetatmensa.com)!
+
+## Deploy it Yourself
 Instructions for deploying with Docker-Compose and Kubernetes  are available [here](deployment/README.md)
 
 # 🔭 Repository Overview

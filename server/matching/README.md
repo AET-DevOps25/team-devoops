@@ -4,6 +4,7 @@ A Spring Boot application built with Gradle supporting the matching process in t
 
 ## Class Diagram
 Diagram showing the basic class structure for the Matching Microservice
+
 ![Class Diagram](../../resources/diagrams/meetatmensa_uml_class_matching.png)
 
 ## Local Deployment with Docker
