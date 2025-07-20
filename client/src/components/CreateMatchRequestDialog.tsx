@@ -133,7 +133,10 @@ const CreateMatchRequestDialog: React.FC<CreateMatchRequestDialogProps> = ({
       return;
     }
 
-    const formattedDate = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+    // Format date using local values to avoid UTC shift
+    const formattedDate = selectedDate
+      ? `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`
+      : '';
 
     onSubmit({
       userID: userID,

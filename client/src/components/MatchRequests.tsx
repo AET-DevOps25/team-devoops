@@ -83,8 +83,12 @@ const MatchRequests = () => {
       await submitMatchRequest(matchRequestData);
       setIsCreateDialogOpen(false);
       await fetchMatchRequests();
-    } catch (err) {
-      setError('Failed to create match request. Please try again later.');
+    } catch (err: any) {
+      if (err?.response?.status === 409) {
+        setError('You can only create one match request per day.');
+      } else {
+        setError('Failed to create match request. Please try again later.');
+      }
       console.error('Error creating match request:', err);
     }
   };
