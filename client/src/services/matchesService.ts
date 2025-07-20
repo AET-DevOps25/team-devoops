@@ -64,7 +64,7 @@ export const useMatchesService = () => {
 
   const acceptMatch = async (matchId: string): Promise<void> => {
     try {
-      await api.post(`${API_VERSION}/matching/match/${matchId}/accept`);
+      await api.get(`${API_VERSION}/matching/rsvp/${matchId}/accept`);
     } catch (error) {
       console.error('Error accepting match:', error);
       throw error;
@@ -73,7 +73,7 @@ export const useMatchesService = () => {
 
   const rejectMatch = async (matchId: string): Promise<void> => {
     try {
-      await api.post(`${API_VERSION}/matching/match/${matchId}/reject`);
+      await api.get(`${API_VERSION}/matching/rsvp/${matchId}/reject`);
     } catch (error) {
       console.error('Error rejecting match:', error);
       throw error;
