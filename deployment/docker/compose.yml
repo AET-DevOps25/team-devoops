@@ -41,6 +41,8 @@ services:
       - "80"
     networks:
       - backend
+    env_file:
+      - .env
 
   meetatmensa-client:
     build: 

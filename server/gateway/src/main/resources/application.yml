@@ -41,4 +41,4 @@ spring:
         - id: genai_route
           uri: http://meetatmensa-genai:80
           predicates:
-            - Path=/genai/**
+            - Path=/api/v2/genai/**

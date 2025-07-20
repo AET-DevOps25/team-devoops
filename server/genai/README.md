@@ -1,8 +1,13 @@
 # Meet@Mensa GenAI Microservice
 
-A Python application built using Hatchling enabling the Generative AI conversation starter using in the Meet@Mensa app.
+A FastAPI-based Python application built using LangChain enabling the Generative AI conversation starter in the Meet@Mensa app.
 
-Currently unimplemented, save for a placeholder webserver
+## Features
+
+* **LangChain integration** – swap cloud or local LLMs via dependency injection.
+* **FastAPI** endpoint conforming to the provided OpenAPI spec.
+* **Configurable** via environment variables.
+* **Test‑driven** – deterministic tests with a stubbed LLM.
 
 ## Local Deployment with Docker
 ```
@@ -13,7 +18,7 @@ docker build -t ghcr.io/aet-devops25/team-devoops/genai .
 docker push ghcr.io/aet-devops25/team-devoops/genai
 
 # Run the Docker container and map port 80 to the desired port
-docker run --name genai-service -p <desired_port>:80 ghcr.io/aet-devops25/team-devoops/genai
+docker run --name genai-service -e OPENAI_API_KEY=sk-YOURKEY -p <desired_port>:80 ghcr.io/aet-devops25/team-devoops/genai
 
 # List running containers (if needed)
 docker ps 
@@ -25,4 +30,4 @@ docker stop genai-service
 docker remove genai-service
 ```
 
-The application will be available at `http://localhost:<desired_port>`, followed by any path.
+The application will be available at `http://localhost:<desired_port>`.
