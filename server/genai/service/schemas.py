@@ -7,11 +7,6 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 
-# ── Shared  ────────────────────────────────────────────────────────────────────
-class Interest(BaseModel):
-    name: str = Field(..., description="Name of the interest, e.g. 'machine‑learning'")
-
-
 # ── Core domain models  ───────────────────────────────────────────────────────
 class User(BaseModel):
     # Primary key
@@ -29,7 +24,7 @@ class User(BaseModel):
     degreeStart: int
 
     # Profile
-    interests: List[Interest]
+    interests: List[str]
     bio: str
 
     class Config:
@@ -43,7 +38,7 @@ class User(BaseModel):
                 "gender": "male",
                 "degree": "msc_informatics",
                 "degreeStart": 2024,
-                "interests": [{"name": "AI"}, {"name": "DevOps"}],
+                "interests": ["AI", "DevOps"],
                 "bio": "Coffee‑powered coder who loves climbing.",
             }
         }
