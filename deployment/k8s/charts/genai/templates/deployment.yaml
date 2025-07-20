@@ -40,6 +40,12 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: genai-secret
+                key: OPENAI_API_KEY
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
