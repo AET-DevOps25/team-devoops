@@ -25,7 +25,7 @@ import { useUserID } from '../contexts/UserIDContext';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMatchActions } from '../hooks/useMatchActions';
 import MatchActionDialogs from './MatchActionDialogs';
-import { formatTimeslots } from '../utils/formatting';
+import { formatTimeslots, formatTime } from '../utils/formatting';
 
 const Dashboard = () => {
   const { user } = useAuth0();
@@ -176,26 +176,9 @@ const Dashboard = () => {
     });
   };
 
-  const formatTime = (timeSlot: number) => {
-    const times = [
-      '8:00 AM',
-      '8:30 AM',
-      '9:00 AM',
-      '9:30 AM',
-      '10:00 AM',
-      '10:30 AM',
-      '11:00 AM',
-      '11:30 AM',
-      '12:00 PM',
-      '12:30 PM',
-      '1:00 PM',
-      '1:30 PM',
-      '2:00 PM',
-      '2:30 PM',
-      '3:00 PM',
-      '3:30 PM',
-    ];
-    return times[timeSlot - 1] || 'Unknown time';
+  // Use the existing formatTime function for matches (single timeslot)
+  const formatMatchTime = (timeSlot: number) => {
+    return formatTime(timeSlot);
   };
 
   // Skeleton component for match boxes
@@ -331,7 +314,7 @@ const Dashboard = () => {
                         {formatDate(match.group.date)}
                       </Typography>
                       <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
-                        {formatTime(match.group.time)}
+                        {formatMatchTime(match.group.time)}
                       </Typography>
                       <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                         {match.group.location}
@@ -433,7 +416,7 @@ const Dashboard = () => {
                         variant="body2"
                         sx={{ color: 'text.secondary', mb: { xs: 0.5, md: 0 } }}
                       >
-                        {formatTime(match.group.time)}
+                        {formatMatchTime(match.group.time)}
                       </Typography>
                       <Typography
                         variant="body2"
@@ -518,9 +501,9 @@ const Dashboard = () => {
                         <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
                           {formatDate(match.group.date)}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
-                          {formatTime(match.group.time)}
-                        </Typography>
+                                              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5 }}>
+                        {formatMatchTime(match.group.time)}
+                      </Typography>
                         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                           {match.group.location}
                         </Typography>
@@ -633,7 +616,7 @@ const Dashboard = () => {
                           variant="body2"
                           sx={{ color: 'text.secondary', mb: { xs: 0.5, md: 0 } }}
                         >
-                          {formatTime(match.group.time)}
+                          {formatMatchTime(match.group.time)}
                         </Typography>
                         <Typography
                           variant="body2"

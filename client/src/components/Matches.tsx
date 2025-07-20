@@ -25,6 +25,7 @@ import { MatchesResponse, Match, MatchStatus, ConversationStarter } from '../typ
 import { useMatchActions } from '../hooks/useMatchActions';
 import MatchActionDialogs from './MatchActionDialogs';
 import { useUserID } from '../contexts/UserIDContext';
+import { formatTime } from '../utils/formatting';
 
 const Matches = () => {
   const { getMatches } = useMatchesService();
@@ -124,27 +125,9 @@ const Matches = () => {
     });
   };
 
-  const formatTime = (timeSlot: number) => {
-    // Assuming time slots are 1-16 representing different times
-    const times = [
-      '8:00 AM',
-      '8:30 AM',
-      '9:00 AM',
-      '9:30 AM',
-      '10:00 AM',
-      '10:30 AM',
-      '11:00 AM',
-      '11:30 AM',
-      '12:00 PM',
-      '12:30 PM',
-      '1:00 PM',
-      '1:30 PM',
-      '2:00 PM',
-      '2:30 PM',
-      '3:00 PM',
-      '3:30 PM',
-    ];
-    return times[timeSlot - 1] || 'Unknown time';
+  // Use the existing formatTime function for matches (single timeslot)
+  const formatMatchTime = (timeSlot: number) => {
+    return formatTime(timeSlot);
   };
 
   const handleViewAllStarters = (starters: ConversationStarter[]) => {
@@ -310,7 +293,7 @@ const Matches = () => {
                       color="text.secondary"
                       sx={{ fontSize: '0.8rem', mb: 0.5 }}
                     >
-                      <strong>Time:</strong> {formatTime(match.group.time)}
+                      <strong>Time:</strong> {formatMatchTime(match.group.time)}
                     </Typography>
                     <Typography
                       variant="body2"
