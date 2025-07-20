@@ -23,7 +23,6 @@ WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY service/ ./service
 COPY requirements.txt .
-COPY test ./test
 
 # Set env vars (can be overridden in Helm values)
 ENV PYTHONUNBUFFERED=1 \
