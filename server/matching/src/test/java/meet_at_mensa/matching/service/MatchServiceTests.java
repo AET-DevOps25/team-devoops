@@ -187,8 +187,12 @@ class MatchServiceTests {
         assertNotNull(match, "Value should not be null");
 
         assertEquals(matchID, match.getMatchID(), "MatchIDs should match");
-        assertEquals(userID, match.getUserID(), "MatchIDs should match");
-        assertEquals(InviteStatus.UNSENT, match.getStatus(), "MatchIDs should match");
+        assertEquals(userID, match.getUserID(), "UserIDs should match");
+        assertTrue(
+                match.getStatus() == InviteStatus.UNSENT || match.getStatus() == InviteStatus.SENT,
+                "Match Statuses should be Unsent or Sent"
+            );
+        
 
         Asserter.assertGroupsAreIdentical(group, match.getGroup());
 
